@@ -116,6 +116,7 @@ const COUNTRY_FLAGS = {
   'Malaysia': '🇲🇾', 'Singapore': '🇸🇬', 'Cambodia': '🇰🇭',
   'Spain': '🇪🇸', 'Portugal': '🇵🇹', 'UAE': '🇦🇪',
   'Mexico': '🇲🇽', 'Colombia': '🇨🇴', 'Costa Rica': '🇨🇷',
+  'Turkey': '🇹🇷', 'Cyprus': '🇨🇾', 'United Kingdom': '🇬🇧',
 };
 const countryFlag = (c) => (c && COUNTRY_FLAGS[c]) || null;
 
