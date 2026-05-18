@@ -290,6 +290,25 @@ function patch(html, prop) {
     const heroStyle = `background-image:url('${prop.heroImg}')`
       + (prop.heroImgMobile ? `;--bg-mobile:url('${prop.heroImgMobile}')` : '');
     $(`[data-notion-bg="hero_img"]`).attr('style', heroStyle);
+
+    // Head SEO image URLs — og:image, twitter:image, schema.org JSON-LD `image`.
+    // Selector-based (no markup change needed). When sync-images writes a new CF
+    // URL to Notion, the next cron tick propagates it everywhere automatically.
+    $('meta[property="og:image"]').attr('content', prop.heroImg);
+    $('meta[name="twitter:image"]').attr('content', prop.heroImg);
+    $('script[type="application/ld+json"]').each((_, el) => {
+      const $el = $(el);
+      const txt = $el.text().trim();
+      if (!txt) return;
+      let json;
+      try { json = JSON.parse(txt); } catch { return; }
+      // Only update if the schema has a top-level `image` field
+      // (RealEstateListing). Skip FAQPage / BreadcrumbList, which don't.
+      if (typeof json.image === 'string') {
+        json.image = prop.heroImg;
+        $el.text('\n  ' + JSON.stringify(json, null, 2).split('\n').join('\n  ') + '\n  ');
+      }
+    });
   }
   const galleryImgs = [prop.galleryImg1, prop.galleryImg2, prop.galleryImg3, prop.galleryImg4];
   galleryImgs.forEach((url, i) => {
@@ -353,25 +372,40 @@ async function main() {
   console.log(`  ${properties.length} Live properties found`);
 
   let changed = 0;
+  let failed = 0;
   for (const prop of properties) {
-    const file = path.join(PROPERTIES_DIR, `${prop.slug}.html`);
-    let existing;
     try {
-      existing = await fs.readFile(file, 'utf-8');
-    } catch {
-      console.log(`  ⤳ ${prop.slug}: no HTML yet (skipped — create from template later)`);
-      continue;
+      const file = path.join(PROPERTIES_DIR, `${prop.slug}.html`);
+      let existing;
+      try {
+        existing = await fs.readFile(file, 'utf-8');
+      } catch {
+        console.log(`  ⤳ ${prop.slug}: no HTML yet (skipped — create from template later)`);
+        continue;
+      }
+      const patched = patch(existing, prop);
+      if (patched === existing) {
+        console.log(`  ✓ ${prop.slug}: no change`);
+        continue;
+      }
+      await fs.writeFile(file, patched, 'utf-8');
+      console.log(`  ✱ ${prop.slug}: updated`);
+      changed++;
+    } catch (err) {
+      // Per-property try/catch — one bad row (malformed JSON, cheerio error,
+      // unexpected schema) won't kill the whole batch. The cron resumes next
+      // tick after the bad data is fixed.
+      console.error(`  ✗ ${prop.slug || '(missing slug)'}: ${err.message}`);
+      failed++;
     }
-    const patched = patch(existing, prop);
-    if (patched === existing) {
-      console.log(`  ✓ ${prop.slug}: no change`);
-      continue;
-    }
-    await fs.writeFile(file, patched, 'utf-8');
-    console.log(`  ✱ ${prop.slug}: updated`);
-    changed++;
   }
-  console.log(`Done. ${changed} file(s) changed.`);
+  console.log(`Done. ${changed} file(s) changed, ${failed} failed.`);
+  // Exit non-zero ONLY if every property failed (config/network issue);
+  // partial failures don't block the rest of the pipeline.
+  if (failed > 0 && changed === 0 && properties.length > 0) {
+    console.error('All properties failed — exiting non-zero so the workflow surfaces the issue.');
+    process.exit(1);
+  }
 }
 
 main().catch(err => {
