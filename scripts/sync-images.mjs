@@ -309,8 +309,39 @@ async function filterAndRank(candidates) {
   return filtered.sort((a, b) => b.pixels - a.pixels);
 }
 
+// Diversity score between two candidates (higher = more visually different).
+// For PDF candidates, uses pdfimages filename index distance — adjacent indices
+// usually share a brochure page or spread, so different subjects sit far apart.
+// For mixed sources or different URL classifications, treats them as inherently
+// diverse (large score).
+function diversityScore(a, b) {
+  if (!a || !b) return 0;
+  let score = 0;
+  // Different bucket classifications → strong diversity signal
+  if (a.classification !== b.classification) score += 1000;
+  // Different sources (pdf vs web-page vs web-list) → moderate diversity
+  if (a.src !== b.src) score += 500;
+  // Same source: use filename-index distance (PDF outputs like prefix-NNN.jpg)
+  if (a.src === b.src && a.src === 'pdf') {
+    const ai = parseInt(path.basename(a.path).match(/-(\d+)\.jpg$/)?.[1] || '0');
+    const bi = parseInt(path.basename(b.path).match(/-(\d+)\.jpg$/)?.[1] || '0');
+    score += Math.abs(ai - bi);
+  }
+  // Same source web pages: different URL path segments → diverse
+  if (a.srcRef && b.srcRef && typeof a.srcRef === 'string' && typeof b.srcRef === 'string') {
+    const aSegs = new Set(a.srcRef.split('/'));
+    const bSegs = new Set(b.srcRef.split('/'));
+    const overlap = [...aSegs].filter(s => bSegs.has(s)).length;
+    const total = aSegs.size + bSegs.size;
+    if (total > 0) score += (1 - overlap / total) * 50;
+  }
+  return score;
+}
+
 // Pick the final 5 images by classification → slot assignment.
 // See classifyImage() for the slot-to-class mapping rationale.
+// Slot 3 (§11 ending) enforces visual diversity from slot 0 (hero) — picks
+// the candidate with the largest diversity score from each bucket.
 function pickFinalFive(ranked) {
   const buckets = { aspirational: [], overview: [], interior: [], unclassified: [] };
   for (const img of ranked) buckets[img.classification].push(img);
@@ -325,14 +356,29 @@ function pickFinalFive(ranked) {
     return null;
   };
 
-  // Slot priorities — first non-empty bucket in each list wins
-  return [
-    pickFrom(['aspirational', 'unclassified', 'overview', 'interior']),  // 0 hero
-    pickFrom(['aspirational', 'unclassified', 'overview', 'interior']),  // 1 gallery_1 (§05 — 2nd aspirational)
-    pickFrom(['interior', 'unclassified', 'overview', 'aspirational']),  // 2 gallery_2 (§08 — interior)
-    pickFrom(['overview', 'unclassified', 'interior', 'aspirational']),  // 3 gallery_3 (§11 — ending = project overview)
-    pickFrom(['unclassified', 'overview', 'interior', 'aspirational']),  // 4 unused slot
-  ].filter(img => img !== null);
+  // Diversity-aware variant for slot 3: within each priority bucket, pick the
+  // candidate with the highest diversity score from the given reference image.
+  // Falls back to pixel area on ties (preserves the "biggest wins" default).
+  const pickDiverse = (priorities, reference) => {
+    for (const bucket of priorities) {
+      const candidates = buckets[bucket].filter(img => !used.has(img.hash));
+      if (!candidates.length) continue;
+      const scored = candidates.map(c => ({ img: c, score: diversityScore(reference, c) }));
+      scored.sort((a, b) => b.score - a.score || b.img.pixels - a.img.pixels);
+      const picked = scored[0].img;
+      used.add(picked.hash);
+      return picked;
+    }
+    return null;
+  };
+
+  const hero = pickFrom(['aspirational', 'unclassified', 'overview', 'interior']);                   // 0
+  const g1   = pickFrom(['aspirational', 'unclassified', 'overview', 'interior']);                   // 1 §05
+  const g2   = pickFrom(['interior', 'unclassified', 'overview', 'aspirational']);                   // 2 §08
+  const g3   = pickDiverse(['overview', 'unclassified', 'interior', 'aspirational'], hero);          // 3 §11 (diverse from hero)
+  const g4   = pickFrom(['unclassified', 'overview', 'interior', 'aspirational']);                   // 4 filler
+
+  return [hero, g1, g2, g3, g4].filter(img => img !== null);
 }
 
 // ─── Google Drive ───────────────────────────────────────────────────────
