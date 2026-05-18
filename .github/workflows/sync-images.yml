@@ -1,0 +1,58 @@
+name: Sync Images → Cloudflare
+
+# Manual trigger only — image sync is an expensive operation (Drive download +
+# PDF extract + CF upload), runs on-demand rather than on every push.
+on:
+  workflow_dispatch:
+    inputs:
+      only_slug:
+        description: "Sync just one slug (e.g. fulham-reach-palmer-house-london). Leave empty to scan all Live listings with placeholder image URLs."
+        required: false
+        default: ""
+      replace:
+        description: "Re-upload even if Image URL is already a Cloudflare URL"
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: sync-images
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: sudo apt-get install -y poppler-utils imagemagick
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install npm deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+
+      - name: Run image sync
+        working-directory: scripts
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID || '2adeb401a00c6f459573f25eabb790da' }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9' }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.only_slug }}" ]; then
+            ARGS="--slug ${{ github.event.inputs.only_slug }}"
+          fi
+          if [ "${{ github.event.inputs.replace }}" = "true" ]; then
+            ARGS="$ARGS --replace"
+          fi
+          node sync-images.mjs $ARGS

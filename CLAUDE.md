@@ -89,6 +89,15 @@ Templates and references:
 - Manual single-file run: `cd scripts && ANTHROPIC_API_KEY=... npm run titles -- <slug>` (no `<slug>` = all files).
 - Cost: ~$0.001/image with Haiku 4.5; a typical PDP has 3 cine blocks (≈$0.003 per scaffold).
 
+## Image sync (PDF brochures → Cloudflare Images → Notion)
+
+- Script: `scripts/sync-images.mjs` (see `NAC-IMAGE-SYNC.md` for the full setup walkthrough).
+- Workflow: `.github/workflows/sync-images.yml` — manual `workflow_dispatch` only (expensive operation; not run on schedule).
+- Flow: Notion `GS Source Folder` → list PDFs via Drive API → `pdfimages -j` extracts embedded JPEGs → dedupe + filter (≥800px, ≥50KB) → top-5 by file size → upload to Cloudflare Images with custom IDs `<slug>-hero`, `<slug>-1..4` → write `imagedelivery.net/.../public` URLs back to Notion `Image URL` + `🖼️ Image 1-4`.
+- The next `sync-notion.yml` cron tick then patches the new URLs into the HTML files (data-notion-bg fields auto-update).
+- Required secrets: `CLOUDFLARE_API_TOKEN` (with `Cloudflare Images: Edit` scope), `GOOGLE_SERVICE_ACCOUNT_JSON`, `NOTION_TOKEN`. Account ID `2adeb401a00c6f459573f25eabb790da` is hardcoded as default.
+- Local test (no Drive/Notion required): `CLOUDFLARE_API_TOKEN=... node sync-images.mjs --slug <slug> --pdf <path> --dry-run --keep-tmp`.
+
 ## WordPress sync
 
 - Triggered by every push to `main` that touches `properties/*.html`, plus a 5-min cron and on-demand via `.github/workflows/sync-wp.yml`.

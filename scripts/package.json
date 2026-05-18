@@ -9,12 +9,14 @@
     "sync": "node sync-notion.mjs",
     "index": "node update-index.mjs",
     "sync:wp": "node sync-wp.mjs",
-    "titles": "node generate-cine-titles.mjs"
+    "titles": "node generate-cine-titles.mjs",
+    "images": "node sync-images.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.40.0",
     "@notionhq/client": "^2.2.15",
-    "cheerio": "^1.0.0"
+    "cheerio": "^1.0.0",
+    "googleapis": "^144.0.0"
   },
   "engines": {
     "node": ">=20"
