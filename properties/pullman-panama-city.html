@@ -1771,6 +1771,11 @@
         text.split(/\s+/).filter(Boolean).forEach(function(w){ html += '<span class="word' + (hl ? ' hl' : '') + '">' + w + '</span> '; });
       });
       el.innerHTML = html;
+      el.querySelectorAll('.word').forEach(function(w){
+        w.style.setProperty('font-feature-settings','"calt" 0,"liga" 0,"hist" 0,"hlig" 0','important');
+        w.style.setProperty('font-variant-ligatures','none','important');
+        w.style.setProperty('font-variant-alternates','normal','important');
+      });
     });
   }
   buildStatement();
