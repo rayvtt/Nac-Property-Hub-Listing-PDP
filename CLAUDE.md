@@ -89,20 +89,84 @@ Templates and references:
 - Manual single-file run: `cd scripts && ANTHROPIC_API_KEY=... npm run titles -- <slug>` (no `<slug>` = all files).
 - Cost: ~$0.001/image with Haiku 4.5; a typical PDP has 3 cine blocks (≈$0.003 per scaffold).
 
-## Image sync (Berkeley web + PDF brochures → Cloudflare Images → Notion)
+## Image pipeline (PDF / Berkeley web → Cloudflare Images → Notion)
 
-- Script: `scripts/sync-images.mjs` (see `NAC-IMAGE-SYNC.md` for the full setup walkthrough).
-- Workflow: `.github/workflows/sync-images.yml` — manual `workflow_dispatch` only (expensive operation; not run on schedule).
-- Sources (any combination — sources are additive, filter+rank picks top 5 across all candidates):
-  - **Berkeley web** (preferred — no Drive auth needed): Notion `🌐 Berkeley Page URL` or `--berkeley-page` flag → script scrapes `.ashx` URLs, bumps to 1920×1080 via query params, downloads
-  - **Explicit URL list**: Notion `📷 Image URLs JSON` or `--berkeley-urls` flag
-  - **Drive brochures**: Notion `GS Source Folder` or `--pdf` flag → `pdfimages -j` extracts embedded JPEGs
-- Quality filter (production-tuned): width ≥ 1500px, landscape (width ≥ height), file size ≥ 150KB, **bytes/pixel ≥ 0.05** (drops brochure abstract design graphics like wave gradients that compress unusually small). Dedupe by SHA-256. Sort by pixel area DESC.
-- Upload to Cloudflare Images with custom IDs `<slug>-hero`, `<slug>-1..4` → write `imagedelivery.net/.../public` URLs back to Notion `Image URL` + `🖼️ Image 1-4`.
-- The next `sync-notion.yml` cron tick patches the new URLs into the HTML files: data-notion-bg, og:image, twitter:image, JSON-LD RealEstateListing image (all four covered via cheerio).
-- Required secrets: `CLOUDFLARE_API_TOKEN` + `NOTION_TOKEN`. `GOOGLE_SERVICE_ACCOUNT_JSON` is **only needed for the Drive PDF route**; Berkeley web works without it. Account ID `2adeb401a00c6f459573f25eabb790da` is the default.
-- Berkeley CDN account hash for delivery URLs: `qse3Pw84PrZ2S0PQOTtixw` (auto-discovered from upload responses, no config).
-- Local test: `CLOUDFLARE_API_TOKEN=... node sync-images.mjs --slug <slug> --berkeley-page <url> --dry-run --keep-tmp`.
+This is the production-ready replacement for the manual "screenshot from brochure → resize → upload to WP media" workflow. End-to-end: source images → extract → classify → upload → write URLs back to Notion. The next `sync-notion.yml` cron tick then propagates the URLs into the HTML files everywhere they appear.
+
+- Script: `scripts/sync-images.mjs`. Walkthrough in `NAC-IMAGE-SYNC.md`.
+- Workflow: `.github/workflows/sync-images.yml` — manual `workflow_dispatch` only (image work is expensive; not on schedule).
+- Account hash (in every `imagedelivery.net/<hash>/<id>/<variant>` URL): `qse3Pw84PrZ2S0PQOTtixw`.
+
+### Sources (additive — combine any)
+
+| Source | Notion field | CLI flag | Auth needed | When to use |
+|---|---|---|---|---|
+| Berkeley page scrape | `🌐 Berkeley Page URL` | `--berkeley-page <url>` | none | UK Berkeley listings (also follows one-level sub-phase links like `/the-art-mill`) |
+| Explicit URL list | `📷 Image URLs JSON` | `--berkeley-urls <file>` | none | Curated URL set from any source |
+| Drive PDF | `GS Source Folder` | `--pdf <path>` | `GOOGLE_SERVICE_ACCOUNT_JSON` (optional — `--pdf` works with local PDF) | Brochures with 2.5MP+ images (Berkeley CDN caps at 1.8MP, brochures often hit 4MP+) |
+
+Drive PDF + brochure is the best source when available — Grand Marina's 19MB brochure produced 4.0MP heroes vs Berkeley web's 1.8MP cap.
+
+### Cloudflare Images variants (one-time setup, documented in NAC-IMAGE-SYNC.md)
+
+| Variant | Config | URL suffix | Used for |
+|---|---|---|---|
+| `public` | `fit: scale-down, 2400×2400` | `/public` | Desktop hero + 4 gallery backgrounds, og:image, twitter:image, JSON-LD image |
+| `mobile` | `fit: cover, 1080×1920` | `/mobile` | Hero on ≤900px viewports (wired into HTML via inline `--bg-mobile:url(...)`) |
+
+The default CF `public` variant was downscaling to 1366×768 (visibly grainy on 4K). Bumping to 2400×2400 unlocks full source resolution. PR #136 docs the API call.
+
+### Filter cascade
+
+| Rule | Threshold | Why |
+|---|---|---|
+| width | ≥ 1500px | Berkeley CDN caps at 1920; PDF heroes are typically 1800–3000+. Smaller = thumbnail rendition that didn't bump |
+| orientation | width ≥ height | Drops portrait brochure spreads (e.g., 1818×2389 page-spreads) |
+| file size | ≥ 150KB | CDN-served 1920×933 lands at 150–300KB |
+| **bytes/pixel** | **≥ 0.05** | **Drops abstract design graphics** (wave gradients, colour blocks) that compress unusually small. Real photos sit at 0.10–0.30 b/px. Caught the Fulham "wave graphic" |
+| dedupe | by SHA-256 | PDFs composite duplicates for layering |
+| sort | **pixel area DESC** | CDN compression makes file-size sort misleading |
+
+### Slot picker (today's content rule)
+
+Position dictates what role the image plays. The picker uses URL-keyword classification (`aspirational` / `interior` / `overview` / `unclassified`) + a per-slot priority list:
+
+| Slot | Position in PDP | Class preference | What it should be |
+|---|---|---|---|
+| 0 | Top hero (full-bleed) | aspirational → unclassified → overview → interior | **Aspirational #1** — wow shot, the headline image |
+| 1 | §05 cine | aspirational → unclassified → overview → interior | **Aspirational #2** — second wow, different angle |
+| 2 | §08 cine | interior → unclassified → overview → aspirational | Interior detail — what the flat looks like |
+| 3 | §11 cine (right before closing aspiration line) | overview → unclassified → interior → aspirational | **Project Overview / ending image** — building/areas, not flat. Must be visually distinct from hero |
+| 4 | gallery_4 (currently unused in template) | unclassified → overview → interior → aspirational | Filler — Notion stores it for future use |
+
+**Diversity rule** (Grand Marina taught us this): hero (slot 0) and ending (slot 3) should not be the same kind of shot. Implemented via post-pick diversity check: if slots 0 and 3 are visually similar (same source region + same class), the script tries the next-best candidate for slot 3.
+
+### URL-keyword classifier
+
+Berkeley CDN paths map cleanly to classes; PDF-extracted images default to `unclassified` (wildcard). Keywords (extend in `classifyImage()` as needed):
+
+- **Aspirational** — `/header/`, `/hero/`, `terrace-views`, `penthouses`, `lifestyle`, `sunrise-to-sunset`, `highlight-feature`, `beach-club`, `solaris-lounge`, `minus-one-club`, `the-club`, `tamesis-club`, `rooftop`, `sky-bar`, `olive-grove`
+- **Interior** — `/internal/`, `/specification/`, `/interiors/`, `kitchen`, `bathroom`, `bedroom`, `ensuite`, `spec_`, `showhome`, `living-room`, any `\d+-bed-` pattern, `studio-apartment`
+- **Overview** — `/external/`, `/exterior/`, `townhouses`, `current-phase-image`, `phase-thumb`, `aerial`, `outdoor`, `site-plan`, `building`, `courtyard`, `neighbourhood`, `park-life`, `connections-map`, `burgess-park`, `food-drink`, `cultural`, `kia-oval`, `cricket`, `thames`, `river`, `amenity-image`, `facilities-image`
+
+### Notion field mapping
+
+When sync-images uploads to CF, it writes these Notion fields:
+
+- `Image URL` → CF hero `/public` URL
+- `🖼️ Image 1-4` → CF gallery `/public` URLs (per slot mapping above)
+- `Mobile Image URL` → CF hero `/mobile` URL (same image ID, different variant). HTML uses this via inline `--bg-mobile` CSS variable on the hero element; CSS media query swaps it in on ≤900px
+
+### Triggering
+
+1. **Single property (ping protocol)**: user creates Notion row with brochure URL or Berkeley page → message "process images for `<slug>`" → me running `node sync-images.mjs --slug <slug> ...`
+2. **Bulk** (autonomous): GH Actions workflow_dispatch → script iterates all Live properties with placeholder image URLs
+
+### Required secrets
+
+- `CLOUDFLARE_API_TOKEN` (with `Cloudflare Images: Edit`)
+- `NOTION_TOKEN`
+- `GOOGLE_SERVICE_ACCOUNT_JSON` (optional — Drive route only; Berkeley web doesn't need it)
 
 ## WordPress sync
 
