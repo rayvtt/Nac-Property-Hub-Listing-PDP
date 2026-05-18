@@ -117,3 +117,33 @@ Notion Hub Status → Live
 ```
 
 The 5-min `sync-wp.yml` cron ensures the WP push happens automatically once Side A finishes (≤10 min end-to-end, no manual intervention required).
+
+## Listing URL convention
+
+Canonical NAC Listing URL pattern (stored in Notion `Listing URL`, parsed by `sync-wp.mjs`):
+
+```
+https://nomadassetcollective.com/property-hub-bat-dong-san/<country-slug>/<property-slug>/
+```
+
+- `<country-slug>` — lowercase English country name (e.g. `cyprus`, `panama`, `vietnam`).
+- `<property-slug>` — short brand+city or brand+location handle. Should NOT duplicate the country path or include visa-type suffixes (e.g. use `limassol-del-mar-dao-sip`, not `limassol-del-mar-leptos-cyprus-rbi`). Vietnamese qualifiers (`dao-sip` for "Cyprus island") are permitted when they aid recognition.
+- Notion `🔗 Slug` field must match `<property-slug>` — the scaffold cron uses it to name `properties/<slug>.html`.
+
+Existing examples:
+| Property ID | Notion title | Listing URL |
+|-------------|--------------|-------------|
+| NAC-19 | Pullman Panama City | `…/panama/pullman-panama-city/` |
+| NAC-86 | Limassol Del Mar | `…/cyprus/limassol-del-mar-dao-sip/` |
+
+When a new Notion row goes Live without a Listing URL, generate one from Country + a short slug and write both `Listing URL` and `🔗 Slug` back to Notion. The two cron jobs then handle scaffold + WP push.
+
+## GitHub Pages preview
+
+Every file under `properties/*.html` on `main` is served by GitHub Pages at:
+
+```
+https://rayvtt.github.io/Nac-Property-Hub-Listing-PDP/properties/<slug>.html
+```
+
+Use this to QA a new PDP before the WP page exists or to confirm the scaffold ran. Returns 404 until `create-pdp.yml` commits the file to `main`; 200 once published (Pages refresh is typically <1 min after push). Example: `https://rayvtt.github.io/Nac-Property-Hub-Listing-PDP/properties/limassol-del-mar-dao-sip.html` (NAC-86).
