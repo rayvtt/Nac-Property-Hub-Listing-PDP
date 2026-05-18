@@ -34,6 +34,7 @@ const COUNTRY_FLAGS = {
   'Malaysia': '🇲🇾', 'Singapore': '🇸🇬', 'Cambodia': '🇰🇭',
   'Spain': '🇪🇸', 'Portugal': '🇵🇹', 'UAE': '🇦🇪',
   'Mexico': '🇲🇽', 'Colombia': '🇨🇴', 'Costa Rica': '🇨🇷',
+  'Turkey': '🇹🇷', 'Cyprus': '🇨🇾',
 };
 
 function richText(prop) {
