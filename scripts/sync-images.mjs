@@ -471,7 +471,14 @@ async function fetchLiveProperties() {
 async function updateNotionImages(pageId, urls) {
   const notion = getNotion();
   const props = {};
-  if (urls[0]) props['Image URL'] = { url: urls[0] };
+  if (urls[0]) {
+    props['Image URL'] = { url: urls[0] };
+    // Mobile hero — same CF Image ID, different variant. The "mobile" variant
+    // is configured 1080×1920 cover (center-crop to portrait) so the hero
+    // looks impactful on ≤900px viewports. CSS in the PDP swaps via
+    // `--bg-mobile:url(...)` on the hero element.
+    props['Mobile Image URL'] = { url: urls[0].replace(/\/public$/, '/mobile') };
+  }
   if (urls[1]) props['🖼️ Image 1'] = { url: urls[1] };
   if (urls[2]) props['🖼️ Image 2'] = { url: urls[2] };
   if (urls[3]) props['🖼️ Image 3'] = { url: urls[3] };
