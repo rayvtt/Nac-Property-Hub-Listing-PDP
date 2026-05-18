@@ -30,6 +30,14 @@ The next `sync-notion.yml` cron tick then propagates these new URLs into the HTM
 ### 1. Enable Cloudflare Images (paid plan)
 - Dashboard → Images → Subscribe to Images plan ($5/month for 100K images)
 - Account ID: `2adeb401a00c6f459573f25eabb790da` (already wired into the workflow as a default)
+- **Configure the `public` variant for hero-grade delivery** — by default CF Images downscales the `public` variant to 1366×768, which looks grainy on 4K screens. Update via the dashboard (Images → Variants → public → Edit) or API:
+  ```bash
+  curl -X PATCH "https://api.cloudflare.com/client/v4/accounts/<ACCOUNT>/images/v1/variants/public" \
+    -H "Authorization: Bearer <TOKEN>" \
+    -H "Content-Type: application/json" \
+    -d '{"id":"public","options":{"fit":"scale-down","width":2400,"height":2400,"metadata":"none"},"neverRequireSignedURLs":false}'
+  ```
+  This serves originals up to 2400×2400 with aspect ratio preserved. Berkeley CDN caps at 1920×933 — with the variant set this wide, the source resolution is delivered without further downscaling.
 
 ### 2. Create Cloudflare API token
 - Cloudflare dashboard → My Profile → API Tokens → Create Token

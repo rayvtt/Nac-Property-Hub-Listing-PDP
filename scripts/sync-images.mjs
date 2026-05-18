@@ -112,7 +112,12 @@ function bumpBerkeleyUrl(url) {
 // Scrape a Berkeley Group development page for .ashx image URLs.
 // Looks at img[src], img[data-src], source[srcset], a[href] — anything that
 // resolves to a Berkeley media path.
-async function scrapeBerkeleyPage(pageUrl) {
+//
+// Also follows sub-phase links one level deep. Berkeley pages like
+// /developments/london/bermondsey/bermondsey-place link to /the-art-house and
+// /the-art-mill — the sub-phase pages have richer galleries than the main
+// landing page (which sticks to header + features + thumbnails).
+async function scrapeBerkeleyPage(pageUrl, depth = 0) {
   const res = await fetch(pageUrl);
   if (!res.ok) throw new Error(`Berkeley page ${pageUrl} → HTTP ${res.status}`);
   const html = await res.text();
@@ -133,6 +138,35 @@ async function scrapeBerkeleyPage(pageUrl) {
   $('img').each((_, el) => { visit($(el).attr('src')); visit($(el).attr('data-src')); visit($(el).attr('srcset')); });
   $('source').each((_, el) => { visit($(el).attr('srcset')); });
   $('a').each((_, el) => { visit($(el).attr('href')); });
+
+  // Follow sub-phase links (one level deep)
+  if (depth === 0) {
+    const basePath = new URL(pageUrl).pathname.replace(/\/+$/, '');
+    const subPages = new Set();
+    $('a[href]').each((_, el) => {
+      const href = $(el).attr('href');
+      if (!href) return;
+      // Normalize to absolute
+      let absUrl;
+      try {
+        absUrl = new URL(href, pageUrl).toString();
+      } catch { return; }
+      const u = new URL(absUrl);
+      if (u.host !== 'www.berkeleygroup.co.uk') return;
+      const sub = u.pathname.replace(/\/+$/, '');
+      // Must be a strict sub-path of the main page (one level deeper)
+      if (sub.startsWith(basePath + '/') && sub.split('/').length === basePath.split('/').length + 1) {
+        subPages.add(`https://www.berkeleygroup.co.uk${sub}`);
+      }
+    });
+    for (const sub of subPages) {
+      try {
+        const subUrls = await scrapeBerkeleyPage(sub, 1);
+        for (const u of subUrls) urls.add(u);
+      } catch { /* skip failed sub-pages */ }
+    }
+  }
+
   return [...urls];
 }
 
@@ -205,8 +239,42 @@ async function extractImagesFromPdf(pdfPath, workDir) {
     .map(f => path.join(workDir, f));
 }
 
+// Classify an image by URL/path keywords. Used to assign images to slots:
+//
+//   slot 0 (hero) + slot 1 (gallery_1, §05) → aspirational (wow shots)
+//   slot 2 (gallery_2, §08)                 → interior (flat details)
+//   slot 3 (gallery_3, §11, ending image)   → overview (building/area exterior)
+//   slot 4 (unused in template)             → filler
+//
+// 'unclassified' is treated as a wildcard — eligible for any slot when its
+// classification can't be inferred (typically PDF-extracted images).
+function classifyImage(srcRef) {
+  const lc = (srcRef || '').toLowerCase();
+
+  // ASPIRATIONAL — hero shots, terrace views, lifestyle, premium amenities
+  if (/\/(header|hero)\//.test(lc)) return 'aspirational';
+  if (/(terrace-views?|penthouses?|lifestyle|sunrise-to-sunset|highlight-feature)/.test(lc)) return 'aspirational';
+  if (/(beach-club|solaris-lounge|minus-one-club|the-club|tamesis-club|rooftop|sky-?bar|olive-grove)/.test(lc)) return 'aspirational';
+
+  // INTERIOR — flat details, specifications, individual rooms
+  if (/\/(internal|specification|interiors?)\//.test(lc)) return 'interior';
+  if (/(kitchen|bathroom|bedroom|ensuite|spec_|showhome|living-?room)/.test(lc)) return 'interior';
+  if (/\d+-bed-/.test(lc)) return 'interior';   // X-bed-apartment, X-bed-int, X-bed-suite — flat-unit shots
+  if (/studio-apartment/.test(lc)) return 'interior';
+
+  // OVERVIEW — exterior building, neighbourhood, area context
+  if (/\/(external|exterior)/.test(lc)) return 'overview';
+  if (/(townhouses|current-phase-image|phase-thumb|aerial|outdoor|site-plan|building|courtyard)/.test(lc)) return 'overview';
+  if (/(neighbourhood|park-life|connections-map|burgess-park|food-drink|cultural|kia-oval|cricket)/.test(lc)) return 'overview';
+  if (/thames|river/.test(lc)) return 'overview';
+  if (/(amenity-image|facilities-image)/.test(lc)) return 'overview'; // generic building facility renders
+
+  return 'unclassified';
+}
+
 async function filterAndRank(candidates) {
-  // candidates: [{ path, src }] — src is 'pdf' or 'web', used for logging
+  // candidates: [{ path, src, srcRef }] — srcRef is the original URL or PDF
+  // path used to classify (URL keywords work for web; PDFs default to unclassified)
   const enriched = [];
   for (const c of candidates) {
     const dims = imageDims(c.path);
@@ -215,7 +283,8 @@ async function filterAndRank(candidates) {
     const hash = fileHash(c.path);
     const pixels = dims.width * dims.height;
     const bytesPerPixel = pixels > 0 ? size / pixels : 0;
-    enriched.push({ ...c, ...dims, size, hash, pixels, bytesPerPixel });
+    const classification = classifyImage(c.srcRef || c.path);
+    enriched.push({ ...c, ...dims, size, hash, pixels, bytesPerPixel, classification });
   }
   // Dedupe by content hash
   const seen = new Set();
@@ -236,8 +305,34 @@ async function filterAndRank(candidates) {
     && img.size >= MIN_FILE_SIZE
     && img.bytesPerPixel >= MIN_BYTES_PER_PIXEL
   );
-  // Sort by pixel area DESC — bigger image wins, regardless of CDN compression
+  // Sort by pixel area DESC — bigger image wins within each classification bucket
   return filtered.sort((a, b) => b.pixels - a.pixels);
+}
+
+// Pick the final 5 images by classification → slot assignment.
+// See classifyImage() for the slot-to-class mapping rationale.
+function pickFinalFive(ranked) {
+  const buckets = { aspirational: [], overview: [], interior: [], unclassified: [] };
+  for (const img of ranked) buckets[img.classification].push(img);
+
+  const used = new Set();
+  const pickFrom = (priorities) => {
+    for (const bucket of priorities) {
+      for (const img of buckets[bucket]) {
+        if (!used.has(img.hash)) { used.add(img.hash); return img; }
+      }
+    }
+    return null;
+  };
+
+  // Slot priorities — first non-empty bucket in each list wins
+  return [
+    pickFrom(['aspirational', 'unclassified', 'overview', 'interior']),  // 0 hero
+    pickFrom(['aspirational', 'unclassified', 'overview', 'interior']),  // 1 gallery_1 (§05 — 2nd aspirational)
+    pickFrom(['interior', 'unclassified', 'overview', 'aspirational']),  // 2 gallery_2 (§08 — interior)
+    pickFrom(['overview', 'unclassified', 'interior', 'aspirational']),  // 3 gallery_3 (§11 — ending = project overview)
+    pickFrom(['unclassified', 'overview', 'interior', 'aspirational']),  // 4 unused slot
+  ].filter(img => img !== null);
 }
 
 // ─── Google Drive ───────────────────────────────────────────────────────
@@ -376,7 +471,7 @@ async function processProperty(prop) {
           const dest = path.join(workDir, `web-page-${i + 1}.jpg`);
           try {
             await downloadUrl(bumped, dest);
-            candidates.push({ path: dest, src: 'web-page' });
+            candidates.push({ path: dest, src: 'web-page', srcRef: urls[i] });
           } catch (e) { /* skip individual URL failures */ }
         }
       } catch (err) {
@@ -398,7 +493,7 @@ async function processProperty(prop) {
         const dest = path.join(workDir, `web-list-${i + 1}.jpg`);
         try {
           await downloadUrl(bumped, dest);
-          candidates.push({ path: dest, src: 'web-list' });
+          candidates.push({ path: dest, src: 'web-list', srcRef: urlList[i] });
         } catch (e) { /* skip individual URL failures */ }
       }
     }
@@ -425,7 +520,9 @@ async function processProperty(prop) {
       console.log(`  ▸ extracting from ${pdf.name}…`);
       const imgs = await extractImagesFromPdf(pdf.path, workDir);
       console.log(`     ${imgs.length} JPEG(s) extracted`);
-      candidates.push(...imgs.map(p => ({ path: p, src: 'pdf' })));
+      // PDF images get classified as 'unclassified' (no URL keywords) — they
+      // compete for slots flexibly. srcRef points to the PDF for tracing.
+      candidates.push(...imgs.map(p => ({ path: p, src: 'pdf', srcRef: pdf.path })));
     }
 
     if (!candidates.length) {
@@ -435,13 +532,17 @@ async function processProperty(prop) {
     }
     console.log(`  total candidates: ${candidates.length}`);
 
-    // 2. Filter + rank (one filter for all sources)
+    // 2. Filter + classify + slot-pick
     const ranked = await filterAndRank(candidates);
-    const top5 = ranked.slice(0, 5);
     console.log(`  → ${ranked.length} pass filter (≥${MIN_WIDTH}px, landscape, ≥${MIN_FILE_SIZE / 1000}KB, ≥${MIN_BYTES_PER_PIXEL} b/px)`);
-    console.log(`  → top ${top5.length} selected:`);
-    for (const img of top5) {
-      console.log(`     [${img.src}] ${img.width}x${img.height} (${(img.pixels / 1_000_000).toFixed(1)}MP), ${(img.size / 1024).toFixed(0)}KB, ${img.bytesPerPixel.toFixed(2)} b/px`);
+    const byClass = ranked.reduce((acc, img) => { (acc[img.classification] ??= 0); acc[img.classification]++; return acc; }, {});
+    console.log(`     by class: ${Object.entries(byClass).map(([k, v]) => `${k}=${v}`).join(', ')}`);
+    const top5 = pickFinalFive(ranked);
+    const slotLabels = ['hero (aspirational)', 'gallery_1 §05 (aspirational)', 'gallery_2 §08 (interior)', 'gallery_3 §11 (overview/ending)', 'gallery_4 (filler)'];
+    console.log(`  → final ${top5.length} selected:`);
+    for (let i = 0; i < top5.length; i++) {
+      const img = top5[i];
+      console.log(`     [${slotLabels[i]}] [${img.src}/${img.classification}] ${img.width}x${img.height} (${(img.pixels / 1_000_000).toFixed(1)}MP), ${(img.size / 1024).toFixed(0)}KB`);
     }
 
     if (!top5.length) {

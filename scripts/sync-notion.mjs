@@ -79,6 +79,7 @@ function extractProperty(page) {
     regionCity: richText(p['Region/City']),
     district: richText(p['📍 District']),
     hubType: readSelect(p['🏨 Hub Type']),
+    currency: readSelect(p['Currency']),
     purchasePrice: readNumber(p['Purchase Price']),
     yieldPct: pct(readNumber(p['Yield %'])),
     irrPct: pct(readNumber(p['IRR %'])),
@@ -122,16 +123,24 @@ const countryFlag = (c) => (c && COUNTRY_FLAGS[c]) || null;
 
 // ─── Formatters ─────────────────────────────────────────────────────────────
 
-function fmtMoneyShort(n) {
+// Currency symbol lookup. Falls back to USD '$' if Currency field is empty/unknown.
+const CURRENCY_SYMBOLS = {
+  USD: '$',  EUR: '€',  GBP: '£',  AED: 'AED ',  CAD: 'C$',  AUD: 'A$',
+  JPY: '¥',  CHF: 'CHF ', CNY: '¥', SGD: 'S$',
+};
+const currencySymbol = (code) => CURRENCY_SYMBOLS[code] || '$';
+
+function fmtMoneyShort(n, currency) {
   if (n == null) return '';
-  if (n >= 1_000_000) return '$' + (n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1) + 'M';
-  if (n >= 1_000) return '$' + Math.round(n / 1_000) + 'K';
-  return '$' + Math.round(n);
+  const sym = currencySymbol(currency);
+  if (n >= 1_000_000) return sym + (n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1) + 'M';
+  if (n >= 1_000) return sym + Math.round(n / 1_000) + 'K';
+  return sym + Math.round(n);
 }
 
-function fmtMoneyFull(n) {
+function fmtMoneyFull(n, currency) {
   if (n == null) return '';
-  return '$' + Math.round(n).toLocaleString('en-US');
+  return currencySymbol(currency) + Math.round(n).toLocaleString('en-US');
 }
 
 function fmt1(n) {
@@ -257,13 +266,14 @@ function patch(html, prop) {
     nac_note_en: prop.nacNoteEn,
     nac_note_vi: prop.nacNoteVi,
     nac_score: fmt0(prop.nacScore),
-    price_short: fmtMoneyShort(prop.purchasePrice),
-    price_full: fmtMoneyFull(prop.purchasePrice),
+    currency: prop.currency,
+    price_short: fmtMoneyShort(prop.purchasePrice, prop.currency),
+    price_full: fmtMoneyFull(prop.purchasePrice, prop.currency),
     yield_pct: fmt1(prop.yieldPct),
     irr_pct: fmt1(prop.irrPct),
     coc_pct: fmt1(prop.cocPct),
     payback: fmt1(prop.payback),
-    monthly_rent: fmtMoneyFull(prop.monthlyRent),
+    monthly_rent: fmtMoneyFull(prop.monthlyRent, prop.currency),
     yield_pct_unit: prop.yieldPct != null ? fmt1(prop.yieldPct) + '%' : null,
     irr_pct_unit: prop.irrPct != null ? fmt1(prop.irrPct) + '%' : null,
     coc_pct_unit: prop.cocPct != null ? fmt1(prop.cocPct) + '%' : null,
