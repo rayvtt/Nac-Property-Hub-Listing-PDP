@@ -4,13 +4,17 @@
 // End-to-end image pipeline for NAC property listings:
 //   1. For each target property (--slug, or all Live properties with placeholder
 //      Image URLs):
-//   2. List brochure PDFs in the Notion `GS Source Folder` Drive folder
-//   3. Download each PDF
-//   4. Extract embedded JPEG images via `pdfimages -j` (requires poppler-utils)
-//   5. Filter by min dimensions + file size, dedupe by content hash
-//   6. Sort by file size DESC, take top 5 (largest = best hero candidates)
-//   7. Upload to Cloudflare Images with custom IDs (<slug>-hero, <slug>-1..4)
-//   8. Write back the public-variant URLs to Notion:
+//   2. Collect image candidates from up to three sources, in this order of preference:
+//        a. Notion `🌐 Berkeley Page URL` (or --berkeley-page) — scrape .ashx URLs
+//           from a Berkeley Group development page, bump to 1920x1080, download
+//        b. Notion `📷 Image URLs JSON` (or --berkeley-urls) — explicit URL list
+//        c. Notion `GS Source Folder` (or --pdf) — Drive brochure PDFs,
+//           extracted via pdfimages -j
+//   3. Filter candidates (landscape, ≥1500px wide, ≥150KB, ≥0.05 bytes/pixel —
+//      the bytes/pixel rule drops brochure design graphics like coloured waves)
+//   4. Dedupe by SHA-256, sort by pixel area DESC, take top 5
+//   5. Upload to Cloudflare Images with custom IDs (<slug>-hero, <slug>-1..4)
+//   6. Write back the public-variant URLs to Notion:
 //      Image URL  → hero
 //      🖼️ Image 1-4 → gallery 1-4
 //
@@ -18,17 +22,22 @@
 //   CLOUDFLARE_API_TOKEN     — Cloudflare API token with `Cloudflare Images: Edit`
 //   CLOUDFLARE_ACCOUNT_ID    — default: 2adeb401a00c6f459573f25eabb790da (NAC account)
 //   NOTION_TOKEN             — Notion integration token
-//   GOOGLE_SERVICE_ACCOUNT_JSON — Google service account credentials JSON (string)
+//   GOOGLE_SERVICE_ACCOUNT_JSON — (optional) Google service account JSON. Only
+//                              needed for Drive PDF route; Berkeley web works
+//                              without it
 //   NOTION_DATABASE_ID       — default: 35848ec25e86803283acc7ad989649c9
 //
 // CLI args:
 //   --slug <slug>            — process just one property
 //   --pdf <path>             — use a local PDF instead of downloading from Drive
+//   --berkeley-page <url>    — scrape this Berkeley page for .ashx image URLs
+//   --berkeley-urls <file>   — JSON array of image URLs (alternative to --berkeley-page)
 //   --dry-run                — extract + upload but don't write to Notion
 //   --keep-tmp               — don't clean up /tmp/sync-images-* working dir
 //   --replace                — re-upload even if Image URL is already a CF URL
 
 import { Client as NotionClient } from '@notionhq/client';
+import * as cheerio from 'cheerio';
 import { google } from 'googleapis';
 import { execSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -42,9 +51,13 @@ const NOTION_TOKEN = process.env.NOTION_TOKEN;
 const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9';
 const GOOGLE_SERVICE_ACCOUNT_JSON = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
 
-// Min dimensions/size for an extracted image to be considered usable
-const MIN_WIDTH = 800;
-const MIN_FILE_SIZE = 50_000; // 50KB
+// Filter constants — tuned for Berkeley CDN + PDF extraction observed in
+// production. See NAC-IMAGE-SYNC.md for the calibration data.
+const MIN_WIDTH = 1500;             // Berkeley CDN caps at 1920px, PDF heroes are typically 1800+
+const MIN_FILE_SIZE = 150_000;      // CDN-served JPEGs at 1920x933 land at 150-300KB
+const MIN_BYTES_PER_PIXEL = 0.05;   // Brochure abstract graphics (waves, colour blocks) compress
+                                    // far below 0.05 bytes/pixel because of large flat regions.
+                                    // Real photos sit at 0.1-0.3 bytes/pixel.
 
 // ─── CLI parsing ────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
@@ -55,6 +68,8 @@ const opt = (name) => {
 };
 const ONLY_SLUG = opt('--slug');
 const LOCAL_PDF = opt('--pdf');
+const BERKELEY_PAGE_ARG = opt('--berkeley-page');
+const BERKELEY_URLS_FILE = opt('--berkeley-urls');
 const DRY_RUN = flag('--dry-run');
 const KEEP_TMP = flag('--keep-tmp');
 const REPLACE = flag('--replace');
@@ -82,6 +97,51 @@ function imageDims(filePath) {
 async function fileSize(filePath) {
   const s = await fs.stat(filePath);
   return s.size;
+}
+
+// ─── Berkeley Group CDN helpers ──────────────────────────────────────────
+// Berkeley's `.ashx` URLs accept ?h= and ?w= query params. /gallery/ paths
+// reliably bump to 1920x933. /feature/ and /thumbnail/ paths often stay
+// stuck at their original thumbnail size — we filter those out post-download.
+function bumpBerkeleyUrl(url) {
+  return url
+    .replace(/([?&])h=\d+/i, '$1h=1080')
+    .replace(/([?&])w=\d+/i, '$1w=1920');
+}
+
+// Scrape a Berkeley Group development page for .ashx image URLs.
+// Looks at img[src], img[data-src], source[srcset], a[href] — anything that
+// resolves to a Berkeley media path.
+async function scrapeBerkeleyPage(pageUrl) {
+  const res = await fetch(pageUrl);
+  if (!res.ok) throw new Error(`Berkeley page ${pageUrl} → HTTP ${res.status}`);
+  const html = await res.text();
+  const $ = cheerio.load(html);
+  const urls = new Set();
+  const visit = (raw) => {
+    if (!raw) return;
+    // Handle srcset format ("url1 1x, url2 2x")
+    for (const part of raw.split(',').map(s => s.trim().split(/\s+/)[0])) {
+      if (part && part.includes('.ashx')) {
+        const full = part.startsWith('//') ? `https:${part}`
+                   : part.startsWith('/') ? `https://www.berkeleygroup.co.uk${part}`
+                   : part;
+        urls.add(full);
+      }
+    }
+  };
+  $('img').each((_, el) => { visit($(el).attr('src')); visit($(el).attr('data-src')); visit($(el).attr('srcset')); });
+  $('source').each((_, el) => { visit($(el).attr('srcset')); });
+  $('a').each((_, el) => { visit($(el).attr('href')); });
+  return [...urls];
+}
+
+async function downloadUrl(url, destPath) {
+  const res = await fetch(url, { redirect: 'follow' });
+  if (!res.ok) throw new Error(`download ${url} → HTTP ${res.status}`);
+  const buf = Buffer.from(await res.arrayBuffer());
+  await fs.writeFile(destPath, buf);
+  return destPath;
 }
 
 // ─── Cloudflare Images ──────────────────────────────────────────────────
@@ -145,25 +205,39 @@ async function extractImagesFromPdf(pdfPath, workDir) {
     .map(f => path.join(workDir, f));
 }
 
-async function filterAndRank(imagePaths) {
+async function filterAndRank(candidates) {
+  // candidates: [{ path, src }] — src is 'pdf' or 'web', used for logging
   const enriched = [];
-  for (const p of imagePaths) {
-    const dims = imageDims(p);
-    const size = await fileSize(p);
-    const hash = fileHash(p);
-    enriched.push({ path: p, ...dims, size, hash });
+  for (const c of candidates) {
+    const dims = imageDims(c.path);
+    if (!dims.width || !dims.height) continue;
+    const size = await fileSize(c.path);
+    const hash = fileHash(c.path);
+    const pixels = dims.width * dims.height;
+    const bytesPerPixel = pixels > 0 ? size / pixels : 0;
+    enriched.push({ ...c, ...dims, size, hash, pixels, bytesPerPixel });
   }
-  // Dedupe by hash
+  // Dedupe by content hash
   const seen = new Set();
   const unique = enriched.filter(img => {
     if (seen.has(img.hash)) return false;
     seen.add(img.hash);
     return true;
   });
-  // Filter by min size/dimensions
-  const filtered = unique.filter(img => img.width >= MIN_WIDTH && img.size >= MIN_FILE_SIZE);
-  // Sort by file size descending — usually the rendering hero shots are large + high-detail
-  return filtered.sort((a, b) => b.size - a.size);
+  // Filter cascade:
+  //   - width ≥ MIN_WIDTH (1500): real heroes are 1800px+, drops thumbnails
+  //   - landscape only (width ≥ height): drops vertical brochure spreads
+  //   - file size ≥ MIN_FILE_SIZE (150KB): drops tiny CDN renditions
+  //   - bytes/pixel ≥ MIN_BYTES_PER_PIXEL (0.05): drops abstract design
+  //     graphics (waves, gradient blocks) that compress unusually small
+  const filtered = unique.filter(img =>
+    img.width >= MIN_WIDTH
+    && img.width >= img.height
+    && img.size >= MIN_FILE_SIZE
+    && img.bytesPerPixel >= MIN_BYTES_PER_PIXEL
+  );
+  // Sort by pixel area DESC — bigger image wins, regardless of CDN compression
+  return filtered.sort((a, b) => b.pixels - a.pixels);
 }
 
 // ─── Google Drive ───────────────────────────────────────────────────────
@@ -247,6 +321,9 @@ async function fetchLiveProperties() {
     propertyName: richText(page.properties['Property Name']),
     imageUrl: readUrl(page.properties['Image URL']),
     gsSourceFolder: readUrl(page.properties['GS Source Folder']),
+    // Optional new fields for the Berkeley web route. Either one is enough.
+    berkeleyPage: readUrl(page.properties['🌐 Berkeley Page URL']),
+    imageUrlsJson: richText(page.properties['📷 Image URLs JSON']),
   })).filter(p => p.slug);
 }
 
@@ -282,53 +359,93 @@ async function processProperty(prop) {
   console.log(`  workDir: ${workDir}`);
 
   try {
-    // 1. Collect PDFs
+    // Build the candidate pool from all available sources. Any combination is
+    // valid — the filter+rank step at the end picks the best 5 regardless of
+    // where each candidate came from.
+    const candidates = []; // [{ path, src }]
+
+    // 1a. Berkeley Group web page (scrape .ashx URLs)
+    const berkeleyPageUrl = BERKELEY_PAGE_ARG || prop.berkeleyPage;
+    if (berkeleyPageUrl) {
+      try {
+        console.log(`  🌐 scraping Berkeley page: ${berkeleyPageUrl}`);
+        const urls = await scrapeBerkeleyPage(berkeleyPageUrl);
+        console.log(`     found ${urls.length} .ashx URL(s)`);
+        for (let i = 0; i < urls.length; i++) {
+          const bumped = bumpBerkeleyUrl(urls[i]);
+          const dest = path.join(workDir, `web-page-${i + 1}.jpg`);
+          try {
+            await downloadUrl(bumped, dest);
+            candidates.push({ path: dest, src: 'web-page' });
+          } catch (e) { /* skip individual URL failures */ }
+        }
+      } catch (err) {
+        console.warn(`     scrape failed: ${err.message}`);
+      }
+    }
+
+    // 1b. Explicit URL list from Notion or --berkeley-urls
+    let urlList = [];
+    if (BERKELEY_URLS_FILE) {
+      try { urlList = JSON.parse(await fs.readFile(BERKELEY_URLS_FILE, 'utf8')); } catch {}
+    } else if (prop.imageUrlsJson) {
+      try { urlList = JSON.parse(prop.imageUrlsJson); } catch {}
+    }
+    if (urlList.length) {
+      console.log(`  🔗 downloading ${urlList.length} explicit URL(s)`);
+      for (let i = 0; i < urlList.length; i++) {
+        const bumped = bumpBerkeleyUrl(urlList[i]);
+        const dest = path.join(workDir, `web-list-${i + 1}.jpg`);
+        try {
+          await downloadUrl(bumped, dest);
+          candidates.push({ path: dest, src: 'web-list' });
+        } catch (e) { /* skip individual URL failures */ }
+      }
+    }
+
+    // 1c. Drive PDFs (or local --pdf)
     const pdfs = [];
     if (LOCAL_PDF) {
       pdfs.push({ path: LOCAL_PDF, name: path.basename(LOCAL_PDF) });
-    } else {
+    } else if (prop.gsSourceFolder && GOOGLE_SERVICE_ACCOUNT_JSON) {
       const folderId = parseFolderIdFromUrl(prop.gsSourceFolder);
-      if (!folderId) {
-        console.log(`  ⤳ no GS Source Folder URL, skipping`);
-        return;
-      }
-      console.log(`  Drive folder: ${folderId}`);
-      const driveFiles = await listPdfsInDriveFolder(folderId);
-      console.log(`  Found ${driveFiles.length} PDF(s) in Drive`);
-      for (const df of driveFiles) {
-        const dest = path.join(workDir, df.name);
-        console.log(`    ↓ downloading ${df.name}…`);
-        await downloadDrivePdf(df.id, dest);
-        pdfs.push({ path: dest, name: df.name });
+      if (folderId) {
+        console.log(`  📂 Drive folder: ${folderId}`);
+        const driveFiles = await listPdfsInDriveFolder(folderId);
+        console.log(`     found ${driveFiles.length} PDF(s)`);
+        for (const df of driveFiles) {
+          const dest = path.join(workDir, df.name);
+          console.log(`    ↓ ${df.name}…`);
+          await downloadDrivePdf(df.id, dest);
+          pdfs.push({ path: dest, name: df.name });
+        }
       }
     }
-
-    if (!pdfs.length) {
-      console.log('  ⤳ no PDFs to process, skipping');
-      return;
-    }
-
-    // 2. Extract images from all PDFs
-    const allImages = [];
     for (const pdf of pdfs) {
       console.log(`  ▸ extracting from ${pdf.name}…`);
       const imgs = await extractImagesFromPdf(pdf.path, workDir);
-      console.log(`    extracted ${imgs.length} JPEG(s)`);
-      allImages.push(...imgs);
+      console.log(`     ${imgs.length} JPEG(s) extracted`);
+      candidates.push(...imgs.map(p => ({ path: p, src: 'pdf' })));
     }
-    console.log(`  total extracted: ${allImages.length}`);
 
-    // 3. Filter + rank
-    const ranked = await filterAndRank(allImages);
+    if (!candidates.length) {
+      console.log('  ⤳ no candidates from any source, skipping');
+      console.log('     (provide --berkeley-page, --berkeley-urls, --pdf, or set GS Source Folder + Google SA)');
+      return;
+    }
+    console.log(`  total candidates: ${candidates.length}`);
+
+    // 2. Filter + rank (one filter for all sources)
+    const ranked = await filterAndRank(candidates);
     const top5 = ranked.slice(0, 5);
-    console.log(`  → ${ranked.length} pass min filter (${MIN_WIDTH}px+, ${MIN_FILE_SIZE / 1000}KB+, deduped)`);
+    console.log(`  → ${ranked.length} pass filter (≥${MIN_WIDTH}px, landscape, ≥${MIN_FILE_SIZE / 1000}KB, ≥${MIN_BYTES_PER_PIXEL} b/px)`);
     console.log(`  → top ${top5.length} selected:`);
     for (const img of top5) {
-      console.log(`     ${path.basename(img.path)}: ${img.width}x${img.height}, ${(img.size / 1024).toFixed(0)}KB`);
+      console.log(`     [${img.src}] ${img.width}x${img.height} (${(img.pixels / 1_000_000).toFixed(1)}MP), ${(img.size / 1024).toFixed(0)}KB, ${img.bytesPerPixel.toFixed(2)} b/px`);
     }
 
     if (!top5.length) {
-      console.log('  ⤳ no usable images found, skipping');
+      console.log('  ⤳ no usable images passed filter, skipping');
       return;
     }
 
@@ -365,10 +482,11 @@ async function main() {
 
   let properties;
 
-  // Test-mode shortcut: --pdf + --slug + --dry-run skips Notion fetch
-  // (useful for first-time setup before NOTION_TOKEN/Drive auth is available)
-  if (LOCAL_PDF && ONLY_SLUG && DRY_RUN) {
-    properties = [{ slug: ONLY_SLUG, imageUrl: null, gsSourceFolder: null, pageId: null, propertyName: ONLY_SLUG }];
+  // Test-mode shortcut: --slug + --dry-run + (--pdf or --berkeley-page or --berkeley-urls)
+  // skips Notion fetch. Useful for first-time setup or for processing a property
+  // that doesn't have a Notion row yet (e.g., authoring from a brochure URL).
+  if (ONLY_SLUG && DRY_RUN && (LOCAL_PDF || BERKELEY_PAGE_ARG || BERKELEY_URLS_FILE)) {
+    properties = [{ slug: ONLY_SLUG, imageUrl: null, gsSourceFolder: null, berkeleyPage: null, imageUrlsJson: null, pageId: null, propertyName: ONLY_SLUG }];
   } else if (ONLY_SLUG) {
     const all = await fetchLiveProperties();
     properties = all.filter(p => p.slug === ONLY_SLUG);
