@@ -6,10 +6,14 @@ on:
     - cron: "*/5 * * * *"
   workflow_dispatch:
     # allow manual trigger from the Actions tab
+  push:
+    branches: [main]
+    paths:
+      - ".github/triggers/**"
   repository_dispatch:
     # Notion automation posts to /repos/.../dispatches with this event_type
     # whenever a Live row is edited. Fires near-instantly, bypassing the 5-min cron.
-    types: [notion-update]
+    types: [notion-update, new-listing]
 
 concurrency:
   group: sync-notion

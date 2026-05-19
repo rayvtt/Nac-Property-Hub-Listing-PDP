@@ -13,6 +13,12 @@ on:
   schedule:
     - cron: "*/5 * * * *"
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/triggers/**"
+  repository_dispatch:
+    types: [notion-update, new-listing]
 
 concurrency:
   group: create-pdp
