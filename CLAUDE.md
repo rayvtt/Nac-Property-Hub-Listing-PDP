@@ -182,6 +182,19 @@ When sync-images uploads to CF, it writes these Notion fields:
 
 ## New listing automation (Hub Status → Live)
 
+### Triggers
+
+Every relevant workflow (`create-pdp.yml`, `create-wp-page.yml`, `sync-images.yml`, `sync-notion.yml`) wakes up on **all** of:
+
+1. **Cron** `*/5 * * * *` — passive safety net
+2. **`workflow_dispatch`** — manual button in Actions tab
+3. **`push` to `.github/triggers/**`** — chat-driven on-demand path; the assistant appends to `.github/triggers/last-trigger.txt` and pushes via the GitHub MCP, firing all four workflows in parallel within seconds. No PAT, no Notion automation needed.
+4. **`repository_dispatch` types `notion-update` or `new-listing`** — for a future Notion webhook (one-time PAT setup) so any Notion row edit fires the chain directly.
+
+Workflows are all idempotent — they query Notion for the current state and skip rows already in the target state. Re-firing is safe.
+
+### Pipeline
+
 Three parallel automations run when a Notion row flips to **Hub Status = Live**:
 
 **Side A — WP page creation (`.github/workflows/create-wp-page.yml`, cron every 5 min):**
