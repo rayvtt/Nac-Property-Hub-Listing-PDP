@@ -8,6 +8,7 @@ on:
       - "scripts/sync-wp.mjs"
       - "scripts/package.json"
       - ".github/workflows/sync-wp.yml"
+      - ".github/triggers/**"
   schedule:
     # Every 5 min retry — catches listings whose Listing URL was written back
     # to Notion by the WP automation after the last push-triggered run.
@@ -19,6 +20,8 @@ on:
         description: "Sync just one slug (e.g. nobu-da-nang). Leave empty to sync all."
         required: false
         default: ""
+  repository_dispatch:
+    types: [notion-update, new-listing]
 
 concurrency:
   group: sync-wp
