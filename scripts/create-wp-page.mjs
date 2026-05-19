@@ -29,36 +29,30 @@ if (!NOTION_TOKEN) { console.error('NOTION_TOKEN env var is required'); process.
 const AUTH = 'Basic ' + Buffer.from(`${WP_USER}:${WP_PASS}`).toString('base64');
 const notion = new NotionClient({ auth: NOTION_TOKEN });
 
-// Country → URL slug. Must match the WP page hierarchy under
-// /<PROPERTY_HUB_PATH>/<country-slug>/. Extend as new countries come online.
-const COUNTRY_SLUGS = {
-  'Vietnam': 'vietnam',
+// Country name (from Notion's English Country select) → URL slug. The WP
+// country pages are slugified from the English name: lowercase, spaces →
+// hyphens, diacritics stripped. A few overrides handle special cases:
+//   - "Việt Nam" (the Vietnamese variant in the Notion select) → "vietnam"
+//   - "United States" / "USA" → "usa"
+//   - "United Kingdom" → "uk" (kept as a 2-letter override)
+//   - "Dubai" (treated as part of UAE) → "uae"
+const COUNTRY_SLUG_OVERRIDES = {
   'Việt Nam': 'vietnam',
-  'Cyprus': 'cyprus',
-  'Panama': 'panama',
-  'Turkey': 'turkey',
-  'United Kingdom': 'uk',
-  'UAE': 'uae',
-  'Dubai': 'uae',
-  'Thailand': 'thailand',
-  'Indonesia': 'indonesia',
-  'Malaysia': 'malaysia',
-  'Singapore': 'singapore',
-  'Japan': 'japan',
-  'Philippines': 'philippines',
-  'Portugal': 'portugal',
-  'Spain': 'spain',
-  'Greece': 'greece',
-  'Italy': 'italy',
-  'France': 'france',
-  'Germany': 'germany',
   'United States': 'usa',
   'USA': 'usa',
-  'Hungary': 'hungary',
-  'Malta': 'malta',
-  'Montenegro': 'montenegro',
-  'Albania': 'albania',
+  'United Kingdom': 'uk',
+  'Dubai': 'uae',
 };
+
+function countrySlug(country) {
+  if (!country) return null;
+  if (COUNTRY_SLUG_OVERRIDES[country]) return COUNTRY_SLUG_OVERRIDES[country];
+  return country
+    .normalize('NFD').replace(/[̀-ͯ]/g, '') // strip diacritics
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')                       // non-alnum → hyphen
+    .replace(/^-+|-+$/g, '');                          // trim hyphens
+}
 
 // ─── WP REST helpers ────────────────────────────────────────────────────────
 
@@ -192,14 +186,14 @@ async function processOne(prop) {
     return { slug: prop.slug, skipped: 'no Country in Notion' };
   }
 
-  const countrySlug = COUNTRY_SLUGS[prop.country];
-  if (!countrySlug) {
-    return { slug: prop.slug, error: `No country slug mapping for "${prop.country}" — add it to COUNTRY_SLUGS` };
+  const cSlug = countrySlug(prop.country);
+  if (!cSlug) {
+    return { slug: prop.slug, error: `Could not derive country slug from "${prop.country}"` };
   }
 
-  const parent = await lookupParentPage(countrySlug);
+  const parent = await lookupParentPage(cSlug);
   if (!parent) {
-    return { slug: prop.slug, error: `No WP parent page found at /${PROPERTY_HUB_PATH}/${countrySlug}/ — create it first` };
+    return { slug: prop.slug, error: `No WP parent page found at /${PROPERTY_HUB_PATH}/${cSlug}/ — create it first or add an override in COUNTRY_SLUG_OVERRIDES` };
   }
 
   // Safety: if a WP page already exists at this slug under the country parent
@@ -209,7 +203,7 @@ async function processOne(prop) {
   const existing = await wp(`/pages?slug=${encodeURIComponent(prop.slug)}&per_page=10&status=publish,draft,private,future,pending`);
   const reuse = existing.find(p => p.parent === parent.id);
   if (reuse) {
-    const listingUrl = `${WP_BASE}/${PROPERTY_HUB_PATH}/${countrySlug}/${prop.slug}/`;
+    const listingUrl = `${WP_BASE}/${PROPERTY_HUB_PATH}/${cSlug}/${prop.slug}/`;
     await writeBackToNotion(prop.notionPageId, {
       wpPageId: reuse.id,
       listingUrl,
@@ -226,7 +220,7 @@ async function processOne(prop) {
     template,
   });
 
-  const listingUrl = `${WP_BASE}/${PROPERTY_HUB_PATH}/${countrySlug}/${prop.slug}/`;
+  const listingUrl = `${WP_BASE}/${PROPERTY_HUB_PATH}/${cSlug}/${prop.slug}/`;
   await writeBackToNotion(prop.notionPageId, {
     wpPageId: page.id,
     listingUrl,
