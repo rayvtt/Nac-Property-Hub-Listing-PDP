@@ -1,1 +1,1 @@
-2026-05-19T12:00:00Z chat: rehost Hyatt Regency images through CF via Image URLs JSON
+2026-05-19T12:10:00Z chat: re-trigger after web-search fallback merged (PR #154)
