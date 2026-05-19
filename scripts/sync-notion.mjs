@@ -106,6 +106,12 @@ function extractProperty(page) {
     keyMarketsVi: richText(p['🌏 Key Markets VI']),
     propertyYoyEn: richText(p['📈 Property YoY EN']),
     propertyYoyVi: richText(p['📈 Property YoY VI']),
+    cine1Vi: richText(p['🎬 Cine 1 VI']),
+    cine1En: richText(p['🎬 Cine 1 EN']),
+    cine2Vi: richText(p['🎬 Cine 2 VI']),
+    cine2En: richText(p['🎬 Cine 2 EN']),
+    cine3Vi: richText(p['🎬 Cine 3 VI']),
+    cine3En: richText(p['🎬 Cine 3 EN']),
     heroImg: readUrl(p['Image URL']),
     heroImgMobile: readUrl(p['Mobile Image URL']),
     galleryImg1: readUrl(p['🖼️ Image 1']),
@@ -327,6 +333,19 @@ function patch(html, prop) {
   }
   if (prop.statementEn) {
     $('#nac-stmt-en').attr('data-stmt', prop.statementEn);
+  }
+
+  // Cine section titles — Notion takes priority. Any span left blank is
+  // filled by scripts/generate-cine-titles.mjs (Claude Haiku 4.5 multimodal)
+  // later in the same workflow.
+  const cines = [
+    { id: '#nac-img-1', vi: prop.cine1Vi, en: prop.cine1En },
+    { id: '#nac-img-2', vi: prop.cine2Vi, en: prop.cine2En },
+    { id: '#nac-img-3', vi: prop.cine3Vi, en: prop.cine3En },
+  ];
+  for (const c of cines) {
+    if (c.vi) $(`${c.id} .nac-cine-h [data-vi]`).text(c.vi);
+    if (c.en) $(`${c.id} .nac-cine-h [data-en]`).text(c.en);
   }
 
   // Background images
