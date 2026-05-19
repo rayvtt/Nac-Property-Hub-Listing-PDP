@@ -1,1 +1,1 @@
-2026-05-19T12:10:00Z chat: re-trigger after web-search fallback merged (PR #154)
+2026-05-19T12:25:00Z chat: clean re-trigger with empty URL list, forces web-search fallback
