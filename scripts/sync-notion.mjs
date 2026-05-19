@@ -93,6 +93,8 @@ function extractProperty(page) {
     marketVi: richText(p['🌍 Market VI']),
     nacNoteEn: richText(p['💬 NAC Note EN']),
     nacNoteVi: richText(p['💬 NAC Note VI']),
+    statementEn: richText(p['📜 Statement EN']),
+    statementVi: richText(p['📜 Statement VI']),
     heroImg: readUrl(p['Image URL']),
     heroImgMobile: readUrl(p['Mobile Image URL']),
     galleryImg1: readUrl(p['🖼️ Image 1']),
@@ -293,6 +295,16 @@ function patch(html, prop) {
   // update the data-count-to target.
   if (prop.nacScore != null) {
     $('.nac-donut-score').attr('data-count-to', String(Math.round(prop.nacScore)));
+  }
+
+  // Statement quote (Định Vị NAC / NAC Positioning) — patches the data-stmt
+  // attribute on the `<p>` elements. JS parser reads data-stmt at runtime and
+  // splits into word spans; «guillemet» words render gold/italic.
+  if (prop.statementVi) {
+    $('#nac-stmt-vi').attr('data-stmt', prop.statementVi);
+  }
+  if (prop.statementEn) {
+    $('#nac-stmt-en').attr('data-stmt', prop.statementEn);
   }
 
   // Background images
