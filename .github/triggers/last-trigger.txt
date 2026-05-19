@@ -1,1 +1,1 @@
-2026-05-19T14:00:00Z chat: generate listings for Yeni Garden, Sefakoy Residence, Referans Residence (Turkey CBI)
+2026-05-19T14:25:00Z chat: re-sync to fix {Property Name} head SEO leak across 5 listings
