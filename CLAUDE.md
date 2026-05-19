@@ -55,6 +55,8 @@ Rules:
 
 Also: `data-stmt` highlight words use `«word»` (guillemet quotes) — **not** `[word]` and **not** `&#91;word&#93;` — to prevent WordPress shortcode processing. cheerio `decodeEntities:false` was silently decoding `&#91;` → `[` on every sync, causing WP to strip the brackets. The JS parser splits on `/(«[^»]+»)/g` and checks `part.charAt(0) === '«'`.
 
+The statement is **Notion-synced** as of PR #149 — fields `📜 Statement VI` / `📜 Statement EN` on the property DB patch `data-stmt` on `#nac-stmt-vi` / `#nac-stmt-en`. New scaffolded listings get their quote from Notion automatically; no manual HTML edit needed. Use guillemets in the Notion field text as well.
+
 ## Workflow
 
 - Develop on a feature branch (`claude/<slug>-qarsn`).
@@ -94,7 +96,7 @@ Templates and references:
 This is the production-ready replacement for the manual "screenshot from brochure → resize → upload to WP media" workflow. End-to-end: source images → extract → classify → upload → write URLs back to Notion. The next `sync-notion.yml` cron tick then propagates the URLs into the HTML files everywhere they appear.
 
 - Script: `scripts/sync-images.mjs`. Walkthrough in `NAC-IMAGE-SYNC.md`.
-- Workflow: `.github/workflows/sync-images.yml` — manual `workflow_dispatch` only (image work is expensive; not on schedule).
+- Workflow: `.github/workflows/sync-images.yml` — `workflow_dispatch` (manual + auto). As of PR #148, `create-pdp.yml` auto-dispatches this workflow for every newly-scaffolded slug via `gh workflow run sync-images.yml -f only_slug=<slug>`, so "Hub Status → Live" triggers the full image pipeline with zero manual intervention.
 - Account hash (in every `imagedelivery.net/<hash>/<id>/<variant>` URL): `qse3Pw84PrZ2S0PQOTtixw`.
 
 ### Sources (additive — combine any)
@@ -191,6 +193,7 @@ Two parallel automations run when a Notion row flips to **Hub Status = Live**:
 2. For each slug with no `properties/<slug>.html`, copies `_template-listing-pdp.html` to that path
 3. Immediately runs `sync-notion.mjs` to patch the new file with current Notion content
 4. Commits and pushes to `main` → triggers `sync-wp.yml`
+5. **Dispatches `sync-images.yml`** for each newly-scaffolded slug (added PR #148), kicking off Drive → CF image extraction in parallel
 
 **Full end-to-end flow once both sides are active:**
 ```
@@ -199,12 +202,13 @@ Notion Hub Status → Live
   ├── Side A: WP automation creates page → writes Listing URL back to Notion
   │
   └── Side B (within ~5 min):
-        create-pdp.yml: scaffold properties/<slug>.html → patch with Notion → push
-          └── sync-wp.yml: skips (Listing URL empty) on first push
-              ↳ 5-min retry: once Listing URL is in Notion, push succeeds → WP page live
+        create-pdp.yml: scaffold properties/<slug>.html → patch Notion → push → dispatch sync-images.yml
+          ├── sync-wp.yml: pushes HTML into WP `raw_html_code` ACF field
+          └── sync-images.yml: extracts from Drive (GS Source Folder) → uploads to CF → writes URLs back to Notion
+                ↳ Next sync-notion cron tick (≤5 min) patches CF URLs into HTML → another sync-wp push
 ```
 
-The 5-min `sync-wp.yml` cron ensures the WP push happens automatically once Side A finishes (≤10 min end-to-end, no manual intervention required).
+Total end-to-end "Hub Status → Live" to fully-populated WP page: ~10–15 min, zero manual triggers.
 
 ## Listing URL convention
 
