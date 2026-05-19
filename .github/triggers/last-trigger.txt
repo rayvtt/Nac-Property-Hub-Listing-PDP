@@ -1,1 +1,1 @@
-2026-05-19T12:50:00Z chat: re-trigger with PR #156 tolerant parse (regex fallback)
+2026-05-19T13:00:00Z chat: generate listing for The Prince Residence — Phú Nhuận
