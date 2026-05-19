@@ -352,7 +352,7 @@ async function writeTasksToNotion(tasks, { dryRun }) {
   for (const task of tasks) {
     try {
       await notion.pages.create({
-        parent: { data_source_id: NOTION_TASKS_DS_ID },
+        parent: { database_id: NOTION_TASKS_DB_ID },
         properties: {
           Title: { title: [{ text: { content: task.title } }] },
           Status: { select: { name: 'New' } },
