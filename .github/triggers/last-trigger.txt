@@ -1,1 +1,1 @@
-2026-05-19T14:25:00Z chat: re-sync to fix {Property Name} head SEO leak across 5 listings
+2026-05-19T14:35:00Z chat: seed high-res images for Yeni, Sefakoy, Referans (emlakjet originals)
