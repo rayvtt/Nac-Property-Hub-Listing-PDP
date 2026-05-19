@@ -1,1 +1,1 @@
-2026-05-19T12:40:00Z chat: force sync-wp after sentinel trigger gap fix (PR #155)
+2026-05-19T12:50:00Z chat: re-trigger with PR #156 tolerant parse (regex fallback)
