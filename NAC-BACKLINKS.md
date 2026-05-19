@@ -30,7 +30,7 @@ Canonical URLs for every NAC button, link, and asset across all PDPs. Source: NA
 | Footer logo (light/dark variants) | Nomad home (Main Website) | https://nomadassetcollective.com |
 | `THE NAC PROPERTY HUB` header mark | Property Hub page | https://nomadassetcollective.com/property-hub-bat-dong-san/ |
 | Footer big title (`NAC Property Listings`) | Property Hub page | https://nomadassetcollective.com/property-hub-bat-dong-san/ |
-| CTA pill — `NAC Index` button | NAC Residence Index page | https://nomadassetcollective.com/nac-residence-index/ |
+| CTA pill — `Property Hub` button (🏠 house icon) | Property Hub page | https://nomadassetcollective.com/property-hub-bat-dong-san/ |
 | CTA pill — `WhatsApp` button | WhatsApp contact | https://wa.me/447388646000 |
 | CTA pill — `Blog` button | Blog | https://blog.nomadassetcollective.com |
 | Footer · NAC PAGES col — Blog | Blog | https://blog.nomadassetcollective.com |
@@ -44,6 +44,6 @@ Canonical URLs for every NAC button, link, and asset across all PDPs. Source: NA
 ---
 
 ## Notes
-- `Main Website` → Nomad home (`https://nomadassetcollective.com`). `NAC Residence Index` → the curated property index page (`/nac-residence-index/`). Logos point to home; "NAC Index" buttons (sticky CTA + footer) point to the residence index.
+- `Main Website` → Nomad home (`https://nomadassetcollective.com`). `Property Hub` → the country-grouped listings directory (`/property-hub-bat-dong-san/`). `NAC Residence Index` → the curated property index page (`/nac-residence-index/`). Logos point to home; the sticky CTA pill's house icon points to the Property Hub; footer "NAC Index" still points to the residence index.
 - `Google Meet` booking link is wired to the aspiration/CTA section button ("Đặt Lịch Tư Vấn") in every PDP.
 - Brand asset URLs (logos) are also documented in `NAC-FOOTER.md` and `NAC-STICKY-PILLS.md` where they're consumed.
