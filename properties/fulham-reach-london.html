@@ -827,6 +827,15 @@
 <style>
 /* ═══════════════════════ RESET + TOKENS ═══════════════════════ */
 .nac-pdp, .nac-pdp *, .nac-pdp *::before, .nac-pdp *::after { box-sizing:border-box; }
+/* Cormorant long-s fix — hist/hlig features substitute lowercase 's' with the
+   long-s glyph (ſ, U+017F) which isn't in the loaded Latin/Vietnamese subsets,
+   rendering as blank space on WP. Applied universally across the PDP so every
+   element using --ff-display gets the override (prior fix only covered
+   .nac-stmt-text / .word). !important beats WP theme CSS. */
+.nac-pdp, .nac-pdp *, .nac-pdp *::before, .nac-pdp *::after {
+  font-feature-settings: "hist" 0, "hlig" 0 !important;
+  font-variant-alternates: normal !important;
+}
 .nac-pdp button { font:inherit; cursor:pointer; }
 .nac-pdp h1, .nac-pdp h2, .nac-pdp h3, .nac-pdp p { margin:0; }
 .nac-pdp a { color:inherit; text-decoration:none; }
