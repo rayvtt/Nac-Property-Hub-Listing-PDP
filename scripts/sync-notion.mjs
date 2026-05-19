@@ -261,6 +261,106 @@ function setSmartText($el, value) {
   }
 }
 
+// ─── Head SEO patcher ───────────────────────────────────────────────────────
+// Rebuilds <title>, meta tags, canonical, and JSON-LD strings from Notion
+// data. The template uses `{Placeholder}` literals; this overwrites them.
+
+const COUNTRY_SLUG_OVERRIDES = {
+  'Việt Nam': 'vietnam',
+  'United States': 'usa',
+  'USA': 'usa',
+  'United Kingdom': 'uk',
+  'Dubai': 'uae',
+};
+function countrySlugFromName(c) {
+  if (!c) return '';
+  if (COUNTRY_SLUG_OVERRIDES[c]) return COUNTRY_SLUG_OVERRIDES[c];
+  return c.normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+function firstSentence(text, maxLen = 155) {
+  if (!text) return '';
+  const m = text.match(/^[^.!?]+[.!?]/);
+  let s = m ? m[0] : text;
+  if (s.length > maxLen) s = s.slice(0, maxLen - 1).replace(/\s+\S*$/, '') + '…';
+  return s.trim();
+}
+
+function patchHeadSeo($, prop) {
+  const nameEn = prop.propertyNameEn || '';
+  const nameVi = prop.propertyNameVi || '';
+  if (!nameEn && !nameVi) return; // can't build anything useful
+
+  const idNum = prop.propertyId?.replace(/^NAC-/, '') || '';
+  const location = [prop.district, prop.regionCity, prop.country].filter(Boolean).join(', ');
+  const cSlug = countrySlugFromName(prop.country);
+  const canonical = `https://nomadassetcollective.com/property-hub-bat-dong-san/${cSlug}/${prop.slug}/`;
+
+  const price = fmtMoneyShort(prop.purchasePrice, prop.currency);
+  const yieldStr = prop.yieldPct != null ? `${fmt1(prop.yieldPct)}%` : '';
+
+  // Build the canonical title: "Name — Tagline · Location · NAC-ID"
+  const titleParts = [nameEn];
+  if (prop.taglineEn) titleParts.push(prop.taglineEn);
+  else if (location) titleParts.push(location);
+  if (idNum) titleParts.push(`NAC-${idNum}`);
+  const title = titleParts.join(' · ');
+
+  // Description: 1-sentence factual summary. Prefer Notion desc_en, fall back
+  // to a built string from price/yield/location.
+  const description = firstSentence(prop.descEn)
+    || [nameEn, location && `in ${location}`, price && `from ${price}`, yieldStr && `· ${yieldStr} yield`].filter(Boolean).join(' ');
+
+  const ogDescription = firstSentence(prop.descEn, 200) || description;
+  const twitterDescription = firstSentence(prop.descEn, 120) || description.slice(0, 120);
+
+  const keywords = [
+    nameEn,
+    prop.brand,
+    prop.regionCity,
+    prop.country && `branded residences ${prop.country}`,
+    'NAC Property Hub',
+    prop.tags?.join(', '),
+  ].filter(Boolean).join(', ');
+
+  // Apply via cheerio
+  $('title').text(title);
+  $('meta[name="description"]').attr('content', description);
+  $('meta[name="keywords"]').attr('content', keywords);
+  $('link[rel="canonical"]').attr('href', canonical);
+  $('meta[property="og:title"]').attr('content', `${nameEn} — ${prop.taglineEn || location}`.replace(/ — $/, ''));
+  $('meta[property="og:description"]').attr('content', ogDescription);
+  $('meta[property="og:url"]').attr('content', canonical);
+  $('meta[name="twitter:title"]').attr('content', [nameEn, price && `${price} entry`, yieldStr && `${yieldStr} yield`].filter(Boolean).join(' · '));
+  $('meta[name="twitter:description"]').attr('content', twitterDescription);
+
+  // JSON-LD: top-level RealEstateListing has name / alternateName / description /
+  // url / address. Skip FAQPage and BreadcrumbList which the existing image
+  // patch already handles for the `image` field.
+  $('script[type="application/ld+json"]').each((_, el) => {
+    const $el = $(el);
+    const raw = $el.text().trim();
+    if (!raw) return;
+    let json;
+    try { json = JSON.parse(raw); } catch { return; }
+    let changed = false;
+    if (json['@type'] === 'RealEstateListing' || json.name?.includes('{Property Name')) {
+      if (json.name) { json.name = nameEn; changed = true; }
+      if (json.alternateName) { json.alternateName = nameVi || nameEn; changed = true; }
+      if (json.description) { json.description = description; changed = true; }
+      if (json.url) { json.url = canonical; changed = true; }
+      if (json.address) {
+        if (json.address.streetAddress) json.address.streetAddress = prop.district || prop.regionCity || '';
+        if (json.address.addressLocality) json.address.addressLocality = prop.regionCity || '';
+        if (json.address.addressCountry) json.address.addressCountry = prop.country || '';
+        changed = true;
+      }
+    }
+    if (changed) $el.text('\n  ' + JSON.stringify(json, null, 2).split('\n').join('\n  ') + '\n  ');
+  });
+}
+
 function patch(html, prop) {
   const $ = cheerio.load(html, { decodeEntities: false });
 
@@ -347,6 +447,13 @@ function patch(html, prop) {
     if (c.vi) $(`${c.id} .nac-cine-h [data-vi]`).text(c.vi);
     if (c.en) $(`${c.id} .nac-cine-h [data-en]`).text(c.en);
   }
+
+  // ─── Head SEO (title, meta, JSON-LD) ────────────────────────────────────
+  // The PDP template ships with `{Property Name}` etc. literal placeholders
+  // in <head>. They were meant to be hand-filled per listing but auto-scaffolds
+  // inherit them, producing browser tabs like "{Property Name} — {Key Differe…".
+  // We rebuild these strings from Notion fields at sync time.
+  patchHeadSeo($, prop);
 
   // Background images
   if (prop.heroImg) {
