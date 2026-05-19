@@ -1,0 +1,50 @@
+name: Create WP Page for new Live listings
+
+# Runs every 5 minutes. For each Notion row where Hub Status = Live but
+# 🆔 WP Page ID is empty, creates a WP page under the country's parent
+# page and writes the new Page ID + Listing URL back to Notion.
+#
+# Replaces the previous Notion-side WP automation. Sequencing:
+#   1. This workflow creates the WP page → writes Page ID + Listing URL
+#   2. create-pdp.yml scaffolds properties/<slug>.html (separate cron)
+#   3. sync-wp.yml pushes HTML into the new page's raw_html_code ACF field
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [notion-update]
+
+concurrency:
+  group: create-wp-page
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+
+      - name: Create WP pages for new Live listings
+        working-directory: scripts
+        env:
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9' }}
+          WP_USER: ${{ vars.WP_USER || 'admin_web' }}
+          WP_BASE_URL: ${{ vars.WP_BASE_URL || 'https://nomadassetcollective.com' }}
+          WP_PROPERTY_HUB_PATH: ${{ vars.WP_PROPERTY_HUB_PATH || 'property-hub-bat-dong-san' }}
+          WP_TEMPLATE_SAMPLE_SLUG: ${{ vars.WP_TEMPLATE_SAMPLE_SLUG || 'pullman-panama-city' }}
+        run: node create-wp-page.mjs

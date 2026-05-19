@@ -182,11 +182,15 @@ When sync-images uploads to CF, it writes these Notion fields:
 
 ## New listing automation (Hub Status → Live)
 
-Two parallel automations run when a Notion row flips to **Hub Status = Live**:
+Three parallel automations run when a Notion row flips to **Hub Status = Live**:
 
-**Side A — WP automation (set up in Notion/WordPress, outside this repo):**
-- Creates a WP page using the `[NAC Residence Index]` template (with empty `raw_html_code` ACF field)
-- Writes back WP Page ID and Listing URL to the Notion row
+**Side A — WP page creation (`.github/workflows/create-wp-page.yml`, cron every 5 min):**
+1. Queries Notion for Live rows where `🆔 WP Page ID` is empty
+2. Looks up the country parent page in WP (slug from `COUNTRY_SLUGS` table in `scripts/create-wp-page.mjs`)
+3. Auto-detects the `NAC Residence Index` template from a sample existing listing (Pullman Panama, configurable via `WP_TEMPLATE_SAMPLE_SLUG` repo var)
+4. Creates the new WP page with title = `Property Name`, slug = `🔗 Slug`, parent = country page, status = publish
+5. Writes WP Page ID and Listing URL back to Notion
+6. Safe to re-run: existing-page detection reuses pages instead of duplicating
 
 **Side B — Git automation (`.github/workflows/create-pdp.yml`, cron every 5 min):**
 1. Queries Notion for Live rows
@@ -195,11 +199,12 @@ Two parallel automations run when a Notion row flips to **Hub Status = Live**:
 4. Commits and pushes to `main` → triggers `sync-wp.yml`
 5. **Dispatches `sync-images.yml`** for each newly-scaffolded slug (added PR #148), kicking off Drive → CF image extraction in parallel
 
-**Full end-to-end flow once both sides are active:**
+**Full end-to-end flow:**
 ```
 Notion Hub Status → Live
   │
-  ├── Side A: WP automation creates page → writes Listing URL back to Notion
+  ├── Side A (within ~5 min):
+  │     create-wp-page.yml: create WP page → writes WP Page ID + Listing URL back to Notion
   │
   └── Side B (within ~5 min):
         create-pdp.yml: scaffold properties/<slug>.html → patch Notion → push → dispatch sync-images.yml
