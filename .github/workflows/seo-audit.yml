@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: "Print tasks but do not write to Notion"
+        description: "Print tasks but do not write to Notion (default: true for safety)"
         required: false
-        default: "false"
+        default: "true"
 
 concurrency:
   group: seo-audit

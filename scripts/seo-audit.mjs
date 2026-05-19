@@ -233,17 +233,29 @@ async function fetchGscData() {
   for (const siteUrl of properties) {
     console.log(`   • Querying ${siteUrl}`);
     let startRow = 0;
+    let propertyFailed = false;
     while (true) {
-      const res = await sc.searchanalytics.query({
-        siteUrl,
-        requestBody: {
-          startDate: iso(startDate),
-          endDate: iso(endDate),
-          dimensions: ['page', 'query'],
-          rowLimit: 25000,
-          startRow,
-        },
-      });
+      let res;
+      try {
+        res = await sc.searchanalytics.query({
+          siteUrl,
+          requestBody: {
+            startDate: iso(startDate),
+            endDate: iso(endDate),
+            dimensions: ['page', 'query'],
+            rowLimit: 25000,
+            startRow,
+          },
+        });
+      } catch (err) {
+        // 403 = OAuth identity not on this property. 404 = property doesn't
+        // exist. Either way, skip this one and keep going — don't crash the
+        // whole audit.
+        const code = err.status || err.code;
+        console.warn(`     ⚠ ${siteUrl} failed (${code}): ${err.message?.split('\n')[0]}`);
+        propertyFailed = true;
+        break;
+      }
       const rows = res.data.rows || [];
       // Group by page → { impressions, clicks, position, topQueries[] }
       for (const r of rows) {
@@ -260,6 +272,7 @@ async function fetchGscData() {
       if (rows.length < 25000) break;
       startRow += 25000;
     }
+    if (propertyFailed) continue;
   }
 
   for (const entry of byPage.values()) {
@@ -512,12 +525,22 @@ async function main() {
   if (errored.length) console.log(`   ⚠ ${errored.length} pages errored.`);
 
   console.log('\n3. Pulling Google Search Console (last 14d) …');
-  const gscByPage = await fetchGscData();
-  if (gscByPage) console.log(`   ${gscByPage.size} pages with GSC data.`);
+  let gscByPage = null;
+  try {
+    gscByPage = await fetchGscData();
+    if (gscByPage) console.log(`   ${gscByPage.size} pages with GSC data.`);
+  } catch (err) {
+    console.warn(`   ⚠ GSC pull failed: ${err.message}. Continuing without GSC data.`);
+  }
 
   console.log('\n4. Pulling GA4 (last 14d) …');
-  const ga4ByUrl = await fetchGa4Data();
-  if (ga4ByUrl) console.log(`   ${ga4ByUrl.size} pages with GA4 data.`);
+  let ga4ByUrl = null;
+  try {
+    ga4ByUrl = await fetchGa4Data();
+    if (ga4ByUrl) console.log(`   ${ga4ByUrl.size} pages with GA4 data.`);
+  } catch (err) {
+    console.warn(`   ⚠ GA4 pull failed: ${err.message}. Continuing without GA4 data.`);
+  }
 
   console.log('\n5. Generating tasks (heuristic — Phase 1) …');
   const tasks = heuristicTasks(signals, gscByPage, ga4ByUrl, theme);
