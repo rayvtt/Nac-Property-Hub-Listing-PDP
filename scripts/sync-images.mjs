@@ -37,6 +37,7 @@
 //   --replace                — re-upload even if Image URL is already a CF URL
 
 import { Client as NotionClient } from '@notionhq/client';
+import Anthropic from '@anthropic-ai/sdk';
 import * as cheerio from 'cheerio';
 import { google } from 'googleapis';
 import { execSync } from 'node:child_process';
@@ -468,12 +469,77 @@ async function fetchLiveProperties() {
     pageId: page.id,
     slug: richText(page.properties['🔗 Slug']),
     propertyName: richText(page.properties['Property Name']),
+    country: page.properties['Country']?.select?.name || '',
+    regionCity: richText(page.properties['Region/City']),
     imageUrl: readUrl(page.properties['Image URL']),
     gsSourceFolder: readUrl(page.properties['GS Source Folder']),
     // Optional new fields for the Berkeley web route. Either one is enough.
     berkeleyPage: readUrl(page.properties['🌐 Berkeley Page URL']),
     imageUrlsJson: richText(page.properties['📷 Image URLs JSON']),
   })).filter(p => p.slug);
+}
+
+// ─── Web-search fallback ────────────────────────────────────────────────────
+// When Drive / Berkeley / URL-list produce zero candidates (e.g. the Drive
+// service account doesn't have access to the folder, or the property has no
+// brochure), ask Claude to web-search for public images of the property and
+// return URLs we can route through Cloudflare.
+//
+// Cheap (~$0.005 per call with Haiku 4.5 + web_search tool) and runs only when
+// other sources fail. Outputs feed into the same filter+rank+upload pipeline
+// as Drive PDF extraction, so quality control is identical.
+
+async function searchWebForPropertyImages({ propertyName, regionCity, country }) {
+  if (!process.env.ANTHROPIC_API_KEY) {
+    console.log('     ANTHROPIC_API_KEY not set — skipping web search fallback');
+    return [];
+  }
+  if (!propertyName) return [];
+
+  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  const model = process.env.ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001';
+  const locationLine = [regionCity, country].filter(Boolean).join(', ');
+
+  const prompt = `Find 8–12 high-resolution public image URLs of the property "${propertyName}"${locationLine ? ` in ${locationLine}` : ''}.
+
+Search the web for:
+- The brand's official newsroom / press kit (e.g. newsroom.hyatt.com, news.marriott.com)
+- The project's official website
+- Real estate listing portals featuring this specific property
+- News articles with photography
+
+Requirements for each URL:
+- Direct image URL ending in .jpg, .jpeg, .png, or .webp
+- Landscape orientation, ≥1500px wide if possible
+- Mix of aerial / exterior, interior, amenities, pool, beach
+- Skip thumbnails, logos, stock photos, watermarked images
+
+Return ONLY a valid JSON array of strings. No commentary, no markdown fences.
+Example: ["https://example.com/hero.jpg", "https://example.com/villa.jpg"]`;
+
+  try {
+    const resp = await client.messages.create({
+      model,
+      max_tokens: 2000,
+      tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 5 }],
+      messages: [{ role: 'user', content: prompt }],
+    });
+    // The final assistant text block contains the JSON. Tool-use blocks are
+    // interleaved in resp.content but we only care about plain text.
+    let text = '';
+    for (const block of resp.content) {
+      if (block.type === 'text') text += block.text;
+    }
+    const cleaned = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+    const arrMatch = cleaned.match(/\[[\s\S]*\]/);
+    if (!arrMatch) return [];
+    const urls = JSON.parse(arrMatch[0]);
+    if (!Array.isArray(urls)) return [];
+    return urls.filter(u => typeof u === 'string' && /^https?:\/\//.test(u));
+  } catch (err) {
+    console.warn(`     web search call failed: ${err.message}`);
+    return [];
+  }
 }
 
 async function updateNotionImages(pageId, urls) {
@@ -586,9 +652,29 @@ async function processProperty(prop) {
       candidates.push(...imgs.map(p => ({ path: p, src: 'pdf', srcRef: pdf.path })));
     }
 
+    // 1d. Web-search fallback — runs when all primary sources yielded zero.
+    // Most common trigger: GS Source Folder was set but the Drive service
+    // account doesn't have read access, so the folder query returned nothing.
+    if (!candidates.length) {
+      console.log('  🌐 no primary candidates — falling back to web search');
+      const webUrls = await searchWebForPropertyImages({
+        propertyName: prop.propertyName,
+        regionCity: prop.regionCity,
+        country: prop.country,
+      });
+      console.log(`     web search returned ${webUrls.length} URL(s)`);
+      for (let i = 0; i < webUrls.length; i++) {
+        const dest = path.join(workDir, `web-search-${i + 1}.jpg`);
+        try {
+          await downloadUrl(webUrls[i], dest);
+          candidates.push({ path: dest, src: 'web-search', srcRef: webUrls[i] });
+        } catch (e) { /* skip individual URL failures */ }
+      }
+    }
+
     if (!candidates.length) {
       console.log('  ⤳ no candidates from any source, skipping');
-      console.log('     (provide --berkeley-page, --berkeley-urls, --pdf, or set GS Source Folder + Google SA)');
+      console.log('     (provide --berkeley-page, --berkeley-urls, --pdf, GS Source Folder + Google SA, or ANTHROPIC_API_KEY for web fallback)');
       return;
     }
     console.log(`  total candidates: ${candidates.length}`);

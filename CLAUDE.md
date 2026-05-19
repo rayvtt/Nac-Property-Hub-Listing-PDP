@@ -106,8 +106,9 @@ This is the production-ready replacement for the manual "screenshot from brochur
 | Berkeley page scrape | `🌐 Berkeley Page URL` | `--berkeley-page <url>` | none | UK Berkeley listings (also follows one-level sub-phase links like `/the-art-mill`) |
 | Explicit URL list | `📷 Image URLs JSON` | `--berkeley-urls <file>` | none | Curated URL set from any source |
 | Drive PDF | `GS Source Folder` | `--pdf <path>` | `GOOGLE_SERVICE_ACCOUNT_JSON` (optional — `--pdf` works with local PDF) | Brochures with 2.5MP+ images (Berkeley CDN caps at 1.8MP, brochures often hit 4MP+) |
+| **Web search fallback** | (auto-trigger) | none | `ANTHROPIC_API_KEY` | Runs automatically when *all* primary sources yield 0 candidates (e.g. Drive service account lacks folder access). Claude with `web_search` tool finds 8–12 public URLs from newsrooms / official sites / news articles, fed through the same filter+rank+upload pipeline. ~$0.005 per call. |
 
-Drive PDF + brochure is the best source when available — Grand Marina's 19MB brochure produced 4.0MP heroes vs Berkeley web's 1.8MP cap.
+Drive PDF + brochure is the best source when available — Grand Marina's 19MB brochure produced 4.0MP heroes vs Berkeley web's 1.8MP cap. Web-search fallback is the safety net for "Drive can't see the folder" — you get usable hero images on Cloudflare with zero manual intervention.
 
 ### Cloudflare Images variants (one-time setup, documented in NAC-IMAGE-SYNC.md)
 
