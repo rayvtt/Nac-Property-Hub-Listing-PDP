@@ -1,1 +1,1 @@
-2026-05-19T11:45:00Z chat: seeded Hyatt Regency images from public web
+2026-05-19T12:00:00Z chat: rehost Hyatt Regency images through CF via Image URLs JSON
