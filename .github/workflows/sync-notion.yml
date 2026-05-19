@@ -47,6 +47,10 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node generate-cine-titles.mjs
 
+      - name: Ensure hist-glyph fix on all PDPs
+        working-directory: scripts
+        run: node fix-hist-glyph.mjs
+
       - name: Rebuild index.html from Notion
         working-directory: scripts
         env:
