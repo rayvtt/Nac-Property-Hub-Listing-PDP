@@ -611,7 +611,22 @@ async function processProperty(prop) {
     if (BERKELEY_URLS_FILE) {
       try { urlList = JSON.parse(await fs.readFile(BERKELEY_URLS_FILE, 'utf8')); } catch {}
     } else if (prop.imageUrlsJson) {
-      try { urlList = JSON.parse(prop.imageUrlsJson); } catch {}
+      // Try strict JSON parse first. If that fails (e.g. Notion auto-linked
+      // the URLs and broke the JSON structure), fall back to a regex sweep
+      // that pulls every http(s):// URL out of the field text. This is
+      // pragmatic: the Notion `📷 Image URLs JSON` field is a rich_text
+      // property, and Notion's URL auto-detection sometimes wraps the
+      // contents in a hyperlink that mangles the JSON.
+      try {
+        urlList = JSON.parse(prop.imageUrlsJson);
+        if (!Array.isArray(urlList)) urlList = [];
+      } catch {
+        const matches = prop.imageUrlsJson.match(/https?:\/\/[^\s"',<>()\[\]{}]+/g) || [];
+        urlList = [...new Set(matches)]; // dedupe — auto-link often duplicates
+        if (urlList.length) {
+          console.log(`     ⚠ JSON parse failed — recovered ${urlList.length} URL(s) via regex fallback`);
+        }
+      }
     }
     if (urlList.length) {
       console.log(`  🔗 downloading ${urlList.length} explicit URL(s)`);
