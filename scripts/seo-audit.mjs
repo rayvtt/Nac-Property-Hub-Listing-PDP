@@ -221,43 +221,47 @@ async function fetchGscData() {
   const startDate = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
   const iso = (d) => d.toISOString().slice(0, 10);
 
-  // Pull page-level + query-level aggregates. Property must be set in
-  // GSC_PROPERTY env (e.g. "sc-domain:nomadassetcollective.com" for Domain
-  // property, or "https://nomadassetcollective.com/" for URL-prefix).
-  const siteUrl = process.env.GSC_PROPERTY || 'sc-domain:nomadassetcollective.com';
+  // Property list. GSC_PROPERTY may be a single value or comma-separated:
+  //   - Domain property:  "sc-domain:nomadassetcollective.com"  (covers all subdomains)
+  //   - URL-prefix:       "https://nomadassetcollective.com/"
+  //   - Multiple:         "https://nomadassetcollective.com/,https://blog.nomadassetcollective.com/"
+  const propsRaw = process.env.GSC_PROPERTY
+    || 'https://nomadassetcollective.com/,https://blog.nomadassetcollective.com/';
+  const properties = propsRaw.split(',').map(s => s.trim()).filter(Boolean);
 
-  const pageRows = [];
-  let startRow = 0;
-  while (true) {
-    const res = await sc.searchanalytics.query({
-      siteUrl,
-      requestBody: {
-        startDate: iso(startDate),
-        endDate: iso(endDate),
-        dimensions: ['page', 'query'],
-        rowLimit: 25000,
-        startRow,
-      },
-    });
-    const rows = res.data.rows || [];
-    pageRows.push(...rows);
-    if (rows.length < 25000) break;
-    startRow += 25000;
-  }
-
-  // Group by page → { impressions, clicks, position, topQueries[] }
   const byPage = new Map();
-  for (const r of pageRows) {
-    const [page, query] = r.keys;
-    if (!byPage.has(page)) {
-      byPage.set(page, { impressions: 0, clicks: 0, posWeighted: 0, queries: [] });
+  for (const siteUrl of properties) {
+    console.log(`   • Querying ${siteUrl}`);
+    let startRow = 0;
+    while (true) {
+      const res = await sc.searchanalytics.query({
+        siteUrl,
+        requestBody: {
+          startDate: iso(startDate),
+          endDate: iso(endDate),
+          dimensions: ['page', 'query'],
+          rowLimit: 25000,
+          startRow,
+        },
+      });
+      const rows = res.data.rows || [];
+      // Group by page → { impressions, clicks, position, topQueries[] }
+      for (const r of rows) {
+        const [page, query] = r.keys;
+        if (!byPage.has(page)) {
+          byPage.set(page, { impressions: 0, clicks: 0, posWeighted: 0, queries: [] });
+        }
+        const entry = byPage.get(page);
+        entry.impressions += r.impressions;
+        entry.clicks += r.clicks;
+        entry.posWeighted += r.position * r.impressions;
+        entry.queries.push({ q: query, imp: r.impressions, pos: r.position, ctr: r.ctr });
+      }
+      if (rows.length < 25000) break;
+      startRow += 25000;
     }
-    const entry = byPage.get(page);
-    entry.impressions += r.impressions;
-    entry.clicks += r.clicks;
-    entry.posWeighted += r.position * r.impressions;
-    entry.queries.push({ q: query, imp: r.impressions, pos: r.position, ctr: r.ctr });
   }
+
   for (const entry of byPage.values()) {
     entry.avgPosition = entry.impressions ? entry.posWeighted / entry.impressions : 0;
     entry.queries.sort((a, b) => b.imp - a.imp);
