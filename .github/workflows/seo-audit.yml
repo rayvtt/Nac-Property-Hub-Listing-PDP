@@ -1,0 +1,51 @@
+name: SEO/GEO Audit → Notion Tasks
+
+on:
+  schedule:
+    # 1st and 15th of every month at 09:00 UTC (biweekly cadence)
+    - cron: "0 9 1,15 * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Print tasks but do not write to Notion"
+        required: false
+        default: "false"
+
+concurrency:
+  group: seo-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+
+      - name: Run audit
+        working-directory: scripts
+        env:
+          # Notion (required)
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          # GSC OAuth (optional — script skips GSC pull if missing)
+          GSC_OAUTH_CLIENT_ID: ${{ secrets.GSC_OAUTH_CLIENT_ID }}
+          GSC_OAUTH_CLIENT_SECRET: ${{ secrets.GSC_OAUTH_CLIENT_SECRET }}
+          GSC_OAUTH_REFRESH_TOKEN: ${{ secrets.GSC_OAUTH_REFRESH_TOKEN }}
+          GSC_PROPERTY: ${{ vars.GSC_PROPERTY || 'sc-domain:nomadassetcollective.com' }}
+          # GA4 (optional)
+          GA4_SERVICE_ACCOUNT_JSON: ${{ secrets.GA4_SERVICE_ACCOUNT_JSON }}
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            node seo-audit.mjs --dry-run
+          else
+            node seo-audit.mjs
+          fi

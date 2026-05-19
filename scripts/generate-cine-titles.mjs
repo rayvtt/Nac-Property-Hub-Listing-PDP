@@ -88,7 +88,10 @@ async function patchFile(htmlPath) {
     const $titleVi = $sec.find('.nac-cine-h [data-vi]');
     const $titleEn = $sec.find('.nac-cine-h [data-en]');
     if (!$titleVi.length || !$titleEn.length) continue;
-    if ($titleVi.text().trim() || $titleEn.text().trim()) continue;
+    const viFilled = $titleVi.text().trim();
+    const enFilled = $titleEn.text().trim();
+    // Notion (via sync-notion.mjs) is the source of truth. AI only fills gaps.
+    if (viFilled && enFilled) continue;
 
     const imageStyle = $sec.find('.nac-cine-img').attr('style') || '';
     const m = imageStyle.match(/url\(['"]?(.+?)['"]?\)/);
@@ -98,8 +101,8 @@ async function patchFile(htmlPath) {
 
     try {
       const { vi, en } = await generateTitle(imageUrl, { ...ctx, sectionNum });
-      $titleVi.text(vi);
-      $titleEn.text(en);
+      if (!viFilled) $titleVi.text(vi);
+      if (!enFilled) $titleEn.text(en);
       updates += 1;
       console.log(`  §${sectionNum} → ${en}`);
     } catch (err) {

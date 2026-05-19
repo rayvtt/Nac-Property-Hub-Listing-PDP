@@ -85,8 +85,9 @@ Templates and references:
 ## Cinematic section title generation
 
 - Script: `scripts/generate-cine-titles.mjs`. Runs after `sync-notion.mjs` in both `create-pdp.yml` and `sync-notion.yml`.
-- Targets every `.nac-cine` block in every `properties/*.html`. For each block where both `.nac-cine-h [data-vi]` AND `.nac-cine-h [data-en]` are empty, it sends the matching `.nac-cine-img` background image URL to Claude (multimodal, default model `claude-haiku-4-5-20251001`) and writes back a 2-clause `·`-separated title in both languages.
-- Idempotent: any cine block that already has VI or EN content is skipped, so editorial overrides survive future runs. To regenerate a title, blank out both `data-vi` and `data-en` spans in `.nac-cine-h`.
+- **Notion is source of truth.** `sync-notion.mjs` reads six fields — `🎬 Cine 1 VI`/`EN`, `🎬 Cine 2 VI`/`EN`, `🎬 Cine 3 VI`/`EN` — and writes them into `#nac-img-1|2|3 .nac-cine-h [data-vi|en]`. Any span left empty (Notion field blank) is then filled by the AI generator below.
+- Targets every `.nac-cine` block in every `properties/*.html`. For any block where either `data-vi` OR `data-en` is empty, it sends the matching `.nac-cine-img` background image URL to Claude (multimodal, default model `claude-haiku-4-5-20251001`) and writes back a 2-clause `·`-separated title — only into the spans that are still blank, so Notion-supplied content is never clobbered.
+- Idempotent: cine blocks where both VI and EN are already filled are skipped entirely. To force regeneration of a single title, clear the Notion field AND blank out the corresponding span in the HTML file.
 - Requires repo secret `ANTHROPIC_API_KEY`. If missing, the script logs a skip message and exits 0 so the rest of the pipeline still succeeds.
 - Manual single-file run: `cd scripts && ANTHROPIC_API_KEY=... npm run titles -- <slug>` (no `<slug>` = all files).
 - Cost: ~$0.001/image with Haiku 4.5; a typical PDP has 3 cine blocks (≈$0.003 per scaffold).
