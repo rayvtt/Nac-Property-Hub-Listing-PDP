@@ -56,7 +56,7 @@ async function main() {
   ]);
   console.log(`Found ${properties.length} Live propert(ies) in Notion.`);
 
-  let created = 0;
+  const newSlugs = [];
   for (const { slug } of properties) {
     const dest = path.join(PROPERTIES_DIR, `${slug}.html`);
     let exists = false;
@@ -67,9 +67,14 @@ async function main() {
     }
     await fs.writeFile(dest, template, 'utf-8');
     console.log(`  ✓ ${slug}: created from template`);
-    created++;
+    newSlugs.push(slug);
   }
-  console.log(`\nDone. ${created} file(s) created.`);
+  console.log(`\nDone. ${newSlugs.length} file(s) created.`);
+
+  // Emit space-separated slugs so the workflow can dispatch sync-images for each.
+  if (process.env.GITHUB_OUTPUT) {
+    await fs.appendFile(process.env.GITHUB_OUTPUT, `new_slugs=${newSlugs.join(' ')}\n`);
+  }
 }
 
 main().catch(err => { console.error(err); process.exit(1); });
