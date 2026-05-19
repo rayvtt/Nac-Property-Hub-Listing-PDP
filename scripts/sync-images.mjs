@@ -251,9 +251,14 @@ async function extractImagesFromPdf(pdfPath, workDir) {
 function classifyImage(srcRef) {
   const lc = (srcRef || '').toLowerCase();
 
-  // ASPIRATIONAL — hero shots, terrace views, lifestyle, premium amenities
+  // STOCK-LIFESTYLE — Berkeley's _lifestyleN paths are people-centric stock
+  // photos (couples/families/selfies) that don't show the property. Excluded
+  // from every slot priority list in pickFinalFive so they never appear on PDPs.
+  if (/_lifestyle\d+|\/lifestyle\d+|lifestyle\d+[-_]/.test(lc)) return 'stock-lifestyle';
+
+  // ASPIRATIONAL — hero shots, terrace views, premium amenities
   if (/\/(header|hero)\//.test(lc)) return 'aspirational';
-  if (/(terrace-views?|penthouses?|lifestyle|sunrise-to-sunset|highlight-feature)/.test(lc)) return 'aspirational';
+  if (/(terrace-views?|penthouses?|sunrise-to-sunset|highlight-feature)/.test(lc)) return 'aspirational';
   if (/(beach-club|solaris-lounge|minus-one-club|the-club|tamesis-club|rooftop|sky-?bar|olive-grove)/.test(lc)) return 'aspirational';
 
   // INTERIOR — flat details, specifications, individual rooms
@@ -343,8 +348,11 @@ function diversityScore(a, b) {
 // Slot 3 (§11 ending) enforces visual diversity from slot 0 (hero) — picks
 // the candidate with the largest diversity score from each bucket.
 function pickFinalFive(ranked) {
+  // 'stock-lifestyle' is intentionally absent — those images get dropped here.
   const buckets = { aspirational: [], overview: [], interior: [], unclassified: [] };
-  for (const img of ranked) buckets[img.classification].push(img);
+  for (const img of ranked) {
+    if (buckets[img.classification]) buckets[img.classification].push(img);
+  }
 
   const used = new Set();
   const pickFrom = (priorities) => {
