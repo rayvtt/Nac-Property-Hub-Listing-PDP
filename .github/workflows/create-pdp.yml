@@ -20,6 +20,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   create:
@@ -38,6 +39,7 @@ jobs:
         run: npm install --no-audit --no-fund
 
       - name: Create PDP HTML for new Live listings
+        id: scaffold
         working-directory: scripts
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
@@ -95,3 +97,13 @@ jobs:
           done
           echo "Push failed after 5 attempts"
           exit 1
+
+      - name: Trigger image sync for newly-scaffolded listings
+        if: steps.scaffold.outputs.new_slugs != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for slug in ${{ steps.scaffold.outputs.new_slugs }}; do
+            echo "Dispatching sync-images.yml for $slug"
+            gh workflow run sync-images.yml -f only_slug="$slug"
+          done
