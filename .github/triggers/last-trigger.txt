@@ -1,1 +1,1 @@
-2026-05-19T12:25:00Z chat: clean re-trigger with empty URL list, forces web-search fallback
+2026-05-19T12:40:00Z chat: force sync-wp after sentinel trigger gap fix (PR #155)
