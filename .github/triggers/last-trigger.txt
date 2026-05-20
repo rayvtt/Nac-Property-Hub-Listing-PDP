@@ -1,1 +1,1 @@
-2026-05-19T15:10:00Z chat: re-run sync-images with PR #164 (Referer-retry + relaxed filter)
+2026-05-19T15:18:00Z chat: inject Google Maps after PR #165 — re-sync all listings
