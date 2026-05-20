@@ -1,1 +1,1 @@
-2026-05-19T14:55:00Z chat: clear Turkey-3 Image URL fields, force CF upload via sync-images
+2026-05-19T15:10:00Z chat: re-run sync-images with PR #164 (Referer-retry + relaxed filter)
