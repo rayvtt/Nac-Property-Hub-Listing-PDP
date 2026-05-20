@@ -1,1 +1,1 @@
-2026-05-19T15:18:00Z chat: inject Google Maps after PR #165 — re-sync all listings
+2026-05-19T15:25:00Z chat: set Prince cover photo + verify maps + re-run images
