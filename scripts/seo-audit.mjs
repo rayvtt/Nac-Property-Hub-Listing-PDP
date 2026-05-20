@@ -39,15 +39,56 @@ const SITEMAPS = [
 const NOTION_TASKS_DB_ID = 'ada6bd2f8c324773b0d026f9db78d3a2';
 const NOTION_TASKS_DS_ID = 'ce72b1b7-8c1a-4ab7-bc6b-c3ee5f4e18b9';
 
-// Surface classifier — pattern matched against URL path.
+// URLs to skip entirely — WordPress autogen pages, archives, internals.
+// These technically lack meta/schema but they aren't pages worth optimizing.
+// Excluding at the crawler stage = much cleaner task queue.
+const JUNK_URL_PATTERNS = [
+  /\/chuyen-muc\//,          // VI category archives
+  /\/compare-cat\//,         // comparison tool taxonomies
+  /\/category\//,            // WP category archives
+  /\/tag\//,                 // WP tag archives
+  /\/author\//,              // WP author archives
+  /\/page\/\d+\/?$/,         // pagination (e.g. /blog/page/2/)
+  /\/feed\/?$/,              // RSS feeds
+  /\/comments\/feed\//,
+  /\/wp-content\//,          // WP internals
+  /\/wp-json\//,
+  /\/wp-admin\//,
+  /\/wp-login/,
+  /\/xmlrpc\.php/,
+  /\?replytocom=/,           // comment reply permalinks
+  /\?attachment_id=/,        // image attachments
+  /\.xml$/,                  // sitemaps themselves
+];
+
+function isJunkUrl(urlStr) {
+  try {
+    const u = new URL(urlStr);
+    const full = u.pathname + u.search;
+    return JUNK_URL_PATTERNS.some((p) => p.test(full));
+  } catch {
+    return true;
+  }
+}
+
+// Strip /en/ or /vi/ locale prefix so the surface classifier handles
+// localized variants identically (e.g., /en/home/ classifies as Home).
+function stripLocale(pathname) {
+  return pathname.replace(/^\/(en|vi)(\/|$)/, '/');
+}
+
+// Surface classifier — pattern matched against URL path (locale-stripped).
 // Order matters: first match wins.
 const SURFACE_PATTERNS = [
-  { surface: 'PDP',      test: (u) => /\/property-hub-bat-dong-san\/[^/]+\/[^/]+\/?$/.test(u.pathname) },
-  { surface: 'Hub',      test: (u) => /\/property-hub-bat-dong-san\/?$/.test(u.pathname) || /\/property-hub-bat-dong-san\/[^/]+\/?$/.test(u.pathname) },
-  { surface: 'Tool',     test: (u) => /\/(nac-index|comparison|so-sanh|quiz|quick-quiz)/i.test(u.pathname) },
-  { surface: 'Brochure', test: (u) => /\/brochure/i.test(u.pathname) },
+  { surface: 'PDP',      test: (u) => /^\/property-hub-bat-dong-san\/[^/]+\/[^/]+\/?$/.test(stripLocale(u.pathname)) },
+  { surface: 'Hub',      test: (u) => /^\/property-hub-bat-dong-san\/?$/.test(stripLocale(u.pathname)) || /^\/property-hub-bat-dong-san\/[^/]+\/?$/.test(stripLocale(u.pathname)) },
+  { surface: 'Tool',     test: (u) => /\/(nac-index|comparison|so-sanh|quiz|quick-quiz)/i.test(stripLocale(u.pathname)) },
+  { surface: 'Brochure', test: (u) => /\/brochure/i.test(stripLocale(u.pathname)) },
   { surface: 'Blog',     test: (u) => u.hostname === 'blog.nomadassetcollective.com' },
-  { surface: 'Home',     test: (u) => u.pathname === '/' || u.pathname === '' },
+  { surface: 'Home',     test: (u) => {
+      const p = stripLocale(u.pathname);
+      return p === '/' || p === '' || /^\/home\/?$/.test(p);
+    } },
 ];
 
 function classifySurface(urlStr) {
@@ -508,8 +549,10 @@ async function main() {
 
   console.log('1. Discovering URLs via sitemap …');
   const urlSets = await Promise.all(SITEMAPS.map(fetchSitemapTree));
-  const urls = [...new Set(urlSets.flat())];
-  console.log(`   ${urls.length} unique URLs found.`);
+  const allUrls = [...new Set(urlSets.flat())];
+  const urls = allUrls.filter((u) => !isJunkUrl(u));
+  const filteredCount = allUrls.length - urls.length;
+  console.log(`   ${allUrls.length} unique URLs found; ${filteredCount} junk URLs filtered out; ${urls.length} to audit.`);
 
   console.log('\n2. Extracting on-page signals (parallel, 10 at a time) …');
   const signals = [];
