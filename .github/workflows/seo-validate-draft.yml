@@ -1,0 +1,48 @@
+name: SEO Tasks → Validate + Draft Fixes
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_tasks:
+        description: "Max tasks to process per run (Notion + Claude rate-limit budget)"
+        required: false
+        default: "50"
+      filter_priority:
+        description: "Only process this priority (P0/P1/P2). Leave empty for any."
+        required: false
+        default: "P0"
+      filter_auto_applicable:
+        description: "Only process Auto-Applicable tasks (true/false)"
+        required: false
+        default: "true"
+      dry_run:
+        description: "Print what would happen, no writes to Notion"
+        required: false
+        default: "true"
+
+concurrency:
+  group: seo-validate-draft
+  cancel-in-progress: false
+
+jobs:
+  validate-draft:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+      - name: Validate + draft
+        working-directory: scripts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MAX_TASKS: ${{ inputs.max_tasks }}
+          FILTER_PRIORITY: ${{ inputs.filter_priority }}
+          FILTER_AUTO_APPLICABLE: ${{ inputs.filter_auto_applicable }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: node seo-validate-draft.mjs
