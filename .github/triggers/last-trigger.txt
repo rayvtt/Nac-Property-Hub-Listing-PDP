@@ -1,1 +1,1 @@
-2026-05-19T16:25:00Z chat: upgrade Keranis with real Mercan renders; trigger re-sync
+2026-05-20T10:30:00Z chat: drive oauth live — re-extract greek listings (newcastle, keranis, ocean-gate) from drive folders
