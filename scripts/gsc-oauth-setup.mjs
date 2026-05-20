@@ -30,7 +30,10 @@ const CLIENT_ID = process.env.GSC_OAUTH_CLIENT_ID;
 const CLIENT_SECRET = process.env.GSC_OAUTH_CLIENT_SECRET;
 const PORT = 8765;
 const REDIRECT_URI = `http://localhost:${PORT}/oauth-callback`;
-const SCOPES = ['https://www.googleapis.com/auth/webmasters.readonly'];
+const SCOPES = [
+  'https://www.googleapis.com/auth/webmasters.readonly',
+  'https://www.googleapis.com/auth/drive.readonly',
+];
 
 if (!CLIENT_ID || !CLIENT_SECRET) {
   console.error('Missing GSC_OAUTH_CLIENT_ID or GSC_OAUTH_CLIENT_SECRET.');
@@ -48,8 +51,9 @@ const authUrl = oauth2.generateAuthUrl({
 
 console.log('\n1. Open this URL in your browser:\n');
 console.log('   ' + authUrl + '\n');
-console.log('2. Sign in with the Google account that OWNS the GSC property.');
-console.log('3. Grant read-only Search Console consent.\n');
+console.log('2. Sign in with the Google account that has access to BOTH the');
+console.log('   GSC property AND the Drive folders you want sync-images to read.');
+console.log('3. Grant read-only consent for both Search Console + Drive.\n');
 console.log(`Listening on http://localhost:${PORT} for the callback …\n`);
 
 const server = http.createServer(async (req, res) => {
