@@ -1,0 +1,7 @@
+{
+  "max_tasks": 10,
+  "filter_priority": "P0",
+  "filter_auto_applicable": true,
+  "dry_run": true,
+  "_comment": "Edit this file and push to fire the validate+draft workflow with these params. Workflow listens at .github/workflows/seo-validate-draft.yml"
+}
