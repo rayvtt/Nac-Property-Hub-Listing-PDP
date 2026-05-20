@@ -1,1 +1,1 @@
-2026-05-19T15:25:00Z chat: set Prince cover photo + verify maps + re-run images
+2026-05-19T16:00:00Z chat: generate listings for 3 Greek Golden Visa properties (Newcastle, Keranis Ports, Ocean Gate)
