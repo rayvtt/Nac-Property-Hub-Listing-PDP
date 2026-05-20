@@ -1,0 +1,45 @@
+name: SEO Tasks → Mark Stale as Snoozed
+
+on:
+  workflow_dispatch:
+    inputs:
+      audit_run_date:
+        description: "Only snooze tasks from this Audit Run date (YYYY-MM-DD). Leave empty to snooze ALL Status=New."
+        required: false
+        default: ""
+      note:
+        description: "Notes annotation to write on each snoozed task"
+        required: false
+        default: ""
+      dry_run:
+        description: "Print what would change, do nothing"
+        required: false
+        default: "true"
+
+concurrency:
+  group: seo-mark-stale
+  cancel-in-progress: false
+
+jobs:
+  mark-stale:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+
+      - name: Mark stale
+        working-directory: scripts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          STALE_AUDIT_RUN_DATE: ${{ inputs.audit_run_date }}
+          STALE_NOTE: ${{ inputs.note }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: node seo-mark-stale.mjs
