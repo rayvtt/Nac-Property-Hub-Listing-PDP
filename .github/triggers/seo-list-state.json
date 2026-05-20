@@ -1,0 +1,5 @@
+{
+  "filter_status": "Approved",
+  "filter_priority": "",
+  "_comment": "Editing/pushing this file fires the export workflow. Output lands at .github/state/seo-tasks-<status>.json so the assistant can read it via Read tool."
+}
