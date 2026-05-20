@@ -455,6 +455,16 @@ function patch(html, prop) {
   // We rebuild these strings from Notion fields at sync time.
   patchHeadSeo($, prop);
 
+  // Google Maps embed — template ships with empty src=""; we build a query
+  // from "Property Name, District, City" and inject the Google Maps iframe URL.
+  if (prop.propertyNameEn) {
+    const locality = [prop.district, prop.regionCity, prop.country].filter(Boolean).join(', ');
+    const query = encodeURIComponent(`${prop.propertyNameEn}${locality ? ', ' + locality : ''}`);
+    const mapUrl = `https://maps.google.com/maps?q=${query}&output=embed&z=15`;
+    $('iframe.nac-map').attr('src', mapUrl);
+    $('iframe.nac-map').attr('title', `${prop.propertyNameEn} — Location`);
+  }
+
   // Background images
   if (prop.heroImg) {
     const heroStyle = `background-image:url('${prop.heroImg}')`
