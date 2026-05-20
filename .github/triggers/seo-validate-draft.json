@@ -1,7 +1,8 @@
 {
-  "max_tasks": 80,
-  "filter_priority": "P0",
+  "max_tasks": 60,
+  "filter_priority": "",
+  "filter_statuses": "Approved",
   "filter_auto_applicable": true,
   "dry_run": false,
-  "_comment": "Live run — drafts will write to Notion Proposed Fix + Diff Preview. False positives auto-flip Status=Rejected. Phase 3 applier doesn't exist yet, so nothing lands on the live site without explicit approval + future build."
+  "_comment": "Draft fixes for user-approved tasks (P0 brochures etc.). Validation is skipped for Approved tasks — trust the user's review. After this runs, the 36 Approved tasks will have Proposed Fix populated."
 }

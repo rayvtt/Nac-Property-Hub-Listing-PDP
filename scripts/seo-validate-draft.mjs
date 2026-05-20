@@ -35,6 +35,10 @@ const DB_ID = process.env.SEO_TASKS_DB_ID || 'ada6bd2f8c324773b0d026f9db78d3a2';
 const MAX_TASKS = Math.max(1, parseInt(process.env.MAX_TASKS || '100', 10));
 const FILTER_PRIORITY = (process.env.FILTER_PRIORITY ?? 'P0').trim();
 const FILTER_AUTO_APPLICABLE = process.env.FILTER_AUTO_APPLICABLE !== 'false';
+// Comma-separated statuses. Default: New (initial drafting). Set to "Approved"
+// to re-process user-approved tasks that need a draft. Use "New,Approved" for both.
+const FILTER_STATUSES = (process.env.FILTER_STATUSES ?? 'New')
+  .split(',').map((s) => s.trim()).filter(Boolean);
 const DRY = process.env.DRY_RUN === 'true';
 const MODEL = process.env.ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001';
 
@@ -50,10 +54,16 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function fetchOpenTasks() {
   const conditions = [
-    { property: 'Status', select: { equals: 'New' } },
     // Skip tasks that already have a draft — idempotent re-run
     { property: 'Proposed Fix', rich_text: { is_empty: true } },
   ];
+  if (FILTER_STATUSES.length === 1) {
+    conditions.push({ property: 'Status', select: { equals: FILTER_STATUSES[0] } });
+  } else if (FILTER_STATUSES.length > 1) {
+    conditions.push({
+      or: FILTER_STATUSES.map((s) => ({ property: 'Status', select: { equals: s } })),
+    });
+  }
   if (FILTER_PRIORITY) {
     conditions.push({ property: 'Priority', select: { equals: FILTER_PRIORITY } });
   }
@@ -315,7 +325,7 @@ async function writeDraft(task, draft) {
 
 async function main() {
   console.log(`SEO validate+draft  ${DRY ? '(DRY RUN)' : ''}`);
-  console.log(`  filters: priority=${FILTER_PRIORITY || 'any'}, auto-applicable=${FILTER_AUTO_APPLICABLE}, max=${MAX_TASKS}`);
+  console.log(`  filters: statuses=${FILTER_STATUSES.join('|')}, priority=${FILTER_PRIORITY || 'any'}, auto-applicable=${FILTER_AUTO_APPLICABLE}, max=${MAX_TASKS}`);
 
   const raw = await fetchOpenTasks();
   const tasks = raw.map(readTask).filter((t) => t.url);
@@ -337,13 +347,18 @@ async function main() {
 
     for (const task of group) {
       try {
-        const v = validate(task, sig);
-        if (!v.real) {
-          console.log(`    ✗ reject ${task.taskId}: ${v.reason.slice(0, 100)}`);
-          await reject(task, v.reason);
-          stats.rejected++;
-          await sleep(350);
-          continue;
+        // Skip validation for tasks the human has already approved — trust
+        // their judgment, just draft. Auto-rejecting an approved task would
+        // override the human decision.
+        if (task.status !== 'Approved') {
+          const v = validate(task, sig);
+          if (!v.real) {
+            console.log(`    ✗ reject ${task.taskId}: ${v.reason.slice(0, 100)}`);
+            await reject(task, v.reason);
+            stats.rejected++;
+            await sleep(350);
+            continue;
+          }
         }
 
         const draft = await draftFix(task, sig);
