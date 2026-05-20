@@ -1,1 +1,1 @@
-2026-05-19T14:35:00Z chat: seed high-res images for Yeni, Sefakoy, Referans (emlakjet originals)
+2026-05-19T14:55:00Z chat: clear Turkey-3 Image URL fields, force CF upload via sync-images
