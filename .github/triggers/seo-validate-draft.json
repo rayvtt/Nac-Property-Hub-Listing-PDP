@@ -1,7 +1,7 @@
 {
-  "max_tasks": 10,
+  "max_tasks": 80,
   "filter_priority": "P0",
   "filter_auto_applicable": true,
-  "dry_run": true,
-  "_comment": "Edit this file and push to fire the validate+draft workflow with these params. Workflow listens at .github/workflows/seo-validate-draft.yml"
+  "dry_run": false,
+  "_comment": "Live run — drafts will write to Notion Proposed Fix + Diff Preview. False positives auto-flip Status=Rejected. Phase 3 applier doesn't exist yet, so nothing lands on the live site without explicit approval + future build."
 }
