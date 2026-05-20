@@ -11,6 +11,10 @@ on:
         description: "Only this priority (P0/P1/P2). Empty = any."
         required: false
         default: "P0"
+      filter_statuses:
+        description: "Comma-separated statuses to process (New, Approved, etc.)"
+        required: false
+        default: "New"
       filter_auto_applicable:
         description: "Only Auto-Applicable tasks (true/false)"
         required: false
@@ -19,8 +23,6 @@ on:
         description: "Print what would happen, no Notion writes (true/false)"
         required: false
         default: "true"
-  # Chat-triggered: pushing the trigger JSON fires this workflow with params
-  # read from the file. Lets the assistant kick runs autonomously.
   push:
     paths:
       - ".github/triggers/seo-validate-draft.json"
@@ -40,17 +42,24 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "push" ]; then
             F=.github/triggers/seo-validate-draft.json
-            echo "max_tasks=$(jq -r '.max_tasks // 50' $F)" >> $GITHUB_OUTPUT
-            echo "filter_priority=$(jq -r '.filter_priority // "P0"' $F)" >> $GITHUB_OUTPUT
-            echo "filter_auto_applicable=$(jq -r '.filter_auto_applicable // true' $F)" >> $GITHUB_OUTPUT
-            echo "dry_run=$(jq -r '.dry_run // "true"' $F)" >> $GITHUB_OUTPUT
+            MAX=$(jq -r '.max_tasks // empty' "$F"); [ -z "$MAX" ] && MAX=50
+            PRIO=$(jq -r '.filter_priority // empty' "$F"); [ -z "$PRIO" ] && PRIO=P0
+            STATUSES=$(jq -r '.filter_statuses // empty' "$F"); [ -z "$STATUSES" ] && STATUSES=New
+            AUTO=$(jq -r '.filter_auto_applicable // empty' "$F"); [ -z "$AUTO" ] && AUTO=true
+            DRY=$(jq -r '.dry_run // empty' "$F"); [ -z "$DRY" ] && DRY=true
           else
-            echo "max_tasks=${{ inputs.max_tasks }}" >> $GITHUB_OUTPUT
-            echo "filter_priority=${{ inputs.filter_priority }}" >> $GITHUB_OUTPUT
-            echo "filter_auto_applicable=${{ inputs.filter_auto_applicable }}" >> $GITHUB_OUTPUT
-            echo "dry_run=${{ inputs.dry_run }}" >> $GITHUB_OUTPUT
+            MAX="${{ inputs.max_tasks }}"
+            PRIO="${{ inputs.filter_priority }}"
+            STATUSES="${{ inputs.filter_statuses }}"
+            AUTO="${{ inputs.filter_auto_applicable }}"
+            DRY="${{ inputs.dry_run }}"
           fi
-          echo "Resolved: max=$(cat $GITHUB_OUTPUT | grep max_tasks), priority=$(cat $GITHUB_OUTPUT | grep filter_priority), auto=$(cat $GITHUB_OUTPUT | grep filter_auto), dry=$(cat $GITHUB_OUTPUT | grep dry_run)"
+          echo "max_tasks=$MAX" >> $GITHUB_OUTPUT
+          echo "filter_priority=$PRIO" >> $GITHUB_OUTPUT
+          echo "filter_statuses=$STATUSES" >> $GITHUB_OUTPUT
+          echo "filter_auto_applicable=$AUTO" >> $GITHUB_OUTPUT
+          echo "dry_run=$DRY" >> $GITHUB_OUTPUT
+          echo "Resolved: max=$MAX, priority=$PRIO, statuses=$STATUSES, auto=$AUTO, dry=$DRY"
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -64,6 +73,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           MAX_TASKS: ${{ steps.params.outputs.max_tasks }}
           FILTER_PRIORITY: ${{ steps.params.outputs.filter_priority }}
+          FILTER_STATUSES: ${{ steps.params.outputs.filter_statuses }}
           FILTER_AUTO_APPLICABLE: ${{ steps.params.outputs.filter_auto_applicable }}
           DRY_RUN: ${{ steps.params.outputs.dry_run }}
         run: node seo-validate-draft.mjs
