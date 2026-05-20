@@ -1,0 +1,77 @@
+name: SEO Tasks → Export State to Repo
+
+on:
+  workflow_dispatch:
+    inputs:
+      filter_status:
+        description: "Filter by Status (Approved/New/Applied/Rejected/Snoozed). Empty = all."
+        required: false
+        default: "Approved"
+      filter_priority:
+        description: "Filter by Priority (P0/P1/P2). Empty = any."
+        required: false
+        default: ""
+  push:
+    paths:
+      - ".github/triggers/seo-list-state.json"
+
+concurrency:
+  group: seo-list-state
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve params
+        id: params
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            F=.github/triggers/seo-list-state.json
+            STATUS=$(jq -r '.filter_status // empty' "$F")
+            PRIORITY=$(jq -r '.filter_priority // empty' "$F")
+            [ -z "$STATUS" ] && STATUS=Approved
+          else
+            STATUS="${{ inputs.filter_status }}"
+            PRIORITY="${{ inputs.filter_priority }}"
+          fi
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          echo "priority=$PRIORITY" >> $GITHUB_OUTPUT
+          echo "Resolved: status=$STATUS, priority=$PRIORITY"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+      - name: Export
+        working-directory: scripts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          FILTER_STATUS: ${{ steps.params.outputs.status }}
+          FILTER_PRIORITY: ${{ steps.params.outputs.priority }}
+        run: node seo-list-state.mjs
+      - name: Commit state
+        run: |
+          git config user.name "nac-seo-bot"
+          git config user.email "nac-seo-bot@users.noreply.github.com"
+          git add .github/state/
+          if git diff --staged --quiet; then
+            echo "No state changes."
+            exit 0
+          fi
+          git commit -m "chore(seo): export ${{ steps.params.outputs.status }} tasks to .github/state/"
+          for attempt in 1 2 3; do
+            if git push origin main; then
+              exit 0
+            fi
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort; exit 1; }
+            sleep $((attempt * 2))
+          done
+          exit 1
