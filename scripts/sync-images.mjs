@@ -22,9 +22,13 @@
 //   CLOUDFLARE_API_TOKEN     — Cloudflare API token with `Cloudflare Images: Edit`
 //   CLOUDFLARE_ACCOUNT_ID    — default: 2adeb401a00c6f459573f25eabb790da (NAC account)
 //   NOTION_TOKEN             — Notion integration token
-//   GOOGLE_SERVICE_ACCOUNT_JSON — (optional) Google service account JSON. Only
-//                              needed for Drive PDF route; Berkeley web works
-//                              without it
+//   Drive auth (only needed for Drive PDF route — Berkeley web works without):
+//     Option A (preferred): GSC_OAUTH_CLIENT_ID + GSC_OAUTH_CLIENT_SECRET +
+//                           GSC_OAUTH_REFRESH_TOKEN — user-delegated OAuth.
+//                           Folders shared with the authorizing Google account
+//                           work without per-folder permission edits.
+//     Option B (fallback):  GOOGLE_SERVICE_ACCOUNT_JSON — requires each Drive
+//                           folder to be shared with the SA email.
 //   NOTION_DATABASE_ID       — default: 35848ec25e86803283acc7ad989649c9
 //
 // CLI args:
@@ -51,6 +55,10 @@ const CLOUDFLARE_ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID || '2adeb401a00c
 const NOTION_TOKEN = process.env.NOTION_TOKEN;
 const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9';
 const GOOGLE_SERVICE_ACCOUNT_JSON = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
+const GSC_OAUTH_CLIENT_ID = process.env.GSC_OAUTH_CLIENT_ID;
+const GSC_OAUTH_CLIENT_SECRET = process.env.GSC_OAUTH_CLIENT_SECRET;
+const GSC_OAUTH_REFRESH_TOKEN = process.env.GSC_OAUTH_REFRESH_TOKEN;
+const HAS_DRIVE_OAUTH = !!(GSC_OAUTH_CLIENT_ID && GSC_OAUTH_CLIENT_SECRET && GSC_OAUTH_REFRESH_TOKEN);
 
 // Filter constants — tuned for Berkeley CDN + PDF extraction observed in
 // production. See NAC-IMAGE-SYNC.md for the calibration data.
@@ -425,8 +433,16 @@ function pickFinalFive(ranked) {
 }
 
 // ─── Google Drive ───────────────────────────────────────────────────────
+// OAuth (user delegation) preferred — folders shared with a human Google
+// account "Just Work" without per-folder service-account adds. Falls back
+// to the service account JSON when OAuth isn't configured.
 function getDriveClient() {
-  if (!GOOGLE_SERVICE_ACCOUNT_JSON) throw new Error('GOOGLE_SERVICE_ACCOUNT_JSON env var required');
+  if (HAS_DRIVE_OAUTH) {
+    const auth = new google.auth.OAuth2(GSC_OAUTH_CLIENT_ID, GSC_OAUTH_CLIENT_SECRET);
+    auth.setCredentials({ refresh_token: GSC_OAUTH_REFRESH_TOKEN });
+    return google.drive({ version: 'v3', auth });
+  }
+  if (!GOOGLE_SERVICE_ACCOUNT_JSON) throw new Error('No Drive auth configured (need GSC_OAUTH_* or GOOGLE_SERVICE_ACCOUNT_JSON)');
   const credentials = JSON.parse(GOOGLE_SERVICE_ACCOUNT_JSON);
   const auth = new google.auth.GoogleAuth({
     credentials,
@@ -678,7 +694,7 @@ async function processProperty(prop) {
     const pdfs = [];
     if (LOCAL_PDF) {
       pdfs.push({ path: LOCAL_PDF, name: path.basename(LOCAL_PDF) });
-    } else if (prop.gsSourceFolder && GOOGLE_SERVICE_ACCOUNT_JSON) {
+    } else if (prop.gsSourceFolder && (HAS_DRIVE_OAUTH || GOOGLE_SERVICE_ACCOUNT_JSON)) {
       const folderId = parseFolderIdFromUrl(prop.gsSourceFolder);
       if (folderId) {
         console.log(`  📂 Drive folder: ${folderId}`);
