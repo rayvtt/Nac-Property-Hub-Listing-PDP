@@ -172,7 +172,20 @@ async function scrapeBerkeleyPage(pageUrl, depth = 0) {
 }
 
 async function downloadUrl(url, destPath) {
-  const res = await fetch(url, { redirect: 'follow' });
+  let res = await fetch(url, { redirect: 'follow' });
+  // Some CDNs (Kiler GYO, Hyatt newsroom, etc.) hot-link-protect via Referer.
+  // Retry with a same-origin Referer + browser UA when blocked.
+  if (!res.ok && (res.status === 401 || res.status === 403)) {
+    const origin = new URL(url).origin;
+    res = await fetch(url, {
+      redirect: 'follow',
+      headers: {
+        'Referer': origin + '/',
+        'User-Agent': 'Mozilla/5.0 (compatible; NAC-Listings-Sync/1.0)',
+        'Accept': 'image/avif,image/webp,image/png,image/jpeg,*/*',
+      },
+    });
+  }
   if (!res.ok) throw new Error(`download ${url} → HTTP ${res.status}`);
   const buf = Buffer.from(await res.arrayBuffer());
   await fs.writeFile(destPath, buf);
@@ -299,18 +312,39 @@ async function filterAndRank(candidates) {
     seen.add(img.hash);
     return true;
   });
-  // Filter cascade:
-  //   - width ≥ MIN_WIDTH (1500): real heroes are 1800px+, drops thumbnails
-  //   - landscape only (width ≥ height): drops vertical brochure spreads
-  //   - file size ≥ MIN_FILE_SIZE (150KB): drops tiny CDN renditions
-  //   - bytes/pixel ≥ MIN_BYTES_PER_PIXEL (0.05): drops abstract design
-  //     graphics (waves, gradient blocks) that compress unusually small
-  const filtered = unique.filter(img =>
+  // Filter cascade (two-pass — strict first, relaxed only if shortage):
+  //   Strict:  width ≥ 1500, landscape, ≥150KB, ≥0.05 b/px
+  //   Relaxed: width ≥ 1000, landscape, ≥80KB,  ≥0.04 b/px
+  //
+  // Strict thresholds were tuned for Berkeley CDN + brochure PDFs which yield
+  // abundant 1800px+ heroes. For projects on smaller-CMS Turkish/SEA sources,
+  // strict often produces too few candidates to fill the 5 slots — leaving
+  // gaps in the gallery (Yeni had only 2/5, Referans had 0/5).
+  //
+  // We try strict first; if it produces <5 candidates, we re-run with the
+  // relaxed pass and merge unique results. Strict candidates still rank above
+  // relaxed ones via the existing pixel-area sort.
+  const passStrict = (img) =>
     img.width >= MIN_WIDTH
     && img.width >= img.height
     && img.size >= MIN_FILE_SIZE
-    && img.bytesPerPixel >= MIN_BYTES_PER_PIXEL
-  );
+    && img.bytesPerPixel >= MIN_BYTES_PER_PIXEL;
+  const passRelaxed = (img) =>
+    img.width >= 1000
+    && img.width >= img.height
+    && img.size >= 80_000
+    && img.bytesPerPixel >= 0.04;
+
+  const strict = unique.filter(passStrict);
+  let filtered = strict;
+  if (strict.length < 5) {
+    const strictHashes = new Set(strict.map(i => i.hash));
+    const relaxedExtras = unique
+      .filter(passRelaxed)
+      .filter(i => !strictHashes.has(i.hash));
+    filtered = [...strict, ...relaxedExtras];
+    console.log(`     ⚠ strict filter yielded ${strict.length}/5 — added ${relaxedExtras.length} relaxed candidate(s)`);
+  }
   // Sort by pixel area DESC — bigger image wins within each classification bucket
   return filtered.sort((a, b) => b.pixels - a.pixels);
 }
