@@ -39,15 +39,37 @@ const SITEMAPS = [
 const NOTION_TASKS_DB_ID = 'ada6bd2f8c324773b0d026f9db78d3a2';
 const NOTION_TASKS_DS_ID = 'ce72b1b7-8c1a-4ab7-bc6b-c3ee5f4e18b9';
 
+// Whole child sitemaps to skip at discovery time. WordPress auto-emits a
+// sitemap-index that includes lots of taxonomy/archive sub-sitemaps; cutting
+// them at this level is cleaner than per-URL filtering.
+const SITEMAP_BLOCKLIST = [
+  /\/blocks-sitemap\.xml$/,             // Gutenberg pattern library
+  /\/category-sitemap\.xml$/,           // WP categories
+  /\/.*-region-sitemap\.xml$/,          // citizenship-region, residence-region
+  /\/compare-cat-sitemap\.xml$/,        // comparison tool taxonomies
+  /\/khu-vuc-sitemap\.xml$/,            // VI "region" taxonomy (blog)
+  /\/nhan-tam-trang-sitemap\.xml$/,     // VI "label" taxonomy (blog)
+];
+
+function isBlockedSitemap(urlStr) {
+  return SITEMAP_BLOCKLIST.some((p) => p.test(urlStr));
+}
+
 // URLs to skip entirely — WordPress autogen pages, archives, internals.
 // These technically lack meta/schema but they aren't pages worth optimizing.
-// Excluding at the crawler stage = much cleaner task queue.
+// Acts as a safety net on top of SITEMAP_BLOCKLIST (catches URLs that slip
+// in via cross-links or non-blocked sitemaps).
 const JUNK_URL_PATTERNS = [
   /\/chuyen-muc\//,          // VI category archives
   /\/compare-cat\//,         // comparison tool taxonomies
   /\/category\//,            // WP category archives
   /\/tag\//,                 // WP tag archives
   /\/author\//,              // WP author archives
+  /\/citizenship-region\//,  // CBI region taxonomy archives
+  /\/residence-region\//,    // RBI region taxonomy archives
+  /\/khu-vuc\//,             // VI region taxonomy (blog)
+  /\/nhan-tam-trang\//,      // VI label taxonomy (blog)
+  /\/blocks\//,              // Gutenberg pattern library
   /\/page\/\d+\/?$/,         // pagination (e.g. /blog/page/2/)
   /\/feed\/?$/,              // RSS feeds
   /\/comments\/feed\//,
@@ -82,7 +104,7 @@ function stripLocale(pathname) {
 const SURFACE_PATTERNS = [
   { surface: 'PDP',      test: (u) => /^\/property-hub-bat-dong-san\/[^/]+\/[^/]+\/?$/.test(stripLocale(u.pathname)) },
   { surface: 'Hub',      test: (u) => /^\/property-hub-bat-dong-san\/?$/.test(stripLocale(u.pathname)) || /^\/property-hub-bat-dong-san\/[^/]+\/?$/.test(stripLocale(u.pathname)) },
-  { surface: 'Tool',     test: (u) => /\/(nac-index|comparison|so-sanh|quiz|quick-quiz)/i.test(stripLocale(u.pathname)) },
+  { surface: 'Tool',     test: (u) => /\/(nac-index|nac-residence-index|comparison|so-sanh|compares|quiz|quick-quiz|tu-van-nhanh)/i.test(stripLocale(u.pathname)) },
   { surface: 'Brochure', test: (u) => /\/brochure/i.test(stripLocale(u.pathname)) },
   { surface: 'Blog',     test: (u) => u.hostname === 'blog.nomadassetcollective.com' },
   { surface: 'Home',     test: (u) => {
@@ -143,9 +165,15 @@ async function fetchSitemapTree(rootUrl) {
     }
 
     const $ = cheerio.load(xml, { xmlMode: true });
-    // sitemap-index branch
+    // sitemap-index branch — skip blocked child sitemaps entirely
     const childMaps = $('sitemapindex sitemap loc').map((_, el) => $(el).text().trim()).get();
-    childMaps.forEach((child) => queue.push(child));
+    for (const child of childMaps) {
+      if (isBlockedSitemap(child)) {
+        console.log(`     ⌀ skipped sitemap: ${child}`);
+        continue;
+      }
+      queue.push(child);
+    }
     // urlset branch
     const pageUrls = $('urlset url loc').map((_, el) => $(el).text().trim()).get();
     urls.push(...pageUrls);
