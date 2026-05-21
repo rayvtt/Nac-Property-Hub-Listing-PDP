@@ -1,1 +1,1 @@
-2026-05-21T03:35:00Z chat: santa-maria-panama ready — kick wp page creation + pdp scaffold + image sync
+2026-05-21T07:30:00Z chat: santa-maria-panama — clear portrait URLs, fall through to web-search for landscape renders
