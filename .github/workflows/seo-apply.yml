@@ -1,0 +1,68 @@
+name: SEO Tasks → Apply Approved Fixes
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_tasks:
+        description: "Max tasks to apply per run"
+        required: false
+        default: "30"
+      scope:
+        description: "Comma-separated surfaces (pdp,brochure,hub,tool)"
+        required: false
+        default: "pdp,brochure"
+      dry_run:
+        description: "Print actions, no writes (true/false)"
+        required: false
+        default: "true"
+  push:
+    paths:
+      - ".github/triggers/seo-apply.json"
+
+concurrency:
+  group: seo-apply
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve params
+        id: params
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            F=.github/triggers/seo-apply.json
+            MAX=$(jq -r '.max_tasks // empty' "$F"); [ -z "$MAX" ] && MAX=30
+            SCOPE=$(jq -r '.scope // empty' "$F"); [ -z "$SCOPE" ] && SCOPE=pdp,brochure
+            DRY=$(jq -r '.dry_run // empty' "$F"); [ -z "$DRY" ] && DRY=true
+          else
+            MAX="${{ inputs.max_tasks }}"
+            SCOPE="${{ inputs.scope }}"
+            DRY="${{ inputs.dry_run }}"
+          fi
+          echo "max_tasks=$MAX" >> $GITHUB_OUTPUT
+          echo "scope=$SCOPE" >> $GITHUB_OUTPUT
+          echo "dry_run=$DRY" >> $GITHUB_OUTPUT
+          echo "Resolved: max=$MAX, scope=$SCOPE, dry=$DRY"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+      - name: Apply
+        working-directory: scripts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          WP_USER: ${{ vars.WP_USER || 'admin_web' }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          MAX_TASKS: ${{ steps.params.outputs.max_tasks }}
+          SCOPE: ${{ steps.params.outputs.scope }}
+          DRY_RUN: ${{ steps.params.outputs.dry_run }}
+        run: node seo-apply.mjs
