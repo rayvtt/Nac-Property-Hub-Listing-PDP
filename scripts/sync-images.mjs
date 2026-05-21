@@ -457,28 +457,63 @@ function parseFolderIdFromUrl(url) {
   return m ? m[1] : null;
 }
 
+// Files we never want to extract images from — these PDFs are present in
+// many partner Drive folders and only contain text/forms/legal screenshots,
+// never project renders. Matching is case-insensitive, accent-insensitive,
+// and operates on the file name.
+const NON_BROCHURE_PDF_PATTERNS = [
+  /quy[\s_-]*tr[ìi]nh/i,        // "quy trình" = process
+  /th[uủ][\s_-]*t[uụ]c/i,       // "thủ tục" = procedure
+  /ph[uươ]ng[\s_-]*[áa]n/i,     // "phương án" = options
+  /h[oồ][\s_-]*s[oơ]/i,         // "hồ sơ" = dossier/file
+  /ph[áa]p[\s_-]*l[ýy]/i,       // "pháp lý" = legal
+  /timeline/i,
+  /policy/i,
+  /process/i,
+  /procedure/i,
+  /legal/i,
+  /immigration/i,
+  /price[\s_-]*list/i,
+];
+const MIN_BROCHURE_PDF_BYTES = 1_000_000; // brochures with renders are ≥1MB; process PDFs are usually <500KB
+
+function isBrochurePdf({ name, size }) {
+  if (size != null && Number(size) < MIN_BROCHURE_PDF_BYTES) return false;
+  if (!name) return true;
+  return !NON_BROCHURE_PDF_PATTERNS.some(re => re.test(name));
+}
+
 async function listPdfsInDriveFolder(folderId) {
   const drive = getDriveClient();
   // List subfolders + PDFs recursively (1 level deep is enough for the NAC setup)
   const top = await drive.files.list({
     q: `'${folderId}' in parents and (mimeType = 'application/pdf' or mimeType = 'application/vnd.google-apps.folder')`,
-    fields: 'files(id, name, mimeType)',
+    fields: 'files(id, name, mimeType, size)',
     pageSize: 100,
   });
   const pdfs = [];
   for (const f of top.data.files) {
     if (f.mimeType === 'application/pdf') {
-      pdfs.push({ id: f.id, name: f.name });
+      pdfs.push({ id: f.id, name: f.name, size: f.size });
     } else if (f.mimeType === 'application/vnd.google-apps.folder') {
       const sub = await drive.files.list({
         q: `'${f.id}' in parents and mimeType = 'application/pdf'`,
-        fields: 'files(id, name)',
+        fields: 'files(id, name, size)',
         pageSize: 100,
       });
-      pdfs.push(...sub.data.files.map(p => ({ id: p.id, name: p.name })));
+      pdfs.push(...sub.data.files.map(p => ({ id: p.id, name: p.name, size: p.size })));
     }
   }
-  return pdfs;
+  // Filter out non-brochure PDFs (process docs, legal forms, timelines, price
+  // lists). These exist in every Greek/Vietnamese Drive partner folder and
+  // their generic government / Acropolis stock photography otherwise pollutes
+  // the candidate set, drowning out the actual brochure renders.
+  const filtered = pdfs.filter(isBrochurePdf);
+  const skipped = pdfs.length - filtered.length;
+  if (skipped > 0) {
+    console.log(`     filtered out ${skipped} non-brochure PDF(s) (process/legal/timeline/<1MB)`);
+  }
+  return filtered;
 }
 
 async function downloadDrivePdf(fileId, destPath) {
