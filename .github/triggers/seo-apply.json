@@ -1,0 +1,6 @@
+{
+  "max_tasks": 40,
+  "scope": "pdp,brochure",
+  "dry_run": true,
+  "_comment": "FIRST RUN IS DRY-RUN. Validate the apply logic + see what would change before going live. After dry-run looks good, flip dry_run to false."
+}
