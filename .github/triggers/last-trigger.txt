@@ -1,1 +1,1 @@
-2026-05-20T11:15:00Z chat: pdf-filter live + Wikimedia/CF cleared — re-extract ocean-gate from brochure only; force web-search fallback for newcastle
+2026-05-21T03:35:00Z chat: santa-maria-panama ready — kick wp page creation + pdp scaffold + image sync
