@@ -1,1 +1,1 @@
-2026-05-21T07:30:00Z chat: santa-maria-panama — clear portrait URLs, fall through to web-search for landscape renders
+2026-05-21T15:30:00Z chat: santa-maria — staged 5 mercan brochure renders via github raw, trigger sync-images
