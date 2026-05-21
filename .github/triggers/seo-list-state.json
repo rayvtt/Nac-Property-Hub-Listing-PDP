@@ -1,5 +1,5 @@
 {
   "filter_status": "Approved",
   "filter_priority": "",
-  "_comment": "Re-export after draft workflow completion"
+  "_comment": "Post dry-run state check"
 }
