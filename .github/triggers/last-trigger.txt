@@ -1,1 +1,1 @@
-2026-05-20T10:30:00Z chat: drive oauth live — re-extract greek listings (newcastle, keranis, ocean-gate) from drive folders
+2026-05-20T11:15:00Z chat: pdf-filter live + Wikimedia/CF cleared — re-extract ocean-gate from brochure only; force web-search fallback for newcastle
