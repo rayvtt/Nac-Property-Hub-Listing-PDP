@@ -1,6 +1,6 @@
 {
   "max_tasks": 40,
   "scope": "pdp,brochure",
-  "dry_run": true,
-  "_comment": "FIRST RUN IS DRY-RUN. Validate the apply logic + see what would change before going live. After dry-run looks good, flip dry_run to false."
+  "dry_run": false,
+  "_comment": "LIVE — applies 36 approved SEO fixes to PDPs + brochures. Each brochure page gets WP REST PATCH of acf.raw_html_code with cheerio-injected meta/canonical/schema. PDPs get repo file edit + sync-wp propagation."
 }
