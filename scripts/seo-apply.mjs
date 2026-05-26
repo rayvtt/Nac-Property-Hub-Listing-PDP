@@ -323,22 +323,30 @@ async function main() {
   const tasks = raw.map(readTask);
   console.log(`  ${tasks.length} approved task(s) fetched.`);
 
-  // Filter by SCOPE — slug-based for PDP, URL-pattern for brochure
+  // Filter by SCOPE — route each task to PDP file or WP REST
   const eligible = [];
+  const MAIN_WP_SURFACES = ['Brochure', 'Hub', 'Tool', 'Home', 'Sitewide'];
   for (const t of tasks) {
     const url = t.url || '';
+    const surf = t.surface || '';
     const pdpFile = await findPdpFile(t.slug);
+
     if (pdpFile && SCOPE.includes('pdp')) {
       eligible.push({ task: t, kind: 'pdp_file', path: pdpFile, url });
-    } else if (/\/brochures\//.test(url) && SCOPE.includes('brochure')) {
-      eligible.push({ task: t, kind: 'wp_brochure', url });
-    } else if (t.surface === 'Brochure' && SCOPE.includes('brochure')) {
-      // URL might be missing; derive from slug
-      const derived = `${WP_BASE}/brochures/${t.slug}/`;
-      eligible.push({ task: t, kind: 'wp_brochure', url: derived });
+    } else if (surf === 'Blog' && SCOPE.includes('blog')) {
+      // Blog lives on blog.nomadassetcollective.com — separate WP site.
+      // For now: try WP REST on the main domain via slug lookup. If the
+      // page isn't found there, skip.
+      const derived = url || `${WP_BASE}/${t.slug}/`;
+      eligible.push({ task: t, kind: 'wp_page', url: derived });
+    } else if (MAIN_WP_SURFACES.includes(surf) && SCOPE.some(s => ['brochure','hub','tool','home','sitewide'].includes(s))) {
+      // Any main-domain WP page — derive URL from surface + slug
+      const prefix = surf === 'Brochure' ? '/brochures/' : '/';
+      const derived = url || `${WP_BASE}${prefix}${t.slug}/`;
+      eligible.push({ task: t, kind: 'wp_page', url: derived });
     }
   }
-  console.log(`  ${eligible.length} eligible (PDP+Brochure in scope).\n`);
+  console.log(`  ${eligible.length} eligible (in scope).\n`);
 
   // Group by URL/file so we modify each page once even with multiple fixes
   const byTarget = new Map();
