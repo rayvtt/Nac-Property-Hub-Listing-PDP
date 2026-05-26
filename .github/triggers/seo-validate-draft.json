@@ -1,8 +1,8 @@
 {
-  "max_tasks": 60,
+  "max_tasks": 30,
   "filter_priority": "",
   "filter_statuses": "Approved",
-  "filter_auto_applicable": true,
-  "dry_run": false,
-  "_comment": "Draft fixes for user-approved tasks (P0 brochures etc.). Validation is skipped for Approved tasks — trust the user's review. After this runs, the 36 Approved tasks will have Proposed Fix populated."
+  "filter_auto_applicable": "true",
+  "dry_run": "false",
+  "_comment": "Re-draft the 24 schema tasks with fixed JSON-LD generator"
 }
