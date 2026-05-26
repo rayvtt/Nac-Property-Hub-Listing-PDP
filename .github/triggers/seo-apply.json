@@ -1,6 +1,6 @@
 {
   "max_tasks": 40,
-  "scope": "pdp,brochure",
+  "scope": "pdp,brochure,hub,blog",
   "dry_run": "false",
-  "_comment": "LIVE RUN. Note: dry_run must be STRING 'false' not boolean false — jq treats boolean false as falsy and the shell defaults to true."
+  "_comment": "Apply all remaining Approved tasks — expanded scope to include hub + blog for the 24 schema tasks + 1 meta (nac-residence-index)."
 }
