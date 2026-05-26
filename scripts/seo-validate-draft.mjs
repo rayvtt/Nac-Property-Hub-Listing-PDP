@@ -53,10 +53,10 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // ─── Notion query ───────────────────────────────────────────────────────────
 
 async function fetchOpenTasks() {
-  const conditions = [
-    // Skip tasks that already have a draft — idempotent re-run
-    { property: 'Proposed Fix', rich_text: { is_empty: true } },
-  ];
+  // Note: we no longer filter by Proposed Fix empty at the query level.
+  // Schema tasks may have BAD drafts (placeholder text instead of <script>)
+  // that need re-drafting. We filter client-side instead.
+  const conditions = [];
   if (FILTER_STATUSES.length === 1) {
     conditions.push({ property: 'Status', select: { equals: FILTER_STATUSES[0] } });
   } else if (FILTER_STATUSES.length > 1) {
@@ -236,15 +236,28 @@ ${sig.bodyExcerpt.slice(0, 3000)}`;
     };
   } else if (t.startsWith('no schema.org')) {
     const surfaceSchemaHint = {
-      PDP: 'RealEstateListing (or Product) with name, description, address, image, offers (price)',
-      Hub: 'CollectionPage + BreadcrumbList',
-      Tool: 'WebApplication + BreadcrumbList',
-      Home: 'WebSite + Organization + BreadcrumbList',
-      Brochure: 'CreativeWork + BreadcrumbList',
-      Blog: 'Article + BreadcrumbList',
-      Sitewide: 'WebPage + BreadcrumbList',
-    }[task.surface] || 'WebPage + BreadcrumbList';
-    userPrompt = `${pageContext}\n\nGenerate a JSON-LD schema.org block for this ${task.surface} page. Use: ${surfaceSchemaHint}. Include @context, @type, and real values pulled from the page (name from title or h1, description from meta or body, url from page URL). Keep it minimal but valid.\n\nReturn: {"jsonld": <the full JSON-LD object>, "rationale": "one sentence"}`;
+      PDP: 'RealEstateListing with name, description, url, image, offers',
+      Hub: 'CollectionPage',
+      Tool: 'WebApplication',
+      Home: 'WebSite + Organization',
+      Brochure: 'CreativeWork',
+      Blog: 'Article',
+      Sitewide: 'WebPage',
+    }[task.surface] || 'WebPage';
+    userPrompt = `${pageContext}
+
+Generate a COMPLETE, VALID JSON-LD schema.org block for this ${task.surface} page.
+
+Primary @type: ${surfaceSchemaHint}
+Also include a BreadcrumbList as a second item in a @graph array.
+
+CRITICAL RULES:
+- The "jsonld" value in your response MUST be a JSON OBJECT (starting with {), NOT a string
+- Pull real values from the page: name from title/h1, description from body, url from page URL
+- Always include @context: "https://schema.org"
+- Keep it minimal but complete — 10-15 fields max
+
+Return STRICT JSON: {"jsonld": { "@context": "https://schema.org", "@graph": [...] }, "rationale": "one sentence"}`;
     parseShape = 'jsonld';
   } else if (t.startsWith('missing og:image')) {
     return {
@@ -260,7 +273,7 @@ ${sig.bodyExcerpt.slice(0, 3000)}`;
   // Call Claude
   const resp = await claude.messages.create({
     model: MODEL,
-    max_tokens: 800,
+    max_tokens: parseShape === 'jsonld' ? 1500 : 800,
     system: SYSTEM_PROMPT,
     messages: [{ role: 'user', content: userPrompt }],
   });
@@ -283,6 +296,10 @@ ${sig.bodyExcerpt.slice(0, 3000)}`;
     };
   }
   if (parseShape === 'jsonld') {
+    // Validate that Claude returned an actual object, not a string
+    if (!parsed.jsonld || typeof parsed.jsonld !== 'object') {
+      throw new Error(`Claude returned non-object jsonld: ${JSON.stringify(parsed.jsonld).slice(0, 100)}`);
+    }
     const block = '<script type="application/ld+json">\n' + JSON.stringify(parsed.jsonld, null, 2) + '\n</script>';
     return {
       fix: block,
@@ -328,8 +345,17 @@ async function main() {
   console.log(`  filters: statuses=${FILTER_STATUSES.join('|')}, priority=${FILTER_PRIORITY || 'any'}, auto-applicable=${FILTER_AUTO_APPLICABLE}, max=${MAX_TASKS}`);
 
   const raw = await fetchOpenTasks();
-  const tasks = raw.map(readTask).filter((t) => t.url);
-  console.log(`  ${tasks.length} task(s) to process.\n`);
+  const allTasks = raw.map(readTask).filter((t) => t.url);
+  // Client-side filter: skip tasks with a GOOD existing draft.
+  // Schema tasks with placeholder text (no <script) need re-drafting.
+  const tasks = allTasks.filter((t) => {
+    const fix = (t.proposedFix || '').trim();
+    if (!fix) return true; // empty = needs draft
+    const isSchema = t.title.toLowerCase().startsWith('no schema.org');
+    if (isSchema && !fix.startsWith('<script')) return true; // bad schema draft
+    return false; // good draft exists, skip
+  });
+  console.log(`  ${allTasks.length} fetched, ${tasks.length} need drafting (${allTasks.length - tasks.length} already have good drafts).\n`);
 
   // Group by URL so we fetch each page only once
   const byUrl = new Map();
