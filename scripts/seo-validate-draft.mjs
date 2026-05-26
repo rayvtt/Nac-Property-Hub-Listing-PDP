@@ -345,7 +345,17 @@ async function main() {
   console.log(`  filters: statuses=${FILTER_STATUSES.join('|')}, priority=${FILTER_PRIORITY || 'any'}, auto-applicable=${FILTER_AUTO_APPLICABLE}, max=${MAX_TASKS}`);
 
   const raw = await fetchOpenTasks();
-  const allTasks = raw.map(readTask).filter((t) => t.url);
+  const WP_BASE = 'https://nomadassetcollective.com';
+  const BLOG_BASE = 'https://blog.nomadassetcollective.com';
+  const allTasks = raw.map(readTask).map((t) => {
+    // Derive URL from slug when the Notion URL field is empty
+    if (!t.url && t.slug) {
+      if (t.surface === 'Blog') t.url = `${BLOG_BASE}/${t.slug}/`;
+      else if (t.surface === 'Brochure') t.url = `${WP_BASE}/brochures/${t.slug}/`;
+      else t.url = `${WP_BASE}/${t.slug}/`;
+    }
+    return t;
+  }).filter((t) => t.url);
   // Client-side filter: skip tasks with a GOOD existing draft.
   // Schema tasks with placeholder text (no <script) need re-drafting.
   const tasks = allTasks.filter((t) => {
