@@ -4,5 +4,5 @@
   "filter_statuses": "Approved",
   "filter_auto_applicable": "true",
   "dry_run": "false",
-  "_comment": "Programmatic schema draft — no more Claude failures"
+  "_comment": "Programmatic schema draft — fired via GitHub API to ensure workflow triggers"
 }
