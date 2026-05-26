@@ -167,6 +167,44 @@ Return: {"description": "..."}`
   return parsed.description;
 }
 
+function generateSchemaJsonLd(pageHtml, pageUrl, surface, slug) {
+  const $ = cheerio.load(pageHtml);
+  const title = ($('head title').first().text() || '').trim();
+  const h1 = ($('h1').first().text() || '').trim();
+  const metaDesc = $('meta[name="description"]').attr('content') || '';
+  $('script, style, nav, footer, header, noscript').remove();
+  const bodyText = $('body').text().replace(/\s+/g, ' ').trim().slice(0, 200);
+
+  const schemaType = {
+    PDP: 'RealEstateListing', Hub: 'CollectionPage', Tool: 'WebApplication',
+    Home: 'WebSite', Brochure: 'CreativeWork', Blog: 'Article', Sitewide: 'WebPage',
+  }[surface] || 'WebPage';
+
+  const desc = (metaDesc || bodyText || '').slice(0, 200).trim();
+  const jsonld = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': schemaType,
+        name: h1 || title || slug,
+        ...(schemaType === 'Article' ? { headline: h1 || title } : {}),
+        description: desc,
+        url: pageUrl,
+        publisher: { '@type': 'Organization', name: 'Nomad Asset Collective' },
+        inLanguage: /[àáảãạ]/.test(title) ? 'vi' : 'en',
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://nomadassetcollective.com/' },
+          { '@type': 'ListItem', position: 2, name: h1 || title || slug },
+        ],
+      },
+    ],
+  };
+  return '<script type="application/ld+json">\n' + JSON.stringify(jsonld, null, 2) + '\n</script>';
+}
+
 // ─── Cheerio fix injectors ──────────────────────────────────────────────────
 // Each returns { changed: bool, html: newHtml, reason: string }
 // Idempotent: checks if the fix is already present.
@@ -403,6 +441,9 @@ async function main() {
             console.log(`    drafting meta description on-the-fly for ${task.taskId}…`);
             try { fixValue = await draftMetaDescription(workingHtml, surfaceTarget.url); }
             catch (err) { console.warn(`    ⚠ draft failed: ${err.message}`); stats.errored++; continue; }
+          } else if (taskType === 'schema') {
+            console.log(`    generating schema JSON-LD on-the-fly for ${task.taskId}…`);
+            fixValue = generateSchemaJsonLd(workingHtml, surfaceTarget.url, task.surface, task.slug);
           } else {
             console.log(`    ⌀ skip ${task.taskId}: no usable Proposed Fix`);
             await markSkipped(task, 'No usable Proposed Fix');

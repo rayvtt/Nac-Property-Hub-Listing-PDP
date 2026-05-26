@@ -1,6 +1,10 @@
 name: SEO Tasks → Apply Approved Fixes
 
 on:
+  schedule:
+    # Daily at 10:00 UTC — picks up any tasks the user flipped to Approved
+    # since the last run. Idempotent: skips tasks already Applied.
+    - cron: "0 10 * * *"
   workflow_dispatch:
     inputs:
       max_tasks:
@@ -8,9 +12,9 @@ on:
         required: false
         default: "30"
       scope:
-        description: "Comma-separated surfaces (pdp,brochure,hub,tool)"
+        description: "Comma-separated surfaces (pdp,brochure,hub,tool,blog,sitewide)"
         required: false
-        default: "pdp,brochure"
+        default: "pdp,brochure,hub,tool,blog,sitewide"
       dry_run:
         description: "Print actions, no writes (true/false)"
         required: false
@@ -35,11 +39,16 @@ jobs:
       - name: Resolve params
         id: params
         run: |
-          if [ "${{ github.event_name }}" = "push" ]; then
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            # Cron: LIVE mode with full scope, no human in the loop
+            MAX=40
+            SCOPE=pdp,brochure,hub,tool,blog,sitewide
+            DRY=false
+          elif [ "${{ github.event_name }}" = "push" ]; then
             F=.github/triggers/seo-apply.json
             MAX=$(jq -r '.max_tasks // empty' "$F"); [ -z "$MAX" ] && MAX=30
-            SCOPE=$(jq -r '.scope // empty' "$F"); [ -z "$SCOPE" ] && SCOPE=pdp,brochure
-            DRY=$(jq -r '.dry_run // empty' "$F"); [ -z "$DRY" ] && DRY=true
+            SCOPE=$(jq -r '.scope // empty' "$F"); [ -z "$SCOPE" ] && SCOPE=pdp,brochure,hub,tool,blog,sitewide
+            DRY=$(jq -r '.dry_run // empty' "$F"); [ -z "$DRY" ] && DRY=false
           else
             MAX="${{ inputs.max_tasks }}"
             SCOPE="${{ inputs.scope }}"
