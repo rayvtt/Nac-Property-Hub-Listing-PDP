@@ -2,5 +2,5 @@
   "max_tasks": 40,
   "scope": "pdp,brochure,hub,tool,blog,sitewide",
   "dry_run": "false",
-  "_comment": "Apply all remaining 25 Approved tasks with extended routing (hub+tool+blog+sitewide)."
+  "_comment": "Apply 24 schema tasks with freshly-drafted JSON-LD blocks"
 }
