@@ -4,5 +4,5 @@
   "filter_statuses": "Approved",
   "filter_auto_applicable": "true",
   "dry_run": "false",
-  "_comment": "Re-draft 24 schema tasks — now with URL derivation fix"
+  "_comment": "Programmatic schema draft — no more Claude failures"
 }
