@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-05-26T14:02:38.668Z",
+  "generatedAt": "2026-05-26T14:16:26.939Z",
   "filter": {
     "status": "Applied",
     "priority": ""
   },
-  "count": 11,
+  "count": 12,
   "tasks": [
     {
       "pageId": "36648ec2-5e86-818b-9a99-ea82dae69783",
@@ -280,6 +280,31 @@
       "auditRun": "2026-05-20",
       "appliedAt": "2026-05-26",
       "commitRevision": "https://nomadassetcollective.com/wp-admin/post.php?post=1827&action=edit"
+    },
+    {
+      "pageId": "36648ec2-5e86-81d4-8cf1-f008a87a0d52",
+      "taskId": "SEO-854",
+      "title": "Missing meta description — nac-residence-index",
+      "status": "Applied",
+      "priority": "P0",
+      "surface": "Sitewide",
+      "category": "Meta",
+      "themeMonth": "M1 Technical",
+      "url": null,
+      "slug": "nac-residence-index",
+      "issue": "No meta description. Lowers CTR; LLMs and AI overviews lift meta description for summaries.",
+      "proposedFix": "",
+      "diffPreview": "",
+      "notes": "",
+      "impactScore": 2000,
+      "impressions": null,
+      "avgPosition": null,
+      "sessions": null,
+      "targetQuery": "",
+      "autoApplicable": true,
+      "auditRun": "2026-05-20",
+      "appliedAt": "2026-05-26",
+      "commitRevision": "https://nomadassetcollective.com/wp-admin/post.php?post=1800&action=edit"
     }
   ]
 }
