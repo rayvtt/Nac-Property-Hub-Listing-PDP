@@ -1,6 +1,6 @@
 {
   "max_tasks": 40,
-  "scope": "pdp,brochure,hub,blog",
+  "scope": "pdp,brochure,hub,tool,blog,sitewide",
   "dry_run": "false",
-  "_comment": "Apply all remaining Approved tasks — expanded scope to include hub + blog for the 24 schema tasks + 1 meta (nac-residence-index)."
+  "_comment": "Apply all remaining 25 Approved tasks with extended routing (hub+tool+blog+sitewide)."
 }
