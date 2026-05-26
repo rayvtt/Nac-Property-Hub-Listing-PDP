@@ -235,30 +235,42 @@ ${sig.bodyExcerpt.slice(0, 3000)}`;
       rationale: 'Self-canonical to the live URL.',
     };
   } else if (t.startsWith('no schema.org')) {
-    const surfaceSchemaHint = {
-      PDP: 'RealEstateListing with name, description, url, image, offers',
-      Hub: 'CollectionPage',
-      Tool: 'WebApplication',
-      Home: 'WebSite + Organization',
-      Brochure: 'CreativeWork',
-      Blog: 'Article',
-      Sitewide: 'WebPage',
+    // Programmatic — no Claude needed. Schema is highly templatable.
+    const schemaType = {
+      PDP: 'RealEstateListing', Hub: 'CollectionPage', Tool: 'WebApplication',
+      Home: 'WebSite', Brochure: 'CreativeWork', Blog: 'Article', Sitewide: 'WebPage',
     }[task.surface] || 'WebPage';
-    userPrompt = `${pageContext}
-
-Generate a COMPLETE, VALID JSON-LD schema.org block for this ${task.surface} page.
-
-Primary @type: ${surfaceSchemaHint}
-Also include a BreadcrumbList as a second item in a @graph array.
-
-CRITICAL RULES:
-- The "jsonld" value in your response MUST be a JSON OBJECT (starting with {), NOT a string
-- Pull real values from the page: name from title/h1, description from body, url from page URL
-- Always include @context: "https://schema.org"
-- Keep it minimal but complete — 10-15 fields max
-
-Return STRICT JSON: {"jsonld": { "@context": "https://schema.org", "@graph": [...] }, "rationale": "one sentence"}`;
-    parseShape = 'jsonld';
+    const desc = (sig.metaDesc || sig.bodyExcerpt || '').slice(0, 200).trim();
+    const jsonld = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': schemaType,
+          name: sig.h1s[0] || sig.title || task.slug,
+          headline: schemaType === 'Article' ? (sig.h1s[0] || sig.title) : undefined,
+          description: desc,
+          url: sig.url,
+          publisher: { '@type': 'Organization', name: 'Nomad Asset Collective' },
+          inLanguage: /[àáảãạ]/.test(sig.title) ? 'vi' : 'en',
+        },
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://nomadassetcollective.com/' },
+            { '@type': 'ListItem', position: 2, name: sig.h1s[0] || sig.title || task.slug },
+          ],
+        },
+      ],
+    };
+    // Clean undefined fields
+    const main = jsonld['@graph'][0];
+    Object.keys(main).forEach((k) => { if (main[k] === undefined) delete main[k]; });
+    const block = '<script type="application/ld+json">\n' + JSON.stringify(jsonld, null, 2) + '\n</script>';
+    return {
+      fix: block,
+      diffPreview: `Add to <head>:\n${block.slice(0, 400)}${block.length > 400 ? '…' : ''}`,
+      rationale: `Programmatic ${schemaType} + BreadcrumbList schema.`,
+    };
   } else if (t.startsWith('missing og:image')) {
     return {
       fix: `<meta property="og:image" content="${sig.url}/path-to-hero-image.jpg"><!-- replace with actual hero -->`,
