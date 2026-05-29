@@ -55,11 +55,10 @@ The pages you want Google to show as site links (e.g. NAC Index, Tu Vấn Nhanh,
 - Google site links are influenced by internal linking depth + click-through rate
 
 Suggested primary pages to boost:
-1. `/brochures/` (Brochures overview)
-2. `/nac-residence-index/` (NAC Index tool)
-3. `/tu-van-nhanh/` (Quick consult)
-4. `/compares/` (Comparison tool)
-5. `/nguyen-cuu-dien-hinh/` (Case studies)
+1. `/property-hub-bat-dong-san/` (Property Hub — the main listings index)
+2. `/brochures/` (Brochures overview)
+3. `/nac-residence-index/` (NAC Index tool)
+4. `/tu-van-nhanh/` (Quick consult)
 
 ## 5. After saving everything
 
@@ -74,4 +73,4 @@ Google's site links picker chooses 4-6 sub-pages it thinks are most important on
 - They're in the sitemap (you're telling Google "index me")
 - They don't have noindex tags
 
-After this checklist, Google will only have your real pages to choose from → site links will surface your brochures, tools, and key landing pages instead.
+After this checklist, Google will only have your real pages to choose from → site links will surface Property Hub, brochures, and your key tools instead.
