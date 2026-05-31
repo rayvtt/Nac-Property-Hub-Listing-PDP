@@ -310,19 +310,66 @@ body[data-lang="en"] .cl-modal-name [data-en] { display:block; }
 .cl-city-meta-num { font-family:var(--ff-display); font-size:2.4rem; font-weight:500; color:var(--display); line-height:1; }
 .cl-city-meta-lbl { font-family:var(--ff-mono); font-size:.55rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-top:.4rem; }
 
-/* ─── LISTING CARDS ─────────────────────────── */
-.cl-cards { display:grid; gap:2rem; }
-.cl-cards.cols-2 { grid-template-columns:repeat(2, 1fr); }
-.cl-cards.cols-1 { grid-template-columns:1fr; }
-@media(max-width:900px) { .cl-cards.cols-2 { grid-template-columns:1fr; } }
+/* ─── LISTING CARDS — horizontal swipe ─────── */
+.cl-cards-wrap { position:relative; }
+.cl-cards {
+  display:flex; gap:1.6rem; overflow-x:auto;
+  scroll-snap-type:x mandatory; scroll-behavior:smooth;
+  padding:.5rem .25rem 1.5rem;
+  scrollbar-width:thin; scrollbar-color:var(--gold-soft) transparent;
+  -webkit-overflow-scrolling:touch;
+}
+.cl-cards::-webkit-scrollbar { height:6px; }
+.cl-cards::-webkit-scrollbar-thumb { background:var(--gold-soft); border-radius:3px; }
+.cl-cards::-webkit-scrollbar-thumb:hover { background:var(--gold); }
+.cl-cards::-webkit-scrollbar-track { background:transparent; }
+.cl-cards > * { scroll-snap-align:start; }
 
 .cl-card {
+  flex:0 0 480px; max-width:calc(100vw - 2.5rem);
   position:relative; display:grid; grid-template-columns:1fr; overflow:hidden;
   border-radius:18px; background:var(--surface); border:1px solid var(--line);
   box-shadow:var(--shadow-sm); cursor:pointer;
   transition:transform .35s cubic-bezier(.2,.6,.2,1), box-shadow .35s ease, border-color .35s ease;
 }
+@media(max-width:680px) { .cl-card { flex:0 0 86vw; } }
 .cl-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); border-color:var(--gold-soft); }
+
+/* Nav arrows */
+.cl-cards-nav {
+  position:absolute; top:38%; transform:translateY(-50%);
+  width:48px; height:48px; border-radius:50%;
+  background:rgba(255,255,255,.96); border:1px solid var(--line-strong);
+  box-shadow:var(--shadow-md); color:var(--display);
+  font-size:1.2rem; font-family:var(--ff-display); font-weight:500;
+  display:inline-flex; align-items:center; justify-content:center;
+  opacity:0; transition:opacity .25s ease, transform .2s ease, background .2s ease, color .2s ease;
+  z-index:5;
+}
+.cl-cards-wrap:hover .cl-cards-nav { opacity:1; }
+.cl-cards-nav:hover { background:var(--gold); color:#fff; border-color:var(--gold); transform:translateY(-50%) scale(1.06); }
+.cl-cards-nav:disabled { opacity:0 !important; pointer-events:none; }
+.cl-cards-nav-prev { left:-22px; }
+.cl-cards-nav-next { right:-22px; }
+@media(max-width:680px) { .cl-cards-nav { display:none; } }
+
+/* Counter + swipe hint */
+.cl-cards-meta {
+  display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  margin-top:.5rem; padding:0 .25rem;
+  font-family:var(--ff-mono); font-size:.6rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted);
+}
+.cl-cards-counter { display:inline-flex; align-items:center; gap:.4rem; }
+.cl-cards-counter .current { color:var(--display); font-weight:500; }
+.cl-cards-counter .sep { color:var(--line-strong); }
+.cl-cards-counter .total { color:var(--gold); font-weight:500; }
+.cl-cards-hint { display:inline-flex; align-items:center; gap:.5rem; }
+.cl-cards-hint::before { content:'⇄'; color:var(--gold); font-size:.85rem; }
+@media(max-width:680px) { .cl-cards-hint::before { content:'⇆'; } .cl-cards-hint { font-size:.55rem; } }
+.cl-cards-wrap.no-scroll .cl-cards-meta,
+.cl-cards-wrap.no-scroll .cl-cards-nav { display:none; }
+.cl-cards-wrap.no-scroll .cl-cards { padding-bottom:.5rem; }
+.cl-cards-wrap.no-scroll .cl-cards::-webkit-scrollbar { display:none; }
 .cl-card-img-wrap { position:relative; overflow:hidden; aspect-ratio:16/10; background:#0a0d1c; }
 .cl-card-img {
   position:absolute; inset:0; background-size:cover; background-position:center;
@@ -795,7 +842,10 @@ body.cl-modal-open { overflow:hidden; }
     </div>
   </div>
 
-  <div class="cl-cards cols-2">
+  <div class="cl-cards-wrap">
+    <button class="cl-cards-nav cl-cards-nav-prev" aria-label="Previous listing">‹</button>
+    <button class="cl-cards-nav cl-cards-nav-next" aria-label="Next listing">›</button>
+    <div class="cl-cards">
     <!-- Nobu -->
     <article class="cl-card reveal"
              data-listing="nobu-da-nang"
@@ -931,6 +981,11 @@ body.cl-modal-open { overflow:hidden; }
         <span class="cl-card-footer-arrow"><span data-vi="Mở dự án">Mở dự án</span><span data-en="Open listing">Open listing</span> <span>→</span></span>
       </div>
     </article>
+    </div>
+    <div class="cl-cards-meta">
+      <span class="cl-cards-counter"><span class="current">1</span><span class="sep">/</span><span class="total">2</span></span>
+      <span class="cl-cards-hint"><span data-vi="Vuốt để xem">Vuốt để xem</span><span data-en="Swipe to browse">Swipe to browse</span></span>
+    </div>
   </div>
 </section>
 
@@ -961,7 +1016,10 @@ body.cl-modal-open { overflow:hidden; }
     </div>
   </div>
 
-  <div class="cl-cards cols-1">
+  <div class="cl-cards-wrap">
+    <button class="cl-cards-nav cl-cards-nav-prev" aria-label="Previous listing">‹</button>
+    <button class="cl-cards-nav cl-cards-nav-next" aria-label="Next listing">›</button>
+    <div class="cl-cards">
     <article class="cl-card reveal"
              data-listing="grand-marina"
              data-img="https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/grand-marina-sai-gon-bason-by-jw-marriot-hero/public"
@@ -978,7 +1036,7 @@ body.cl-modal-open { overflow:hidden; }
              data-score="81"
              data-subs='[{"vi":"Thương Hiệu","en":"Brand","val":9.2},{"vi":"Yield","en":"Yield","val":7.8},{"vi":"Vị Trí","en":"Location","val":9.4},{"vi":"Quản Lý","en":"Management","val":8.6},{"vi":"Thanh Khoản","en":"Liquidity","val":7.0},{"vi":"Rủi Ro","en":"Risk","val":7.2}]'
              data-url="../properties/grand-marina-sai-gon-bason-by-jw-marriot.html">
-      <div class="cl-card-img-wrap" style="aspect-ratio:21/9">
+      <div class="cl-card-img-wrap">
         <div class="cl-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/grand-marina-sai-gon-bason-by-jw-marriot-hero/public')"></div>
         <div class="cl-card-img-veil"></div>
         <div class="cl-card-chips">
@@ -1029,6 +1087,11 @@ body.cl-modal-open { overflow:hidden; }
         <span class="cl-card-footer-arrow"><span data-vi="Mở dự án">Mở dự án</span><span data-en="Open listing">Open listing</span> <span>→</span></span>
       </div>
     </article>
+    </div>
+    <div class="cl-cards-meta">
+      <span class="cl-cards-counter"><span class="current">1</span><span class="sep">/</span><span class="total">1</span></span>
+      <span class="cl-cards-hint"><span data-vi="Vuốt để xem">Vuốt để xem</span><span data-en="Swipe to browse">Swipe to browse</span></span>
+    </div>
   </div>
 </section>
 
@@ -1059,7 +1122,10 @@ body.cl-modal-open { overflow:hidden; }
     </div>
   </div>
 
-  <div class="cl-cards cols-1">
+  <div class="cl-cards-wrap">
+    <button class="cl-cards-nav cl-cards-nav-prev" aria-label="Previous listing">‹</button>
+    <button class="cl-cards-nav cl-cards-nav-next" aria-label="Next listing">›</button>
+    <div class="cl-cards">
     <article class="cl-card reveal"
              data-listing="hyatt"
              data-img=""
@@ -1076,7 +1142,7 @@ body.cl-modal-open { overflow:hidden; }
              data-score="80"
              data-subs='[{"vi":"Thương Hiệu","en":"Brand","val":8.8},{"vi":"Yield","en":"Yield","val":8.4},{"vi":"Vị Trí","en":"Location","val":7.8},{"vi":"Quản Lý","en":"Management","val":8.6},{"vi":"Thanh Khoản","en":"Liquidity","val":6.4},{"vi":"Rủi Ro","en":"Risk","val":7.2}]'
              data-url="../properties/hyatt-regency-ho-tram.html">
-      <div class="cl-card-img-wrap" style="aspect-ratio:21/9">
+      <div class="cl-card-img-wrap">
         <div class="cl-card-img" style="background:linear-gradient(135deg,#1a3a5c 0%,#0f1a36 60%,#c4922c 200%);"></div>
         <div class="cl-card-img-veil"></div>
         <div class="cl-card-chips">
@@ -1127,6 +1193,11 @@ body.cl-modal-open { overflow:hidden; }
         <span class="cl-card-footer-arrow"><span data-vi="Mở dự án">Mở dự án</span><span data-en="Open listing">Open listing</span> <span>→</span></span>
       </div>
     </article>
+    </div>
+    <div class="cl-cards-meta">
+      <span class="cl-cards-counter"><span class="current">1</span><span class="sep">/</span><span class="total">1</span></span>
+      <span class="cl-cards-hint"><span data-vi="Vuốt để xem">Vuốt để xem</span><span data-en="Swipe to browse">Swipe to browse</span></span>
+    </div>
   </div>
 </section>
 
@@ -1365,6 +1436,44 @@ body.cl-modal-open { overflow:hidden; }
   closeBtn.addEventListener('click', closeModal);
   modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+
+  // ─── Listing carousels (per city) ───
+  document.querySelectorAll('.cl-cards-wrap').forEach(wrap => {
+    const track   = wrap.querySelector('.cl-cards');
+    const prev    = wrap.querySelector('.cl-cards-nav-prev');
+    const next    = wrap.querySelector('.cl-cards-nav-next');
+    const counter = wrap.querySelector('.cl-cards-counter');
+    const cards   = Array.from(track.querySelectorAll('.cl-card'));
+    if (counter) counter.querySelector('.total').textContent = cards.length;
+
+    function step() {
+      const card = cards[0]; if (!card) return 0;
+      const gap  = parseFloat(getComputedStyle(track).gap) || 0;
+      return card.offsetWidth + gap;
+    }
+    function maxScroll() { return track.scrollWidth - track.clientWidth - 4; }
+    function flag() {
+      if (track.scrollWidth <= track.clientWidth + 4) {
+        wrap.classList.add('no-scroll');
+      } else {
+        wrap.classList.remove('no-scroll');
+      }
+    }
+    function update() {
+      flag();
+      if (prev) prev.disabled = track.scrollLeft <= 4;
+      if (next) next.disabled = track.scrollLeft >= maxScroll();
+      if (counter && cards.length) {
+        const idx = Math.min(cards.length, Math.round(track.scrollLeft / step()) + 1);
+        counter.querySelector('.current').textContent = idx;
+      }
+    }
+    if (prev) prev.addEventListener('click', e => { e.stopPropagation(); track.scrollBy({ left:-step(), behavior:'smooth' }); });
+    if (next) next.addEventListener('click', e => { e.stopPropagation(); track.scrollBy({ left: step(), behavior:'smooth' }); });
+    track.addEventListener('scroll', update, { passive:true });
+    window.addEventListener('resize', update);
+    update();
+  });
 
   // ─── Comparison table — sort + row click ───
   const tbl = document.getElementById('cl-tbl');
