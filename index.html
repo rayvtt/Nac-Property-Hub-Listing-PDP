@@ -46,6 +46,25 @@
     .tile-btn-live { background:var(--gold); border:1px solid var(--gold); color:#fff; }
     .tile-btn-disabled { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); color:rgba(255,255,255,.35); cursor:default; pointer-events:none; }
 
+    /* Section header */
+    .section-head { display:flex; align-items:baseline; justify-content:space-between; margin:0 0 1rem; padding-bottom:.6rem; border-bottom:1px solid var(--line); }
+    .section-head h2 { font-family:var(--ff-display); font-size:1.15rem; font-weight:500; font-style:italic; color:var(--display); }
+    .section-head .count { font-family:var(--ff-mono); font-size:.6rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); }
+    .section-spacer { height:2.5rem; }
+
+    /* Country cards row */
+    .country-row { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:12px; margin-bottom:0; }
+    .country-card { position:relative; aspect-ratio:16/10; overflow:hidden; border-radius:10px; background:var(--display); display:block; }
+    .country-card-img { position:absolute; inset:0; background-size:cover; background-position:center; transition:transform .5s ease; }
+    .country-card:hover .country-card-img { transform:scale(1.06); }
+    .country-card::after { content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(5,8,20,.86) 0%, rgba(5,8,20,.25) 60%, rgba(5,8,20,0) 100%); pointer-events:none; }
+    .country-card-body { position:absolute; inset:auto 1rem 1rem; z-index:1; color:#fff; display:flex; align-items:flex-end; justify-content:space-between; gap:.75rem; }
+    .country-card-meta .flag { font-family:var(--ff-mono); font-size:.58rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.7); display:block; margin-bottom:.3rem; }
+    .country-card-meta .name { font-family:var(--ff-display); font-size:1.35rem; font-weight:500; font-style:italic; line-height:1.1; display:block; }
+    .country-card-meta .stat { font-family:var(--ff-mono); font-size:.55rem; letter-spacing:.14em; color:var(--gold-2); display:block; margin-top:.3rem; text-transform:uppercase; }
+    .country-card-cta { flex-shrink:0; padding:.35rem .7rem; border-radius:999px; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.28); color:#fff; font-family:var(--ff-mono); font-size:.55rem; letter-spacing:.14em; text-transform:uppercase; backdrop-filter:blur(6px); }
+    .country-card:hover .country-card-cta { background:var(--gold); border-color:var(--gold); }
+
     footer { text-align:center; margin-top:2rem; font-family:var(--ff-mono); font-size:.65rem; color:var(--muted); letter-spacing:.08em; }
     footer a { color:var(--orange); text-decoration:none; }
   </style>
@@ -62,6 +81,29 @@
       <p class="sub">Preview ↗ GitHub · Live ↗ Nomad Site</p>
     </header>
 
+    <div class="section-head">
+      <h2>Country Pages</h2>
+      <span class="count">1 country · CLP preview</span>
+    </div>
+    <div class="country-row">
+      <a href="country/vn.html" class="country-card" target="_blank">
+        <div class="country-card-img" style="background-image:url('https://nomadassetcollective.com/wp-content/uploads/2026/05/nobu.webp')"></div>
+        <div class="country-card-body">
+          <div class="country-card-meta">
+            <span class="flag">🇻🇳 Vietnam · CLP</span>
+            <span class="name">Việt Nam</span>
+            <span class="stat">4 listings · 3 cities</span>
+          </div>
+          <span class="country-card-cta">View ↗</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="section-spacer"></div>
+    <div class="section-head">
+      <h2>Listing Pages</h2>
+      <span class="count" id="listing-count">12 listings</span>
+    </div>
     <div class="grid">
       <!-- INDEX_CARDS_START — rebuilt by scripts/update-index.mjs from Notion Live rows -->
       <div class="tile" data-slug="hyatt-regency-ho-tram">
