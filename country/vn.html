@@ -1,0 +1,658 @@
+<!DOCTYPE html><html lang="vi" data-theme="light"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+
+<title>Việt Nam · Branded Residences — NAC Property Hub</title>
+<meta name="description" content="Branded residences across Vietnam — Da Nang, Ho Chi Minh City, Ho Tram. Curated by Nomad Asset Collective.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Việt Nam · Branded Residences — NAC Property Hub">
+<meta property="og:description" content="Curated branded residences across Vietnam's golden coast.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+
+:root {
+  --bg:#fafaf7; --surface:#fff; --surface-2:#f5f3ee;
+  --display:#0f1a36; --text:#14181f; --muted:#6b7280;
+  --gold:#c4922c; --gold-2:#e8bf72; --orange:#d97c44;
+  --line:rgba(15,26,54,.08);
+  --ff-display:'Cormorant Garamond',serif;
+  --ff-body:'Inter',-apple-system,sans-serif;
+  --ff-mono:'JetBrains Mono',monospace;
+}
+[data-theme="dark"] {
+  --bg:#07091a; --surface:#0e1530; --surface-2:#131c3d;
+  --display:#ede8dc; --text:#d8d2c5; --muted:#8a92a5;
+  --line:rgba(255,255,255,.08);
+}
+
+body { font-family:var(--ff-body); background:var(--bg); color:var(--text); min-height:100vh; -webkit-font-smoothing:antialiased; }
+img,svg { display:block; max-width:100%; }
+a { color:inherit; text-decoration:none; }
+
+/* ─── HEADER ─── */
+.cl-hdr {
+  position:sticky; top:0; z-index:20;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1rem 2rem; border-bottom:1px solid var(--line);
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+}
+.cl-hdr-mark { display:flex; flex-direction:column; line-height:1; }
+.cl-hdr-mark .the { font-family:var(--ff-display); font-size:.65rem; letter-spacing:.32em; color:var(--muted); }
+.cl-hdr-mark .nac { font-family:var(--ff-display); font-size:1.55rem; font-weight:500; letter-spacing:.32em; color:var(--display); margin:.1rem 0 .12rem; padding-left:.32em; }
+.cl-hdr-mark .tag { font-family:var(--ff-display); font-size:.55rem; letter-spacing:.38em; color:var(--gold); font-weight:500; padding-left:.38em; }
+.cl-hdr-crumb { font-family:var(--ff-mono); font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
+.cl-hdr-crumb a:hover { color:var(--gold); }
+.cl-hdr-crumb .sep { margin:0 .55rem; opacity:.5; }
+.cl-toggle { display:inline-flex; gap:.2rem; border:1px solid var(--line); padding:.2rem; border-radius:999px; }
+.cl-toggle button {
+  font-family:var(--ff-mono); font-size:.58rem; letter-spacing:.14em; text-transform:uppercase;
+  padding:.35rem .7rem; border:none; background:transparent; color:var(--muted); cursor:pointer; border-radius:999px;
+}
+.cl-toggle button.on { background:linear-gradient(135deg, var(--gold), var(--gold-2)); color:#fff; }
+
+/* ─── ATLAS HERO ─── */
+.cl-hero {
+  position:relative; min-height:88vh; display:flex; align-items:center;
+  padding:5rem 2rem; overflow:hidden;
+  background:linear-gradient(180deg, var(--bg) 0%, var(--surface-2) 100%);
+}
+.cl-hero-inner {
+  position:relative; z-index:2; width:100%; max-width:1320px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center;
+}
+@media(max-width:900px) {
+  .cl-hero { min-height:auto; padding:3rem 1.5rem; }
+  .cl-hero-inner { grid-template-columns:1fr; gap:2.5rem; }
+}
+
+/* Atlas map */
+.cl-atlas { position:relative; width:100%; aspect-ratio:3/4; max-width:420px; margin:0 auto; }
+.cl-atlas svg { width:100%; height:100%; }
+.cl-atlas-coast { fill:none; stroke:var(--display); stroke-width:1.4; opacity:.18; }
+.cl-atlas-coast-glow { fill:var(--gold); opacity:.04; }
+.cl-atlas-water { fill:none; stroke:var(--gold); stroke-width:.6; stroke-dasharray:2 4; opacity:.3; }
+.cl-pin { cursor:pointer; }
+.cl-pin-dot { fill:var(--gold); }
+.cl-pin-halo { fill:none; stroke:var(--gold); stroke-width:1.2; opacity:.45; transform-origin:center; animation:pulse 2.8s ease-out infinite; }
+.cl-pin-label { font-family:var(--ff-display); font-size:11px; font-weight:500; font-style:italic; fill:var(--display); }
+.cl-pin-count { font-family:var(--ff-mono); font-size:7px; letter-spacing:.18em; fill:var(--muted); text-transform:uppercase; }
+@keyframes pulse {
+  0% { transform:scale(.7); opacity:.7; }
+  100% { transform:scale(2.6); opacity:0; }
+}
+
+/* Headline column */
+.cl-eyebrow {
+  display:inline-flex; align-items:center; gap:.5rem;
+  font-family:var(--ff-mono); font-size:.66rem; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:1.5rem;
+}
+.cl-eyebrow::before { content:''; display:inline-block; width:32px; height:1px; background:var(--gold); }
+.cl-name {
+  font-family:var(--ff-display); font-size:clamp(3.2rem, 7vw, 6rem);
+  font-weight:400; line-height:1; letter-spacing:-.015em; color:var(--display);
+  margin-bottom:.4rem;
+}
+.cl-name span[data-en] { font-style:italic; display:block; font-size:.58em; color:var(--gold); margin-top:.4rem; letter-spacing:.005em; }
+.cl-tag {
+  font-family:var(--ff-display); font-size:clamp(1.05rem, 1.7vw, 1.4rem);
+  font-style:italic; font-weight:400; color:var(--text); opacity:.78;
+  margin-bottom:2.2rem; max-width:32ch;
+}
+.cl-stats { display:flex; gap:2.4rem; flex-wrap:wrap; }
+.cl-stat-num { font-family:var(--ff-display); font-size:2.4rem; font-weight:500; color:var(--display); line-height:1; }
+.cl-stat-lbl { font-family:var(--ff-mono); font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin-top:.3rem; }
+
+.cl-scroll {
+  position:absolute; bottom:1.8rem; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:.5rem;
+  font-family:var(--ff-mono); font-size:.55rem; letter-spacing:.22em; text-transform:uppercase; color:var(--muted);
+}
+.cl-scroll-line { width:1px; height:32px; background:linear-gradient(180deg, transparent, var(--gold)); }
+@media(max-width:900px) { .cl-scroll { display:none; } }
+
+/* ─── SPINE ─── */
+.cl-spine { position:relative; padding:7rem 2rem; }
+@media(max-width:900px) { .cl-spine { padding:4rem 1.25rem; } }
+.cl-spine-track {
+  position:absolute; top:0; bottom:0; left:50%; width:1px;
+  background:linear-gradient(180deg, transparent, var(--line) 8%, var(--line) 92%, transparent);
+}
+@media(max-width:900px) {
+  .cl-spine-track { left:24px; }
+}
+
+.cl-section {
+  position:relative; max-width:1320px; margin:0 auto 6rem;
+  display:grid; grid-template-columns:1fr 140px 1fr; align-items:start;
+}
+@media(max-width:900px) { .cl-section { grid-template-columns:1fr; margin-bottom:3.5rem; padding-left:48px; } }
+
+.cl-marker {
+  grid-column:2; display:flex; flex-direction:column; align-items:center; gap:.5rem;
+  position:sticky; top:120px; padding-top:.2rem;
+}
+@media(max-width:900px) {
+  .cl-marker {
+    position:relative; top:auto;
+    grid-column:1; flex-direction:row; align-items:center; gap:.6rem;
+    padding-left:0; margin-bottom:1.2rem;
+  }
+  .cl-marker::before {
+    content:''; position:absolute; left:-31px; top:50%; width:13px; height:13px;
+    transform:translateY(-50%); border-radius:50%; background:var(--gold); box-shadow:0 0 0 4px var(--bg);
+  }
+}
+.cl-marker-dot { width:13px; height:13px; border-radius:50%; background:var(--gold); box-shadow:0 0 0 4px var(--bg); }
+@media(max-width:900px) { .cl-marker-dot { display:none; } }
+.cl-marker-num { font-family:var(--ff-mono); font-size:.62rem; letter-spacing:.22em; color:var(--gold); font-weight:500; }
+.cl-marker-lbl { font-family:var(--ff-display); font-size:.78rem; font-style:italic; color:var(--muted); text-align:center; }
+
+.cl-c1 { grid-column:1; padding-right:1rem; }
+.cl-c3 { grid-column:3; padding-left:1rem; }
+.cl-cfull { grid-column:1 / -1; max-width:900px; margin:0 auto; }
+@media(max-width:900px) {
+  .cl-c1, .cl-c3, .cl-cfull { grid-column:1; padding:0; max-width:none; margin:0; }
+}
+
+/* ─── WHY VIETNAM ─── */
+.cl-why-title {
+  font-family:var(--ff-display); font-size:clamp(2rem, 4vw, 3rem); font-weight:400;
+  color:var(--display); line-height:1.05; margin-bottom:.6rem;
+}
+.cl-why-title span[data-en] { font-style:italic; color:var(--gold); display:block; font-size:.55em; margin-top:.4rem; }
+.cl-why-lead {
+  font-family:var(--ff-display); font-size:1.18rem; font-style:italic; font-weight:300;
+  color:var(--text); opacity:.82; line-height:1.5; margin-bottom:2.4rem;
+}
+.cl-why-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:1.4rem; }
+@media(max-width:680px) { .cl-why-grid { grid-template-columns:1fr; gap:1rem; } }
+.cl-why-card {
+  padding:1.5rem 1.3rem; background:var(--surface); border:1px solid var(--line); border-radius:14px;
+}
+.cl-why-card-icon { font-family:var(--ff-mono); font-size:.6rem; letter-spacing:.2em; color:var(--gold); text-transform:uppercase; margin-bottom:.6rem; }
+.cl-why-card-stat { font-family:var(--ff-display); font-size:2.2rem; font-weight:500; color:var(--display); line-height:1; margin-bottom:.4rem; }
+.cl-why-card-stat span { font-size:.6em; color:var(--gold); font-style:italic; }
+.cl-why-card-lbl { font-family:var(--ff-body); font-size:.88rem; color:var(--muted); line-height:1.4; }
+
+/* ─── LISTING CARDS (cinematic spine sections) ─── */
+.cl-listing {
+  position:relative; max-width:1320px; margin:0 auto 6rem;
+}
+@media(max-width:900px) { .cl-listing { margin-bottom:3rem; } }
+
+.cl-card {
+  position:relative; overflow:hidden;
+  aspect-ratio:16/9; border-radius:18px;
+  background:#0a0d1c;
+  isolation:isolate;
+}
+@media(max-width:680px) { .cl-card { aspect-ratio:4/5; border-radius:12px; } }
+
+.cl-card-img {
+  position:absolute; inset:0; background-size:cover; background-position:center;
+  transition:transform 1.4s cubic-bezier(.2,.6,.2,1);
+}
+.cl-card:hover .cl-card-img { transform:scale(1.04); }
+.cl-card-veil {
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(5,8,20,.92) 0%, rgba(5,8,20,.5) 45%, rgba(5,8,20,.05) 100%);
+}
+.cl-card-grain {
+  position:absolute; inset:0; opacity:.06; mix-blend-mode:overlay; pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='.5'/></svg>");
+}
+
+.cl-card-body {
+  position:absolute; left:0; right:0; bottom:0; padding:2.4rem 2.4rem 2rem;
+  display:flex; align-items:flex-end; justify-content:space-between; gap:1.5rem;
+  color:#fff;
+}
+@media(max-width:680px) { .cl-card-body { padding:1.4rem 1.4rem 1.2rem; flex-direction:column; align-items:flex-start; gap:1rem; } }
+
+.cl-card-meta { flex:1; min-width:0; }
+.cl-card-eyebrow {
+  font-family:var(--ff-mono); font-size:.62rem; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--gold-2); margin-bottom:.7rem;
+}
+.cl-card-name {
+  font-family:var(--ff-display); font-size:clamp(1.6rem, 3vw, 2.5rem); font-weight:500;
+  line-height:1.05; letter-spacing:-.01em; margin-bottom:.55rem;
+}
+.cl-card-name span[data-en] { font-style:italic; font-weight:400; color:rgba(255,255,255,.78); display:block; font-size:.7em; margin-top:.25rem; }
+.cl-card-stats {
+  display:flex; gap:1.5rem; flex-wrap:wrap;
+  font-family:var(--ff-mono); font-size:.65rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.7);
+}
+.cl-card-stats span { display:inline-flex; align-items:center; gap:.4rem; }
+.cl-card-stats span::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--gold); display:inline-block; }
+
+.cl-card-cta {
+  flex-shrink:0; display:inline-flex; align-items:center; gap:.5rem;
+  padding:.85rem 1.4rem; border-radius:999px;
+  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.25); color:#fff;
+  font-family:var(--ff-mono); font-size:.65rem; letter-spacing:.18em; text-transform:uppercase; font-weight:500;
+  backdrop-filter:blur(6px); transition:all .25s ease;
+}
+.cl-card-cta:hover { background:var(--gold); border-color:var(--gold); transform:translateX(4px); }
+.cl-card-cta-arrow { transition:transform .25s ease; }
+.cl-card-cta:hover .cl-card-cta-arrow { transform:translateX(2px); }
+
+/* Marker for listing card (left of card on desktop, top on mobile) */
+.cl-list-row {
+  display:grid; grid-template-columns:1fr 140px 5fr; gap:0; align-items:flex-start;
+}
+@media(max-width:900px) {
+  .cl-list-row { grid-template-columns:1fr; padding-left:48px; position:relative; }
+}
+.cl-list-row > .cl-marker { grid-column:2; }
+@media(max-width:900px) { .cl-list-row > .cl-marker { grid-column:1; } }
+.cl-list-row > .cl-card-wrap { grid-column:3; }
+@media(max-width:900px) { .cl-list-row > .cl-card-wrap { grid-column:1; } }
+.cl-list-row > .cl-list-meta { grid-column:1; padding:.5rem 1.4rem 0 0; text-align:right; }
+@media(max-width:900px) { .cl-list-row > .cl-list-meta { grid-column:1; padding:0 0 1rem; text-align:left; } }
+.cl-list-meta-city { font-family:var(--ff-display); font-size:1.4rem; font-style:italic; color:var(--display); }
+.cl-list-meta-region { font-family:var(--ff-mono); font-size:.6rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-top:.3rem; }
+
+/* ─── CLOSING ASPIRATION ─── */
+.cl-asp {
+  padding:7rem 2rem; text-align:center;
+  background:linear-gradient(180deg, var(--bg) 0%, var(--surface-2) 70%, var(--bg) 100%);
+}
+.cl-asp-inner { max-width:780px; margin:0 auto; }
+.cl-asp-mark { font-family:var(--ff-mono); font-size:.65rem; letter-spacing:.22em; color:var(--gold); text-transform:uppercase; margin-bottom:1.8rem; }
+.cl-asp-line {
+  font-family:var(--ff-display); font-size:clamp(1.8rem, 4.5vw, 3.4rem);
+  font-weight:400; font-style:italic; line-height:1.18; color:var(--display);
+  margin-bottom:2rem;
+}
+.cl-asp-line strong { font-style:normal; color:var(--gold); font-weight:500; }
+.cl-asp-cta {
+  display:inline-flex; align-items:center; gap:.6rem;
+  padding:1rem 1.8rem; border-radius:999px;
+  background:linear-gradient(135deg, var(--gold), var(--gold-2)); color:#fff;
+  font-family:var(--ff-mono); font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; font-weight:500;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.cl-asp-cta:hover { transform:translateY(-2px); box-shadow:0 12px 32px rgba(196,146,60,.32); }
+
+/* ─── FOOTER ─── */
+.cl-foot { padding:3rem 2rem; text-align:center; border-top:1px solid var(--line); font-family:var(--ff-mono); font-size:.6rem; letter-spacing:.16em; color:var(--muted); text-transform:uppercase; }
+.cl-foot a { color:var(--gold); }
+
+/* ─── LANG SWITCH ─── */
+[data-vi], [data-en] { display:none; }
+.cl-pdp[data-lang="vi"] [data-vi] { display:inline; }
+.cl-pdp[data-lang="en"] [data-en] { display:inline; }
+.cl-name [data-vi], .cl-name [data-en],
+.cl-card-name [data-vi], .cl-card-name [data-en],
+.cl-why-title [data-vi], .cl-why-title [data-en] { display:none; }
+.cl-pdp[data-lang="vi"] .cl-name [data-vi],
+.cl-pdp[data-lang="vi"] .cl-card-name [data-vi],
+.cl-pdp[data-lang="vi"] .cl-why-title [data-vi],
+.cl-pdp[data-lang="en"] .cl-name [data-en],
+.cl-pdp[data-lang="en"] .cl-card-name [data-en],
+.cl-pdp[data-lang="en"] .cl-why-title [data-en] { display:block; }
+
+/* anim helper */
+.cl-anim { opacity:0; transform:translateY(20px); transition:opacity .9s ease, transform .9s ease; }
+.cl-anim.in { opacity:1; transform:none; }
+</style>
+</head>
+<body class="cl-pdp" data-lang="vi">
+
+<!-- ─── HEADER ─── -->
+<header class="cl-hdr">
+  <a href="../index.html" class="cl-hdr-mark">
+    <span class="the">THE</span>
+    <span class="nac">NAC</span>
+    <span class="tag">PROPERTY HUB</span>
+  </a>
+  <nav class="cl-hdr-crumb">
+    <a href="../index.html"><span data-vi="Trang chủ">Trang chủ</span><span data-en="Home">Home</span></a>
+    <span class="sep">·</span>
+    <span style="color:var(--display)"><span data-vi="Việt Nam">Việt Nam</span><span data-en="Vietnam">Vietnam</span></span>
+  </nav>
+  <div class="cl-toggle">
+    <button data-lang-btn="vi" class="on">VI</button>
+    <button data-lang-btn="en">EN</button>
+  </div>
+</header>
+
+<!-- ─── ATLAS HERO ─── -->
+<section class="cl-hero">
+  <div class="cl-hero-inner">
+    <!-- Map column -->
+    <div class="cl-atlas cl-anim">
+      <svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid meet">
+        <!-- Stylized Vietnam silhouette: north (wide), thin waist (Da Nang), south delta (Mekong) -->
+        <defs>
+          <radialGradient id="vnGlow" cx="50%" cy="50%" r="55%">
+            <stop offset="0%" stop-color="#c4922c" stop-opacity=".18"/>
+            <stop offset="100%" stop-color="#c4922c" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle cx="150" cy="200" r="170" fill="url(#vnGlow)"/>
+
+        <!-- Country outline (stylized, hand-drawn feel) -->
+        <path class="cl-atlas-coast-glow" d="M 95 50 C 105 45 145 38 175 52 C 200 65 195 95 180 120 C 165 145 155 165 165 195 C 175 225 195 245 175 275 C 155 305 130 320 115 340 C 100 360 95 375 90 370 C 80 365 88 340 95 320 C 105 290 115 265 110 235 C 105 205 95 180 95 155 C 95 130 90 100 92 75 C 92 60 88 55 95 50 Z"/>
+        <path class="cl-atlas-coast" d="M 95 50 C 105 45 145 38 175 52 C 200 65 195 95 180 120 C 165 145 155 165 165 195 C 175 225 195 245 175 275 C 155 305 130 320 115 340 C 100 360 95 375 90 370 C 80 365 88 340 95 320 C 105 290 115 265 110 235 C 105 205 95 180 95 155 C 95 130 90 100 92 75 C 92 60 88 55 95 50 Z"/>
+
+        <!-- East-Sea hint (dashed offshore) -->
+        <path class="cl-atlas-water" d="M 210 90 Q 230 180 220 280"/>
+        <path class="cl-atlas-water" d="M 230 130 Q 245 215 235 295"/>
+
+        <!-- Hà Nội (faded reference, not a listing) -->
+        <g opacity=".45">
+          <circle cx="135" cy="78" r="2.5" fill="#6b7280"/>
+          <text class="cl-pin-label" x="143" y="81" style="fill:#6b7280; font-size:9px">Hà Nội</text>
+        </g>
+
+        <!-- Đà Nẵng — 2 listings -->
+        <g class="cl-pin">
+          <circle class="cl-pin-halo" cx="170" cy="175" r="6"/>
+          <circle class="cl-pin-dot" cx="170" cy="175" r="5"/>
+          <text class="cl-pin-label" x="182" y="172">Đà Nẵng</text>
+          <text class="cl-pin-count" x="182" y="184">2 Listings</text>
+        </g>
+
+        <!-- Sài Gòn -->
+        <g class="cl-pin">
+          <circle class="cl-pin-halo" cx="115" cy="335" r="6"/>
+          <circle class="cl-pin-dot" cx="115" cy="335" r="5"/>
+          <text class="cl-pin-label" x="50" y="332" text-anchor="start" style="font-size:11px">Sài Gòn</text>
+          <text class="cl-pin-count" x="50" y="344" text-anchor="start">1 Listing</text>
+        </g>
+
+        <!-- Hồ Tràm -->
+        <g class="cl-pin">
+          <circle class="cl-pin-halo" cx="140" cy="358" r="5"/>
+          <circle class="cl-pin-dot" cx="140" cy="358" r="4"/>
+          <text class="cl-pin-label" x="155" y="361" style="font-size:10px">Hồ Tràm</text>
+          <text class="cl-pin-count" x="155" y="372">1 Listing</text>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Headline column -->
+    <div class="cl-hero-text">
+      <div class="cl-eyebrow cl-anim"><span data-vi="Quốc gia">Quốc gia</span><span data-en="Country">Country</span></div>
+      <h1 class="cl-name cl-anim">
+        <span data-vi="Việt Nam">Việt Nam</span>
+        <span data-en="Vietnam">Vietnam</span>
+      </h1>
+      <p class="cl-tag cl-anim">
+        <span data-vi="«Bờ biển vàng của châu Á» — branded residences từ JW Marriott đến Nobu.">«Bờ biển vàng của châu Á» — branded residences từ JW Marriott đến Nobu.</span>
+        <span data-en="«Asia's golden coast» — branded residences from JW Marriott to Nobu.">«Asia's golden coast» — branded residences from JW Marriott to Nobu.</span>
+      </p>
+      <div class="cl-stats cl-anim">
+        <div>
+          <div class="cl-stat-num">4</div>
+          <div class="cl-stat-lbl"><span data-vi="Dự án">Dự án</span><span data-en="Listings">Listings</span></div>
+        </div>
+        <div>
+          <div class="cl-stat-num">3</div>
+          <div class="cl-stat-lbl"><span data-vi="Thành phố">Thành phố</span><span data-en="Cities">Cities</span></div>
+        </div>
+        <div>
+          <div class="cl-stat-num">8–15<span style="font-size:.5em;color:var(--gold)">%</span></div>
+          <div class="cl-stat-lbl"><span data-vi="YoY USD">YoY USD</span><span data-en="YoY USD">YoY USD</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cl-scroll">
+    <span><span data-vi="Khám phá">Khám phá</span><span data-en="Discover">Discover</span></span>
+    <span class="cl-scroll-line"></span>
+  </div>
+</section>
+
+<!-- ─── SPINE TRACK ─── -->
+<div class="cl-spine">
+  <div class="cl-spine-track"></div>
+
+  <!-- §01 Why Vietnam -->
+  <div class="cl-section">
+    <div class="cl-marker">
+      <div class="cl-marker-dot"></div>
+      <div class="cl-marker-num">§01</div>
+      <div class="cl-marker-lbl"><span data-vi="Vì sao">Vì sao</span><span data-en="Why">Why</span></div>
+    </div>
+    <div class="cl-cfull cl-anim">
+      <h2 class="cl-why-title">
+        <span data-vi="Vì sao Việt Nam">Vì sao Việt Nam</span>
+        <span data-en="Why Vietnam">Why Vietnam</span>
+      </h2>
+      <p class="cl-why-lead">
+        <span data-vi="Tăng trưởng GDP đứng đầu Đông Nam Á, bờ biển Forbes top-10, và làn sóng branded residences đang định hình thị trường ultra-luxury mới của châu Á.">Tăng trưởng GDP đứng đầu Đông Nam Á, bờ biển Forbes top-10, và làn sóng branded residences đang định hình thị trường ultra-luxury mới của châu Á.</span>
+        <span data-en="Southeast Asia's fastest-growing economy, Forbes top-10 coastline, and a branded-residence wave reshaping Asia's new ultra-luxury market.">Southeast Asia's fastest-growing economy, Forbes top-10 coastline, and a branded-residence wave reshaping Asia's new ultra-luxury market.</span>
+      </p>
+      <div class="cl-why-grid">
+        <div class="cl-why-card">
+          <div class="cl-why-card-icon">GDP 2024</div>
+          <div class="cl-why-card-stat">7.1<span>%</span></div>
+          <div class="cl-why-card-lbl"><span data-vi="Top ASEAN — IMF dự báo 6.5%+ đến 2028.">Top ASEAN — IMF dự báo 6.5%+ đến 2028.</span><span data-en="Top ASEAN — IMF forecasts 6.5%+ through 2028.">Top ASEAN — IMF forecasts 6.5%+ through 2028.</span></div>
+        </div>
+        <div class="cl-why-card">
+          <div class="cl-why-card-icon"><span data-vi="Bờ biển">Bờ biển</span><span data-en="Coastline">Coastline</span></div>
+          <div class="cl-why-card-stat">3,260<span> km</span></div>
+          <div class="cl-why-card-lbl"><span data-vi="Mỹ Khê — Forbes top 6 bãi biển toàn cầu.">Mỹ Khê — Forbes top 6 bãi biển toàn cầu.</span><span data-en="My Khe Beach — Forbes top 6 beaches globally.">My Khe Beach — Forbes top 6 beaches globally.</span></div>
+        </div>
+        <div class="cl-why-card">
+          <div class="cl-why-card-icon"><span data-vi="Du khách 2024">Du khách 2024</span><span data-en="Visitors 2024">Visitors 2024</span></div>
+          <div class="cl-why-card-stat">17.5<span>M</span></div>
+          <div class="cl-why-card-lbl"><span data-vi="Phục hồi 98% so 2019 — Hàn Quốc & TQ dẫn đầu.">Phục hồi 98% so 2019 — Hàn Quốc & TQ dẫn đầu.</span><span data-en="98% recovery vs 2019 — Korea & China lead.">98% recovery vs 2019 — Korea & China lead.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- §02-§05 LISTINGS -->
+
+  <!-- Nobu Da Nang -->
+  <div class="cl-listing cl-list-row">
+    <div class="cl-list-meta">
+      <div class="cl-list-meta-city">Đà Nẵng</div>
+      <div class="cl-list-meta-region"><span data-vi="Mỹ Khê · Mặt biển">Mỹ Khê · Mặt biển</span><span data-en="My Khe · Beachfront">My Khe · Beachfront</span></div>
+    </div>
+    <div class="cl-marker">
+      <div class="cl-marker-dot"></div>
+      <div class="cl-marker-num">§02</div>
+      <div class="cl-marker-lbl"><span data-vi="Nobu">Nobu</span><span data-en="Nobu">Nobu</span></div>
+    </div>
+    <div class="cl-card-wrap cl-anim">
+      <a href="../properties/nobu-da-nang.html" class="cl-card">
+        <div class="cl-card-img" style="background-image:url('https://nomadassetcollective.com/wp-content/uploads/2026/05/nobu.webp')"></div>
+        <div class="cl-card-veil"></div>
+        <div class="cl-card-grain"></div>
+        <div class="cl-card-body">
+          <div class="cl-card-meta">
+            <div class="cl-card-eyebrow">Nobu Hospitality · 2027</div>
+            <div class="cl-card-name">
+              <span data-vi="Nobu Đà Nẵng">Nobu Đà Nẵng</span>
+              <span data-en="Nobu Da Nang">Nobu Da Nang</span>
+            </div>
+            <div class="cl-card-stats">
+              <span><span data-vi="Từ $750K">Từ $750K</span><span data-en="From $750K">From $750K</span></span>
+              <span><span data-vi="Yield 6.5%">Yield 6.5%</span><span data-en="6.5% yield">6.5% yield</span></span>
+              <span>NAC 88</span>
+            </div>
+          </div>
+          <span class="cl-card-cta">
+            <span data-vi="Khám phá">Khám phá</span><span data-en="Explore">Explore</span>
+            <span class="cl-card-cta-arrow">→</span>
+          </span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Mandarin Oriental Da Nang -->
+  <div class="cl-listing cl-list-row">
+    <div class="cl-list-meta">
+      <div class="cl-list-meta-city">Đà Nẵng</div>
+      <div class="cl-list-meta-region"><span data-vi="Non Nước · Biệt thự">Non Nước · Biệt thự</span><span data-en="Non Nuoc · Villas">Non Nuoc · Villas</span></div>
+    </div>
+    <div class="cl-marker">
+      <div class="cl-marker-dot"></div>
+      <div class="cl-marker-num">§03</div>
+      <div class="cl-marker-lbl"><span data-vi="MO">MO</span><span data-en="MO">MO</span></div>
+    </div>
+    <div class="cl-card-wrap cl-anim">
+      <a href="../properties/mo.html" class="cl-card">
+        <div class="cl-card-img" style="background-image:url('https://nomadassetcollective.com/wp-content/uploads/2026/05/mo1.jpg')"></div>
+        <div class="cl-card-veil"></div>
+        <div class="cl-card-grain"></div>
+        <div class="cl-card-body">
+          <div class="cl-card-meta">
+            <div class="cl-card-eyebrow">Mandarin Oriental · 2026</div>
+            <div class="cl-card-name">
+              <span data-vi="Mandarin Oriental Đà Nẵng">Mandarin Oriental Đà Nẵng</span>
+              <span data-en="Mandarin Oriental Da Nang">Mandarin Oriental Da Nang</span>
+            </div>
+            <div class="cl-card-stats">
+              <span><span data-vi="Từ $2.4M">Từ $2.4M</span><span data-en="From $2.4M">From $2.4M</span></span>
+              <span><span data-vi="Yield 5.8%">Yield 5.8%</span><span data-en="5.8% yield">5.8% yield</span></span>
+              <span>NAC 91</span>
+            </div>
+          </div>
+          <span class="cl-card-cta">
+            <span data-vi="Khám phá">Khám phá</span><span data-en="Explore">Explore</span>
+            <span class="cl-card-cta-arrow">→</span>
+          </span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Grand Marina Saigon -->
+  <div class="cl-listing cl-list-row">
+    <div class="cl-list-meta">
+      <div class="cl-list-meta-city">Sài Gòn</div>
+      <div class="cl-list-meta-region"><span data-vi="Ba Son · Ven sông">Ba Son · Ven sông</span><span data-en="Ba Son · Waterfront">Ba Son · Waterfront</span></div>
+    </div>
+    <div class="cl-marker">
+      <div class="cl-marker-dot"></div>
+      <div class="cl-marker-num">§04</div>
+      <div class="cl-marker-lbl"><span data-vi="JW Marriott">JW Marriott</span><span data-en="JW Marriott">JW Marriott</span></div>
+    </div>
+    <div class="cl-card-wrap cl-anim">
+      <a href="../properties/grand-marina-sai-gon-bason-by-jw-marriot.html" class="cl-card">
+        <div class="cl-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/grand-marina-sai-gon-bason-by-jw-marriot-hero/public')"></div>
+        <div class="cl-card-veil"></div>
+        <div class="cl-card-grain"></div>
+        <div class="cl-card-body">
+          <div class="cl-card-meta">
+            <div class="cl-card-eyebrow">JW Marriott · 2026</div>
+            <div class="cl-card-name">
+              <span data-vi="Grand Marina Sài Gòn">Grand Marina Sài Gòn</span>
+              <span data-en="Grand Marina Saigon">Grand Marina Saigon</span>
+            </div>
+            <div class="cl-card-stats">
+              <span><span data-vi="Từ $360K">Từ $360K</span><span data-en="From $360K">From $360K</span></span>
+              <span><span data-vi="Yield 6.0%">Yield 6.0%</span><span data-en="6.0% yield">6.0% yield</span></span>
+              <span>NAC 85</span>
+            </div>
+          </div>
+          <span class="cl-card-cta">
+            <span data-vi="Khám phá">Khám phá</span><span data-en="Explore">Explore</span>
+            <span class="cl-card-cta-arrow">→</span>
+          </span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Hyatt Regency Ho Tram -->
+  <div class="cl-listing cl-list-row">
+    <div class="cl-list-meta">
+      <div class="cl-list-meta-city">Hồ Tràm</div>
+      <div class="cl-list-meta-region"><span data-vi="Bà Rịa · Resort">Bà Rịa · Resort</span><span data-en="Ba Ria · Resort">Ba Ria · Resort</span></div>
+    </div>
+    <div class="cl-marker">
+      <div class="cl-marker-dot"></div>
+      <div class="cl-marker-num">§05</div>
+      <div class="cl-marker-lbl"><span data-vi="Hyatt">Hyatt</span><span data-en="Hyatt">Hyatt</span></div>
+    </div>
+    <div class="cl-card-wrap cl-anim">
+      <a href="../properties/hyatt-regency-ho-tram.html" class="cl-card">
+        <div class="cl-card-img" style="background:linear-gradient(135deg,#1a3a5c 0%,#0f1a36 100%); background-size:cover;"></div>
+        <div class="cl-card-veil"></div>
+        <div class="cl-card-grain"></div>
+        <div class="cl-card-body">
+          <div class="cl-card-meta">
+            <div class="cl-card-eyebrow">Hyatt Hotels · 2027</div>
+            <div class="cl-card-name">
+              <span data-vi="Hyatt Regency Hồ Tràm">Hyatt Regency Hồ Tràm</span>
+              <span data-en="Hyatt Regency Ho Tram">Hyatt Regency Ho Tram</span>
+            </div>
+            <div class="cl-card-stats">
+              <span><span data-vi="Từ $480K">Từ $480K</span><span data-en="From $480K">From $480K</span></span>
+              <span><span data-vi="Yield 7.2%">Yield 7.2%</span><span data-en="7.2% yield">7.2% yield</span></span>
+              <span>NAC 82</span>
+            </div>
+          </div>
+          <span class="cl-card-cta">
+            <span data-vi="Khám phá">Khám phá</span><span data-en="Explore">Explore</span>
+            <span class="cl-card-cta-arrow">→</span>
+          </span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── CLOSING ASPIRATION ─── -->
+<section class="cl-asp">
+  <div class="cl-asp-inner">
+    <div class="cl-asp-mark"><span data-vi="Nomad Asset Collective">Nomad Asset Collective</span><span data-en="Nomad Asset Collective">Nomad Asset Collective</span></div>
+    <p class="cl-asp-line">
+      <span data-vi="Sở hữu một bờ biển. Sở hữu <strong>Việt Nam</strong>.">Sở hữu một bờ biển. Sở hữu <strong>Việt Nam</strong>.</span>
+      <span data-en="Own a coastline. Own <strong>Vietnam</strong>.">Own a coastline. Own <strong>Vietnam</strong>.</span>
+    </p>
+    <a href="https://calendar.app.google/owGkBM8Q5owKYwDd9" target="_blank" rel="noopener" class="cl-asp-cta">
+      <span data-vi="Đặt Lịch Tư Vấn">Đặt Lịch Tư Vấn</span><span data-en="Schedule Consultation">Schedule Consultation</span>
+      <span>→</span>
+    </a>
+  </div>
+</section>
+
+<footer class="cl-foot">
+  <span data-vi="Tuyển chọn bởi">Tuyển chọn bởi</span><span data-en="Curated by">Curated by</span>
+  &nbsp;<a href="https://nomadassetcollective.com" target="_blank">Nomad Asset Collective</a>
+</footer>
+
+<script>
+(function(){
+  const root = document.body;
+  // Lang toggle
+  document.querySelectorAll('[data-lang-btn]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.getAttribute('data-lang-btn');
+      root.setAttribute('data-lang', lang);
+      document.documentElement.setAttribute('lang', lang);
+      document.querySelectorAll('[data-lang-btn]').forEach(b => b.classList.toggle('on', b === btn));
+    });
+  });
+  // Reveal-on-scroll
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold:.12, rootMargin:'0px 0px -8% 0px' });
+    document.querySelectorAll('.cl-anim').forEach(el => io.observe(el));
+  } else {
+    document.querySelectorAll('.cl-anim').forEach(el => el.classList.add('in'));
+  }
+})();
+</script>
+</body></html>
