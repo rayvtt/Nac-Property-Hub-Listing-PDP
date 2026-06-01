@@ -1,15 +1,42 @@
-<!DOCTYPE html><html lang="vi" data-theme="light"><head>
+<!-- ============================================================
+  NAC COUNTRY LISTING PAGE — MASTER TEMPLATE
+  Snapshot: 2026-06-01  |  Source: country/vn.html
+  Usage: duplicate this file, rename to country/<slug>.html, then
+         replace country-level fields per NAC-CLP-DESIGN.md.
+
+  Country-level fields to swap (all also live in Notion DB
+  "🌍 NAC - Country Listings"):
+    • <title>, meta description, og:title, og:image, lang
+    • .cl-name (country name VI/EN)
+    • .cl-hero-tag (country tagline VI/EN)
+    • .cl-hero-chips (3 country-specific chips)
+    • .cl-plaque rows (Listings / Cities / Entry / Yield / YoY)
+    • .cl-intro-quote (editorial pull quote)
+    • .cl-atlas-text-title / .cl-atlas-text-lead
+    • .cl-atlas-pinlist (cities)
+    • .cl-map-coast `d="..."` (country SVG silhouette)
+    • .cl-pin-group positions + labels (city pins on map)
+    • .cl-coll-title / .cl-coll-lead
+    • .cl-coll-filter pills (one per city + All)
+    • Each .cl-card inside #cl-collection-track (per listing)
+    • .cl-compare .cl-tbl tbody rows (one per listing)
+    • .cl-asp-line (aspiration: "Sở hữu X. Sở hữu <Country>." pattern)
+    • .cl-hero-slides (top-N listings by price descending)
+
+  Do NOT change the structural CSS, JS, or the Hub icon — they are
+  identical across countries on purpose. Only swap content.
+============================================================ --><!DOCTYPE html><html lang="vi" data-theme="light"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="referrer" content="no-referrer">
 
-<title>Việt Nam · Branded Residences — NAC Property Hub</title>
-<meta name="description" content="Branded residences across Vietnam — Da Nang, Saigon, Ho Tram. Nobu, Mandarin Oriental, JW Marriott, Hyatt Regency. Curated by Nomad Asset Collective.">
+<title>{Country Name} · Branded Residences — NAC Property Hub</title>
+<meta name="description" content="{1–2 sentence factual summary of branded residences in {Country}. Max 155 chars.}">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Việt Nam · Branded Residences — NAC Property Hub">
-<meta property="og:description" content="Asia's golden coast — curated branded residences from JW Marriott to Nobu.">
-<meta property="og:image" content="https://nomadassetcollective.com/wp-content/uploads/2026/05/nobu.webp">
+<meta property="og:title" content="{Country Name} · Branded Residences — NAC Property Hub">
+<meta property="og:description" content="{Short EN hook for social. ~120 chars.}">
+<meta property="og:image" content="{Hero image URL — most expensive listing hero}">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -746,7 +773,7 @@ body.cl-modal-open { overflow:hidden; }
       <div class="nac-hdr-meta">
         <div class="nac-hdr-date" id="cl-date-display">—</div>
         <div class="nac-hdr-trail">
-          <span data-vi="Property Hub">Property Hub</span><span data-en="Property Hub">Property Hub</span><span class="nac-trail-sep">—</span><span class="nac-trail-id">Vietnam</span>
+          <span data-vi="Property Hub">Property Hub</span><span data-en="Property Hub">Property Hub</span><span class="nac-trail-sep">—</span><span class="nac-trail-id">Greece</span>
         </div>
       </div>
     </a>
@@ -774,10 +801,8 @@ body.cl-modal-open { overflow:hidden; }
 
 <!-- ═══ HERO ═══ -->
 <section class="cl-hero" id="cl-hero">
-  <div class="cl-hero-slides" id="cl-hero-slides">      <div class="cl-hero-slide on" data-name-vi="Mandarin Oriental Đà Nẵng - Biệt Thự Biển Di Sản Đông &amp; Tây" data-name-en="Mandarin Oriental Residences, Da Nang" data-price="$1.8M" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/mo" style="background-image:url('https://nomadassetcollective.com/wp-content/uploads/2026/05/mo1.jpg')"></div>
-      <div class="cl-hero-slide" data-name-vi="Hyatt Regency Hồ Tràm - Nghĩ Dưỡng Đúng Nguyên Bản" data-name-en="Hyatt Regency Hồ Tràm" data-price="$606K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/hyatt-regency-ho-tram/" style="background-image:url('https://hyattregencyhotramresidences.com/wp-content/uploads/2021/10/project-overview-1.jpg')"></div>
-      <div class="cl-hero-slide" data-name-vi="Grand Marina Sài Gòn - Căn Hộ Marriot giữa cảng Ba Son" data-name-en="Grand Marina Saigon — Marriott Branded Residences" data-price="$450K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/grand-marina-sai-gon-bason-by-jw-marriot/" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/grand-marina-sai-gon-bason-by-jw-marriot-hero/public')"></div>
-      <div class="cl-hero-slide" data-name-vi="Nobu Đà Nẵng - Căn Hộ Thương Mại Đầu Tiên tại ĐNÁ" data-name-en="Nobu Residences Da Nang — 43-Floor Branded Tower" data-price="$360K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/nobu-dn/" style="background-image:url('https://nomadassetcollective.com/wp-content/uploads/2026/05/nobu.webp')"></div></div>
+  <div class="cl-hero-slides" id="cl-hero-slides">      <div class="cl-hero-slide on" data-name-vi="Ocean Gate Building — Mặt Biển Piraeus" data-name-en="Ocean Gate Building — Piraeus Waterfront" data-price="$261K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/greece/ocean-gate-building-piraeus-waterfront/" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/ocean-gate-building-piraeus-waterfront-hero/public')"></div>
+      <div class="cl-hero-slide" data-name-vi="Keranis Ports Residences — Cảng Piraeus, Athens" data-name-en="Keranis Ports Residences — Piraeus, Athens" data-price="$250K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/greece/keranis-ports-residences-piraeus-athens/" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/keranis-ports-residences-piraeus-athens-hero/public')"></div></div>
   <div class="cl-hero-veil"></div>
   <div class="cl-hero-grain"></div>
 
@@ -787,17 +812,16 @@ body.cl-modal-open { overflow:hidden; }
         <span><span data-vi="Quốc gia · Việt Nam">Quốc gia · Việt Nam</span><span data-en="Country · Vietnam">Country · Vietnam</span></span>
         <span class="live"><span data-vi="4 dự án Live">4 dự án Live</span><span data-en="4 listings live">4 listings live</span></span>
       </div>
-      <h1 class="cl-name"><span data-vi="Việt Nam">Việt Nam</span><span data-en="Vietnam">Vietnam</span></h1>
-      <p class="cl-hero-tag"><span data-vi="<strong>Bờ biển vàng của châu Á</strong> — branded residences từ JW Marriott đến Nobu, ở ba thành phố ven biển trọng yếu."><strong>Bờ biển vàng của châu Á</strong> — branded residences từ JW Marriott đến Nobu, ở ba thành phố ven biển trọng yếu.</span><span data-en="<strong>Asia's golden coast</strong> — branded residences from JW Marriott to Nobu, across three strategic coastal cities."><strong>Asia's golden coast</strong> — branded residences from JW Marriott to Nobu, across three strategic coastal cities.</span></p>
-      <div class="cl-hero-chips">        <span class="cl-chip"><span data-vi="One chip per line. Format: VI">One chip per line. Format: VI</span><span data-en="EN (separate VI and EN with a single pipe).">EN (separate VI and EN with a single pipe).</span></span>
-        <span class="cl-chip"><span data-vi="🏖️ Bờ biển 3,260km">🏖️ Bờ biển 3,260km</span><span data-en="🏖️ 3,260km coastline">🏖️ 3,260km coastline</span></span>
-        <span class="cl-chip"><span data-vi="📈 GDP 7.1% (2024)">📈 GDP 7.1% (2024)</span><span data-en="📈 GDP 7.1% (2024)">📈 GDP 7.1% (2024)</span></span>
-        <span class="cl-chip"><span data-vi="✈️ 17.5M du khách">✈️ 17.5M du khách</span><span data-en="✈️ 17.5M visitors">✈️ 17.5M visitors</span></span></div>
-      <a class="cl-hero-featured" id="cl-hero-featured" href="https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/mo">
-        <span class="cl-hero-featured-thumb" id="cl-hero-featured-thumb" style="background-image:url('https://nomadassetcollective.com/wp-content/uploads/2026/05/mo1.jpg')"></span>
+      <h1 class="cl-name"><span data-vi="Hy Lạp">Hy Lạp</span><span data-en="Greece">Greece</span></h1>
+      <p class="cl-hero-tag"><span data-vi="<strong>Hy Lạp — Golden Visa châu Âu</strong> — Bất động sản Athens &amp; Piraeus ven cảng, sở hữu vĩnh viễn, định cư EU từ €250K."><strong>Hy Lạp — Golden Visa châu Âu</strong> — Bất động sản Athens &amp; Piraeus ven cảng, sở hữu vĩnh viễn, định cư EU từ €250K.</span><span data-en="<strong>Greece — Europe's Golden Visa</strong> — Athens &amp; Piraeus waterfront residences, freehold ownership, EU residency from €250K."><strong>Greece — Europe's Golden Visa</strong> — Athens &amp; Piraeus waterfront residences, freehold ownership, EU residency from €250K.</span></p>
+      <div class="cl-hero-chips">        <span class="cl-chip"><span data-vi="🛂 Golden Visa €250K">🛂 Golden Visa €250K</span><span data-en="🛂 Golden Visa €250K">🛂 Golden Visa €250K</span></span>
+        <span class="cl-chip"><span data-vi="🇪🇺 Schengen Access">🇪🇺 Schengen Access</span><span data-en="🇪🇺 Schengen Access">🇪🇺 Schengen Access</span></span>
+        <span class="cl-chip"><span data-vi="🏛️ Cradle of Europe">🏛️ Cradle of Europe</span><span data-en="🏛️ Cradle of Europe">🏛️ Cradle of Europe</span></span></div>
+      <a class="cl-hero-featured" id="cl-hero-featured" href="https://nomadassetcollective.com/property-hub-bat-dong-san/greece/ocean-gate-building-piraeus-waterfront/">
+        <span class="cl-hero-featured-thumb" id="cl-hero-featured-thumb" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/ocean-gate-building-piraeus-waterfront-hero/public')"></span>
         <span class="cl-hero-featured-txt">
           <span class="cl-hero-featured-lbl"><span data-vi="Tiêu điểm">Tiêu điểm</span><span data-en="Featured">Featured</span></span>
-          <span class="cl-hero-featured-name" id="cl-hero-featured-name">Mandarin Oriental Đà Nẵng - Biệt Thự Biển Di Sản Đông &amp; Tây <small>$1.8M</small></span>
+          <span class="cl-hero-featured-name" id="cl-hero-featured-name">Ocean Gate Building — Mặt Biển Piraeus <small>$261K</small></span>
         </span>
         <span class="cl-hero-featured-arrow">→</span>
       </a>
@@ -807,23 +831,23 @@ body.cl-modal-open { overflow:hidden; }
       <div class="cl-plaque-lbl"><span data-vi="Tổng quan thị trường">Tổng quan thị trường</span><span data-en="Market snapshot">Market snapshot</span></div>
       <div class="cl-plaque-row">
         <span class="cl-plaque-row-lbl"><span data-vi="Dự án">Dự án</span><span data-en="Listings">Listings</span></span>
-        <span class="cl-plaque-row-val">4</span>
+        <span class="cl-plaque-row-val">2</span>
       </div>
       <div class="cl-plaque-row">
         <span class="cl-plaque-row-lbl"><span data-vi="Thành phố">Thành phố</span><span data-en="Cities">Cities</span></span>
-        <span class="cl-plaque-row-val">3</span>
+        <span class="cl-plaque-row-val">1</span>
       </div>
       <div class="cl-plaque-row">
         <span class="cl-plaque-row-lbl"><span data-vi="Giá vào cửa">Giá vào cửa</span><span data-en="Entry from">Entry from</span></span>
-        <span class="cl-plaque-row-val">$360<small>K</small></span>
+        <span class="cl-plaque-row-val">$250<small>K</small></span>
       </div>
       <div class="cl-plaque-row">
         <span class="cl-plaque-row-lbl">Yield</span>
-        <span class="cl-plaque-row-val">5.8–6.5<small>%</small></span>
+        <span class="cl-plaque-row-val">3.0<small>%</small></span>
       </div>
       <div class="cl-plaque-row">
         <span class="cl-plaque-row-lbl">YoY USD</span>
-        <span class="cl-plaque-row-val">8–15<small>%</small></span>
+        <span class="cl-plaque-row-val">6–10<small>%</small></span>
       </div>
     </aside>
   </div>
@@ -839,7 +863,7 @@ body.cl-modal-open { overflow:hidden; }
 <!-- ═══ INTRO NARRATIVE ═══ -->
 <section class="cl-intro reveal">
   <div class="cl-intro-mark"><span data-vi="Mở đầu">Mở đầu</span><span data-en="Preamble">Preamble</span></div>
-  <p class="cl-intro-quote"><span data-vi="Việt Nam không phải là điểm đến mới — mà là chương mới của châu Á.">Việt Nam không phải là điểm đến mới — mà là chương mới của châu Á.</span><span data-en="Vietnam isn't Asia's next destination — it's Asia's next chapter.">Vietnam isn't Asia's next destination — it's Asia's next chapter.</span></p>
+  <p class="cl-intro-quote"><span data-vi="Hy Lạp không bán bất động sản — họ bán quyền đi lại 27 quốc gia.">Hy Lạp không bán bất động sản — họ bán quyền đi lại 27 quốc gia.</span><span data-en="Greece doesn't sell property — it sells the right to move through 27 countries.">Greece doesn't sell property — it sells the right to move through 27 countries.</span></p>
   <div class="cl-intro-attr">
     <span data-vi="Tuyển chọn bởi Nomad Asset Collective">Tuyển chọn bởi Nomad Asset Collective</span><span data-en="Curated by Nomad Asset Collective">Curated by Nomad Asset Collective</span>
   </div>
@@ -851,28 +875,14 @@ body.cl-modal-open { overflow:hidden; }
   <div class="cl-atlas-inner">
     <div class="cl-atlas-text reveal">
       <div class="cl-atlas-text-eyebrow">§ <span data-vi="Bản đồ">Bản đồ</span><span data-en="The map">The map</span></div>
-      <h2 class="cl-atlas-text-title"><span data-vi="Ba thành phố. Bốn dự án. Một <em>bờ biển vàng</em>.">Ba thành phố. Bốn dự án. Một <em>bờ biển vàng</em>.</span><span data-en="Three cities. Four listings. One <em>golden coast</em>.">Three cities. Four listings. One <em>golden coast</em>.</span></h2>
-      <p class="cl-atlas-text-lead"><span data-vi="Từ Đà Nẵng ở miền Trung đến Sài Gòn — Hồ Tràm ở miền Nam, mỗi vị trí được chọn lọc cho lợi suất, thanh khoản và đẳng cấp thương hiệu.">Từ Đà Nẵng ở miền Trung đến Sài Gòn — Hồ Tràm ở miền Nam, mỗi vị trí được chọn lọc cho lợi suất, thanh khoản và đẳng cấp thương hiệu.</span><span data-en="From Da Nang in the centre to Saigon and Ho Tram in the south, each location is curated for yield, liquidity, and brand pedigree.">From Da Nang in the centre to Saigon and Ho Tram in the south, each location is curated for yield, liquidity, and brand pedigree.</span></p>
-      <div class="cl-atlas-pinlist">        <a href="#collection" data-city-filter="da-nang">
+      <h2 class="cl-atlas-text-title"><span data-vi="Một vùng đô thị. Hai dự án. Một <em>cảng biển Địa Trung Hải</em>.">Một vùng đô thị. Hai dự án. Một <em>cảng biển Địa Trung Hải</em>.</span><span data-en="One metro. Two listings. One <em>Mediterranean port</em>.">One metro. Two listings. One <em>Mediterranean port</em>.</span></h2>
+      <p class="cl-atlas-text-lead"><span data-vi="Tại Piraeus — cảng biển lớn nhất Hy Lạp — Athens chỉ cách 15 phút metro, mỗi vị trí đủ ngưỡng Golden Visa EU.">Tại Piraeus — cảng biển lớn nhất Hy Lạp — Athens chỉ cách 15 phút metro, mỗi vị trí đủ ngưỡng Golden Visa EU.</span><span data-en="In Piraeus — Greece's largest port — Athens is just 15 metro minutes away, each location meets the EU Golden Visa threshold.">In Piraeus — Greece's largest port — Athens is just 15 metro minutes away, each location meets the EU Golden Visa threshold.</span></p>
+      <div class="cl-atlas-pinlist">        <a href="#collection" data-city-filter="piraeus">
           <div>
-            <div class="cl-atlas-pinlist-city">Đà Nẵng</div>
-            <div class="cl-atlas-pinlist-meta"><span data-vi="Mặt biển Mỹ Khê · gần biển Non Nước">Mặt biển Mỹ Khê · gần biển Non Nước</span><span data-en="My Khe · Non Nuoc beachfront">My Khe · Non Nuoc beachfront</span></div>
+            <div class="cl-atlas-pinlist-city">Piraeus</div>
+            <div class="cl-atlas-pinlist-meta"><span data-vi="Cảng biển Athens · Bờ biển">Cảng biển Athens · Bờ biển</span><span data-en="Athens port · Waterfront">Athens port · Waterfront</span></div>
           </div>
           <span class="cl-atlas-pinlist-count">2 <span data-vi="dự án">dự án</span><span data-en="listings">listings</span></span>
-        </a>
-        <a href="#collection" data-city-filter="sai-gon">
-          <div>
-            <div class="cl-atlas-pinlist-city">Sài Gòn</div>
-            <div class="cl-atlas-pinlist-meta"><span data-vi="Miền Nam · Ven sông">Miền Nam · Ven sông</span><span data-en="South · Waterfront CBD">South · Waterfront CBD</span></div>
-          </div>
-          <span class="cl-atlas-pinlist-count">1 <span data-vi="dự án">dự án</span><span data-en="listing">listing</span></span>
-        </a>
-        <a href="#collection" data-city-filter="ho-tram">
-          <div>
-            <div class="cl-atlas-pinlist-city">Hồ Tràm</div>
-            <div class="cl-atlas-pinlist-meta"><span data-vi="Bà Rịa–Vũng Tàu · Resort biển">Bà Rịa–Vũng Tàu · Resort biển</span><span data-en="Ba Ria–Vung Tau · Beach resort">Ba Ria–Vung Tau · Beach resort</span></div>
-          </div>
-          <span class="cl-atlas-pinlist-count">1 <span data-vi="dự án">dự án</span><span data-en="listing">listing</span></span>
         </a></div>
     </div>
 
@@ -896,7 +906,7 @@ body.cl-modal-open { overflow:hidden; }
         </g>
 
         <!-- Vietnam silhouette — more refined, with northern delta, narrow centre, southern delta -->
-        <path class="cl-map-coast" d="M 88 56 C 100 50, 130 46, 158 52 C 175 56, 188 64, 195 78 C 200 90, 196 105, 188 118 C 178 132, 170 142, 168 158 C 167 172, 173 186, 182 200 C 192 218, 200 232, 195 250 C 188 270, 172 282, 158 298 C 145 314, 138 328, 138 346 C 138 360, 134 372, 122 380 C 110 386, 92 386, 78 380 C 68 374, 64 360, 70 348 C 78 332, 96 322, 108 308 C 118 294, 122 280, 116 264 C 108 244, 96 226, 92 204 C 88 184, 92 166, 100 150 C 108 136, 110 124, 104 110 C 96 92, 84 78, 82 64 C 82 58, 84 56, 88 56 Z"></path>
+        <path class="cl-map-coast" d="M 120 70 C 140 65, 165 75, 180 95 C 188 115, 192 135, 188 155 C 192 175, 195 195, 192 215 C 188 238, 175 258, 162 275 C 150 290, 140 305, 138 325 C 140 345, 134 362, 124 372 C 112 380, 100 374, 96 362 C 92 346, 98 328, 104 312 C 112 294, 120 278, 126 260 C 132 242, 132 224, 128 206 C 124 188, 120 170, 118 152 C 116 134, 116 116, 118 100 C 118 86, 118 76, 120 70 Z"></path>
         <path class="cl-map-coast-2" d="
           M 88 56 C 100 50, 130 46, 158 52 C 175 56, 188 64, 195 78
           C 200 90, 196 105, 188 118 C 178 132, 170 142, 168 158
@@ -925,32 +935,12 @@ body.cl-modal-open { overflow:hidden; }
         
 
         <!-- Compass rose -->
-                
-        
-        
-        
-        
-        
-        <g class="cl-pin-group" onclick="window.clFilterCity &amp;&amp; clFilterCity('da-nang')">
-          <circle class="cl-pin-halo" cx="178" cy="186" r="7">
-          <circle class="cl-pin-ring" cx="178" cy="186" r="6">
-          <circle class="cl-pin-core" cx="178" cy="186" r="3">
-          <text class="cl-pin-lbl" x="192" y="184" text-anchor="start">Đà Nẵng</text>
-          <text class="cl-pin-cnt" x="192" y="196" text-anchor="start">2 Listings</text>
-        </circle></circle></circle></g>
-        <g class="cl-pin-group" onclick="window.clFilterCity &amp;&amp; clFilterCity('sai-gon')">
-          <circle class="cl-pin-halo" cx="108" cy="350" r="7">
-          <circle class="cl-pin-ring" cx="108" cy="350" r="6">
-          <circle class="cl-pin-core" cx="108" cy="350" r="3">
-          <text class="cl-pin-lbl" x="32" y="348" text-anchor="start">Sài Gòn</text>
-          <text class="cl-pin-cnt" x="32" y="360" text-anchor="start">1 Listing</text>
-        </circle></circle></circle></g>
-        <g class="cl-pin-group" onclick="window.clFilterCity &amp;&amp; clFilterCity('ho-tram')">
-          <circle class="cl-pin-halo" cx="138" cy="378" r="7">
-          <circle class="cl-pin-ring" cx="138" cy="378" r="6">
-          <circle class="cl-pin-core" cx="138" cy="378" r="3">
-          <text class="cl-pin-lbl" x="152" y="376" text-anchor="start">Hồ Tràm</text>
-          <text class="cl-pin-cnt" x="152" y="388" text-anchor="start">1 Listing</text>
+                <g class="cl-pin-group" onclick="window.clFilterCity &amp;&amp; clFilterCity('piraeus')">
+          <circle class="cl-pin-halo" cx="148" cy="290" r="7">
+          <circle class="cl-pin-ring" cx="148" cy="290" r="6">
+          <circle class="cl-pin-core" cx="148" cy="290" r="3">
+          <text class="cl-pin-lbl" x="162" y="288" text-anchor="start">Piraeus</text>
+          <text class="cl-pin-cnt" x="162" y="300" text-anchor="start">2 Listings</text>
         </circle></circle></circle></g>
 <g class="cl-map-compass" transform="translate(280, 380)">
           <circle cx="0" cy="0" r="14" fill="none" stroke="currentColor" stroke-width=".5"></circle>
@@ -967,55 +957,53 @@ body.cl-modal-open { overflow:hidden; }
   <div class="cl-collection-head reveal">
     <div>
       <div class="cl-coll-eye">§ <span data-vi="Bộ Sưu Tập">Bộ Sưu Tập</span><span data-en="Collection">Collection</span></div>
-      <h2 class="cl-coll-title"><span data-vi="Bốn dự án. <em>Một dải bờ biển.</em>">Bốn dự án. <em>Một dải bờ biển.</em></span><span data-en="Four listings. <em>One golden coast.</em>">Four listings. <em>One golden coast.</em></span></h2>
-      <p class="cl-coll-lead"><span data-vi="Vuốt, kéo, hoặc lọc theo thành phố. Bấm thẻ để xem nhanh, mũi tên để mở dự án.">Vuốt, kéo, hoặc lọc theo thành phố. Bấm thẻ để xem nhanh, mũi tên để mở dự án.</span><span data-en="Swipe, drag, or filter by city. Click a card for quick view, the arrow for the full listing.">Swipe, drag, or filter by city. Click a card for quick view, the arrow for the full listing.</span></p>
+      <h2 class="cl-coll-title"><span data-vi="Hai dự án. <em>Một bến cảng vàng.</em>">Hai dự án. <em>Một bến cảng vàng.</em></span><span data-en="Two listings. <em>One golden port.</em>">Two listings. <em>One golden port.</em></span></h2>
+      <p class="cl-coll-lead"><span data-vi="Vuốt, kéo, hoặc lọc theo khu vực. Bấm thẻ để xem nhanh, mũi tên để mở dự án.">Vuốt, kéo, hoặc lọc theo khu vực. Bấm thẻ để xem nhanh, mũi tên để mở dự án.</span><span data-en="Swipe, drag, or filter by area. Click a card for quick view, the arrow for the full listing.">Swipe, drag, or filter by area. Click a card for quick view, the arrow for the full listing.</span></p>
     </div>
     <div class="cl-coll-meta">
       <div class="cl-coll-meta-stat">
-        <div class="cl-coll-meta-num">4</div>
+        <div class="cl-coll-meta-num">2</div>
         <div class="cl-coll-meta-lbl"><span data-vi="Dự án">Dự án</span><span data-en="Listings">Listings</span></div>
       </div>
       <div class="cl-coll-meta-stat">
-        <div class="cl-coll-meta-num">3</div>
+        <div class="cl-coll-meta-num">1</div>
         <div class="cl-coll-meta-lbl"><span data-vi="Thành phố">Thành phố</span><span data-en="Cities">Cities</span></div>
       </div>
     </div>
   </div>
 
-  <div class="cl-coll-filter reveal">      <button class="cl-pill on" data-filter="all"><span data-vi="Tất cả">Tất cả</span><span data-en="All">All</span><span class="pill-cnt">4</span></button>
-      <button class="cl-pill" data-filter="da-nang">Đà Nẵng <span class="pill-cnt">2</span></button>
-      <button class="cl-pill" data-filter="sai-gon">Sài Gòn <span class="pill-cnt">1</span></button>
-      <button class="cl-pill" data-filter="ho-tram">Hồ Tràm <span class="pill-cnt">1</span></button></div>
+  <div class="cl-coll-filter reveal">      <button class="cl-pill on" data-filter="all"><span data-vi="Tất cả">Tất cả</span><span data-en="All">All</span><span class="pill-cnt">2</span></button>
+      <button class="cl-pill" data-filter="piraeus">Piraeus <span class="pill-cnt">2</span></button></div>
 
   <div class="cl-cards-wrap">
     <button class="cl-cards-nav cl-cards-nav-prev" aria-label="Previous listing">‹</button>
     <button class="cl-cards-nav cl-cards-nav-next" aria-label="Next listing">›</button>
-    <div class="cl-cards" id="cl-collection-track">    <article class="cl-card reveal" data-city="da-nang" data-listing="mo" data-img="https://nomadassetcollective.com/wp-content/uploads/2026/05/mo1.jpg" data-brand="Mandarin Oriental Hotel Group" data-name-vi="Mandarin Oriental Đà Nẵng - Biệt Thự Biển Di Sản Đông &amp; Tây" data-name-en="Mandarin Oriental Residences, Da Nang" data-tag-vi="Biệt Thự Biển Mandarin Oriental · Sang Trọng Thầm Lặng Tiên Phong Tại Việt Nam" data-tag-en="Beachfront Mandarin Oriental Villas · Quiet Luxury Debut in Vietnam" data-price="1800" data-yield="6.0" data-irr="7.0" data-coc="8.0" data-rent="5300" data-score="78" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:9.5},{&quot;vi&quot;:&quot;Yield&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:6.5},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:9},{&quot;vi&quot;:&quot;Quản Lý&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:9.5},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:5.5},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:7}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/mo">
+    <div class="cl-cards" id="cl-collection-track">    <article class="cl-card reveal" data-city="piraeus" data-listing="ocean-gate-building-piraeus-waterfront" data-img="https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/ocean-gate-building-piraeus-waterfront-hero/public" data-brand="Goldally" data-name-vi="Ocean Gate Building — Mặt Biển Piraeus" data-name-en="Ocean Gate Building — Piraeus Waterfront" data-tag-vi="Cửa ngõ Golden Visa full nội thất tại cảng Piraeus" data-tag-en="Furnished Golden Visa entry at the gates of Piraeus port" data-price="261" data-yield="3.0" data-irr="10.0" data-coc="" data-rent="653" data-score="70" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:7},{&quot;vi&quot;:&quot;Yield&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:6},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:8},{&quot;vi&quot;:&quot;Quản Lý&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:7.5},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:7},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:6.5}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/greece/ocean-gate-building-piraeus-waterfront/">
       <div class="cl-card-img-wrap">
-        <div class="cl-card-img" style="background-image:url('https://nomadassetcollective.com/wp-content/uploads/2026/05/mo1.jpg')"></div>
+        <div class="cl-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/ocean-gate-building-piraeus-waterfront-hero/public')"></div>
         <div class="cl-card-img-veil"></div>
         <div class="cl-card-chips">
-          <span class="cl-card-chip city">Đà Nẵng</span>
-          <span class="cl-card-chip">⚡ <span data-vi="Phải biết">Phải biết</span><span data-en="Must know">Must know</span></span>
+          <span class="cl-card-chip city">Piraeus</span>
+          <span class="cl-card-chip">🛂 <span data-vi="Định cư">Định cư</span><span data-en="Residency">Residency</span></span>
           <span class="cl-card-chip live"><span data-vi="Live">Live</span><span data-en="Live">Live</span></span>
         </div>
-        <div class="cl-card-brandmark">Mandarin Oriental Hotel Group</div>
+        <div class="cl-card-brandmark">Goldally</div>
       </div>
       <div class="cl-card-body">
         <div class="cl-card-info">
-          <h3 class="cl-card-name"><span data-vi="Mandarin Oriental Đà Nẵng - Biệt Thự Biển Di Sản Đông &amp; Tây">Mandarin Oriental Đà Nẵng - Biệt Thự Biển Di Sản Đông &amp; Tây</span><span data-en="Mandarin Oriental Residences, Da Nang">Mandarin Oriental Residences, Da Nang</span></h3>
-          <p class="cl-card-tag"><span data-vi="Biệt Thự Biển Mandarin Oriental · Sang Trọng Thầm Lặng Tiên Phong Tại Việt Nam">Biệt Thự Biển Mandarin Oriental · Sang Trọng Thầm Lặng Tiên Phong Tại Việt Nam</span><span data-en="Beachfront Mandarin Oriental Villas · Quiet Luxury Debut in Vietnam">Beachfront Mandarin Oriental Villas · Quiet Luxury Debut in Vietnam</span></p>
+          <h3 class="cl-card-name"><span data-vi="Ocean Gate Building — Mặt Biển Piraeus">Ocean Gate Building — Mặt Biển Piraeus</span><span data-en="Ocean Gate Building — Piraeus Waterfront">Ocean Gate Building — Piraeus Waterfront</span></h3>
+          <p class="cl-card-tag"><span data-vi="Cửa ngõ Golden Visa full nội thất tại cảng Piraeus">Cửa ngõ Golden Visa full nội thất tại cảng Piraeus</span><span data-en="Furnished Golden Visa entry at the gates of Piraeus port">Furnished Golden Visa entry at the gates of Piraeus port</span></p>
           <div class="cl-card-stats">
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">$1.8<small>M</small></span>
+              <span class="cl-card-stat-num">$261<small>K</small></span>
               <span class="cl-card-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></span>
             </div>
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">6.0<small>%</small></span>
+              <span class="cl-card-stat-num">3.0<small>%</small></span>
               <span class="cl-card-stat-lbl">Yield</span>
             </div>
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">7.0<small>%</small></span>
+              <span class="cl-card-stat-num">10.0<small>%</small></span>
               <span class="cl-card-stat-lbl">IRR</span>
             </div>
           </div>
@@ -1023,10 +1011,10 @@ body.cl-modal-open { overflow:hidden; }
         <div class="cl-mini-donut">
           <svg viewBox="0 0 100 100">
             <circle class="cl-mini-donut-track" cx="50" cy="50" r="42"></circle>
-            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="58.1" data-final="58.1"></circle>
+            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="79.2" data-final="79.2"></circle>
           </svg>
           <div class="cl-mini-donut-center">
-            <span class="cl-mini-donut-val" data-count-to="78">0</span>
+            <span class="cl-mini-donut-val" data-count-to="70">0</span>
             <span class="cl-mini-donut-lbl">NAC</span>
           </div>
         </div>
@@ -1036,32 +1024,32 @@ body.cl-modal-open { overflow:hidden; }
         <span class="cl-card-footer-arrow"><span data-vi="Mở dự án">Mở dự án</span><span data-en="Open listing">Open listing</span> <span>→</span></span>
       </div>
     </article>
-    <article class="cl-card reveal" data-city="ho-tram" data-listing="hyatt-regency-ho-tram" data-img="https://hyattregencyhotramresidences.com/wp-content/uploads/2021/10/project-overview-1.jpg" data-brand="Hyatt Regency" data-name-vi="Hyatt Regency Hồ Tràm - Nghĩ Dưỡng Đúng Nguyên Bản" data-name-en="Hyatt Regency Hồ Tràm" data-tag-vi="Biệt thự nhãn hiệu Hyatt Regency đầu tiên Nam Việt Nam — bãi biển Hồ Tràm, 90 phút từ Sài Gòn." data-tag-en="The first Hyatt Regency branded villas in southern Vietnam — Ho Tram beachfront, 90 mins from Saigon." data-price="606" data-yield="6.5" data-irr="11.0" data-coc="6.0" data-rent="3283" data-score="80" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:9},{&quot;vi&quot;:&quot;Lợi Suất&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:7.5},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:8},{&quot;vi&quot;:&quot;Vận Hành&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:8.5},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:7},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:8}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/hyatt-regency-ho-tram/">
+    <article class="cl-card reveal" data-city="piraeus" data-listing="keranis-ports-residences-piraeus-athens" data-img="https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/keranis-ports-residences-piraeus-athens-hero/public" data-brand="Mercan Group" data-name-vi="Keranis Ports Residences — Cảng Piraeus, Athens" data-name-en="Keranis Ports Residences — Piraeus, Athens" data-tag-vi="Cửa ngõ Golden Visa tại cảng biển sôi động nhất châu Âu" data-tag-en="Golden Visa entry at Europe's fastest-growing port city" data-price="250" data-yield="3.0" data-irr="10.0" data-coc="" data-rent="" data-score="72" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:7},{&quot;vi&quot;:&quot;Yield&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:6},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:8},{&quot;vi&quot;:&quot;Quản Lý&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:7.5},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:7},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:7.5}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/greece/keranis-ports-residences-piraeus-athens/">
       <div class="cl-card-img-wrap">
-        <div class="cl-card-img" style="background-image:url('https://hyattregencyhotramresidences.com/wp-content/uploads/2021/10/project-overview-1.jpg')"></div>
+        <div class="cl-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/keranis-ports-residences-piraeus-athens-hero/public')"></div>
         <div class="cl-card-img-veil"></div>
         <div class="cl-card-chips">
-          <span class="cl-card-chip city">Hồ Tràm</span>
-          <span class="cl-card-chip">🔥 <span data-vi="Nổi bật">Nổi bật</span><span data-en="Hot">Hot</span></span>
+          <span class="cl-card-chip city">Piraeus</span>
+          <span class="cl-card-chip">🛂 <span data-vi="Định cư">Định cư</span><span data-en="Residency">Residency</span></span>
           <span class="cl-card-chip live"><span data-vi="Live">Live</span><span data-en="Live">Live</span></span>
         </div>
-        <div class="cl-card-brandmark">Hyatt Regency</div>
+        <div class="cl-card-brandmark">Mercan Group</div>
       </div>
       <div class="cl-card-body">
         <div class="cl-card-info">
-          <h3 class="cl-card-name"><span data-vi="Hyatt Regency Hồ Tràm - Nghĩ Dưỡng Đúng Nguyên Bản">Hyatt Regency Hồ Tràm - Nghĩ Dưỡng Đúng Nguyên Bản</span><span data-en="Hyatt Regency Hồ Tràm">Hyatt Regency Hồ Tràm</span></h3>
-          <p class="cl-card-tag"><span data-vi="Biệt thự nhãn hiệu Hyatt Regency đầu tiên Nam Việt Nam — bãi biển Hồ Tràm, 90 phút từ Sài Gòn.">Biệt thự nhãn hiệu Hyatt Regency đầu tiên Nam Việt Nam — bãi biển Hồ Tràm, 90 phút từ Sài Gòn.</span><span data-en="The first Hyatt Regency branded villas in southern Vietnam — Ho Tram beachfront, 90 mins from Saigon.">The first Hyatt Regency branded villas in southern Vietnam — Ho Tram beachfront, 90 mins from Saigon.</span></p>
+          <h3 class="cl-card-name"><span data-vi="Keranis Ports Residences — Cảng Piraeus, Athens">Keranis Ports Residences — Cảng Piraeus, Athens</span><span data-en="Keranis Ports Residences — Piraeus, Athens">Keranis Ports Residences — Piraeus, Athens</span></h3>
+          <p class="cl-card-tag"><span data-vi="Cửa ngõ Golden Visa tại cảng biển sôi động nhất châu Âu">Cửa ngõ Golden Visa tại cảng biển sôi động nhất châu Âu</span><span data-en="Golden Visa entry at Europe's fastest-growing port city">Golden Visa entry at Europe's fastest-growing port city</span></p>
           <div class="cl-card-stats">
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">$606<small>K</small></span>
+              <span class="cl-card-stat-num">$250<small>K</small></span>
               <span class="cl-card-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></span>
             </div>
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">6.5<small>%</small></span>
+              <span class="cl-card-stat-num">3.0<small>%</small></span>
               <span class="cl-card-stat-lbl">Yield</span>
             </div>
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">11.0<small>%</small></span>
+              <span class="cl-card-stat-num">10.0<small>%</small></span>
               <span class="cl-card-stat-lbl">IRR</span>
             </div>
           </div>
@@ -1069,102 +1057,10 @@ body.cl-modal-open { overflow:hidden; }
         <div class="cl-mini-donut">
           <svg viewBox="0 0 100 100">
             <circle class="cl-mini-donut-track" cx="50" cy="50" r="42"></circle>
-            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="52.8" data-final="52.8"></circle>
+            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="73.9" data-final="73.9"></circle>
           </svg>
           <div class="cl-mini-donut-center">
-            <span class="cl-mini-donut-val" data-count-to="80">0</span>
-            <span class="cl-mini-donut-lbl">NAC</span>
-          </div>
-        </div>
-      </div>
-      <div class="cl-card-footer">
-        <span class="cl-card-footer-quick"><span data-vi="Xem nhanh">Xem nhanh</span><span data-en="Quick view">Quick view</span></span>
-        <span class="cl-card-footer-arrow"><span data-vi="Mở dự án">Mở dự án</span><span data-en="Open listing">Open listing</span> <span>→</span></span>
-      </div>
-    </article>
-    <article class="cl-card reveal" data-city="sai-gon" data-listing="grand-marina-sai-gon-bason-by-jw-marriot" data-img="https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/grand-marina-sai-gon-bason-by-jw-marriot-hero/public" data-brand="Marriott International" data-name-vi="Grand Marina Sài Gòn - Căn Hộ Marriot giữa cảng Ba Son" data-name-en="Grand Marina Saigon — Marriott Branded Residences" data-tag-vi="Căn Hộ Thương Hiệu Marriott Ven Sông Trung Tâm Sài Gòn" data-tag-en="Marriott-Branded Riverside Residences in Saigon's CBD" data-price="450" data-yield="5.8" data-irr="12.5" data-coc="7.4" data-rent="2175" data-score="81" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:9.5},{&quot;vi&quot;:&quot;Yield&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:7},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:9},{&quot;vi&quot;:&quot;Quản Lý&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:9.5},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:6},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:7.5}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/grand-marina-sai-gon-bason-by-jw-marriot/">
-      <div class="cl-card-img-wrap">
-        <div class="cl-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/grand-marina-sai-gon-bason-by-jw-marriot-hero/public')"></div>
-        <div class="cl-card-img-veil"></div>
-        <div class="cl-card-chips">
-          <span class="cl-card-chip city">Sài Gòn</span>
-          <span class="cl-card-chip">🔥 <span data-vi="Nổi bật">Nổi bật</span><span data-en="Hot">Hot</span></span>
-          <span class="cl-card-chip live"><span data-vi="Live">Live</span><span data-en="Live">Live</span></span>
-        </div>
-        <div class="cl-card-brandmark">Marriott International</div>
-      </div>
-      <div class="cl-card-body">
-        <div class="cl-card-info">
-          <h3 class="cl-card-name"><span data-vi="Grand Marina Sài Gòn - Căn Hộ Marriot giữa cảng Ba Son">Grand Marina Sài Gòn - Căn Hộ Marriot giữa cảng Ba Son</span><span data-en="Grand Marina Saigon — Marriott Branded Residences">Grand Marina Saigon — Marriott Branded Residences</span></h3>
-          <p class="cl-card-tag"><span data-vi="Căn Hộ Thương Hiệu Marriott Ven Sông Trung Tâm Sài Gòn">Căn Hộ Thương Hiệu Marriott Ven Sông Trung Tâm Sài Gòn</span><span data-en="Marriott-Branded Riverside Residences in Saigon's CBD">Marriott-Branded Riverside Residences in Saigon's CBD</span></p>
-          <div class="cl-card-stats">
-            <div class="cl-card-stat">
-              <span class="cl-card-stat-num">$450<small>K</small></span>
-              <span class="cl-card-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></span>
-            </div>
-            <div class="cl-card-stat">
-              <span class="cl-card-stat-num">5.8<small>%</small></span>
-              <span class="cl-card-stat-lbl">Yield</span>
-            </div>
-            <div class="cl-card-stat">
-              <span class="cl-card-stat-num">12.5<small>%</small></span>
-              <span class="cl-card-stat-lbl">IRR</span>
-            </div>
-          </div>
-        </div>
-        <div class="cl-mini-donut">
-          <svg viewBox="0 0 100 100">
-            <circle class="cl-mini-donut-track" cx="50" cy="50" r="42"></circle>
-            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="50.1" data-final="50.1"></circle>
-          </svg>
-          <div class="cl-mini-donut-center">
-            <span class="cl-mini-donut-val" data-count-to="81">0</span>
-            <span class="cl-mini-donut-lbl">NAC</span>
-          </div>
-        </div>
-      </div>
-      <div class="cl-card-footer">
-        <span class="cl-card-footer-quick"><span data-vi="Xem nhanh">Xem nhanh</span><span data-en="Quick view">Quick view</span></span>
-        <span class="cl-card-footer-arrow"><span data-vi="Mở dự án">Mở dự án</span><span data-en="Open listing">Open listing</span> <span>→</span></span>
-      </div>
-    </article>
-    <article class="cl-card reveal" data-city="da-nang" data-listing="nobu-da-nang" data-img="https://nomadassetcollective.com/wp-content/uploads/2026/05/nobu.webp" data-brand="Nobu Hospitality" data-name-vi="Nobu Đà Nẵng - Căn Hộ Thương Mại Đầu Tiên tại ĐNÁ" data-name-en="Nobu Residences Da Nang — 43-Floor Branded Tower" data-tag-vi="Vị Trí Di Sản (Mặt Tiền biển Mỹ Khê)  · Tiện Ích May Đo Vượt Trội " data-tag-en="Limited Nobu Residences Collection · Mỹ Khê Beachfront Legacy Location" data-price="360" data-yield="6.0" data-irr="13.8" data-coc="8.1" data-rent="1220" data-score="81" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:9.4},{&quot;vi&quot;:&quot;Yield&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:8.6},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:8.8},{&quot;vi&quot;:&quot;Quản Lý&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:9},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:6.2},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:7.5}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/nobu-dn/">
-      <div class="cl-card-img-wrap">
-        <div class="cl-card-img" style="background-image:url('https://nomadassetcollective.com/wp-content/uploads/2026/05/nobu.webp')"></div>
-        <div class="cl-card-img-veil"></div>
-        <div class="cl-card-chips">
-          <span class="cl-card-chip city">Đà Nẵng</span>
-          <span class="cl-card-chip">🔥 <span data-vi="Nổi bật">Nổi bật</span><span data-en="Hot">Hot</span></span>
-          <span class="cl-card-chip live"><span data-vi="Live">Live</span><span data-en="Live">Live</span></span>
-        </div>
-        <div class="cl-card-brandmark">Nobu Hospitality</div>
-      </div>
-      <div class="cl-card-body">
-        <div class="cl-card-info">
-          <h3 class="cl-card-name"><span data-vi="Nobu Đà Nẵng - Căn Hộ Thương Mại Đầu Tiên tại ĐNÁ">Nobu Đà Nẵng - Căn Hộ Thương Mại Đầu Tiên tại ĐNÁ</span><span data-en="Nobu Residences Da Nang — 43-Floor Branded Tower">Nobu Residences Da Nang — 43-Floor Branded Tower</span></h3>
-          <p class="cl-card-tag"><span data-vi="Vị Trí Di Sản (Mặt Tiền biển Mỹ Khê)  · Tiện Ích May Đo Vượt Trội ">Vị Trí Di Sản (Mặt Tiền biển Mỹ Khê)  · Tiện Ích May Đo Vượt Trội </span><span data-en="Limited Nobu Residences Collection · Mỹ Khê Beachfront Legacy Location">Limited Nobu Residences Collection · Mỹ Khê Beachfront Legacy Location</span></p>
-          <div class="cl-card-stats">
-            <div class="cl-card-stat">
-              <span class="cl-card-stat-num">$360<small>K</small></span>
-              <span class="cl-card-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></span>
-            </div>
-            <div class="cl-card-stat">
-              <span class="cl-card-stat-num">6.0<small>%</small></span>
-              <span class="cl-card-stat-lbl">Yield</span>
-            </div>
-            <div class="cl-card-stat">
-              <span class="cl-card-stat-num">13.8<small>%</small></span>
-              <span class="cl-card-stat-lbl">IRR</span>
-            </div>
-          </div>
-        </div>
-        <div class="cl-mini-donut">
-          <svg viewBox="0 0 100 100">
-            <circle class="cl-mini-donut-track" cx="50" cy="50" r="42"></circle>
-            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="50.1" data-final="50.1"></circle>
-          </svg>
-          <div class="cl-mini-donut-center">
-            <span class="cl-mini-donut-val" data-count-to="81">0</span>
+            <span class="cl-mini-donut-val" data-count-to="72">0</span>
             <span class="cl-mini-donut-lbl">NAC</span>
           </div>
         </div>
@@ -1208,49 +1104,27 @@ body.cl-modal-open { overflow:hidden; }
             <th data-sort="score" data-type="num">NAC<span class="sort-arrow">▾</span></th>
           </tr>
         </thead>
-        <tbody>          <tr data-listing="mo" data-city="Đà Nẵng" data-price="1800" data-yield="6.0" data-irr="7.0" data-score="78">
+        <tbody>          <tr data-listing="ocean-gate-building-piraeus-waterfront" data-city="Piraeus" data-price="261" data-yield="3.0" data-irr="10.0" data-score="70">
             <td>
-              <span class="cl-tbl-name"><span data-vi="Mandarin Oriental Đà Nẵng - Biệt Thự Biển Di Sản Đông &amp; Tây">Mandarin Oriental Đà Nẵng - Biệt Thự Biển Di Sản Đông &amp; Tây</span><span data-en="Mandarin Oriental Residences, Da Nang">Mandarin Oriental Residences, Da Nang</span></span>
-              <span class="cl-tbl-brand">Mandarin Oriental Hotel Group</span>
+              <span class="cl-tbl-name"><span data-vi="Ocean Gate Building — Mặt Biển Piraeus">Ocean Gate Building — Mặt Biển Piraeus</span><span data-en="Ocean Gate Building — Piraeus Waterfront">Ocean Gate Building — Piraeus Waterfront</span></span>
+              <span class="cl-tbl-brand">Goldally</span>
             </td>
-            <td>Đà Nẵng</td>
-            <td><span class="cl-tbl-val">$1.8<small>M</small></span></td>
-            <td><span class="cl-tbl-val">6.0<small>%</small></span></td>
-            <td><span class="cl-tbl-val">7.0<small>%</small></span></td>
-            <td><span class="cl-tbl-pill">78 / 100</span></td>
+            <td>Piraeus</td>
+            <td><span class="cl-tbl-val">$261<small>K</small></span></td>
+            <td><span class="cl-tbl-val">3.0<small>%</small></span></td>
+            <td><span class="cl-tbl-val">10.0<small>%</small></span></td>
+            <td><span class="cl-tbl-pill">70 / 100</span></td>
           </tr>
-          <tr data-listing="hyatt-regency-ho-tram" data-city="Hồ Tràm" data-price="606" data-yield="6.5" data-irr="11.0" data-score="80">
+          <tr data-listing="keranis-ports-residences-piraeus-athens" data-city="Piraeus" data-price="250" data-yield="3.0" data-irr="10.0" data-score="72">
             <td>
-              <span class="cl-tbl-name"><span data-vi="Hyatt Regency Hồ Tràm - Nghĩ Dưỡng Đúng Nguyên Bản">Hyatt Regency Hồ Tràm - Nghĩ Dưỡng Đúng Nguyên Bản</span><span data-en="Hyatt Regency Hồ Tràm">Hyatt Regency Hồ Tràm</span></span>
-              <span class="cl-tbl-brand">Hyatt Regency</span>
+              <span class="cl-tbl-name"><span data-vi="Keranis Ports Residences — Cảng Piraeus, Athens">Keranis Ports Residences — Cảng Piraeus, Athens</span><span data-en="Keranis Ports Residences — Piraeus, Athens">Keranis Ports Residences — Piraeus, Athens</span></span>
+              <span class="cl-tbl-brand">Mercan Group</span>
             </td>
-            <td>Hồ Tràm</td>
-            <td><span class="cl-tbl-val">$606<small>K</small></span></td>
-            <td><span class="cl-tbl-val">6.5<small>%</small></span></td>
-            <td><span class="cl-tbl-val">11.0<small>%</small></span></td>
-            <td><span class="cl-tbl-pill">80 / 100</span></td>
-          </tr>
-          <tr data-listing="grand-marina-sai-gon-bason-by-jw-marriot" data-city="Sài Gòn" data-price="450" data-yield="5.8" data-irr="12.5" data-score="81">
-            <td>
-              <span class="cl-tbl-name"><span data-vi="Grand Marina Sài Gòn - Căn Hộ Marriot giữa cảng Ba Son">Grand Marina Sài Gòn - Căn Hộ Marriot giữa cảng Ba Son</span><span data-en="Grand Marina Saigon — Marriott Branded Residences">Grand Marina Saigon — Marriott Branded Residences</span></span>
-              <span class="cl-tbl-brand">Marriott International</span>
-            </td>
-            <td>Sài Gòn</td>
-            <td><span class="cl-tbl-val">$450<small>K</small></span></td>
-            <td><span class="cl-tbl-val">5.8<small>%</small></span></td>
-            <td><span class="cl-tbl-val">12.5<small>%</small></span></td>
-            <td><span class="cl-tbl-pill">81 / 100</span></td>
-          </tr>
-          <tr data-listing="nobu-da-nang" data-city="Đà Nẵng" data-price="360" data-yield="6.0" data-irr="13.8" data-score="81">
-            <td>
-              <span class="cl-tbl-name"><span data-vi="Nobu Đà Nẵng - Căn Hộ Thương Mại Đầu Tiên tại ĐNÁ">Nobu Đà Nẵng - Căn Hộ Thương Mại Đầu Tiên tại ĐNÁ</span><span data-en="Nobu Residences Da Nang — 43-Floor Branded Tower">Nobu Residences Da Nang — 43-Floor Branded Tower</span></span>
-              <span class="cl-tbl-brand">Nobu Hospitality</span>
-            </td>
-            <td>Đà Nẵng</td>
-            <td><span class="cl-tbl-val">$360<small>K</small></span></td>
-            <td><span class="cl-tbl-val">6.0<small>%</small></span></td>
-            <td><span class="cl-tbl-val">13.8<small>%</small></span></td>
-            <td><span class="cl-tbl-pill">81 / 100</span></td>
+            <td>Piraeus</td>
+            <td><span class="cl-tbl-val">$250<small>K</small></span></td>
+            <td><span class="cl-tbl-val">3.0<small>%</small></span></td>
+            <td><span class="cl-tbl-val">10.0<small>%</small></span></td>
+            <td><span class="cl-tbl-pill">72 / 100</span></td>
           </tr></tbody>
       </table>
     </div>
@@ -1261,7 +1135,7 @@ body.cl-modal-open { overflow:hidden; }
 <section class="cl-asp">
   <div class="cl-asp-inner reveal">
     <div class="cl-asp-mark">Nomad Asset Collective</div>
-    <p class="cl-asp-line"><span data-vi="Sở hữu một bờ biển. Sở hữu <strong>Việt Nam</strong>.">Sở hữu một bờ biển. Sở hữu <strong>Việt Nam</strong>.</span><span data-en="Own a coastline. Own <strong>Vietnam</strong>.">Own a coastline. Own <strong>Vietnam</strong>.</span></p>
+    <p class="cl-asp-line"><span data-vi="Sở hữu một cảng biển. Sở hữu <strong>Hy Lạp</strong>.">Sở hữu một cảng biển. Sở hữu <strong>Hy Lạp</strong>.</span><span data-en="Own a port. Own <strong>Greece</strong>.">Own a port. Own <strong>Greece</strong>.</span></p>
     <a href="https://calendar.app.google/owGkBM8Q5owKYwDd9" target="_blank" rel="noopener" class="cl-asp-cta">
       <span data-vi="Đặt Lịch Tư Vấn">Đặt Lịch Tư Vấn</span><span data-en="Schedule Consultation">Schedule Consultation</span>
       <span>→</span>
