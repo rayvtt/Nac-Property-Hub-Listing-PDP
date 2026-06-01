@@ -1,0 +1,57 @@
+name: Sync CLP HTML → WordPress
+
+# Pushes country/<slug>.html into the matching WP page's raw_html_code ACF
+# field. Mirrors sync-wp.yml for CLPs.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "country/*.html"
+      - "scripts/sync-wp-clp.mjs"
+      - "scripts/package.json"
+      - ".github/workflows/sync-wp-clp.yml"
+      - ".github/triggers/**"
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+    inputs:
+      only_slug:
+        description: "Sync just one slug (e.g. vn). Leave empty to sync all."
+        required: false
+        default: ""
+  repository_dispatch:
+    types: [notion-update, new-country]
+
+concurrency:
+  group: sync-wp-clp
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+
+      - name: Push CLP HTML to WordPress
+        working-directory: scripts
+        env:
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_COUNTRY_DATABASE_ID: ${{ vars.NOTION_COUNTRY_DATABASE_ID || 'a01ef35ce9fd45b1bba3ec4de4da678c' }}
+          WP_USER: ${{ vars.WP_USER || 'admin_web' }}
+          WP_BASE_URL: ${{ vars.WP_BASE_URL || 'https://nomadassetcollective.com' }}
+          WP_ACF_FIELD: ${{ vars.WP_ACF_FIELD || 'raw_html_code' }}
+          ONLY_SLUG: ${{ github.event.inputs.only_slug }}
+        run: node sync-wp-clp.mjs

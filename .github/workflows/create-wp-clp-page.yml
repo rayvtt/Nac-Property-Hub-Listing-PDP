@@ -1,0 +1,52 @@
+name: Create WP Page for new Live country listings
+
+# Runs every 5 minutes. For each Country DB row where Hub Status = Live but
+# 🆔 WP Page ID is empty, looks up (or creates) a WP page at the slug parsed
+# from 🔗 Country URL and writes the Page ID back to Notion.
+#
+# Side A for CLPs. Mirrors create-wp-page.yml.
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/triggers/**"
+      - "scripts/create-wp-clp-page.mjs"
+      - ".github/workflows/create-wp-clp-page.yml"
+  repository_dispatch:
+    types: [notion-update, new-country]
+
+concurrency:
+  group: create-wp-clp-page
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+
+      - name: Create / link WP pages for Live country rows
+        working-directory: scripts
+        env:
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_COUNTRY_DATABASE_ID: ${{ vars.NOTION_COUNTRY_DATABASE_ID || 'a01ef35ce9fd45b1bba3ec4de4da678c' }}
+          WP_USER: ${{ vars.WP_USER || 'admin_web' }}
+          WP_BASE_URL: ${{ vars.WP_BASE_URL || 'https://nomadassetcollective.com' }}
+          WP_PROPERTY_HUB_PATH: ${{ vars.WP_PROPERTY_HUB_PATH || 'property-hub-bat-dong-san' }}
+        run: node create-wp-clp-page.mjs
