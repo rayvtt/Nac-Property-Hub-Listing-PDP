@@ -13,10 +13,10 @@ Reusable closing sign-off block that lives just above the footer on every NAC PD
 │   ├── span.nac-cert-x                    (×)
 │   └── img.nac-cert-logo.nac-cert-logo--imc (IMC, 94×94 — bigger to visually match)
 └── .nac-cert-body
-    ├── .nac-cert-lbl       (orange uppercase eyebrow: "Chứng Nhận NAC" / "NAC Certification")
+    ├── .nac-cert-lbl       (orange uppercase eyebrow: "Thẩm Định NAC" / "NAC Due Diligence")
     ├── h3.nac-cert-title   (display headline)
-    ├── p.nac-cert-txt      (IMC compliance prose, bilingual)
-    ├── .nac-cert-meta      (pill row: Cert · Partner · Property ID · Status)
+    ├── p.nac-cert-txt      (IMC internal-diligence prose, bilingual)
+    ├── .nac-cert-meta      (pill row: Standard · Network · Property ID · Status)
     └── .nac-cert-reviewer  (top-border divider, then headshot + 3-line info)
         ├── img.nac-cert-reviewer-img      (52×68 portrait)
         └── .nac-cert-reviewer-info
@@ -39,15 +39,15 @@ On mobile (`≤680px`) the grid collapses to one column and the seal flips back 
     <img src="https://nomadassetcollective.com/wp-content/uploads/2026/05/OTG-Passport-Icons.png" alt="IMC" class="nac-cert-logo nac-cert-logo--imc">
   </div>
   <div class="nac-cert-body">
-    <div class="nac-cert-lbl"><span data-vi="">Chứng Nhận NAC</span><span data-en="">NAC Certification</span></div>
-    <h3 class="nac-cert-title"><span data-vi="">Được Thẩm Định bởi Hội Đồng Cố Vấn NAC</span><span data-en="">Reviewed by the NAC Advisory Council</span></h3>
+    <div class="nac-cert-lbl"><span data-vi="">Thẩm Định NAC</span><span data-en="">NAC Due Diligence</span></div>
+    <h3 class="nac-cert-title"><span data-vi="">Được Thẩm Định Theo Chuẩn Nội Bộ NAC</span><span data-en="">Reviewed to NAC's Internal Diligence Standard</span></h3>
     <p class="nac-cert-txt">
-      <span data-vi="">Hồ sơ này tuân thủ chuẩn IMC (Investment Memorandum &amp; Compliance). Số liệu được đối chiếu từ chủ đầu tư, đối tác phân phối và nguồn thị trường độc lập. Cập nhật Q2/2026.</span>
-      <span data-en="">This dossier conforms to IMC (Investment Memorandum &amp; Compliance) standards. Figures triangulated from developer, distribution partner and independent market sources. Updated Q2/2026.</span>
+      <span data-vi="">Hồ sơ này được lập theo chuẩn IMC (Investment Memorandum &amp; Compliance) nội bộ của NAC. Số liệu được đối chiếu từ chủ đầu tư, đối tác phân phối và nguồn thị trường độc lập. Cập nhật Q2/2026.</span>
+      <span data-en="">This dossier is prepared to NAC's internal IMC (Investment Memorandum &amp; Compliance) standard. Figures triangulated from the developer, distribution partners and independent market sources. Updated Q2/2026.</span>
     </p>
     <div class="nac-cert-meta">
-      <div class="nac-cert-tag"><span class="nac-cert-tag-key">Cert</span><span class="nac-cert-tag-val">IMC</span></div>
-      <div class="nac-cert-tag"><span class="nac-cert-tag-key">Partner</span><span class="nac-cert-tag-val">iQi Global</span></div>
+      <div class="nac-cert-tag"><span class="nac-cert-tag-key">Standard</span><span class="nac-cert-tag-val">IMC</span></div>
+      <div class="nac-cert-tag"><span class="nac-cert-tag-key">Network</span><span class="nac-cert-tag-val">iQi Global</span></div>
       <div class="nac-cert-tag"><span class="nac-cert-tag-key">Property ID</span><span class="nac-cert-tag-val" data-notion="property_id">NAC-XX</span></div>
       <div class="nac-cert-tag"><span class="nac-cert-tag-key">Status</span><span class="nac-cert-tag-val">Listed</span></div>
     </div>
