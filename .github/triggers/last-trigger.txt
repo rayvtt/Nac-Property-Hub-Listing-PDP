@@ -3,3 +3,4 @@
 2026-06-01T18:00:37Z chat: re-fire CLP workflows — vn raw_html_code is empty; template now set, need sync-wp-clp to populate it
 2026-06-01T18:30:48Z chat: debug instrumentation — workflows now commit run logs to .github/clp-debug/
 2026-06-01T18:38:44Z chat: workflows now post logs to issue #192 instead of git push
+2026-06-01T20:19:28Z chat: re-fire after granting NAC Property Lister integration access to Country DB
