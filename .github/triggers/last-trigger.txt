@@ -8,3 +8,4 @@
 2026-06-01T20:34:23Z chat: index country cards now have Preview + Live buttons and auto-rebuild from Country DB
 2026-06-01T20:41:09Z — fix statement s (wp_unslash) re-sync
 2026-06-01T21:17:39Z chat: sync-notion-clp.mjs shipped — CLPs regenerate from Notion (editorial body + Property Listings)
+2026-06-01T21:52:03Z chat: 5 new countries Live in Notion (UK, Turkey, Cyprus, Greece, Panama) — fire sync-notion-clp + create-wp-clp-page + sync-wp-clp
