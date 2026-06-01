@@ -354,6 +354,30 @@ Mirrors the PDP's `data-notion="*"` convention. The CLP template uses `data-noti
 
 For list-shaped data (cities, slides, cards), use `data-notion-clp-list="cities"` on the container — sync rebuilds the list from the parsed page body.
 
+### WordPress sync (Phase 1 — shipped)
+
+Two scripts + two workflows push CLP HTML to WordPress, mirroring the PDP pipeline:
+
+| Script | What it does | Workflow |
+|---|---|---|
+| `scripts/create-wp-clp-page.mjs` | For Live country rows where `🆔 WP Page ID` is empty, parses the WP slug from `🔗 Country URL`, looks up the existing WP page (most country pages already exist as PDP parents), writes the Page ID back to Notion. Creates the WP page under `/<PROPERTY_HUB_PATH>/` if missing. | `.github/workflows/create-wp-clp-page.yml` — cron `*/5` + dispatch + push to `.github/triggers/**` |
+| `scripts/sync-wp-clp.mjs` | For Live country rows with `🆔 WP Page ID`, reads `country/<slug>.html` (using the Notion `Slug` field for file lookup), PUTs the full HTML into the WP page's `raw_html_code` ACF field. | `.github/workflows/sync-wp-clp.yml` — cron `*/5` + dispatch + push to `country/*.html` |
+
+Field used by both: `🆔 WP Page ID` (Number) on the Country DB. The Country URL field already encodes the WP slug (`https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/` → slug `vietnam`), so no separate WP-slug field is needed — the script parses it.
+
+**End-to-end "Hub Status → Live" → WP for CLPs:**
+```
+Notion Country DB: Hub Status → Live
+  ├── create-wp-clp-page.yml (≤5 min): find/create WP page → writes WP Page ID back to Notion
+  └── sync-wp-clp.yml (≤5 min): push country/<slug>.html into raw_html_code ACF
+```
+
+Total: same ~10 min ceiling as PDPs.
+
+### Notion → HTML sync (Phase 2 — not yet implemented)
+
+The cheerio-based `sync-notion-clp.mjs` script (documented above) hasn't been built yet, and `country/_template-clp.html` / `country/vn.html` don't yet carry `data-notion-clp` attributes. Until both land, country pages render from their current static HTML and are pushed to WP as-is. Editorial edits in the Notion page body do not yet propagate. See "Sync script (future)" above for the planned shape.
+
 ---
 
 ## Workflow — adding a new country
