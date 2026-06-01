@@ -76,31 +76,48 @@ body[data-lang="en"] .cl-modal-name [data-en] { display:block; }
   border-bottom:1px solid transparent;
   transition:border-color .3s ease, padding .3s ease;
 }
-.cl-hdr.scrolled { border-bottom-color:var(--line); padding:.65rem var(--pad); }
-.cl-hdr-mark { display:flex; flex-direction:column; line-height:1; justify-self:start; }
-.cl-hdr-mark .the { font-family:var(--ff-display); font-size:.6rem; letter-spacing:.32em; color:var(--muted); }
-.cl-hdr-mark .nac { font-family:var(--ff-display); font-size:1.4rem; font-weight:500; letter-spacing:.32em; color:var(--display); margin:.1rem 0 .1rem; padding-left:.32em; }
-.cl-hdr-mark .tag { font-family:var(--ff-display); font-size:.52rem; letter-spacing:.38em; color:var(--gold); font-weight:500; padding-left:.38em; }
-.cl-hdr-nav { display:flex; gap:1.6rem; justify-self:center; }
+.cl-hdr.scrolled { border-bottom-color:var(--line); padding:.55rem var(--pad); }
+
+/* Logo lockup — mirrors live Property Hub */
+.cl-hdr-mark { display:flex; align-items:center; gap:.65rem; justify-self:start; }
+.cl-hdr-logo { width:34px; height:34px; flex-shrink:0; border-radius:8px; object-fit:contain; }
+.cl-hdr-mark-txt { display:flex; flex-direction:column; line-height:1.05; }
+.cl-hdr-mark-txt .nac { font-family:var(--ff-display); font-size:1.12rem; font-weight:600; letter-spacing:.04em; color:var(--display); }
+.cl-hdr-mark-txt .nac em { font-style:normal; color:var(--gold); }
+.cl-hdr-mark-txt .sub { font-family:var(--ff-mono); font-size:.5rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-top:.22rem; }
+@media(max-width:560px) { .cl-hdr-mark-txt .sub { display:none; } }
+
+/* Tool nav — live PH global menu */
+.cl-hdr-nav { display:flex; gap:1.5rem; justify-self:center; }
 .cl-hdr-nav a {
-  font-family:var(--ff-mono); font-size:.62rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted);
-  position:relative; padding:.3rem 0; transition:color .2s ease;
+  font-family:var(--ff-body); font-size:.78rem; font-weight:500; letter-spacing:.01em; color:var(--text);
+  position:relative; padding:.35rem 0; transition:color .2s ease; white-space:nowrap;
 }
-.cl-hdr-nav a:hover { color:var(--display); }
+.cl-hdr-nav a:hover { color:var(--gold); }
 .cl-hdr-nav a::after {
-  content:''; position:absolute; left:0; right:0; bottom:0; height:1px;
-  background:var(--gold); transform:scaleX(0); transform-origin:center; transition:transform .25s ease;
+  content:''; position:absolute; left:0; right:0; bottom:0; height:2px; border-radius:2px;
+  background:var(--gold); transform:scaleX(0); transform-origin:left; transition:transform .25s ease;
 }
 .cl-hdr-nav a:hover::after { transform:scaleX(1); }
-.cl-hdr-tools { display:flex; gap:.6rem; align-items:center; justify-self:end; }
-.cl-toggle { display:inline-flex; gap:.2rem; border:1px solid var(--line-strong); padding:.18rem; border-radius:999px; }
+.cl-hdr-nav a.active { color:var(--gold); }
+.cl-hdr-nav a.active::after { transform:scaleX(1); }
+
+.cl-hdr-tools { display:flex; gap:.55rem; align-items:center; justify-self:end; }
+.cl-toggle { display:inline-flex; gap:.15rem; border:1px solid var(--line-strong); padding:.16rem; border-radius:999px; }
 .cl-toggle button {
-  font-family:var(--ff-mono); font-size:.55rem; letter-spacing:.14em; text-transform:uppercase;
-  padding:.3rem .6rem; color:var(--muted); border-radius:999px; transition:all .2s ease;
+  font-family:var(--ff-mono); font-size:.55rem; letter-spacing:.12em; text-transform:uppercase;
+  padding:.3rem .55rem; color:var(--muted); border-radius:999px; transition:all .2s ease;
 }
 .cl-toggle button.on { background:linear-gradient(135deg, var(--gold), var(--gold-2)); color:#fff; }
+.cl-hdr-wa {
+  display:inline-flex; align-items:center; justify-content:center; gap:.4rem;
+  width:34px; height:34px; border-radius:50%;
+  background:#25d366; color:#fff; transition:transform .2s ease, box-shadow .2s ease;
+}
+.cl-hdr-wa:hover { transform:translateY(-1px); box-shadow:0 4px 14px rgba(37,211,102,.4); }
+.cl-hdr-wa svg { width:18px; height:18px; fill:currentColor; }
 
-@media(max-width:780px) {
+@media(max-width:900px) {
   .cl-hdr { grid-template-columns:1fr auto; }
   .cl-hdr-nav { display:none; }
 }
@@ -111,14 +128,18 @@ body[data-lang="en"] .cl-modal-name [data-en] { display:block; }
   padding:7rem var(--pad) 5rem; overflow:hidden;
   color:#fff;
 }
-.cl-hero-bg {
-  position:absolute; inset:0; z-index:0;
-  background-size:cover; background-position:center;
-  animation:kenburns 22s ease-in-out infinite alternate;
+/* Hero carousel — crossfading slides */
+.cl-hero-slides { position:absolute; inset:0; z-index:0; }
+.cl-hero-slide {
+  position:absolute; inset:0; background-size:cover; background-position:center;
+  opacity:0; transition:opacity 1.4s ease;
+}
+.cl-hero-slide.on {
+  opacity:1; animation:kenburns 8s ease-out forwards;
 }
 @keyframes kenburns {
-  0% { transform:scale(1) translate(0,0); }
-  100% { transform:scale(1.08) translate(-1%, -1.5%); }
+  0% { transform:scale(1.04) translate(0,0); }
+  100% { transform:scale(1.12) translate(-1.2%, -1.5%); }
 }
 .cl-hero-veil {
   position:absolute; inset:0; z-index:1;
@@ -188,6 +209,42 @@ body[data-lang="en"] .cl-modal-name [data-en] { display:block; }
 .cl-plaque-row-lbl { font-family:var(--ff-mono); font-size:.58rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.55); }
 .cl-plaque-row-val { font-family:var(--ff-display); font-size:1.6rem; font-weight:500; color:#fff; line-height:1; }
 .cl-plaque-row-val small { font-size:.55em; color:var(--gold-2); margin-left:.15em; font-weight:400; }
+
+/* Featured-property credit (rotates with carousel) */
+.cl-hero-featured {
+  display:inline-flex; align-items:center; gap:.7rem; margin-top:2rem;
+  padding:.6rem .9rem .6rem .7rem; border-radius:999px;
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18); backdrop-filter:blur(12px);
+  text-decoration:none; transition:background .25s ease, border-color .25s ease, transform .25s ease;
+  max-width:max-content;
+}
+.cl-hero-featured:hover { background:rgba(255,255,255,.14); border-color:var(--gold); transform:translateX(3px); }
+.cl-hero-featured-thumb { width:40px; height:40px; border-radius:999px; background-size:cover; background-position:center; flex-shrink:0; border:1px solid rgba(255,255,255,.25); }
+.cl-hero-featured-txt { display:flex; flex-direction:column; line-height:1.15; }
+.cl-hero-featured-lbl { font-family:var(--ff-mono); font-size:.5rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold-2); }
+.cl-hero-featured-name { font-family:var(--ff-display); font-size:1.05rem; font-weight:500; color:#fff; }
+.cl-hero-featured-name small { font-family:var(--ff-mono); font-size:.62rem; color:rgba(255,255,255,.7); margin-left:.5rem; letter-spacing:.04em; }
+.cl-hero-featured-arrow { color:var(--gold-2); margin-left:.4rem; transition:transform .25s ease; }
+.cl-hero-featured:hover .cl-hero-featured-arrow { transform:translateX(3px); }
+
+/* Carousel dots */
+.cl-hero-dots {
+  position:absolute; bottom:1.7rem; right:var(--pad); z-index:3;
+  display:flex; gap:.5rem; align-items:center;
+}
+.cl-hero-dot {
+  width:8px; height:8px; border-radius:50%; padding:0;
+  background:rgba(255,255,255,.3); border:1px solid rgba(255,255,255,.45);
+  transition:all .3s ease; position:relative; overflow:hidden;
+}
+.cl-hero-dot.on { width:28px; border-radius:999px; background:rgba(255,255,255,.25); border-color:var(--gold-2); }
+.cl-hero-dot.on::after {
+  content:''; position:absolute; inset:0; border-radius:999px;
+  background:linear-gradient(90deg, var(--gold), var(--gold-2));
+  transform-origin:left; transform:scaleX(0); animation:dotfill 6s linear forwards;
+}
+@keyframes dotfill { to { transform:scaleX(1); } }
+@media(max-width:900px) { .cl-hero-dots { left:var(--pad); right:auto; bottom:1.2rem; } }
 
 .cl-hero-scroll {
   position:absolute; bottom:1.6rem; left:50%; transform:translateX(-50%); z-index:2;
@@ -589,29 +646,52 @@ body.cl-modal-open { overflow:hidden; }
 
 <!-- ═══ STICKY HEADER ═══ -->
 <header class="cl-hdr" id="cl-hdr">
-  <a href="../index.html" class="cl-hdr-mark">
-    <span class="the">THE</span>
-    <span class="nac">NAC</span>
-    <span class="tag">PROPERTY HUB</span>
+  <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/" class="cl-hdr-mark">
+    <img class="cl-hdr-logo" src="https://nomadassetcollective.com/wp-content/uploads/2026/04/cropped-OTG-Passport-Icons.png" alt="Nomad Asset Collective" loading="eager">
+    <span class="cl-hdr-mark-txt">
+      <span class="nac">NAC <em>Property Hub</em></span>
+      <span class="sub"><span data-vi="Danh Mục BĐS &amp; Công Cụ Đầu Tư">Danh Mục BĐS &amp; Công Cụ Đầu Tư</span><span data-en="Property Portfolio &amp; Investment Tools">Property Portfolio &amp; Investment Tools</span></span>
+    </span>
   </a>
   <nav class="cl-hdr-nav">
-    <a href="#atlas"><span data-vi="Bản đồ">Bản đồ</span><span data-en="Map">Map</span></a>
-    <a href="#da-nang">Đà Nẵng</a>
-    <a href="#sai-gon">Sài Gòn</a>
-    <a href="#ho-tram">Hồ Tràm</a>
-    <a href="#compare"><span data-vi="So sánh">So sánh</span><span data-en="Compare">Compare</span></a>
+    <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/"><span data-vi="Danh Mục BĐS">Danh Mục BĐS</span><span data-en="Portfolio">Portfolio</span></a>
+    <a href="#compare"><span data-vi="So Sánh ROI">So Sánh ROI</span><span data-en="Compare ROI">Compare ROI</span></a>
+    <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/"><span data-vi="Simulator">Simulator</span><span data-en="Simulator">Simulator</span></a>
+    <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/"><span data-vi="NAC Lister">NAC Lister</span><span data-en="NAC Lister">NAC Lister</span></a>
+    <a href="https://calendar.app.google/owGkBM8Q5owKYwDd9" target="_blank" rel="noopener"><span data-vi="Tư Vấn NAC">Tư Vấn NAC</span><span data-en="NAC Advisory">NAC Advisory</span></a>
   </nav>
   <div class="cl-hdr-tools">
     <div class="cl-toggle">
       <button data-lang-btn="vi" class="on">VI</button>
       <button data-lang-btn="en">EN</button>
     </div>
+    <a class="cl-hdr-wa" href="https://wa.me/447388646000" target="_blank" rel="noopener" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.07zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.71.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+    </a>
   </div>
 </header>
 
 <!-- ═══ HERO ═══ -->
-<section class="cl-hero">
-  <div class="cl-hero-bg" style="background-image:url('https://nomadassetcollective.com/wp-content/uploads/2026/05/nobu.webp')"></div>
+<section class="cl-hero" id="cl-hero">
+  <div class="cl-hero-slides" id="cl-hero-slides">
+    <!-- Top properties by price · MO → Hyatt → Grand Marina → Nobu -->
+    <div class="cl-hero-slide on"
+         data-name-vi="Mandarin Oriental Đà Nẵng" data-name-en="Mandarin Oriental Da Nang"
+         data-price="$1.8M" data-url="../properties/mo.html"
+         style="background-image:url('https://nomadassetcollective.com/wp-content/uploads/2026/05/mo1.jpg')"></div>
+    <div class="cl-hero-slide"
+         data-name-vi="Hyatt Regency Hồ Tràm" data-name-en="Hyatt Regency Ho Tram"
+         data-price="$606K" data-url="../properties/hyatt-regency-ho-tram.html"
+         style="background:linear-gradient(135deg,#1a3a5c 0%,#0f1a36 55%,#c4922c 220%)"></div>
+    <div class="cl-hero-slide"
+         data-name-vi="Grand Marina Sài Gòn" data-name-en="Grand Marina Saigon"
+         data-price="$450K" data-url="../properties/grand-marina-sai-gon-bason-by-jw-marriot.html"
+         style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/grand-marina-sai-gon-bason-by-jw-marriot-hero/public')"></div>
+    <div class="cl-hero-slide"
+         data-name-vi="Nobu Đà Nẵng" data-name-en="Nobu Da Nang"
+         data-price="$360K" data-url="../properties/nobu-da-nang.html"
+         style="background-image:url('https://nomadassetcollective.com/wp-content/uploads/2026/05/nobu.webp')"></div>
+  </div>
   <div class="cl-hero-veil"></div>
   <div class="cl-hero-grain"></div>
 
@@ -634,6 +714,14 @@ body.cl-modal-open { overflow:hidden; }
         <span class="cl-chip">📈 GDP 7.1% (2024)</span>
         <span class="cl-chip">✈️ <span data-vi="17.5M du khách">17.5M du khách</span><span data-en="17.5M visitors">17.5M visitors</span></span>
       </div>
+      <a class="cl-hero-featured" id="cl-hero-featured" href="../properties/mo.html">
+        <span class="cl-hero-featured-thumb" id="cl-hero-featured-thumb" style="background-image:url('https://nomadassetcollective.com/wp-content/uploads/2026/05/mo1.jpg')"></span>
+        <span class="cl-hero-featured-txt">
+          <span class="cl-hero-featured-lbl"><span data-vi="Tiêu điểm">Tiêu điểm</span><span data-en="Featured">Featured</span></span>
+          <span class="cl-hero-featured-name" id="cl-hero-featured-name">Mandarin Oriental Đà Nẵng <small>$1.8M</small></span>
+        </span>
+        <span class="cl-hero-featured-arrow">→</span>
+      </a>
     </div>
 
     <aside class="cl-plaque reveal">
@@ -660,6 +748,8 @@ body.cl-modal-open { overflow:hidden; }
       </div>
     </aside>
   </div>
+
+  <div class="cl-hero-dots" id="cl-hero-dots"></div>
 
   <div class="cl-hero-scroll">
     <span><span data-vi="Khám phá">Khám phá</span><span data-en="Discover">Discover</span></span>
@@ -1364,6 +1454,60 @@ body.cl-modal-open { overflow:hidden; }
   const onScroll = () => hdr.classList.toggle('scrolled', window.scrollY > 16);
   window.addEventListener('scroll', onScroll, { passive:true });
   onScroll();
+
+  // ─── Hero property carousel ───
+  (function(){
+    const slides = Array.from(document.querySelectorAll('.cl-hero-slide'));
+    if (slides.length < 2) return;
+    const dotsHost = document.getElementById('cl-hero-dots');
+    const featured = document.getElementById('cl-hero-featured');
+    const fThumb = document.getElementById('cl-hero-featured-thumb');
+    const fName  = document.getElementById('cl-hero-featured-name');
+    const INTERVAL = 6000;
+    let idx = 0, timer = null;
+
+    // Build dots
+    const dots = slides.map((_, i) => {
+      const b = document.createElement('button');
+      b.className = 'cl-hero-dot' + (i === 0 ? ' on' : '');
+      b.setAttribute('aria-label', 'Slide ' + (i+1));
+      b.addEventListener('click', () => go(i, true));
+      dotsHost.appendChild(b);
+      return b;
+    });
+
+    function syncFeatured(slide) {
+      const name = slide.dataset['name' + (document.body.getAttribute('data-lang') === 'en' ? 'En' : 'Vi')];
+      const bg = slide.style.backgroundImage;
+      fThumb.style.backgroundImage = bg || 'none';
+      if (!bg) fThumb.style.background = 'linear-gradient(135deg,#1a3a5c,#0f1a36)';
+      fName.innerHTML = name + ' <small>' + slide.dataset.price + '</small>';
+      featured.href = slide.dataset.url;
+    }
+
+    function go(n, manual) {
+      slides[idx].classList.remove('on');
+      dots[idx].classList.remove('on');
+      idx = (n + slides.length) % slides.length;
+      // restart dot fill animation
+      const d = dots[idx]; d.classList.remove('on'); void d.offsetWidth; d.classList.add('on');
+      slides[idx].classList.add('on');
+      syncFeatured(slides[idx]);
+      if (manual) restart();
+    }
+    function next() { go(idx + 1); }
+    function restart() { clearInterval(timer); timer = setInterval(next, INTERVAL); }
+
+    syncFeatured(slides[0]);
+    restart();
+    // keep featured label language in sync when toggled
+    document.querySelectorAll('[data-lang-btn]').forEach(btn =>
+      btn.addEventListener('click', () => syncFeatured(slides[idx])));
+    // pause when tab hidden
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) clearInterval(timer); else restart();
+    });
+  })();
 
   // ─── Reveal on scroll ───
   if ('IntersectionObserver' in window) {
