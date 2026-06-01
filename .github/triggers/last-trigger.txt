@@ -4,3 +4,4 @@
 2026-06-01T18:30:48Z chat: debug instrumentation — workflows now commit run logs to .github/clp-debug/
 2026-06-01T18:38:44Z chat: workflows now post logs to issue #192 instead of git push
 2026-06-01T20:19:28Z chat: re-fire after granting NAC Property Lister integration access to Country DB
+2026-06-01T20:22:31Z chat: fix create-wp-clp-page hub root lookup (defensive array coerce + status filter); revert debug instrumentation

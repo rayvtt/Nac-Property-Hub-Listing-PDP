@@ -365,6 +365,10 @@ Two scripts + two workflows push CLP HTML to WordPress, mirroring the PDP pipeli
 
 Field used by both: `🆔 WP Page ID` (Number) on the Country DB. The Country URL field already encodes the WP slug (`https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/` → slug `vietnam`), so no separate WP-slug field is needed — the script parses it.
 
+**Prerequisite — Notion integration access:** The Country DB must be shared with the `NAC Property Lister` integration (the same one used by the LLP sync). One-time setup: open the Country DB → `···` menu → Connections → add `NAC Property Lister` with **edit** permission. Without this, both scripts fail with `Could not find database with ID: …`. Each new country row inherits access from its parent DB, so no per-row sharing is needed.
+
+**WP template requirement:** The country page in WP must use a template that echoes `<?php the_field('raw_html_code'); ?>` — same as PDPs. If the page existed before this pipeline (e.g. as a PDP parent), it likely has the default WP template and won't render the pushed HTML until the template is switched manually in WP admin → Pages → Page Attributes → Template.
+
 **End-to-end "Hub Status → Live" → WP for CLPs:**
 ```
 Notion Country DB: Hub Status → Live
