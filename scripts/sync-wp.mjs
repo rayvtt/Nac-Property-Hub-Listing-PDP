@@ -77,9 +77,15 @@ async function findByListingUrl(listingUrl) {
 }
 
 async function updatePageAcf(pageId, html) {
+  // WordPress REST runs wp_unslash() on every POST value, stripping ONE level of
+  // backslashes. That silently corrupts inline-JS regex escapes in the HTML —
+  // e.g. `text.split(/\s+/)` → `/s+/` (splits on the letter "s", deleting it),
+  // and `/[^\d.-]/` → `/[^d.-]/`. The "I tanbul" statement bug came from exactly
+  // this. Pre-double every backslash so one survives unslashing intact.
+  const safeHtml = html.replace(/\\/g, '\\\\');
   return wp(`/pages/${pageId}`, {
     method: 'POST',
-    body: JSON.stringify({ acf: { [ACF_HTML_FIELD]: html } }),
+    body: JSON.stringify({ acf: { [ACF_HTML_FIELD]: safeHtml } }),
   });
 }
 
