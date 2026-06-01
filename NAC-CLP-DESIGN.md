@@ -382,6 +382,16 @@ Total: same ~10 min ceiling as PDPs.
 
 The cheerio-based `sync-notion-clp.mjs` script (documented above) hasn't been built yet, and `country/_template-clp.html` / `country/vn.html` don't yet carry `data-notion-clp` attributes. Until both land, country pages render from their current static HTML and are pushed to WP as-is. Editorial edits in the Notion page body do not yet propagate. See "Sync script (future)" above for the planned shape.
 
+### Hard requirements learned in production
+
+Two things that **must** hold for any CLP — enforce them in `sync-notion-clp.mjs` when it's built, and check them when hand-building a country from the template:
+
+1. **Header must be `position:sticky`, never `position:fixed`.** The CLP is embedded inside WordPress via the `raw_html_code` ACF field. A `position:fixed` header is positioned relative to the viewport in isolation, but inside WP any ancestor with a `transform` / `filter` / `will-change` becomes its containing block, so the header silently stops being fixed (and on top of that it collides with the WP theme's own site header). The PDP `.nac-hdr` uses `position:sticky; top:0;` for exactly this reason. The CLP `.cl-hdr` now matches. **Mirror the main Property Hub header — sticky, not fixed.**
+
+2. **Listing card `data-url` must be the absolute Notion `Listing URL`, never a relative `../properties/<slug>.html` preview path.** The relative path 404s on the live WP site (it resolves under `/property-hub-bat-dong-san/<country>/properties/…`, which doesn't exist). Critically, the WP slug in the Listing URL can differ from the `🔗 Slug` / HTML file name — e.g. Nobu's file is `nobu-da-nang.html` but its WP Listing URL is `…/vietnam/nobu-dn/`. So you cannot derive the live URL by string-munging the file slug; you must read `Listing URL` from the Property Listings DB row. The CLP card carries it on `data-url`, consumed by the hero-featured anchor (`featured.href`), the quick-view modal CTA (`#cl-modal-cta`), and the card click handler (`window.location.href = card.dataset.url`).
+
+When `sync-notion-clp.mjs` is built it should populate each collection card's `data-url` (and the hero-featured static `href` fallback) directly from the matching Property Listings row's `Listing URL`, sourced the same way `update-index.mjs` already reads it.
+
 ---
 
 ## Workflow — adding a new country
