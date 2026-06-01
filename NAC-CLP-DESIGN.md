@@ -273,6 +273,7 @@ M 88 56 C 100 50, 130 46, 158 52 …
 
 ### Đà Nẵng
 - slug: da-nang
+- match: da nang, danang, my khe, non nuoc
 - region_vi: Mặt biển Mỹ Khê · Non Nước
 - region_en: My Khe · Non Nuoc beachfront
 - airport_vi: DAD · 15–20 phút
@@ -286,6 +287,8 @@ M 88 56 C 100 50, 130 46, 158 52 …
 ### Sài Gòn
 …
 ```
+
+**`match:`** is a comma-separated alias list used to assign listings to this city. The sync script normalises (lowercase, strips diacritics) the listing's `Region/City` + `📍 District` and checks whether any alias is a substring. Needed because a listing's region text often won't contain the city's display name (Grand Marina's region is "District 1, Ho Chi Minh City" → must match **Sài Gòn** via `ho chi minh, district 1, …`). If `match:` is omitted, the script falls back to the city's display name. **`pin_x`/`pin_y`** place the SVG pin (320×420 viewBox); the label sits at `pin_x + label_offset_x` (use a negative offset to flip the label to the left of the pin, as Sài Gòn does near the map's left edge).
 
 **Parsing rules** (sync script):
 - `## SectionName` heading marks a section
@@ -378,9 +381,21 @@ Notion Country DB: Hub Status → Live
 
 Total: same ~10 min ceiling as PDPs.
 
-### Notion → HTML sync (Phase 2 — not yet implemented)
+### Notion → HTML sync (Phase 2 — shipped)
 
-The cheerio-based `sync-notion-clp.mjs` script (documented above) hasn't been built yet, and `country/_template-clp.html` / `country/vn.html` don't yet carry `data-notion-clp` attributes. Until both land, country pages render from their current static HTML and are pushed to WP as-is. Editorial edits in the Notion page body do not yet propagate. See "Sync script (future)" above for the planned shape.
+`scripts/sync-notion-clp.mjs` + `.github/workflows/sync-notion-clp.yml` regenerate `country/<slug>.html` for every Live Country DB row on every sync tick. Rather than `data-notion-clp` attributes, the patcher cheerio-selects the CLP's stable structural classes/ids (`.cl-hero-tag`, `.cl-atlas-text-title`, `#cl-collection-track`, `#cl-hero-slides`, `#cl-tbl tbody`, `.cl-plaque`, `.cl-atlas-pinlist`, the SVG `.cl-pin-group`s, etc.). It:
+
+- **Scaffolds** `country/<slug>.html` from `_template-clp.html` if the file is missing.
+- **Patches editorial scalars** from the Country page body sections — hero tagline, intro quote, atlas title/lead, collection title/lead, aspiration (all keep inline `<strong>`/`<em>`), country name (from Country DB props), hero chips, and the SVG silhouette `d`.
+- **Rebuilds every listing-driven region** from the Property Listings rows (filtered `Country = <Country Name EN>`, `Hub Status = Live`, ordered by Purchase Price desc): hero carousel slides, plaque snapshot (listings/cities counts, entry-from, yield range — all derived), atlas pins + pin-list + per-city counts, collection filter pills + meta, collection cards, and the compare table.
+- **Wires `data-url` straight from each row's `Listing URL`** — the connection that replaced the old hardcoded preview paths. Every card field (img, price, yield, IRR, CoC, rent, score, sub-scores, brand, city, name, tagline) is connected from its Property Listings field; no per-listing fetching.
+- **Stamps `📤 Last Synced` + `📈 Listings Count`** back to the Country DB row.
+
+Card display name comes from `Name VI` / `Property Name`; card tagline from `🏷️ Tagline VI` / `EN`. Sub-scores are read from `📊 Sub-Scores JSON` and mapped `{label_vi,label_en,val}` → `{vi,en,val}` for `data-subs`. The NAC mini-donut `stroke-dashoffset` is computed `263.9·(1−score/100)`.
+
+**City assignment.** Each listing is mapped to one of the country's cities using the per-city `match:` alias list in the page body (see Cities schema below) — substring match, diacritic- and case-insensitive, against the listing's `Region/City` + `📍 District`. This is required because a listing's region text often won't contain the city's display name (e.g. Grand Marina's `Region/City` is "District 1, Ho Chi Minh City", which must map to the **Sài Gòn** city). Falls back to the city name if `match:` is absent.
+
+**Offline test.** `node sync-notion-clp.mjs --fixture fixtures/clp-vn.json --slug vn --out /tmp/out.html` renders against a committed real-data fixture without touching Notion — used to validate the renderer before it touches the live page.
 
 ### Hard requirements learned in production
 
