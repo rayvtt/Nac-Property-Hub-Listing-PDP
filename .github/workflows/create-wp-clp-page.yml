@@ -1,5 +1,11 @@
 name: Create WP Page for new Live country listings
 
+# Runs every 5 minutes. For each Country DB row where Hub Status = Live but
+# 🆔 WP Page ID is empty, looks up (or creates) a WP page at the slug parsed
+# from 🔗 Country URL and writes the Page ID back to Notion.
+#
+# Side A for CLPs. Mirrors create-wp-page.yml.
+
 on:
   schedule:
     - cron: "*/5 * * * *"
@@ -19,7 +25,6 @@ concurrency:
 
 permissions:
   contents: read
-  issues: write
 
 jobs:
   create:
@@ -36,7 +41,6 @@ jobs:
         run: npm install --no-audit --no-fund
 
       - name: Create / link WP pages for Live country rows
-        id: run
         working-directory: scripts
         env:
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
@@ -45,28 +49,4 @@ jobs:
           WP_USER: ${{ vars.WP_USER || 'admin_web' }}
           WP_BASE_URL: ${{ vars.WP_BASE_URL || 'https://nomadassetcollective.com' }}
           WP_PROPERTY_HUB_PATH: ${{ vars.WP_PROPERTY_HUB_PATH || 'property-hub-bat-dong-san' }}
-        continue-on-error: true
-        run: |
-          set +e
-          node create-wp-clp-page.mjs > /tmp/run.log 2>&1
-          ec=$?
-          echo "exit_code=$ec" >> $GITHUB_OUTPUT
-          cat /tmp/run.log
-          exit $ec
-
-      - name: Post log to debug issue #192
-        if: always()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          {
-            echo "### create-wp-clp-page · $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            echo "- exit_code: \`${{ steps.run.outputs.exit_code }}\`"
-            echo "- commit: \`${{ github.sha }}\`"
-            echo "- event: \`${{ github.event_name }}\`"
-            echo
-            echo '```'
-            cat /tmp/run.log 2>/dev/null | head -200 || echo "(no log file)"
-            echo '```'
-          } > /tmp/comment.md
-          gh issue comment 192 --repo "${{ github.repository }}" --body-file /tmp/comment.md
+        run: node create-wp-clp-page.mjs
