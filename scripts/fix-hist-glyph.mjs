@@ -1,8 +1,13 @@
 #!/usr/bin/env node
 // Ensures every properties/*.html has the inline !important font-feature-settings
 // fix applied to each .word span via JS setProperty, disabling Cormorant Garamond's
-// `hist` OpenType feature which maps lowercase 's' → long-s glyph (ſ, U+017F).
+// `hist`/`hlig` historical-ligature features that map lowercase 's' → long-s (ſ, U+017F).
 // That glyph is absent from Google Fonts' latin/vietnamese subsets, rendering as blank.
+//
+// IMPORTANT: only `hist`/`hlig` are disabled — NOT `calt`/`liga`. Contextual alternates
+// (`calt`, on by default) are what normalize Cormorant's 's' to the short form; turning
+// them off RE-EXPOSES the long-s and is what caused "Istanbul" → "I tanbul" in the
+// Định Vị NAC statement while the hero (calt on) rendered fine. Keep calt/liga enabled.
 // Inline !important beats any author stylesheet rule including WP theme CSS.
 // Idempotent: files that already contain the fix are skipped.
 
@@ -15,8 +20,7 @@ const ROOT = path.resolve(__dirname, '..');
 const PROPS = path.join(ROOT, 'properties');
 
 const FIX = `      el.querySelectorAll('.word').forEach(function(w){
-        w.style.setProperty('font-feature-settings','"calt" 0,"liga" 0,"hist" 0,"hlig" 0','important');
-        w.style.setProperty('font-variant-ligatures','none','important');
+        w.style.setProperty('font-feature-settings','"hist" 0,"hlig" 0','important');
         w.style.setProperty('font-variant-alternates','normal','important');
       });`;
 
