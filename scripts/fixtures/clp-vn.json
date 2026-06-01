@@ -1,0 +1,153 @@
+{
+  "country": {
+    "slug": "vn",
+    "nameVi": "Việt Nam",
+    "nameEn": "Vietnam",
+    "plaqueYoy": "8–15%",
+    "countryUrl": "https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/"
+  },
+  "body": {
+    "heroTagline": {
+      "vi": "<strong>Bờ biển vàng của châu Á</strong> — branded residences từ JW Marriott đến Nobu, ở ba thành phố ven biển trọng yếu.",
+      "en": "<strong>Asia's golden coast</strong> — branded residences from JW Marriott to Nobu, across three strategic coastal cities."
+    },
+    "introQuote": {
+      "vi": "Việt Nam không phải là điểm đến mới — mà là chương mới của châu Á.",
+      "en": "Vietnam isn't Asia's next destination — it's Asia's next chapter."
+    },
+    "atlasTitle": {
+      "vi": "Ba thành phố. Bốn dự án. Một <em>bờ biển vàng</em>.",
+      "en": "Three cities. Four listings. One <em>golden coast</em>."
+    },
+    "atlasLead": {
+      "vi": "Từ Đà Nẵng ở miền Trung đến Sài Gòn — Hồ Tràm ở miền Nam, mỗi vị trí được chọn lọc cho lợi suất, thanh khoản và đẳng cấp thương hiệu.",
+      "en": "From Da Nang in the centre to Saigon and Ho Tram in the south, each location is curated for yield, liquidity, and brand pedigree."
+    },
+    "collectionTitle": {
+      "vi": "Bốn dự án. <em>Một dải bờ biển.</em>",
+      "en": "Four listings. <em>One golden coast.</em>"
+    },
+    "collectionLead": {
+      "vi": "Vuốt, kéo, hoặc lọc theo thành phố. Bấm thẻ để xem nhanh, mũi tên để mở dự án.",
+      "en": "Swipe, drag, or filter by city. Click a card for quick view, the arrow for the full listing."
+    },
+    "aspiration": {
+      "vi": "Sở hữu một bờ biển. Sở hữu <strong>Việt Nam</strong>.",
+      "en": "Own a coastline. Own <strong>Vietnam</strong>."
+    },
+    "heroChips": [
+      { "vi": "🏖️ Bờ biển 3,260km", "en": "🏖️ 3,260km coastline" },
+      { "vi": "📈 GDP 7.1% (2024)", "en": "📈 GDP 7.1% (2024)" },
+      { "vi": "✈️ 17.5M du khách", "en": "✈️ 17.5M visitors" }
+    ],
+    "svgPath": "M 88 56 C 100 50, 130 46, 158 52 C 175 56, 188 64, 195 78 C 200 90, 196 105, 188 118 C 178 132, 170 142, 168 158 C 167 172, 173 186, 182 200 C 192 218, 200 232, 195 250 C 188 270, 172 282, 158 298 C 145 314, 138 328, 138 346 C 138 360, 134 372, 122 380 C 110 386, 92 386, 78 380 C 68 374, 64 360, 70 348 C 78 332, 96 322, 108 308 C 118 294, 122 280, 116 264 C 108 244, 96 226, 92 204 C 88 184, 92 166, 100 150 C 108 136, 110 124, 104 110 C 96 92, 84 78, 82 64 C 82 58, 84 56, 88 56 Z",
+    "cities": [
+      {
+        "name": "Đà Nẵng", "slug": "da-nang",
+        "regionVi": "Mặt biển Mỹ Khê · gần biển Non Nước", "regionEn": "My Khe · Non Nuoc beachfront",
+        "airportVi": "DAD · 15–20 phút", "airportEn": "DAD · 15–20 min",
+        "lat": "16.05°N", "lng": "108.21°E",
+        "pinX": 178, "pinY": 186, "labelOffsetX": 14,
+        "match": ["da nang", "danang", "my khe", "non nuoc"]
+      },
+      {
+        "name": "Sài Gòn", "slug": "sai-gon",
+        "regionVi": "Miền Nam · Ven sông", "regionEn": "South · Waterfront CBD",
+        "airportVi": "SGN · 30 phút", "airportEn": "SGN · 30 min",
+        "lat": "10.78°N", "lng": "106.71°E",
+        "pinX": 108, "pinY": 350, "labelOffsetX": -76,
+        "match": ["ho chi minh", "hcmc", "saigon", "sai gon", "district 1", "ba son"]
+      },
+      {
+        "name": "Hồ Tràm", "slug": "ho-tram",
+        "regionVi": "Bà Rịa–Vũng Tàu · Resort biển", "regionEn": "Ba Ria–Vung Tau · Beach resort",
+        "airportVi": "SGN · 90 phút lái xe", "airportEn": "SGN · 90 min drive",
+        "lat": "10.49°N", "lng": "107.32°E",
+        "pinX": 138, "pinY": 378, "labelOffsetX": 14,
+        "match": ["ho tram", "ba ria", "vung tau"]
+      }
+    ]
+  },
+  "listings": [
+    {
+      "slug": "nobu-da-nang",
+      "nameVi": "Nobu Đà Nẵng", "nameEn": "Nobu Da Nang",
+      "taglineVi": "Vị Trí Di Sản (Mặt Tiền biển Mỹ Khê) · Tiện Ích May Đo Vượt Trội",
+      "taglineEn": "Limited Nobu Residences Collection · Mỹ Khê Beachfront Legacy Location",
+      "brand": "Nobu Hospitality (Nobu Matsuhisa · Robert De Niro · Meir Teper)",
+      "purchasePrice": 360000, "yieldPct": 0.06, "irrPct": 0.138, "cocPct": 0.081,
+      "monthlyRent": 1220, "nacScore": 81,
+      "subScores": [
+        { "label_vi": "Thương Hiệu", "label_en": "Brand", "val": 9.4 },
+        { "label_vi": "Yield", "label_en": "Yield", "val": 8.6 },
+        { "label_vi": "Vị Trí", "label_en": "Location", "val": 8.8 },
+        { "label_vi": "Quản Lý", "label_en": "Management", "val": 9.0 },
+        { "label_vi": "Thanh Khoản", "label_en": "Liquidity", "val": 6.2 },
+        { "label_vi": "Rủi Ro", "label_en": "Risk", "val": 7.5 }
+      ],
+      "listingUrl": "https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/nobu-dn/",
+      "heroImg": "https://nomadassetcollective.com/wp-content/uploads/2026/05/nobu.webp",
+      "regionCity": "Mỹ Khê, Da Nang", "district": "Mỹ Khê Beach", "tags": ["Hot"]
+    },
+    {
+      "slug": "mo",
+      "nameVi": "Mandarin Oriental Đà Nẵng", "nameEn": "Mandarin Oriental Residences, Da Nang",
+      "taglineVi": "Biệt Thự Biển Mandarin Oriental · Sang Trọng Thầm Lặng Tiên Phong Tại Việt Nam",
+      "taglineEn": "Beachfront Mandarin Oriental Villas · Quiet Luxury Debut in Vietnam",
+      "brand": "Mandarin Oriental Hotel Group (Hong Kong · 1963 · Legendary luxury)",
+      "purchasePrice": 1800000, "yieldPct": 0.06, "irrPct": 0.07, "cocPct": 0.08,
+      "monthlyRent": 5300, "nacScore": 78,
+      "subScores": [
+        { "label_vi": "Thương Hiệu", "label_en": "Brand", "val": 9.5 },
+        { "label_vi": "Yield", "label_en": "Yield", "val": 6.5 },
+        { "label_vi": "Vị Trí", "label_en": "Location", "val": 9.0 },
+        { "label_vi": "Quản Lý", "label_en": "Management", "val": 9.5 },
+        { "label_vi": "Thanh Khoản", "label_en": "Liquidity", "val": 5.5 },
+        { "label_vi": "Rủi Ro", "label_en": "Risk", "val": 7.0 }
+      ],
+      "listingUrl": "https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/mo",
+      "heroImg": "https://nomadassetcollective.com/wp-content/uploads/2026/05/mo1.jpg",
+      "regionCity": "Đà Nẵng", "district": "Non Nước Beach, Đà Nẵng", "tags": ["Must Know"]
+    },
+    {
+      "slug": "grand-marina-sai-gon-bason-by-jw-marriot",
+      "nameVi": "Grand Marina Sài Gòn", "nameEn": "Grand Marina Saigon — Marriott Branded Residences",
+      "taglineVi": "Căn Hộ Thương Hiệu Marriott Ven Sông Trung Tâm Sài Gòn",
+      "taglineEn": "Marriott-Branded Riverside Residences in Saigon's CBD",
+      "brand": "Marriott International (JW Marriott · Marriott Bonvoy)",
+      "purchasePrice": 450000, "yieldPct": 0.058, "irrPct": 0.125, "cocPct": 0.074,
+      "monthlyRent": 2175, "nacScore": 81,
+      "subScores": [
+        { "label_vi": "Thương Hiệu", "label_en": "Brand", "val": 9.5 },
+        { "label_vi": "Yield", "label_en": "Yield", "val": 7.0 },
+        { "label_vi": "Vị Trí", "label_en": "Location", "val": 9.0 },
+        { "label_vi": "Quản Lý", "label_en": "Management", "val": 9.5 },
+        { "label_vi": "Thanh Khoản", "label_en": "Liquidity", "val": 6.0 },
+        { "label_vi": "Rủi Ro", "label_en": "Risk", "val": 7.5 }
+      ],
+      "listingUrl": "https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/grand-marina-sai-gon-bason-by-jw-marriot/",
+      "heroImg": "https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/grand-marina-sai-gon-bason-by-jw-marriot-hero/public",
+      "regionCity": "District 1, Ho Chi Minh City", "district": "Ba Son · District 1", "tags": ["Hot", "Must Know"]
+    },
+    {
+      "slug": "hyatt-regency-ho-tram",
+      "nameVi": "Hyatt Regency Hồ Tràm", "nameEn": "Hyatt Regency Hồ Tràm",
+      "taglineVi": "Biệt thự nhãn hiệu Hyatt Regency đầu tiên Nam Việt Nam — bãi biển Hồ Tràm, 90 phút từ Sài Gòn.",
+      "taglineEn": "The first Hyatt Regency branded villas in southern Vietnam — Ho Tram beachfront, 90 mins from Saigon.",
+      "brand": "Hyatt Regency (Hyatt Hotels Corp.)",
+      "purchasePrice": 606000, "yieldPct": 0.065, "irrPct": 0.11, "cocPct": 0.06,
+      "monthlyRent": 3283, "nacScore": 80,
+      "subScores": [
+        { "label_vi": "Thương Hiệu", "label_en": "Brand", "val": 9.0 },
+        { "label_vi": "Lợi Suất", "label_en": "Yield", "val": 7.5 },
+        { "label_vi": "Vị Trí", "label_en": "Location", "val": 8.0 },
+        { "label_vi": "Vận Hành", "label_en": "Management", "val": 8.5 },
+        { "label_vi": "Thanh Khoản", "label_en": "Liquidity", "val": 7.0 },
+        { "label_vi": "Rủi Ro", "label_en": "Risk", "val": 8.0 }
+      ],
+      "listingUrl": "https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/hyatt-regency-ho-tram/",
+      "heroImg": "https://hyattregencyhotramresidences.com/wp-content/uploads/2021/10/project-overview-1.jpg",
+      "regionCity": "Hồ Tràm", "district": "Bà Rịa - Vũng Tàu", "tags": ["Hot", "Must Know", "Residency"]
+    }
+  ]
+}

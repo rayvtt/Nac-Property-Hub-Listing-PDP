@@ -10,6 +10,7 @@
     "index": "node update-index.mjs",
     "sync:wp": "node sync-wp.mjs",
     "sync:wp-clp": "node sync-wp-clp.mjs",
+    "sync:clp": "node sync-notion-clp.mjs",
     "create:wp-clp": "node create-wp-clp-page.mjs",
     "titles": "node generate-cine-titles.mjs",
     "images": "node sync-images.mjs"
