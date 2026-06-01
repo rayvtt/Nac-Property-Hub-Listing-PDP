@@ -10,3 +10,4 @@
 2026-06-01T21:17:39Z chat: sync-notion-clp.mjs shipped — CLPs regenerate from Notion (editorial body + Property Listings)
 2026-06-01T21:52:03Z chat: 5 new countries Live in Notion (UK, Turkey, Cyprus, Greece, Panama) — fire sync-notion-clp + create-wp-clp-page + sync-wp-clp
 2026-06-01T21:55:41Z chat: fire sync-wp-clp again — push 5 new CLP HTMLs to WP
+2026-06-01T22:20:44Z chat: fix SVG pin label rendering (cheerio swallows self-closing <circle/>)

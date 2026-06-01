@@ -202,8 +202,8 @@ function renderCard(l) {
         </div>
         <div class="cl-mini-donut">
           <svg viewBox="0 0 100 100">
-            <circle class="cl-mini-donut-track" cx="50" cy="50" r="42"/>
-            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="${DONUT_C}" stroke-dashoffset="${off}" data-final="${off}"/>
+            <circle class="cl-mini-donut-track" cx="50" cy="50" r="42"></circle>
+            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="${DONUT_C}" stroke-dashoffset="${off}" data-final="${off}"></circle>
           </svg>
           <div class="cl-mini-donut-center">
             <span class="cl-mini-donut-val" data-count-to="${l.nacScore ?? 0}">0</span>
@@ -242,9 +242,9 @@ function renderPin(c, count) {
   const lblX = x + (c.labelOffsetX ?? 14);
   const word = count === 1 ? 'Listing' : 'Listings';
   return `        <g class="cl-pin-group" onclick="window.clFilterCity &amp;&amp; clFilterCity('${c.slug}')">
-          <circle class="cl-pin-halo" cx="${x}" cy="${y}" r="7"/>
-          <circle class="cl-pin-ring" cx="${x}" cy="${y}" r="6"/>
-          <circle class="cl-pin-core" cx="${x}" cy="${y}" r="3"/>
+          <circle class="cl-pin-halo" cx="${x}" cy="${y}" r="7"></circle>
+          <circle class="cl-pin-ring" cx="${x}" cy="${y}" r="6"></circle>
+          <circle class="cl-pin-core" cx="${x}" cy="${y}" r="3"></circle>
           <text class="cl-pin-lbl" x="${lblX}" y="${y - 2}" text-anchor="start">${escText(c.name)}</text>
           <text class="cl-pin-cnt" x="${lblX}" y="${y + 10}" text-anchor="start">${count} ${word}</text>
         </g>`;
