@@ -102,6 +102,17 @@ body[data-lang="en"] .cl-modal-name [data-en] { display:block; }
 .cl-hdr-nav a.active { color:var(--gold); }
 .cl-hdr-nav a.active::after { transform:scaleX(1); }
 
+/* Hub mark — first nav item is the Property Hub home */
+.cl-hdr-nav a.cl-hdr-hub { display:inline-flex; align-items:center; gap:.5rem; padding-left:0; }
+.cl-hdr-nav a.cl-hdr-hub:hover .cl-hub-icon { transform:scale(1.06); }
+.cl-hub-icon { width:22px; height:22px; color:var(--gold); flex-shrink:0; transition:transform .25s ease; }
+.cl-hub-icon .orbit { transform-origin:12px 12px; animation:hubOrbit 22s linear infinite; }
+.cl-hub-icon .pulse { transform-origin:12px 12px; animation:hubPulse 3.4s ease-in-out infinite; }
+@keyframes hubOrbit { to { transform:rotate(360deg); } }
+@keyframes hubPulse { 0%,100% { opacity:.4; transform:scale(.9); } 50% { opacity:.85; transform:scale(1.15); } }
+.cl-hub-lbl { font-family:var(--ff-display); font-size:.98rem; font-weight:500; font-style:italic; letter-spacing:0; line-height:1; }
+.cl-hub-lbl em { font-style:normal; color:var(--gold); }
+
 .cl-hdr-tools { display:flex; gap:.55rem; align-items:center; justify-self:end; }
 .cl-toggle { display:inline-flex; gap:.15rem; border:1px solid var(--line-strong); padding:.16rem; border-radius:999px; }
 .cl-toggle button {
@@ -654,7 +665,22 @@ body.cl-modal-open { overflow:hidden; }
     </span>
   </a>
   <nav class="cl-hdr-nav">
-    <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/"><span data-vi="Danh Mục BĐS">Danh Mục BĐS</span><span data-en="Portfolio">Portfolio</span></a>
+    <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/" class="cl-hdr-hub" aria-label="NAC Property Hub" title="NAC Property Hub">
+      <svg class="cl-hub-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle class="orbit" cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="1.5 3" opacity=".55"/>
+        <circle cx="12" cy="3.5" r="1.4" fill="currentColor"/>
+        <circle cx="12" cy="20.5" r="1.4" fill="currentColor"/>
+        <circle cx="3.5" cy="12" r="1.4" fill="currentColor"/>
+        <circle cx="20.5" cy="12" r="1.4" fill="currentColor"/>
+        <line x1="12" y1="6.5" x2="12" y2="9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="12" y1="15" x2="12" y2="17.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="6.5" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <line x1="15" y1="12" x2="17.5" y2="12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <circle class="pulse" cx="12" cy="12" r="3.4" fill="none" stroke="currentColor" stroke-width=".7" opacity=".5"/>
+        <circle cx="12" cy="12" r="2.8" fill="currentColor"/>
+      </svg>
+      <span class="cl-hub-lbl">Hub</span>
+    </a>
     <a href="#compare"><span data-vi="So Sánh ROI">So Sánh ROI</span><span data-en="Compare ROI">Compare ROI</span></a>
     <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/"><span data-vi="Simulator">Simulator</span><span data-en="Simulator">Simulator</span></a>
     <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/"><span data-vi="NAC Lister">NAC Lister</span><span data-en="NAC Lister">NAC Lister</span></a>
