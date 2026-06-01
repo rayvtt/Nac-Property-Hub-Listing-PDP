@@ -28,7 +28,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   sync:
@@ -45,6 +45,7 @@ jobs:
         run: npm install --no-audit --no-fund
 
       - name: Push CLP HTML to WordPress
+        id: run
         working-directory: scripts
         env:
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
@@ -54,4 +55,35 @@ jobs:
           WP_BASE_URL: ${{ vars.WP_BASE_URL || 'https://nomadassetcollective.com' }}
           WP_ACF_FIELD: ${{ vars.WP_ACF_FIELD || 'raw_html_code' }}
           ONLY_SLUG: ${{ github.event.inputs.only_slug }}
-        run: node sync-wp-clp.mjs
+        continue-on-error: true
+        run: |
+          set +e
+          node sync-wp-clp.mjs > /tmp/run.log 2>&1
+          ec=$?
+          echo "exit_code=$ec" >> $GITHUB_OUTPUT
+          cat /tmp/run.log
+          exit $ec
+
+      - name: Commit debug log
+        if: always()
+        run: |
+          mkdir -p .github/clp-debug
+          {
+            echo "===== run @ $(date -u +%Y-%m-%dT%H:%M:%SZ) ====="
+            echo "exit_code: ${{ steps.run.outputs.exit_code }}"
+            echo "workflow: sync-wp-clp.yml"
+            echo "commit: ${{ github.sha }}"
+            echo "----- script output -----"
+            cat /tmp/run.log 2>/dev/null || echo "(no log file)"
+            echo
+          } > .github/clp-debug/sync-wp-clp.log
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/clp-debug/sync-wp-clp.log
+          if git diff --cached --quiet; then
+            echo "no log changes"
+            exit 0
+          fi
+          git commit -m "debug: sync-wp-clp run log [skip ci]"
+          git pull --rebase origin main || true
+          git push origin HEAD:main
