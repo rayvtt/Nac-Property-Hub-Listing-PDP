@@ -1,5 +1,8 @@
 name: Sync CLP HTML → WordPress
 
+# Pushes country/<slug>.html into the matching WP page's raw_html_code ACF
+# field. Mirrors sync-wp.yml for CLPs.
+
 on:
   push:
     branches: [main]
@@ -26,7 +29,6 @@ concurrency:
 
 permissions:
   contents: read
-  issues: write
 
 jobs:
   sync:
@@ -43,7 +45,6 @@ jobs:
         run: npm install --no-audit --no-fund
 
       - name: Push CLP HTML to WordPress
-        id: run
         working-directory: scripts
         env:
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
@@ -53,28 +54,4 @@ jobs:
           WP_BASE_URL: ${{ vars.WP_BASE_URL || 'https://nomadassetcollective.com' }}
           WP_ACF_FIELD: ${{ vars.WP_ACF_FIELD || 'raw_html_code' }}
           ONLY_SLUG: ${{ github.event.inputs.only_slug }}
-        continue-on-error: true
-        run: |
-          set +e
-          node sync-wp-clp.mjs > /tmp/run.log 2>&1
-          ec=$?
-          echo "exit_code=$ec" >> $GITHUB_OUTPUT
-          cat /tmp/run.log
-          exit $ec
-
-      - name: Post log to debug issue #192
-        if: always()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          {
-            echo "### sync-wp-clp · $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            echo "- exit_code: \`${{ steps.run.outputs.exit_code }}\`"
-            echo "- commit: \`${{ github.sha }}\`"
-            echo "- event: \`${{ github.event_name }}\`"
-            echo
-            echo '```'
-            cat /tmp/run.log 2>/dev/null | head -200 || echo "(no log file)"
-            echo '```'
-          } > /tmp/comment.md
-          gh issue comment 192 --repo "${{ github.repository }}" --body-file /tmp/comment.md
+        run: node sync-wp-clp.mjs

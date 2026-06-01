@@ -45,7 +45,11 @@ async function wp(pathname, options = {}) {
 let _hubRoot = null;
 async function lookupHubRoot() {
   if (_hubRoot !== null) return _hubRoot;
-  const pages = await wp(`/pages?slug=${encodeURIComponent(PROPERTY_HUB_PATH)}&per_page=5`);
+  const result = await wp(`/pages?slug=${encodeURIComponent(PROPERTY_HUB_PATH)}&per_page=5&status=publish,draft,private,future,pending`);
+  const pages = Array.isArray(result) ? result : [];
+  if (!Array.isArray(result)) {
+    console.warn(`  ⚠ WP /pages?slug=${PROPERTY_HUB_PATH} returned non-array:`, JSON.stringify(result).slice(0, 200));
+  }
   _hubRoot = pages.find(p => new URL(p.link).pathname === `/${PROPERTY_HUB_PATH}/`) || pages[0] || null;
   return _hubRoot;
 }
@@ -127,7 +131,8 @@ async function processOne(country) {
 
   // Look up existing page by slug under the hub root.
   const hubRoot = await lookupHubRoot();
-  const candidates = await wp(`/pages?slug=${encodeURIComponent(wpSlug)}&per_page=20&status=publish,draft,private,future,pending`);
+  const lookup = await wp(`/pages?slug=${encodeURIComponent(wpSlug)}&per_page=20&status=publish,draft,private,future,pending`);
+  const candidates = Array.isArray(lookup) ? lookup : [];
   const targetPath = `/${PROPERTY_HUB_PATH}/${wpSlug}/`;
   let page = candidates.find(p => p.link.includes(targetPath))
     || candidates.find(p => hubRoot && p.parent === hubRoot.id)
