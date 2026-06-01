@@ -1,0 +1,87 @@
+name: Sync Notion → CLP HTML
+
+# Regenerates country/<slug>.html for every Live row in the Country DB:
+#   • editorial scalars  ← Country page body (## sections)
+#   • listing cards / hero slides / compare table / plaque / atlas
+#     ← 🏠 Property Listings rows (Country = <Country Name EN>, Live)
+# Then commits country/*.html and pushes to main, which triggers
+# sync-wp-clp.yml to push the rendered HTML into WordPress.
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+    inputs:
+      only_slug:
+        description: "Sync just one country slug (e.g. vn). Leave empty for all."
+        required: false
+        default: ""
+  push:
+    branches: [main]
+    paths:
+      - ".github/triggers/**"
+      - "scripts/sync-notion-clp.mjs"
+      - "country/_template-clp.html"
+      - ".github/workflows/sync-notion-clp.yml"
+  repository_dispatch:
+    types: [notion-update, new-country]
+
+concurrency:
+  group: sync-notion-clp
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+
+      - name: Render CLPs from Notion
+        working-directory: scripts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9' }}
+          NOTION_COUNTRY_DATABASE_ID: ${{ vars.NOTION_COUNTRY_DATABASE_ID || 'a01ef35ce9fd45b1bba3ec4de4da678c' }}
+          ONLY_SLUG: ${{ github.event.inputs.only_slug }}
+        run: node sync-notion-clp.mjs
+
+      - name: Commit and push (with rebase retry)
+        run: |
+          git config user.name "nac-notion-bot"
+          git config user.email "nac-notion-bot@users.noreply.github.com"
+          if git diff --quiet -- country/; then
+            echo "No CLP changes."
+            exit 0
+          fi
+          git add country/
+          git commit -m "chore(clp-sync): refresh country pages from Notion"
+
+          for attempt in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $attempt"
+              exit 0
+            fi
+            echo "Push attempt $attempt failed — fetching and rebasing"
+            git fetch origin main
+            if ! git rebase origin/main; then
+              echo "Rebase conflict — bailing out so a future run can re-derive from Notion"
+              git rebase --abort
+              exit 1
+            fi
+            sleep $((attempt * 2))
+          done
+          echo "Push failed after 5 attempts"
+          exit 1
