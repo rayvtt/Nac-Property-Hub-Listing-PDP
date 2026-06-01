@@ -297,6 +297,8 @@ function applyModel(html, model) {
 
   // ── editorial scalars ─────────────────────────────────────────────
   setBi($, '.cl-name', { vi: country.nameVi, en: country.nameEn });
+  // header trail country label (mirrors PDP's NAC-id slot)
+  if (country.nameEn) $('.nac-trail-id').text(country.nameEn);
   setBi($, '.cl-hero-tag', body.heroTagline);
   setBi($, '.cl-intro-quote', body.introQuote);
   setBi($, '.cl-atlas-text-title', body.atlasTitle);
