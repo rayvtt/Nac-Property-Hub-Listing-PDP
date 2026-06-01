@@ -2,3 +2,4 @@
 2026-06-01T17:52:22Z chat: CLP WP sync pipeline shipped (create-wp-clp-page + sync-wp-clp) — fire to push vn.html to vietnam WP page
 2026-06-01T18:00:37Z chat: re-fire CLP workflows — vn raw_html_code is empty; template now set, need sync-wp-clp to populate it
 2026-06-01T18:30:48Z chat: debug instrumentation — workflows now commit run logs to .github/clp-debug/
+2026-06-01T18:38:44Z chat: workflows now post logs to issue #192 instead of git push
