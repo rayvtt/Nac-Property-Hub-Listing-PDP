@@ -2,7 +2,9 @@
 
 Companion to `NAC-PDP-DESIGN.md`. The CLP is the editorial container that sits between the site index and the property PDPs — one page per country, presenting all live listings for that country with map context, comparison, and quick-view.
 
-**Auto-scaffolds from the Property Listings DB.** When a new Live listing lands in a country that doesn't yet have a CLP, the sync script creates a Draft row in the Country DB on the next tick. Editor fills in the editorial copy + the country silhouette path, flips Hub Status to Live, the page renders. The list of countries, the list of cities per country, the listings count, and the entry price are never maintained by hand — they're computed from the Property Listings DB at sync time.
+**Auto-scaffolds from the Property Listings DB.** When a new Live listing lands in a country that doesn't yet have a CLP, the sync script creates a Draft row in the Country DB on the next tick. Editor opens the row and writes editorial copy directly into the **Notion page body** (clean WYSIWYG, structured `##` sections), flips Hub Status to Live, the page renders. The list of countries, list of cities per country, listings count, and price aggregates are never maintained by hand — they're computed from the Property Listings DB at sync time.
+
+The Country DB schema is **deliberately lean** — only 10 properties (identity + gate + auto). Everything editorial lives in the Notion page body as structured rich text.
 
 - Live reference: `country/vn.html` (Vietnam — 4 listings, 3 cities)
 - Master template: `country/_template-clp.html`
@@ -204,41 +206,123 @@ Closed by × button, backdrop click, or Escape.
 - **`🏠 NAC - Property Listings`** (DB id `35848ec25e86803283acc7ad989649c9`) is the source of truth for **which countries exist**, **which cities exist within each country**, and **all listing-level data** (name, brand, image, price, yield, IRR, NAC score, sub-scores, etc.). Countries are derived from the `Country` select; cities from the `Region/City` text field. Listings count and price range are computed.
 - **`🌍 NAC - Country Listings`** (DB id `a01ef35ce9fd45b1bba3ec4de4da678c`, data source `ef2e9ff0-d725-4f2b-87c1-2d72c5a21905`) is the source of truth for **country-level editorial content only** — tagline, intro quote, atlas title, hero chips, SVG silhouette path, aspiration line, etc.
 
+### Country DB schema — 10 lean properties
+
+The Country DB has **only 10 columns**. Everything editorial moves into the Notion page **body** as structured markdown sections — Notion's native rich-text editor handles all the prose.
+
+| Property | Type | Origin |
+|----------|------|--------|
+| **Country Name VI** | Title | Auto-scaffold from LLP country lookup |
+| **Country Name EN** | Rich text | Auto-scaffold |
+| **Slug** | Rich text | Auto-scaffold (`vn`, `gb`, `cy`…) |
+| **Country Code** | Rich text | Auto-scaffold (ISO 2: `VN`, `GB`, `CY`…) |
+| **Hub Status** | Select (Draft / Live / Archived) | **Manual gate** |
+| **🌏 Region** | Select | Auto-mirrored from LLP Country→Region map |
+| **🔗 Country URL** | URL | Auto-computed (`…/property-hub-bat-dong-san/<country>/`) |
+| **📊 Plaque YoY** | Rich text | **Manual** — only plaque value not derivable from LLP |
+| **📈 Listings Count** | Number | Auto — rollup from LLP Live listings in that country |
+| **📤 Last Synced** | Date | Auto — stamped by sync script |
+
+The DB table view shows these 10 columns — clean to scan, easy to filter.
+
+### Page body — where editorial content lives
+
+Open a country row → see a Notion page with structured `##` headings, one per section. Edit naturally in WYSIWYG. The sync script parses these by heading name.
+
+```markdown
+## Hero Tagline
+🇻🇳 <strong>Bờ biển vàng của châu Á</strong> — branded residences từ JW Marriott đến Nobu.
+🇬🇧 <strong>Asia's golden coast</strong> — branded residences from JW Marriott to Nobu.
+
+## Hero Chips
+One chip per line, `VI | EN` separated by a single pipe.
+- 🏖️ Bờ biển 3,260km | 🏖️ 3,260km coastline
+- 📈 GDP 7.1% (2024) | 📈 GDP 7.1% (2024)
+- ✈️ 17.5M du khách | ✈️ 17.5M visitors
+
+## Intro Quote
+🇻🇳 Việt Nam không phải là điểm đến mới — mà là chương mới của châu Á.
+🇬🇧 Vietnam isn't Asia's next destination — it's Asia's next chapter.
+
+## Atlas Title
+🇻🇳 Ba thành phố. Bốn dự án. Một <em>bờ biển vàng</em>.
+🇬🇧 Three cities. Four listings. One <em>golden coast</em>.
+
+## Atlas Lead
+🇻🇳 Từ Đà Nẵng ở miền Trung…
+🇬🇧 From Da Nang in the centre…
+
+## Collection Title
+🇻🇳 Bốn dự án. <em>Một dải bờ biển.</em>
+🇬🇧 Four listings. <em>One golden coast.</em>
+
+## Collection Lead
+🇻🇳 Vuốt, kéo, hoặc lọc theo thành phố.
+🇬🇧 Swipe, drag, or filter by city.
+
+## Aspiration
+🇻🇳 Sở hữu một bờ biển. Sở hữu <strong>Việt Nam</strong>.
+🇬🇧 Own a coastline. Own <strong>Vietnam</strong>.
+
+## SVG Path
+\`\`\`
+M 88 56 C 100 50, 130 46, 158 52 …
+\`\`\`
+
+## Cities
+
+### Đà Nẵng
+- slug: da-nang
+- region_vi: Mặt biển Mỹ Khê · Non Nước
+- region_en: My Khe · Non Nuoc beachfront
+- airport_vi: DAD · 15–20 phút
+- airport_en: DAD · 15–20 min
+- lat: 16.05°N
+- lng: 108.21°E
+- pin_x: 178
+- pin_y: 186
+- label_offset_x: 14
+
+### Sài Gòn
+…
+```
+
+**Parsing rules** (sync script):
+- `## SectionName` heading marks a section
+- `🇻🇳` line = Vietnamese content; `🇬🇧` line = English content
+- `## Hero Chips` items are one chip per line, split on ` | ` for VI / EN
+- `## SVG Path` reads from the triple-backtick code block
+- `## Cities` → `### CityName` blocks parsed as objects from `- key: value` lines
+
+Notion's WYSIWYG is forgiving: extra blank lines, bold, italics, links — all fine. The parser only cares about heading names + emoji line markers + key-value rows under cities.
+
 ### Auto-scaffold rule
 
 The Country DB is **never maintained manually**. The sync script reads the Property Listings DB and:
 
 1. **Discovers every Live country** — `SELECT DISTINCT Country FROM listings WHERE Hub Status = 'Live'`.
-2. **For each Live country with no matching row in the Country DB**, creates a new Draft row with:
+2. **For each Live country with no matching Country DB row**, creates a new row with:
    - `Country Name VI/EN`, `Slug`, `Country Code` filled from a country lookup table (built into the script)
-   - `🌏 Region` mirrored from the LLP DB's Region field
+   - `🌏 Region` mirrored from the LLP Country→Region map
+   - `🔗 Country URL` computed from the slug
    - `Hub Status = Draft`
-   - All editorial fields left blank for the editor to author
-3. **For each existing row**, refreshes the auto-computed fields (plaque entry / cities count / last synced) and leaves the editorial fields untouched.
-4. **For each row with `Hub Status = Live`**, renders `country/<slug>.html` from the template using country-level fields from the Country DB AND listing-level data from the Property Listings DB (filtered by Country, sorted by Purchase Price desc).
+   - Page body seeded from a Notion template with empty `##` sections labelled `(TODO)` so the editor knows what to fill
+3. **For each existing row**, refreshes auto fields (`📈 Listings Count`, `📤 Last Synced`); leaves the page body untouched.
+4. **For each row with `Hub Status = Live`**, renders `country/<slug>.html` from the HTML template using:
+   - Country DB **properties** (slug, country name, country code, plaque YoY)
+   - Country DB **page body sections** (taglines, chips, intro quote, atlas title/lead, collection title/lead, aspiration, SVG path, cities)
+   - LLP listings filtered by Country, sorted by Purchase Price desc (drives hero carousel, plaque entry/yield, filter pills, collection cards, compare table)
 
-A new listing in a brand-new country auto-creates a Draft country row within one cron tick. The editor opens the row, fills in the editorial copy + the SVG silhouette path + the per-city pin coords, flips Hub Status to Live, and the CLP renders on the next tick.
+A new listing in a brand-new country auto-creates a Draft row within one cron tick. The editor opens the row, fills in the page body (~15 minutes of writing), flips Hub Status to Live, and the CLP renders.
 
-### Field categories (Country DB)
+### Field categories — at a glance
 
-| Field | Origin |
-|-------|--------|
-| Country Name VI, Country Name EN, Slug, Country Code | **Auto-scaffold** on first creation (from country lookup table); editor can correct |
-| 🌏 Region | **Auto** (mirrored from LLP Country → Region map) |
-| Hub Status | **Manual** (editor controls when the CLP goes live) |
-| Hero Tagline VI/EN | **Manual** — editorial copy |
-| 🏷️ Hero Chip 1–3 VI/EN | **Manual** — country macro facts (GDP, coastline, visitors) |
-| 💵 Plaque Entry | **Auto** — `min(Purchase Price)` across Live listings, formatted as `$NK` / `$N.NM` |
-| 📈 Plaque Yield | **Auto** — `min(Yield %) – max(Yield %)` across Live listings |
-| 📊 Plaque YoY | **Manual** — country-level macro stat, no derivation source |
-| 📜 Intro Quote VI/EN | **Manual** — editorial |
-| 🗺️ Atlas Title / Lead VI/EN | **Manual** — editorial |
-| 🗺️ SVG Path | **Manual** — hand-drawn silhouette, 320×420 viewBox |
-| 📍 Cities JSON | **Mixed** — sync script auto-fills `slug`, `name`, `count` per city by grouping LLP listings by `Region/City`; editor fills in `region_vi/en`, `airport_vi/en`, `pin_x`, `pin_y`, `lat`, `lng` after positioning pins on the SVG |
-| 🎯 Collection Title / Lead VI/EN | **Manual** — editorial |
-| 🌟 Aspiration Line VI/EN | **Manual** — editorial (`Sở hữu một X. Sở hữu <Country>.` pattern) |
-| 🔗 Country URL | **Auto-scaffold** (computed as `https://nomadassetcollective.com/property-hub-bat-dong-san/<country-slug>/`); editor can correct |
-| 📤 Last Synced | **Auto** — stamped by the script after each successful patch |
+| Where | What |
+|-------|------|
+| **LLP DB (auto-derived)** | List of countries · cities per country · listings count · plaque entry · plaque yield range · hero carousel slides · collection cards · compare table rows · filter pill counts |
+| **Country DB properties (manual but light)** | Slug · Country Code · Hub Status · Plaque YoY · the gate + 2 atomic facts |
+| **Country DB page body (manual, rich)** | Hero tagline · 3 hero chips · intro quote · atlas title · atlas lead · collection title · collection lead · aspiration line · SVG silhouette · per-city pin coords + region/airport copy |
+| **Country DB auto-stamped** | Country Name VI/EN (scaffold default, editor can rename) · Region (mirrored) · Country URL (computed) · Listings Count · Last Synced |
 
 ### Sync script (future): `scripts/sync-notion-clp.mjs`
 
@@ -246,12 +330,13 @@ Triggered by `*/5 * * * *` cron + `workflow_dispatch` + `push` to `.github/trigg
 
 1. Query the Property Listings DB → group Live listings by Country
 2. For each Country in the resulting set:
-   - Upsert a row in the Country DB (create with `Hub Status = Draft` if missing; refresh auto fields if exists)
-   - If `Hub Status = Live`, render the CLP:
-     - Read country-level fields from the Country DB row
-     - Read listing-level fields from the Property Listings DB (filtered + price-desc sorted)
+   - Upsert a row in the Country DB (create Draft with empty body template if missing; refresh auto fields if exists)
+   - If `Hub Status = Live`:
+     - Fetch the Country DB row's **properties + page body** (single `notion-fetch` call returns both)
+     - Parse the body sections by heading
+     - Query LLP for listings in that country (sorted by Purchase Price desc)
      - Patch `country/<slug>.html` via cheerio against `data-notion-clp` / `data-notion-clp-list` slots
-3. Stamp `📤 Last Synced` on every row touched
+3. Stamp `📤 Last Synced` and `📈 Listings Count` on every row touched
 4. Commit + push so `sync-wp.yml` propagates the rendered HTML to WordPress
 
 Idempotent — re-firing is always safe.
@@ -267,7 +352,7 @@ Mirrors the PDP's `data-notion="*"` convention. The CLP template uses `data-noti
 </h1>
 ```
 
-For list-shaped data (cities, slides, cards), use `data-notion-clp-list="cities"` on the container — sync rebuilds the list from the JSON.
+For list-shaped data (cities, slides, cards), use `data-notion-clp-list="cities"` on the container — sync rebuilds the list from the parsed page body.
 
 ---
 
@@ -276,17 +361,21 @@ For list-shaped data (cities, slides, cards), use `data-notion-clp-list="cities"
 ### Primary path (Notion-driven, near-zero touch)
 
 1. Add a new listing to `🏠 NAC - Property Listings` with `Country = <new country>` and `Hub Status = Live`.
-2. Within ≤5 min, `sync-notion-clp.yml` creates a Draft row in `🌍 NAC - Country Listings` populated with `Country Name VI/EN`, `Slug`, `Country Code`, `🌏 Region`, `🔗 Country URL`, and an initial `📍 Cities JSON` listing the city from `Region/City`.
-3. Editor opens the row in Notion and fills in:
-   - Hero tagline + 3 hero chips (country macro facts)
-   - Intro quote, atlas title + lead, collection title + lead, aspiration line
-   - Plaque YoY (the only plaque value not auto-computed)
-   - `🗺️ SVG Path` — stylized country silhouette, 320×420 viewBox
-   - `📍 Cities JSON` — fill in per-city `region_vi/en`, `airport_vi/en`, and `pin_x/pin_y` coords (after eyeballing where each city sits on the silhouette)
-4. Flip `Hub Status` to **Live**.
-5. Next cron tick renders `country/<slug>.html`; `sync-wp.yml` propagates to WordPress.
+2. Within ≤5 min, `sync-notion-clp.yml` creates a Draft row in `🌍 NAC - Country Listings` with `Country Name VI/EN`, `Slug`, `Country Code`, `🌏 Region`, `🔗 Country URL` pre-filled (from the script's country lookup table); the page body is seeded from a Notion template with empty `##` sections labelled `(TODO)`.
+3. Editor opens the row in Notion. **Properties** at the top show the 10 atomic fields; **page body** has the structured editorial sections to fill in:
+   - `## Hero Tagline` (🇻🇳 / 🇬🇧)
+   - `## Hero Chips` (3 lines, `VI | EN`)
+   - `## Intro Quote` (🇻🇳 / 🇬🇧)
+   - `## Atlas Title` and `## Atlas Lead` (🇻🇳 / 🇬🇧)
+   - `## Collection Title` and `## Collection Lead` (🇻🇳 / 🇬🇧)
+   - `## Aspiration` (🇻🇳 / 🇬🇧)
+   - `## SVG Path` — paste the country silhouette `d=…` value into the code block
+   - `## Cities` — one `###` sub-heading per city with `- key: value` lines for region/airport copy + pin coords
+4. Set `📊 Plaque YoY` on the property panel.
+5. Flip `Hub Status` to **Live**.
+6. Next cron tick renders `country/<slug>.html`; `sync-wp.yml` propagates to WordPress.
 
-The editor never touches HTML or git for content changes — only for visual/layout iteration.
+The editor never touches HTML or git. Everything lives in Notion.
 
 ### Manual escape hatch (template-driven)
 
