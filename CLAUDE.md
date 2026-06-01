@@ -69,6 +69,8 @@ The statement is **Notion-synced** as of PR #149 — fields `📜 Statement VI` 
 Templates and references:
 
 - [`properties/_template-listing-pdp.html`](./properties/_template-listing-pdp.html) — **master PDP template** (snapshot 2026-05-12, post-PR #47). Duplicate this for every new listing.
+- [`country/_template-clp.html`](./country/_template-clp.html) — **master CLP template** (snapshot 2026-06-01). Duplicate this for every new country page. Live reference: `country/vn.html`.
+- [`NAC-CLP-DESIGN.md`](./NAC-CLP-DESIGN.md) — Country Listing Page design system, data contract, and scaffold workflow. Read this before adding a new country.
 - [`NAC-STICKY-PILLS.md`](./NAC-STICKY-PILLS.md) — bottom-center CTA pill + top-right settings pill (theme + lang). Both collapsed-by-default, expand on hover/tap.
 - [`NAC-FOOTER.md`](./NAC-FOOTER.md) — bilingual gold title, wave underline, 5-icon social row, 3-col nav.
 - [`NAC-BACKLINKS.md`](./NAC-BACKLINKS.md) — canonical URLs for every NAC button across all PDPs.
@@ -78,6 +80,7 @@ Templates and references:
 
 - Cron every 5 minutes via `.github/workflows/sync-notion.yml` (GitHub's reliable minimum — `*/2` gets silently throttled to 15–30 min under load). Use Actions tab → "Run workflow" for immediate sync.
 - Source DB ID: `35848ec25e86803283acc7ad989649c9` (🏠 NAC - Property Listings).
+- Country DB ID: `a01ef35ce9fd45b1bba3ec4de4da678c` (🌍 NAC - Country Listings) — data source `ef2e9ff0-d725-4f2b-87c1-2d72c5a21905`. Drives Country Listing Pages (`country/<slug>.html`) via the future `scripts/sync-notion-clp.mjs`. Schema + workflow in `NAC-CLP-DESIGN.md`.
 - Script: `scripts/sync-notion.mjs`. Filters by `Hub Status = Live`, patches HTML via cheerio targeting `data-notion="*"`, `data-notion-list="*"`, `data-notion-json="*"`, `data-notion-roi`, `data-notion-bg`.
 - Donut score (`.nac-donut-score`) is a special case — sync only updates `data-count-to`, never the inner text (preserves the count-up-from-0 animation).
 - **Mobile hero image** — optional Notion URL field `Mobile Image URL`. When set, sync appends `--bg-mobile:url(...)` to the hero element's inline style alongside the desktop `background-image`. A CSS rule `@media(max-width:900px) { .nac-hero-img[style*="--bg-mobile"] { background-image:var(--bg-mobile) !important; } }` swaps to the mobile image on viewports ≤900px. Field left blank = single-image behavior unchanged.
