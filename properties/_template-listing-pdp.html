@@ -1723,7 +1723,7 @@
         if (!part) return;
         var hl = part.charAt(0) === '«' && part.charAt(part.length-1) === '»';
         var text = hl ? part.slice(1, -1) : part;
-        text.split(/\s+/).filter(Boolean).forEach(function(w){ html += '<span class="word' + (hl ? ' hl' : '') + '">' + w + '</span> '; });
+        text.split(' ').filter(Boolean).forEach(function(w){ html += '<span class="word' + (hl ? ' hl' : '') + '">' + w + '</span> '; });
       });
       el.innerHTML = html;
       el.querySelectorAll('.word').forEach(function(w){
