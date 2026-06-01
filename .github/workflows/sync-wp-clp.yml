@@ -1,8 +1,5 @@
 name: Sync CLP HTML → WordPress
 
-# Pushes country/<slug>.html into the matching WP page's raw_html_code ACF
-# field. Mirrors sync-wp.yml for CLPs.
-
 on:
   push:
     branches: [main]
@@ -28,7 +25,8 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: read
+  issues: write
 
 jobs:
   sync:
@@ -64,26 +62,19 @@ jobs:
           cat /tmp/run.log
           exit $ec
 
-      - name: Commit debug log
+      - name: Post log to debug issue #192
         if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mkdir -p .github/clp-debug
           {
-            echo "===== run @ $(date -u +%Y-%m-%dT%H:%M:%SZ) ====="
-            echo "exit_code: ${{ steps.run.outputs.exit_code }}"
-            echo "workflow: sync-wp-clp.yml"
-            echo "commit: ${{ github.sha }}"
-            echo "----- script output -----"
-            cat /tmp/run.log 2>/dev/null || echo "(no log file)"
+            echo "### sync-wp-clp · $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "- exit_code: \`${{ steps.run.outputs.exit_code }}\`"
+            echo "- commit: \`${{ github.sha }}\`"
+            echo "- event: \`${{ github.event_name }}\`"
             echo
-          } > .github/clp-debug/sync-wp-clp.log
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .github/clp-debug/sync-wp-clp.log
-          if git diff --cached --quiet; then
-            echo "no log changes"
-            exit 0
-          fi
-          git commit -m "debug: sync-wp-clp run log [skip ci]"
-          git pull --rebase origin main || true
-          git push origin HEAD:main
+            echo '```'
+            cat /tmp/run.log 2>/dev/null | head -200 || echo "(no log file)"
+            echo '```'
+          } > /tmp/comment.md
+          gh issue comment 192 --repo "${{ github.repository }}" --body-file /tmp/comment.md

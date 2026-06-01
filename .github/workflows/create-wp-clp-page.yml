@@ -1,11 +1,5 @@
 name: Create WP Page for new Live country listings
 
-# Runs every 5 minutes. For each Country DB row where Hub Status = Live but
-# 🆔 WP Page ID is empty, looks up (or creates) a WP page at the slug parsed
-# from 🔗 Country URL and writes the Page ID back to Notion.
-#
-# Side A for CLPs. Mirrors create-wp-page.yml.
-
 on:
   schedule:
     - cron: "*/5 * * * *"
@@ -24,7 +18,8 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: read
+  issues: write
 
 jobs:
   create:
@@ -59,26 +54,19 @@ jobs:
           cat /tmp/run.log
           exit $ec
 
-      - name: Commit debug log
+      - name: Post log to debug issue #192
         if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mkdir -p .github/clp-debug
           {
-            echo "===== run @ $(date -u +%Y-%m-%dT%H:%M:%SZ) ====="
-            echo "exit_code: ${{ steps.run.outputs.exit_code }}"
-            echo "workflow: create-wp-clp-page.yml"
-            echo "commit: ${{ github.sha }}"
-            echo "----- script output -----"
-            cat /tmp/run.log 2>/dev/null || echo "(no log file)"
+            echo "### create-wp-clp-page · $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "- exit_code: \`${{ steps.run.outputs.exit_code }}\`"
+            echo "- commit: \`${{ github.sha }}\`"
+            echo "- event: \`${{ github.event_name }}\`"
             echo
-          } > .github/clp-debug/create-wp-clp-page.log
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .github/clp-debug/create-wp-clp-page.log
-          if git diff --cached --quiet; then
-            echo "no log changes"
-            exit 0
-          fi
-          git commit -m "debug: create-wp-clp-page run log [skip ci]"
-          git pull --rebase origin main || true
-          git push origin HEAD:main
+            echo '```'
+            cat /tmp/run.log 2>/dev/null | head -200 || echo "(no log file)"
+            echo '```'
+          } > /tmp/comment.md
+          gh issue comment 192 --repo "${{ github.repository }}" --body-file /tmp/comment.md
