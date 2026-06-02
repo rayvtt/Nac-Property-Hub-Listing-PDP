@@ -188,7 +188,9 @@ function renderCard(l) {
   const chip = tagChip(l.tags);
   const cityName = l.city ? l.city.name : '';
 
-  return `    <article class="cl-card reveal"
+  return `    <a class="cl-card reveal"
+             href="${escAttr(l.listingUrl)}"
+             rel="noopener"
              data-city="${escAttr(l.city ? l.city.slug : '')}"
              data-listing="${escAttr(l.slug)}"
              data-img="${escAttr(l.heroImg || '')}"
@@ -249,7 +251,7 @@ function renderCard(l) {
         <span class="cl-card-footer-quick"><span data-vi="Xem nhanh">Xem nhanh</span><span data-en="Quick view">Quick view</span></span>
         <span class="cl-card-footer-arrow"><span data-vi="Mở dự án">Mở dự án</span><span data-en="Open listing">Open listing</span> <span>→</span></span>
       </div>
-    </article>`;
+    </a>`;
 }
 
 function renderCompareRow(l) {
@@ -749,12 +751,45 @@ async function ensureFile(slug) {
   }
 }
 
+// Cache the template's <script> body once per process — used by syncCountry to
+// keep every country file's JS in sync with the template. The template is the
+// canonical source of truth for client-side behaviour (card click handlers,
+// modal, hero carousel, etc.); copying it over on every render means JS
+// changes propagate without touching each country/*.html by hand.
+let _templateScriptBody = null;
+async function getTemplateScriptBody() {
+  if (_templateScriptBody !== null) return _templateScriptBody;
+  try {
+    const tplHtml = await fs.readFile(TEMPLATE, 'utf-8');
+    const $tpl = cheerio.load(tplHtml, { decodeEntities: false });
+    _templateScriptBody = $tpl('body > script').last().html() || '';
+  } catch {
+    _templateScriptBody = '';
+  }
+  return _templateScriptBody;
+}
+
 async function syncCountry(model, { outOverride } = {}) {
   const slug = model.country.slug;
   if (!slug) return { slug: '(missing)', skipped: 'no Slug' };
   const { file, created } = await ensureFile(slug);
   const html = await fs.readFile(file, 'utf-8');
-  const patched = applyModel(html, model);
+  let patched = applyModel(html, model);
+
+  // Overwrite the country file's <script> with the template's. Skips the
+  // template itself (which is the source we just read from).
+  if (path.resolve(file) !== path.resolve(TEMPLATE)) {
+    const tplScript = await getTemplateScriptBody();
+    if (tplScript) {
+      const $ = cheerio.load(patched, { decodeEntities: false });
+      const $script = $('body > script').last();
+      if ($script.length) {
+        $script.html(tplScript);
+        patched = $.html();
+      }
+    }
+  }
+
   const target = outOverride || file;
   await fs.writeFile(target, patched, 'utf-8');
   return { slug, file: target, created, listings: model.listings.length };
