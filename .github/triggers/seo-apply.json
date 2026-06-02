@@ -2,5 +2,5 @@
   "max_tasks": 40,
   "scope": "pdp,brochure,hub,tool,blog,sitewide",
   "dry_run": "false",
-  "_comment": "Apply Approved tasks (incl. SEO-837 → SEO-841)."
+  "_comment": "Re-fire with wp-lookup fix (drop status=publish + URL rich_text fallback)."
 }
