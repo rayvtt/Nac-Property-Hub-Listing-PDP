@@ -56,6 +56,28 @@ async function wp(pathname, options = {}) {
 
 const normalizeUrl = (u) => String(u || '').replace(/\/+$/, '').toLowerCase();
 
+function expectedSlugFromCountryUrl(countryUrl) {
+  if (!countryUrl) return null;
+  try {
+    const segments = new URL(countryUrl).pathname.split('/').filter(Boolean);
+    return segments[segments.length - 1] || null;
+  } catch { return null; }
+}
+
+// Self-healing: if the WP page's slug differs from the Notion Country URL slug,
+// PATCH it so the public URL matches what's stored in Notion (and what other
+// scripts/templates expect to link to). Idempotent: no-op when slugs already match.
+async function reconcileSlug(page, countryUrl) {
+  const expected = expectedSlugFromCountryUrl(countryUrl);
+  if (!expected || expected === page.slug) return page;
+  const updated = await wp(`/pages/${page.id}`, {
+    method: 'POST',
+    body: JSON.stringify({ slug: expected }),
+  });
+  console.log(`  ↻ slug ${page.slug} → ${updated.slug} on page ${page.id}`);
+  return updated;
+}
+
 async function findByCountryUrl(countryUrl) {
   if (!countryUrl) return null;
   let parsed;
@@ -106,13 +128,12 @@ function readUrl(prop) {
   return '';
 }
 
-async function fetchLiveCountries() {
+async function fetchAllCountries() {
   let results = [];
   let cursor;
   do {
     const res = await notion.databases.query({
       database_id: COUNTRY_DB_ID,
-      filter: { property: 'Hub Status', select: { equals: 'Live' } },
       start_cursor: cursor,
     });
     results = results.concat(res.results);
@@ -120,23 +141,17 @@ async function fetchLiveCountries() {
   } while (cursor);
   return results.map(page => {
     const p = page.properties;
+    const status = p['Hub Status']?.select?.name || '';
     return {
       fileSlug: richText(p['Slug']),
       countryUrl: readUrl(p['🔗 Country URL']),
       wpPageId: readNumber(p['🆔 WP Page ID']),
+      isLive: status === 'Live',
     };
   }).filter(c => c.fileSlug);
 }
 
 async function syncOne(c) {
-  const file = path.join(COUNTRY_DIR, `${c.fileSlug}.html`);
-  let html;
-  try {
-    html = await fs.readFile(file, 'utf-8');
-  } catch {
-    return { slug: c.fileSlug, skipped: `no HTML file at country/${c.fileSlug}.html` };
-  }
-
   let page;
   if (c.wpPageId) {
     page = await wp(`/pages/${c.wpPageId}`);
@@ -144,15 +159,29 @@ async function syncOne(c) {
     page = await findByCountryUrl(c.countryUrl);
   }
   if (!page) {
+    // Only error for Live rows — drafts may legitimately not yet have a WP page.
+    if (!c.isLive) return { slug: c.fileSlug, skipped: 'draft + no WP page yet' };
     return { slug: c.fileSlug, error: c.wpPageId
       ? `WP Page ID ${c.wpPageId} not found`
       : `Could not locate WP page from 🔗 Country URL "${c.countryUrl}" — run create-wp-clp-page first`,
     };
   }
-  // Guard: a WP REST GET can 200 with an error envelope (no `id`). Treat a
-  // missing id as a hard failure instead of silently "updating" page undefined.
   if (!page.id) {
     return { slug: c.fileSlug, error: `WP page resolved without an id (got: ${JSON.stringify(page).slice(0, 160)})` };
+  }
+
+  // Reconcile slug for every page we touch, regardless of Hub Status. Catches
+  // typos like the original Malaysia page (slug "malta") even for drafts.
+  page = await reconcileSlug(page, c.countryUrl);
+
+  if (!c.isLive) return { slug: c.fileSlug, pageId: page.id, link: page.link, slugOnly: true };
+
+  const file = path.join(COUNTRY_DIR, `${c.fileSlug}.html`);
+  let html;
+  try {
+    html = await fs.readFile(file, 'utf-8');
+  } catch {
+    return { slug: c.fileSlug, skipped: `no HTML file at country/${c.fileSlug}.html` };
   }
 
   await updatePageAcf(page.id, html);
@@ -175,10 +204,11 @@ async function syncOne(c) {
 }
 
 async function main() {
-  console.log(`Fetching Live countries from Notion…`);
-  let countries = await fetchLiveCountries();
+  console.log(`Fetching countries from Notion (all statuses; non-Live get slug-reconcile only)…`);
+  let countries = await fetchAllCountries();
   if (ONLY_SLUG) countries = countries.filter(c => c.fileSlug === ONLY_SLUG);
-  console.log(`  ${countries.length} country(ies) to sync to ${WP_BASE} as ${WP_USER}`);
+  const liveCount = countries.filter(c => c.isLive).length;
+  console.log(`  ${countries.length} country row(s) (${liveCount} Live) → ${WP_BASE} as ${WP_USER}`);
 
   let ok = 0, fail = 0, skip = 0;
   const failures = [];
@@ -192,6 +222,9 @@ async function main() {
         console.error(`  ✗ ${r.slug}: ${r.error}`);
         fail++;
         failures.push(r);
+      } else if (r.slugOnly) {
+        console.log(`  ✓ ${r.slug} → page ${r.pageId} (slug reconciled only · draft)`);
+        ok++;
       } else {
         console.log(`  ✓ ${r.slug} → page ${r.pageId} (${r.link})`);
         ok++;
