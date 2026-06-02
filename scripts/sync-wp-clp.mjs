@@ -22,6 +22,11 @@ const WP_API = `${WP_BASE}/wp-json/wp/v2`;
 const WP_USER = process.env.WP_USER || 'admin_web';
 const WP_PASS = process.env.WP_APP_PASSWORD;
 const ACF_HTML_FIELD = process.env.WP_ACF_FIELD || 'raw_html_code';
+// The CLP must use the same WP page template as PDPs (the one that echoes
+// `<?php the_field('raw_html_code'); ?>`). Without this, the ACF field is
+// silently ignored on save — the field group's location rule is template-
+// bound, so WP returns 200 but raw_html_code never lands.
+const WP_TEMPLATE = process.env.WP_TEMPLATE || 'nac-residence-index.php';
 const NOTION_TOKEN = process.env.NOTION_TOKEN;
 const COUNTRY_DB_ID = process.env.NOTION_COUNTRY_DATABASE_ID || 'a01ef35ce9fd45b1bba3ec4de4da678c';
 const ONLY_SLUG = process.env.ONLY_SLUG || null;
@@ -68,9 +73,14 @@ async function findByCountryUrl(countryUrl) {
 }
 
 async function updatePageAcf(pageId, html) {
+  // Push HTML into raw_html_code AND enforce the correct WP template in the
+  // same request. The template enforcement is idempotent — if the page is
+  // already on the right template, the PUT is a no-op for that field.
+  const body = { acf: { [ACF_HTML_FIELD]: html } };
+  if (WP_TEMPLATE) body.template = WP_TEMPLATE;
   return wp(`/pages/${pageId}`, {
     method: 'POST',
-    body: JSON.stringify({ acf: { [ACF_HTML_FIELD]: html } }),
+    body: JSON.stringify(body),
   });
 }
 

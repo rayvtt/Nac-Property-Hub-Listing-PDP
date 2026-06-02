@@ -49,4 +49,5 @@ jobs:
           WP_USER: ${{ vars.WP_USER || 'admin_web' }}
           WP_BASE_URL: ${{ vars.WP_BASE_URL || 'https://nomadassetcollective.com' }}
           WP_PROPERTY_HUB_PATH: ${{ vars.WP_PROPERTY_HUB_PATH || 'property-hub-bat-dong-san' }}
+          WP_TEMPLATE: ${{ vars.WP_TEMPLATE || 'nac-residence-index.php' }}
         run: node create-wp-clp-page.mjs
