@@ -18,3 +18,4 @@
 2026-06-02T09:02:54Z chat: cards become real <a> links to PDP
 2026-06-02T11:10:13Z chat: refresh SVG silhouettes for uk/tr/gr + drafts for my/th/sg/ae
 2026-06-02T11:15:01Z chat: re-fire sync-wp-clp on commit 4edddc8 (cron commits don't cascade-trigger)
+2026-06-02T15:28:11Z chat: Hub Status flipped Live for MY/TH/SG/AE — fire scaffold + sync
