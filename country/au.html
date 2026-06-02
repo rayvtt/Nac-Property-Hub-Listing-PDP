@@ -30,13 +30,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="referrer" content="no-referrer">
 
-<title>United Kingdom · NAC Property Collection</title>
-<meta name="description" content="Branded residences across United Kingdom — 5 curated listings from NAC's Property Hub.">
+<title>Australia · NAC Property Collection</title>
+<meta name="description" content="Branded residences across Australia — 3 curated listings from NAC's Property Hub.">
 
 
-<meta property="og:title" content="United Kingdom · NAC Property Collection">
-<meta property="og:description" content="Branded residences across United Kingdom — 5 curated listings from NAC's Property Hub.">
-<meta property="og:image" content="https://nomadassetcollective.com/wp-content/uploads/2026/05/london-dock-4.jpg">
+<meta property="og:title" content="Australia · NAC Property Collection">
+<meta property="og:description" content="Branded residences across Australia — 3 curated listings from NAC's Property Hub.">
+<meta property="og:image" content="">
+
+
+
+
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -44,7 +48,7 @@
 
 <style>
 /* ═══════════════════════════════════════════════
-   NAC COUNTRY LISTING PAGE — VIETNAM (v2)
+   NAC COUNTRY LISTING PAGE — TEMPLATE (v2)
    Editorial Atlas · City-grouped · Modal quick-view
 ═══════════════════════════════════════════════ */
 
@@ -334,8 +338,13 @@ body[data-theme="dark"] .nac-logo-light { display:none; }
 .cl-atlas-pinlist-city { font-family:var(--ff-display); font-size:1.2rem; font-style:italic; color:var(--display); font-weight:500; }
 .cl-atlas-pinlist-meta { font-family:var(--ff-mono); font-size:.58rem; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin-top:.2rem; }
 .cl-atlas-pinlist-count {
-  font-family:var(--ff-mono); font-size:.6rem; letter-spacing:.14em; padding:.4rem .7rem;
+  font-family:var(--ff-mono); font-size:.6rem; letter-spacing:.14em; padding:.35rem .65rem;
   background:var(--gold-soft); color:var(--gold); border-radius:999px; font-weight:500;
+  white-space:nowrap; flex-shrink:0; line-height:1;
+}
+@media(max-width:680px) {
+  .cl-atlas-pinlist a { padding:.85rem 1rem; gap:.6rem; }
+  .cl-atlas-pinlist-count { font-size:.52rem; letter-spacing:.1em; padding:.3rem .55rem; }
 }
 
 /* SVG map */
@@ -404,6 +413,7 @@ body[data-theme="dark"] .nac-logo-light { display:none; }
   position:relative; display:grid; grid-template-columns:1fr; overflow:hidden;
   border-radius:18px; background:var(--surface); border:1px solid var(--line);
   box-shadow:var(--shadow-sm); cursor:pointer;
+  color:inherit; text-decoration:none; /* .cl-card is an <a>; reset link styling */
   transition:transform .35s cubic-bezier(.2,.6,.2,1), box-shadow .35s ease, border-color .35s ease;
 }
 @media(max-width:680px) { .cl-card { flex:0 0 86vw; } }
@@ -648,6 +658,26 @@ body[data-theme="dark"] .nac-logo-light { display:none; }
 }
 
 /* ─── ASPIRATION ────────────────────────────── */
+/* ═══ TRUST — track-record ribbon + representative journeys ═══ */
+.cl-trust { max-width:var(--maxw); margin:0 auto; padding:0 var(--pad) 4.5rem; }
+.cl-track { display:flex; align-items:stretch; justify-content:center; margin:0 auto 3.5rem; max-width:760px; padding:1.9rem 1rem; border-radius:20px; background:var(--surface); border:1px solid var(--line); box-shadow:var(--shadow-md); }
+.cl-track-item { flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; gap:.45rem; padding:0 1rem; }
+.cl-track-num { font-family:var(--ff-display); font-size:2.6rem; font-weight:500; line-height:1; color:var(--gold); letter-spacing:-.01em; }
+.cl-track-plus { font-size:1.5rem; vertical-align:top; }
+.cl-track-lbl { font-family:var(--ff-mono); font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
+.cl-track-div { width:1px; background:var(--line); align-self:center; height:46px; flex:0 0 auto; }
+.cl-journeys-head { text-align:center; margin-bottom:1.9rem; }
+.cl-journeys-lbl { font-family:var(--ff-mono); font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--orange); font-weight:500; margin-bottom:.6rem; }
+.cl-journeys-title { font-family:var(--ff-display); font-size:1.9rem; font-weight:500; color:var(--display); letter-spacing:-.005em; margin-bottom:.7rem; }
+.cl-journeys-note { font-size:.82rem; line-height:1.6; color:var(--muted); max-width:560px; margin:0 auto; }
+.cl-journeys-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; max-width:880px; margin:0 auto; }
+.cl-journey-card { display:flex; flex-direction:column; gap:.75rem; padding:1.8rem; border-radius:18px; background:var(--surface); border:1px solid var(--line); box-shadow:var(--shadow-md); text-decoration:none; transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+.cl-journey-card:hover { transform:translateY(-4px); border-color:var(--gold); box-shadow:var(--shadow-lg); }
+.cl-journey-prog { font-family:var(--ff-mono); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--orange); }
+.cl-journey-h { font-family:var(--ff-display); font-size:1.25rem; font-weight:500; line-height:1.3; color:var(--display); margin:0; }
+.cl-journey-stat { font-family:var(--ff-mono); font-size:.76rem; letter-spacing:.04em; color:var(--muted); }
+.cl-journey-cta { font-family:var(--ff-display); font-size:.95rem; color:var(--gold); margin-top:auto; }
+@media(max-width:680px) { .cl-journeys-grid { grid-template-columns:1fr; } .cl-track-num { font-size:1.9rem; } .cl-track-lbl { font-size:.56rem; letter-spacing:.08em; } .cl-track-item { padding:0 .4rem; } .cl-track-div { height:34px; } .cl-journeys-title { font-size:1.55rem; } }
 .cl-asp {
   padding:9rem var(--pad); text-align:center;
   background:radial-gradient(ellipse at center, var(--surface-2) 0%, var(--bg) 70%);
@@ -762,307 +792,18 @@ body[data-theme="dark"] .nac-logo-light { display:none; }
 body.cl-modal-open { overflow:hidden; }
 </style>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<meta property="og:url" content="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/">
+<meta property="og:url" content="https://nomadassetcollective.com/property-hub-bat-dong-san/australia/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="vi_VN">
 <meta property="og:locale:alternate" content="en_US">
 <meta property="og:site_name" content="Nomad Asset Collective">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="United Kingdom · NAC Property Collection">
-<meta name="twitter:description" content="Branded residences across United Kingdom — 5 curated listings from NAC's Property Hub.">
-<meta name="twitter:image" content="https://nomadassetcollective.com/wp-content/uploads/2026/05/london-dock-4.jpg">
-<link rel="canonical" href="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/">
-<link rel="alternate" hreflang="vi" href="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/">
-<link rel="alternate" hreflang="en" href="https://nomadassetcollective.com/en/property-hub-bat-dong-san/united-kingdom/">
-<link rel="alternate" hreflang="x-default" href="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/">
+<meta name="twitter:title" content="Australia · NAC Property Collection">
+<meta name="twitter:description" content="Branded residences across Australia — 3 curated listings from NAC's Property Hub.">
+<link rel="canonical" href="https://nomadassetcollective.com/property-hub-bat-dong-san/australia/">
+<link rel="alternate" hreflang="vi" href="https://nomadassetcollective.com/property-hub-bat-dong-san/australia/">
+<link rel="alternate" hreflang="en" href="https://nomadassetcollective.com/en/property-hub-bat-dong-san/australia/">
+<link rel="alternate" hreflang="x-default" href="https://nomadassetcollective.com/property-hub-bat-dong-san/australia/">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 <script type="application/ld+json">
 {
@@ -1070,11 +811,11 @@ body.cl-modal-open { overflow:hidden; }
   "@graph": [
     {
       "@type": "CollectionPage",
-      "name": "United Kingdom · NAC Property Collection",
-      "description": "Branded residences across United Kingdom — 5 curated listings from NAC's Property Hub.",
-      "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/",
+      "name": "Australia · NAC Property Collection",
+      "description": "Branded residences across Australia — 3 curated listings from NAC's Property Hub.",
+      "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/australia/",
       "inLanguage": "vi",
-      "numberOfItems": 5,
+      "numberOfItems": 3,
       "isPartOf": {
         "@type": "WebSite",
         "name": "Nomad Asset Collective",
@@ -1082,9 +823,8 @@ body.cl-modal-open { overflow:hidden; }
       },
       "about": {
         "@type": "Country",
-        "name": "United Kingdom"
+        "name": "Australia"
       },
-      "primaryImageOfPage": "https://nomadassetcollective.com/wp-content/uploads/2026/05/london-dock-4.jpg",
       "publisher": {
         "@type": "Organization",
         "name": "Nomad Asset Collective",
@@ -1110,36 +850,35 @@ body.cl-modal-open { overflow:hidden; }
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "United Kingdom",
-          "item": "https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/"
+          "name": "Australia",
+          "item": "https://nomadassetcollective.com/property-hub-bat-dong-san/australia/"
         }
       ]
     },
     {
       "@type": "ItemList",
-      "name": "Branded residences in United Kingdom",
-      "numberOfItems": 5,
+      "name": "Branded residences in Australia",
+      "numberOfItems": 3,
       "itemListElement": [
         {
           "@type": "ListItem",
           "position": 1,
           "item": {
             "@type": "Product",
-            "name": "London Dock —  Jade Wharf (UK RBI)",
-            "category": "Condo",
-            "image": "https://nomadassetcollective.com/wp-content/uploads/2026/05/london-dock-4.jpg",
-            "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/london-dock-wapping-london/",
+            "name": "Yarra Park Alphington",
+            "category": "Townhouse",
+            "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/australia/yarra-park-alphington/",
             "brand": {
               "@type": "Brand",
-              "name": "Berkeley Group"
+              "name": "Yarra Park"
             },
-            "areaServed": "Wapping, London E1W",
+            "areaServed": "Alphington, Melbourne",
             "offers": {
               "@type": "Offer",
-              "price": 790000,
-              "priceCurrency": "GBP",
+              "price": 1320000,
+              "priceCurrency": "AUD",
               "availability": "https://schema.org/InStock",
-              "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/london-dock-wapping-london/"
+              "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/australia/yarra-park-alphington/"
             }
           }
         },
@@ -1148,21 +887,20 @@ body.cl-modal-open { overflow:hidden; }
           "position": 2,
           "item": {
             "@type": "Product",
-            "name": "Oval Village — The Halo (UK RBI)",
+            "name": "Natura Macquarie Park",
             "category": "Condo",
-            "image": "https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/oval-village-london-hero/public",
-            "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/oval-village-london/",
+            "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/australia/natura-macquarie-park/",
             "brand": {
               "@type": "Brand",
-              "name": "Berkeley Group"
+              "name": "Natura"
             },
-            "areaServed": "Vauxhall, London SE11",
+            "areaServed": "Macquarie Park, Sydney",
             "offers": {
               "@type": "Offer",
-              "price": 685000,
-              "priceCurrency": "GBP",
+              "price": 840000,
+              "priceCurrency": "AUD",
               "availability": "https://schema.org/InStock",
-              "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/oval-village-london/"
+              "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/australia/natura-macquarie-park/"
             }
           }
         },
@@ -1171,67 +909,20 @@ body.cl-modal-open { overflow:hidden; }
           "position": 3,
           "item": {
             "@type": "Product",
-            "name": "White City Living — The Solaris (UK RBI)",
+            "name": "Downtown Zetland",
             "category": "Condo",
-            "image": "https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/white-city-living-london-hero/public",
-            "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/white-city-living-london/",
+            "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/australia/downtown-zetland/",
             "brand": {
               "@type": "Brand",
-              "name": "Berkeley Group"
+              "name": "Downtown"
             },
-            "areaServed": "White City, London W12",
+            "areaServed": "Zetland, Sydney",
             "offers": {
               "@type": "Offer",
-              "price": 665000,
-              "priceCurrency": "GBP",
+              "price": 800000,
+              "priceCurrency": "AUD",
               "availability": "https://schema.org/InStock",
-              "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/white-city-living-london/"
-            }
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "item": {
-            "@type": "Product",
-            "name": "Fulham Reach — Palmer House (UK RBI)",
-            "category": "Condo",
-            "image": "https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/fulham-reach-london-hero/public",
-            "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/fulham-reach-london/",
-            "brand": {
-              "@type": "Brand",
-              "name": "Berkeley Group"
-            },
-            "areaServed": "Fulham, London W6",
-            "offers": {
-              "@type": "Offer",
-              "price": 576000,
-              "priceCurrency": "GBP",
-              "availability": "https://schema.org/InStock",
-              "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/fulham-reach-london/"
-            }
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 5,
-          "item": {
-            "@type": "Product",
-            "name": "Bermondsey Place — The Art House & Art Mill (UK RBI)",
-            "category": "Condo",
-            "image": "https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/bermondsey-place-london-hero/public",
-            "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/bermondsey-place-london/",
-            "brand": {
-              "@type": "Brand",
-              "name": "Berkeley Group"
-            },
-            "areaServed": "Bermondsey, London SE1",
-            "offers": {
-              "@type": "Offer",
-              "price": 499950,
-              "priceCurrency": "GBP",
-              "availability": "https://schema.org/InStock",
-              "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/bermondsey-place-london/"
+              "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/australia/downtown-zetland/"
             }
           }
         }
@@ -1252,7 +943,7 @@ body.cl-modal-open { overflow:hidden; }
       <div class="nac-hdr-meta">
         <div class="nac-hdr-date" id="cl-date-display">—</div>
         <div class="nac-hdr-trail">
-          <span data-vi="Property Hub">Property Hub</span><span data-en="Property Hub">Property Hub</span><span class="nac-trail-sep">—</span><span class="nac-trail-id">United Kingdom</span>
+          <span data-vi="Property Hub">Property Hub</span><span data-en="Property Hub">Property Hub</span><span class="nac-trail-sep">—</span><span class="nac-trail-id">Australia</span>
         </div>
       </div>
     </a>
@@ -1280,30 +971,28 @@ body.cl-modal-open { overflow:hidden; }
 
 <!-- ═══ HERO ═══ -->
 <section class="cl-hero" id="cl-hero">
-  <div class="cl-hero-slides" id="cl-hero-slides">      <div class="cl-hero-slide on" data-name-vi="Khu Căn Hộ London Dock, độc tọa tại Wapping — Cách Tower Bridge chỉ 10” " data-name-en="London Dock —  Jade Wharf (UK RBI)" data-price="$790K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/london-dock-wapping-london/" style="background-image:url('https://nomadassetcollective.com/wp-content/uploads/2026/05/london-dock-4.jpg')"></div>
-      <div class="cl-hero-slide" data-name-vi="Oval Village — The Halo, Bên Sân Kia Oval Cricket Ground" data-name-en="Oval Village — The Halo (UK RBI)" data-price="$685K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/oval-village-london/" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/oval-village-london-hero/public')"></div>
-      <div class="cl-hero-slide" data-name-vi="White City Living — Solaris One &amp; Two, 30 Tiện Ích Đẳng Cấp Thế Giới Tại Trung Tâm London" data-name-en="White City Living — The Solaris (UK RBI)" data-price="$665K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/white-city-living-london/" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/white-city-living-london-hero/public')"></div>
-      <div class="cl-hero-slide" data-name-vi="Fulham Reach — Palmer House, Bờ Thames Hammersmith" data-name-en="Fulham Reach — Palmer House (UK RBI)" data-price="$576K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/fulham-reach-london/" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/fulham-reach-london-hero/public')"></div>
-      <div class="cl-hero-slide" data-name-vi="Bermondsey Place — The Art House &amp; Art Mill, Bờ Nam Thames" data-name-en="Bermondsey Place — The Art House &amp; Art Mill (UK RBI)" data-price="$500K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/bermondsey-place-london/" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/bermondsey-place-london-hero/public')"></div></div>
+  <div class="cl-hero-slides" id="cl-hero-slides">      <div class="cl-hero-slide on" data-name-vi="Yarra Park Alphington" data-name-en="Yarra Park Alphington" data-price="$1.3M" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/australia/yarra-park-alphington/" style="background:linear-gradient(135deg,#0f1a36,#1a2a4a)"></div>
+      <div class="cl-hero-slide" data-name-vi="Natura Macquarie Park" data-name-en="Natura Macquarie Park" data-price="$840K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/australia/natura-macquarie-park/" style="background:linear-gradient(135deg,#0f1a36,#1a2a4a)"></div>
+      <div class="cl-hero-slide" data-name-vi="Downtown Zetland" data-name-en="Downtown Zetland" data-price="$800K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/australia/downtown-zetland/" style="background:linear-gradient(135deg,#0f1a36,#1a2a4a)"></div></div>
   <div class="cl-hero-veil"></div>
   <div class="cl-hero-grain"></div>
 
   <div class="cl-hero-inner">
     <div class="cl-hero-text reveal">
       <div class="cl-hero-eyebrow">
-        <span><span data-vi="Quốc gia · Vương Quốc Anh">Quốc gia · Vương Quốc Anh</span><span data-en="Country · United Kingdom">Country · United Kingdom</span></span>
-        <span class="live"><span data-vi="5 dự án Live">5 dự án Live</span><span data-en="5 listings live">5 listings live</span></span>
+        <span><span data-vi="Quốc gia · Úc">Quốc gia · Úc</span><span data-en="Country · Australia">Country · Australia</span></span>
+        <span class="live"><span data-vi="3 dự án Live">3 dự án Live</span><span data-en="3 listings live">3 listings live</span></span>
       </div>
-      <h1 class="cl-name"><span data-vi="Vương Quốc Anh">Vương Quốc Anh</span><span data-en="United Kingdom">United Kingdom</span></h1>
-      <p class="cl-hero-tag"><span data-vi="<strong>Bất động sản branded London</strong> — danh mục BĐS Berkeley Group cao cấp trải khắp Zone 1, từ Fulham đến Wapping."><strong>Bất động sản branded London</strong> — danh mục BĐS Berkeley Group cao cấp trải khắp Zone 1, từ Fulham đến Wapping.</span><span data-en="<strong>London branded residences</strong> — Berkeley Group's prime portfolio across Zone 1, from Fulham to Wapping."><strong>London branded residences</strong> — Berkeley Group's prime portfolio across Zone 1, from Fulham to Wapping.</span></p>
-      <div class="cl-hero-chips">        <span class="cl-chip"><span data-vi="💷 GDP $3.3T (2024)">💷 GDP $3.3T (2024)</span><span data-en="💷 GDP $3.3T (2024)">💷 GDP $3.3T (2024)</span></span>
-        <span class="cl-chip"><span data-vi="🛂 Tier-1 Investor Visa">🛂 Tier-1 Investor Visa</span><span data-en="🛂 Tier-1 Investor Visa">🛂 Tier-1 Investor Visa</span></span>
-        <span class="cl-chip"><span data-vi="🏛️ Common Law">🏛️ Common Law</span><span data-en="🏛️ Common Law jurisdiction">🏛️ Common Law jurisdiction</span></span></div>
-      <a class="cl-hero-featured" id="cl-hero-featured" href="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/london-dock-wapping-london/">
-        <span class="cl-hero-featured-thumb" id="cl-hero-featured-thumb" style="background-image:url('https://nomadassetcollective.com/wp-content/uploads/2026/05/london-dock-4.jpg')"></span>
+      <h1 class="cl-name"><span data-vi="Úc">Úc</span><span data-en="Australia">Australia</span></h1>
+      <p class="cl-hero-tag"><span data-vi="<strong>Bến đỗ an cư của Nam Bán Cầu</strong> — từ căn hộ resort Sydney đến nhà phố ven sông Melbourne."><strong>Bến đỗ an cư của Nam Bán Cầu</strong> — từ căn hộ resort Sydney đến nhà phố ven sông Melbourne.</span><span data-en="<strong>The Southern Hemisphere's safe harbour</strong> — from Sydney resort apartments to Melbourne's riverside townhomes."><strong>The Southern Hemisphere's safe harbour</strong> — from Sydney resort apartments to Melbourne's riverside townhomes.</span></p>
+      <div class="cl-hero-chips">        <span class="cl-chip"><span data-vi="🏖️ Bờ biển 35,000km">🏖️ Bờ biển 35,000km</span><span data-en="🏖️ 35,000km coastline">🏖️ 35,000km coastline</span></span>
+        <span class="cl-chip"><span data-vi="🎓 Điểm du học #3 thế giới">🎓 Điểm du học #3 thế giới</span><span data-en="🎓 #3 global study destination">🎓 #3 global study destination</span></span>
+        <span class="cl-chip"><span data-vi="🏆 Melbourne &amp; Sydney top &quot;đáng sống&quot;">🏆 Melbourne &amp; Sydney top "đáng sống"</span><span data-en="🏆 Among the world's most liveable cities">🏆 Among the world's most liveable cities</span></span></div>
+      <a class="cl-hero-featured" id="cl-hero-featured" href="https://nomadassetcollective.com/property-hub-bat-dong-san/australia/yarra-park-alphington/">
+        <span class="cl-hero-featured-thumb" id="cl-hero-featured-thumb" style="background-image:url('https://nomadassetcollective.com/wp-content/uploads/2026/05/mo1.jpg')"></span>
         <span class="cl-hero-featured-txt">
           <span class="cl-hero-featured-lbl"><span data-vi="Tiêu điểm">Tiêu điểm</span><span data-en="Featured">Featured</span></span>
-          <span class="cl-hero-featured-name" id="cl-hero-featured-name">Khu Căn Hộ London Dock, độc tọa tại Wapping — Cách Tower Bridge chỉ 10”  <small>$790K</small></span>
+          <span class="cl-hero-featured-name" id="cl-hero-featured-name">Yarra Park Alphington <small>$1.3M</small></span>
         </span>
         <span class="cl-hero-featured-arrow">→</span>
       </a>
@@ -1313,23 +1002,23 @@ body.cl-modal-open { overflow:hidden; }
       <div class="cl-plaque-lbl"><span data-vi="Tổng quan thị trường">Tổng quan thị trường</span><span data-en="Market snapshot">Market snapshot</span></div>
       <div class="cl-plaque-row">
         <span class="cl-plaque-row-lbl"><span data-vi="Dự án">Dự án</span><span data-en="Listings">Listings</span></span>
-        <span class="cl-plaque-row-val">5</span>
+        <span class="cl-plaque-row-val">3</span>
       </div>
       <div class="cl-plaque-row">
         <span class="cl-plaque-row-lbl"><span data-vi="Thành phố">Thành phố</span><span data-en="Cities">Cities</span></span>
-        <span class="cl-plaque-row-val">4</span>
+        <span class="cl-plaque-row-val">2</span>
       </div>
       <div class="cl-plaque-row">
         <span class="cl-plaque-row-lbl"><span data-vi="Giá vào cửa">Giá vào cửa</span><span data-en="Entry from">Entry from</span></span>
-        <span class="cl-plaque-row-val">$500<small>K</small></span>
+        <span class="cl-plaque-row-val">$800<small>K</small></span>
       </div>
       <div class="cl-plaque-row">
         <span class="cl-plaque-row-lbl">Yield</span>
-        <span class="cl-plaque-row-val">4.5–5.8<small>%</small></span>
+        <span class="cl-plaque-row-val">3.5–4.0<small>%</small></span>
       </div>
       <div class="cl-plaque-row">
         <span class="cl-plaque-row-lbl">YoY USD</span>
-        <span class="cl-plaque-row-val">3–6<small>%</small></span>
+        <span class="cl-plaque-row-val">4–8<small>%</small></span>
       </div>
     </aside>
   </div>
@@ -1345,7 +1034,7 @@ body.cl-modal-open { overflow:hidden; }
 <!-- ═══ INTRO NARRATIVE ═══ -->
 <section class="cl-intro reveal">
   <div class="cl-intro-mark"><span data-vi="Mở đầu">Mở đầu</span><span data-en="Preamble">Preamble</span></div>
-  <p class="cl-intro-quote"><span data-vi="London không phải là một thành phố — đó là tiêu chuẩn vàng của bất động sản toàn cầu.">London không phải là một thành phố — đó là tiêu chuẩn vàng của bất động sản toàn cầu.</span><span data-en="London isn't a city — it's the global gold standard of property.">London isn't a city — it's the global gold standard of property.</span></p>
+  <p class="cl-intro-quote"><span data-vi="Nước Úc không bán một giấc mơ — nước Úc bán sự chắc chắn: pháp quyền, không khí trong lành, và một tương lai cho con cái.">Nước Úc không bán một giấc mơ — nước Úc bán sự chắc chắn: pháp quyền, không khí trong lành, và một tương lai cho con cái.</span><span data-en="Australia doesn't sell a dream — it sells certainty: rule of law, clean air, and a future for your children.">Australia doesn't sell a dream — it sells certainty: rule of law, clean air, and a future for your children.</span></p>
   <div class="cl-intro-attr">
     <span data-vi="Tuyển chọn bởi Nomad Asset Collective">Tuyển chọn bởi Nomad Asset Collective</span><span data-en="Curated by Nomad Asset Collective">Curated by Nomad Asset Collective</span>
   </div>
@@ -1357,33 +1046,19 @@ body.cl-modal-open { overflow:hidden; }
   <div class="cl-atlas-inner">
     <div class="cl-atlas-text reveal">
       <div class="cl-atlas-text-eyebrow">§ <span data-vi="Bản đồ">Bản đồ</span><span data-en="The map">The map</span></div>
-      <h2 class="cl-atlas-text-title"><span data-vi="Bất Động Sản vàng tại">Bất Động Sản vàng tại</span><span data-en="One city. Five listings. One <em>complete Zone 1</em>.">One city. Five listings. One <em>complete Zone 1</em>.</span></h2>
-      <p class="cl-atlas-text-lead"><span data-vi="Từ Fulham phía Tây đến Bermondsey và Oval phía nam bờ sông, mỗi vị trí được Berkeley Group lựa chọn cho sự tối ưu hiệu suất cho thuê.">Từ Fulham phía Tây đến Bermondsey và Oval phía nam bờ sông, mỗi vị trí được Berkeley Group lựa chọn cho sự tối ưu hiệu suất cho thuê.</span><span data-en="From Fulham in the west to Bermondsey and Oval in the south, each location is curated by Berkeley Group for liquidity and prestige.">From Fulham in the west to Bermondsey and Oval in the south, each location is curated by Berkeley Group for liquidity and prestige.</span></p>
-      <div class="cl-atlas-pinlist">        <a href="#collection" data-city-filter="fulham">
+      <h2 class="cl-atlas-text-title"><span data-vi="Hai thành phố. Ba dự án. Một <em>bến đỗ phương Nam</em>.">Hai thành phố. Ba dự án. Một <em>bến đỗ phương Nam</em>.</span><span data-en="Two cities. Three listings. One <em>southern harbour</em>.">Two cities. Three listings. One <em>southern harbour</em>.</span></h2>
+      <p class="cl-atlas-text-lead"><span data-vi="Từ Sydney — trung tâm tài chính và công nghệ — đến Melbourne ven sông Yarra, mỗi dự án là một cánh cửa định cư và đầu tư bền vững.">Từ Sydney — trung tâm tài chính và công nghệ — đến Melbourne ven sông Yarra, mỗi dự án là một cánh cửa định cư và đầu tư bền vững.</span><span data-en="From Sydney — the finance and tech capital — to Melbourne beside the Yarra, each listing is a doorway to residency and durable investment.">From Sydney — the finance and tech capital — to Melbourne beside the Yarra, each listing is a doorway to residency and durable investment.</span></p>
+      <div class="cl-atlas-pinlist">        <a href="#collection" data-city-filter="sydney">
           <div>
-            <div class="cl-atlas-pinlist-city">Fulham</div>
-            <div class="cl-atlas-pinlist-meta"><span data-vi="Tây London · Sông Thames">Tây London · Sông Thames</span><span data-en="West London · River Thames">West London · River Thames</span></div>
+            <div class="cl-atlas-pinlist-city">Sydney</div>
+            <div class="cl-atlas-pinlist-meta"><span data-vi="Macquarie Park · Zetland">Macquarie Park · Zetland</span><span data-en="Macquarie Park · Zetland">Macquarie Park · Zetland</span></div>
           </div>
           <span class="cl-atlas-pinlist-count">2 <span data-vi="dự án">dự án</span><span data-en="listings">listings</span></span>
         </a>
-        <a href="#collection" data-city-filter="bermondsey">
+        <a href="#collection" data-city-filter="melbourne">
           <div>
-            <div class="cl-atlas-pinlist-city">Bermondsey</div>
-            <div class="cl-atlas-pinlist-meta"><span data-vi="Nam London · Bờ sông">Nam London · Bờ sông</span><span data-en="South London · Riverside">South London · Riverside</span></div>
-          </div>
-          <span class="cl-atlas-pinlist-count">1 <span data-vi="dự án">dự án</span><span data-en="listing">listing</span></span>
-        </a>
-        <a href="#collection" data-city-filter="oval">
-          <div>
-            <div class="cl-atlas-pinlist-city">Oval</div>
-            <div class="cl-atlas-pinlist-meta"><span data-vi="Nam London · Cricket District">Nam London · Cricket District</span><span data-en="South London · Cricket District">South London · Cricket District</span></div>
-          </div>
-          <span class="cl-atlas-pinlist-count">1 <span data-vi="dự án">dự án</span><span data-en="listing">listing</span></span>
-        </a>
-        <a href="#collection" data-city-filter="wapping">
-          <div>
-            <div class="cl-atlas-pinlist-city">Wapping</div>
-            <div class="cl-atlas-pinlist-meta"><span data-vi="Đông London · Bến cảng di sản">Đông London · Bến cảng di sản</span><span data-en="East London · Heritage Docks">East London · Heritage Docks</span></div>
+            <div class="cl-atlas-pinlist-city">Melbourne</div>
+            <div class="cl-atlas-pinlist-meta"><span data-vi="Alphington · ven sông Yarra">Alphington · ven sông Yarra</span><span data-en="Alphington · Yarra riverside">Alphington · Yarra riverside</span></div>
           </div>
           <span class="cl-atlas-pinlist-count">1 <span data-vi="dự án">dự án</span><span data-en="listing">listing</span></span>
         </a></div>
@@ -1409,7 +1084,7 @@ body.cl-modal-open { overflow:hidden; }
         </g>
 
         
-        <path class="cl-map-coast" d="M 155 32 C 168 30, 178 40, 183 55 C 188 70, 188 88, 184 100 C 180 112, 188 122, 200 135 C 215 150, 222 170, 218 195 C 215 220, 215 245, 212 265 C 208 280, 195 290, 175 290 C 150 290, 122 285, 105 275 C 95 260, 105 245, 110 235 C 115 222, 114 208, 108 195 C 100 182, 100 165, 108 150 C 115 132, 115 115, 110 95 C 108 75, 132 55, 148 42 C 152 36, 154 32, 155 32 Z M 45 175 C 55 168, 75 168, 88 178 C 95 195, 95 220, 88 235 C 75 245, 55 243, 45 232 C 38 215, 38 190, 45 175 Z"></path>
+        <path class="cl-map-coast" d="M 60 175 C 70 160, 95 158, 110 165 C 120 150, 135 150, 142 168 C 150 158, 165 156, 175 170 L 182 156 C 188 150, 196 152, 198 168 C 205 160, 214 162, 214 178 C 222 172, 232 168, 236 178 C 240 160, 246 150, 250 140 C 256 150, 256 168, 258 182 C 264 195, 268 215, 266 235 C 264 250, 258 262, 252 272 C 246 282, 238 290, 226 293 C 214 296, 200 296, 188 293 C 170 290, 150 288, 134 290 C 120 292, 108 290, 100 282 C 92 274, 88 262, 86 250 C 82 238, 76 226, 70 214 C 64 202, 58 190, 60 175 Z M 226 308 C 231 304, 240 305, 240 313 C 241 319, 235 324, 229 322 C 223 320, 221 312, 226 308 Z"></path>
         <path class="cl-map-coast-2" d="
           M 88 56 C 100 50, 130 46, 158 52 C 175 56, 188 64, 195 78
           C 200 90, 196 105, 188 118 C 178 132, 170 142, 168 158
@@ -1423,164 +1098,22 @@ body.cl-modal-open { overflow:hidden; }
         <path class="cl-map-sea" d="M 250 140 Q 268 230 258 330"></path>
 
         
-        <g>
-          
-          
-        </g>
-
-        
         
 
         
-        
-
-        
-        
-
-        
-                
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <g class="cl-pin-group" onclick="window.clFilterCity &amp;&amp; clFilterCity('fulham')">
-          <circle class="cl-pin-halo" cx="115" cy="250" r="7"></circle>
-          <circle class="cl-pin-ring" cx="115" cy="250" r="6"></circle>
-          <circle class="cl-pin-core" cx="115" cy="250" r="3"></circle>
-          <text class="cl-pin-lbl" x="37" y="248" text-anchor="start">Fulham</text>
-          <text class="cl-pin-cnt" x="37" y="260" text-anchor="start">2 Listings</text>
+                <g class="cl-pin-group" onclick="window.clFilterCity &amp;&amp; clFilterCity('sydney')">
+          <circle class="cl-pin-halo" cx="250" cy="258" r="7"></circle>
+          <circle class="cl-pin-ring" cx="250" cy="258" r="6"></circle>
+          <circle class="cl-pin-core" cx="250" cy="258" r="3"></circle>
+          <text class="cl-pin-lbl" x="264" y="256" text-anchor="start">Sydney</text>
+          <text class="cl-pin-cnt" x="264" y="268" text-anchor="start">2 Listings</text>
         </g>
-        <g class="cl-pin-group" onclick="window.clFilterCity &amp;&amp; clFilterCity('bermondsey')">
-          <circle class="cl-pin-halo" cx="168" cy="246" r="7"></circle>
-          <circle class="cl-pin-ring" cx="168" cy="246" r="6"></circle>
-          <circle class="cl-pin-core" cx="168" cy="246" r="3"></circle>
-          <text class="cl-pin-lbl" x="182" y="244" text-anchor="start">Bermondsey</text>
-          <text class="cl-pin-cnt" x="182" y="256" text-anchor="start">1 Listing</text>
-        </g>
-        <g class="cl-pin-group" onclick="window.clFilterCity &amp;&amp; clFilterCity('oval')">
-          <circle class="cl-pin-halo" cx="148" cy="268" r="7"></circle>
-          <circle class="cl-pin-ring" cx="148" cy="268" r="6"></circle>
-          <circle class="cl-pin-core" cx="148" cy="268" r="3"></circle>
-          <text class="cl-pin-lbl" x="162" y="266" text-anchor="start">Oval</text>
-          <text class="cl-pin-cnt" x="162" y="278" text-anchor="start">1 Listing</text>
-        </g>
-        <g class="cl-pin-group" onclick="window.clFilterCity &amp;&amp; clFilterCity('wapping')">
-          <circle class="cl-pin-halo" cx="186" cy="230" r="7"></circle>
-          <circle class="cl-pin-ring" cx="186" cy="230" r="6"></circle>
-          <circle class="cl-pin-core" cx="186" cy="230" r="3"></circle>
-          <text class="cl-pin-lbl" x="200" y="228" text-anchor="start">Wapping</text>
-          <text class="cl-pin-cnt" x="200" y="240" text-anchor="start">1 Listing</text>
+        <g class="cl-pin-group" onclick="window.clFilterCity &amp;&amp; clFilterCity('melbourne')">
+          <circle class="cl-pin-halo" cx="220" cy="284" r="7"></circle>
+          <circle class="cl-pin-ring" cx="220" cy="284" r="6"></circle>
+          <circle class="cl-pin-core" cx="220" cy="284" r="3"></circle>
+          <text class="cl-pin-lbl" x="204" y="282" text-anchor="start">Melbourne</text>
+          <text class="cl-pin-cnt" x="204" y="294" text-anchor="start">1 Listing</text>
         </g>
 <g class="cl-map-compass" transform="translate(280, 380)">
           <circle cx="0" cy="0" r="14" fill="none" stroke="currentColor" stroke-width=".5"></circle>
@@ -1597,56 +1130,54 @@ body.cl-modal-open { overflow:hidden; }
   <div class="cl-collection-head reveal">
     <div>
       <div class="cl-coll-eye">§ <span data-vi="Bộ Sưu Tập">Bộ Sưu Tập</span><span data-en="Collection">Collection</span></div>
-      <h2 class="cl-coll-title"><span data-vi="Năm dự án. <em>Vị trí đắc địa Zone 1.</em>">Năm dự án. <em>Vị trí đắc địa Zone 1.</em></span><span data-en="Five listings. <em>One complete Zone 1.</em>">Five listings. <em>One complete Zone 1.</em></span></h2>
-      <p class="cl-coll-lead"><span data-vi="Vuốt, kéo, hoặc lọc theo khu phố. Bấm thẻ để xem nhanh, mũi tên để mở dự án.">Vuốt, kéo, hoặc lọc theo khu phố. Bấm thẻ để xem nhanh, mũi tên để mở dự án.</span><span data-en="Swipe, drag, or filter by borough. Click a card for quick view, the arrow for the full listing.">Swipe, drag, or filter by borough. Click a card for quick view, the arrow for the full listing.</span></p>
+      <h2 class="cl-coll-title"><span data-vi="Ba dự án. <em>Hai bờ biển phương Nam.</em>">Ba dự án. <em>Hai bờ biển phương Nam.</em></span><span data-en="Three listings. <em>Two southern shores.</em>">Three listings. <em>Two southern shores.</em></span></h2>
+      <p class="cl-coll-lead"><span data-vi="Vuốt, kéo, hoặc lọc theo thành phố.">Vuốt, kéo, hoặc lọc theo thành phố.</span><span data-en="Swipe, drag, or filter by city.">Swipe, drag, or filter by city.</span></p>
     </div>
     <div class="cl-coll-meta">
       <div class="cl-coll-meta-stat">
-        <div class="cl-coll-meta-num">5</div>
+        <div class="cl-coll-meta-num">3</div>
         <div class="cl-coll-meta-lbl"><span data-vi="Dự án">Dự án</span><span data-en="Listings">Listings</span></div>
       </div>
       <div class="cl-coll-meta-stat">
-        <div class="cl-coll-meta-num">4</div>
+        <div class="cl-coll-meta-num">2</div>
         <div class="cl-coll-meta-lbl"><span data-vi="Thành phố">Thành phố</span><span data-en="Cities">Cities</span></div>
       </div>
     </div>
   </div>
 
-  <div class="cl-coll-filter reveal">      <button class="cl-pill on" data-filter="all"><span data-vi="Tất cả">Tất cả</span><span data-en="All">All</span><span class="pill-cnt">5</span></button>
-      <button class="cl-pill" data-filter="fulham">Fulham <span class="pill-cnt">2</span></button>
-      <button class="cl-pill" data-filter="bermondsey">Bermondsey <span class="pill-cnt">1</span></button>
-      <button class="cl-pill" data-filter="oval">Oval <span class="pill-cnt">1</span></button>
-      <button class="cl-pill" data-filter="wapping">Wapping <span class="pill-cnt">1</span></button></div>
+  <div class="cl-coll-filter reveal">      <button class="cl-pill on" data-filter="all"><span data-vi="Tất cả">Tất cả</span><span data-en="All">All</span><span class="pill-cnt">3</span></button>
+      <button class="cl-pill" data-filter="sydney">Sydney <span class="pill-cnt">2</span></button>
+      <button class="cl-pill" data-filter="melbourne">Melbourne <span class="pill-cnt">1</span></button></div>
 
   <div class="cl-cards-wrap">
     <button class="cl-cards-nav cl-cards-nav-prev" aria-label="Previous listing">‹</button>
     <button class="cl-cards-nav cl-cards-nav-next" aria-label="Next listing">›</button>
-    <div class="cl-cards" id="cl-collection-track">    <a class="cl-card reveal" href="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/london-dock-wapping-london/" rel="noopener" data-city="wapping" data-listing="london-dock-wapping-london" data-img="https://nomadassetcollective.com/wp-content/uploads/2026/05/london-dock-4.jpg" data-brand="Berkeley Group" data-name-vi="Khu Căn Hộ London Dock, độc tọa tại Wapping — Cách Tower Bridge chỉ 10” " data-name-en="London Dock —  Jade Wharf (UK RBI)" data-tag-vi="Zone 1 London — Căn Hộ Cao Cấp Wapping, Lợi Suất 4,7%" data-tag-en="Zone 1 London — Premium Wapping Apartments, 4.7% Yield" data-price="790" data-yield="4.7" data-irr="8.0" data-coc="3.5" data-rent="3096" data-score="87" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:9.5},{&quot;vi&quot;:&quot;Yield&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:7},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:9},{&quot;vi&quot;:&quot;Quản Lý&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:8.5},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:9.5},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:8.5}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/london-dock-wapping-london/">
+    <div class="cl-cards" id="cl-collection-track">    <a class="cl-card reveal" href="https://nomadassetcollective.com/property-hub-bat-dong-san/australia/yarra-park-alphington/" rel="noopener" data-city="melbourne" data-listing="yarra-park-alphington" data-img="" data-brand="Yarra Park" data-name-vi="Yarra Park Alphington" data-name-en="Yarra Park Alphington" data-tag-vi="Nhà phố ven sông, chỉ vài phút tới trung tâm." data-tag-en="Riverside townhome living, minutes from the city." data-price="1320" data-yield="3.5" data-irr="" data-coc="" data-rent="" data-score="" data-subs="[]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/australia/yarra-park-alphington/">
       <div class="cl-card-img-wrap">
-        <div class="cl-card-img" style="background-image:url('https://nomadassetcollective.com/wp-content/uploads/2026/05/london-dock-4.jpg')"></div>
+        <div class="cl-card-img" style="background-image:url('')"></div>
         <div class="cl-card-img-veil"></div>
         <div class="cl-card-chips">
-          <span class="cl-card-chip city">Wapping</span>
-          <span class="cl-card-chip">🛂 <span data-vi="Định cư">Định cư</span><span data-en="Residency">Residency</span></span>
+          <span class="cl-card-chip city">Melbourne</span>
+          <span class="cl-card-chip">⚡ <span data-vi="Phải biết">Phải biết</span><span data-en="Must know">Must know</span></span>
           <span class="cl-card-chip live"><span data-vi="Live">Live</span><span data-en="Live">Live</span></span>
         </div>
-        <div class="cl-card-brandmark">Berkeley Group</div>
+        <div class="cl-card-brandmark">Yarra Park</div>
       </div>
       <div class="cl-card-body">
         <div class="cl-card-info">
-          <h3 class="cl-card-name"><span data-vi="Khu Căn Hộ London Dock, độc tọa tại Wapping — Cách Tower Bridge chỉ 10” ">Khu Căn Hộ London Dock, độc tọa tại Wapping — Cách Tower Bridge chỉ 10” </span><span data-en="London Dock —  Jade Wharf (UK RBI)">London Dock —  Jade Wharf (UK RBI)</span></h3>
-          <p class="cl-card-tag"><span data-vi="Zone 1 London — Căn Hộ Cao Cấp Wapping, Lợi Suất 4,7%">Zone 1 London — Căn Hộ Cao Cấp Wapping, Lợi Suất 4,7%</span><span data-en="Zone 1 London — Premium Wapping Apartments, 4.7% Yield">Zone 1 London — Premium Wapping Apartments, 4.7% Yield</span></p>
+          <h3 class="cl-card-name"><span data-vi="Yarra Park Alphington">Yarra Park Alphington</span><span data-en="Yarra Park Alphington">Yarra Park Alphington</span></h3>
+          <p class="cl-card-tag"><span data-vi="Nhà phố ven sông, chỉ vài phút tới trung tâm.">Nhà phố ven sông, chỉ vài phút tới trung tâm.</span><span data-en="Riverside townhome living, minutes from the city.">Riverside townhome living, minutes from the city.</span></p>
           <div class="cl-card-stats">
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">$790<small>K</small></span>
+              <span class="cl-card-stat-num">$1.3<small>M</small></span>
               <span class="cl-card-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></span>
             </div>
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">4.7<small>%</small></span>
+              <span class="cl-card-stat-num">3.5<small>%</small></span>
               <span class="cl-card-stat-lbl">Yield</span>
             </div>
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">8.0<small>%</small></span>
+              <span class="cl-card-stat-num">—<small>%</small></span>
               <span class="cl-card-stat-lbl">IRR</span>
             </div>
           </div>
@@ -1654,10 +1185,10 @@ body.cl-modal-open { overflow:hidden; }
         <div class="cl-mini-donut">
           <svg viewBox="0 0 100 100">
             <circle class="cl-mini-donut-track" cx="50" cy="50" r="42"></circle>
-            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="34.3" data-final="34.3"></circle>
+            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9" data-final="263.9"></circle>
           </svg>
           <div class="cl-mini-donut-center">
-            <span class="cl-mini-donut-val" data-count-to="87">0</span>
+            <span class="cl-mini-donut-val" data-count-to="0">0</span>
             <span class="cl-mini-donut-lbl">NAC</span>
           </div>
         </div>
@@ -1667,32 +1198,32 @@ body.cl-modal-open { overflow:hidden; }
         <span class="cl-card-footer-arrow"><span data-vi="Mở dự án">Mở dự án</span><span data-en="Open listing">Open listing</span> <span>→</span></span>
       </div>
     </a>
-    <a class="cl-card reveal" href="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/oval-village-london/" rel="noopener" data-city="oval" data-listing="oval-village-london" data-img="https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/oval-village-london-hero/public" data-brand="Berkeley Group" data-name-vi="Oval Village — The Halo, Bên Sân Kia Oval Cricket Ground" data-name-en="Oval Village — The Halo (UK RBI)" data-tag-vi="Zone 1 London — Bể Gas Biểu Tượng Tái Sinh, Lợi Suất 5,5%" data-tag-en="Zone 1 London — Iconic Gasholder Reimagined by Berkeley, 5.5% Yield" data-price="685" data-yield="5.5" data-irr="9.0" data-coc="4.1" data-rent="3185" data-score="84" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:9.5},{&quot;vi&quot;:&quot;Lợi Suất&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:7.5},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:9},{&quot;vi&quot;:&quot;Quản Lý&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:8.5},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:9},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:8.5}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/oval-village-london/">
+    <a class="cl-card reveal" href="https://nomadassetcollective.com/property-hub-bat-dong-san/australia/natura-macquarie-park/" rel="noopener" data-city="sydney" data-listing="natura-macquarie-park" data-img="" data-brand="Natura" data-name-vi="Natura Macquarie Park" data-name-en="Natura Macquarie Park" data-tag-vi="Khu nghỉ dưỡng giữa trung tâm công nghệ Sydney." data-tag-en="A residential resort in Sydney's tech heart." data-price="840" data-yield="4.0" data-irr="" data-coc="" data-rent="" data-score="" data-subs="[]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/australia/natura-macquarie-park/">
       <div class="cl-card-img-wrap">
-        <div class="cl-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/oval-village-london-hero/public')"></div>
+        <div class="cl-card-img" style="background-image:url('')"></div>
         <div class="cl-card-img-veil"></div>
         <div class="cl-card-chips">
-          <span class="cl-card-chip city">Oval</span>
-          <span class="cl-card-chip">🛂 <span data-vi="Định cư">Định cư</span><span data-en="Residency">Residency</span></span>
+          <span class="cl-card-chip city">Sydney</span>
+          <span class="cl-card-chip">⚡ <span data-vi="Phải biết">Phải biết</span><span data-en="Must know">Must know</span></span>
           <span class="cl-card-chip live"><span data-vi="Live">Live</span><span data-en="Live">Live</span></span>
         </div>
-        <div class="cl-card-brandmark">Berkeley Group</div>
+        <div class="cl-card-brandmark">Natura</div>
       </div>
       <div class="cl-card-body">
         <div class="cl-card-info">
-          <h3 class="cl-card-name"><span data-vi="Oval Village — The Halo, Bên Sân Kia Oval Cricket Ground">Oval Village — The Halo, Bên Sân Kia Oval Cricket Ground</span><span data-en="Oval Village — The Halo (UK RBI)">Oval Village — The Halo (UK RBI)</span></h3>
-          <p class="cl-card-tag"><span data-vi="Zone 1 London — Bể Gas Biểu Tượng Tái Sinh, Lợi Suất 5,5%">Zone 1 London — Bể Gas Biểu Tượng Tái Sinh, Lợi Suất 5,5%</span><span data-en="Zone 1 London — Iconic Gasholder Reimagined by Berkeley, 5.5% Yield">Zone 1 London — Iconic Gasholder Reimagined by Berkeley, 5.5% Yield</span></p>
+          <h3 class="cl-card-name"><span data-vi="Natura Macquarie Park">Natura Macquarie Park</span><span data-en="Natura Macquarie Park">Natura Macquarie Park</span></h3>
+          <p class="cl-card-tag"><span data-vi="Khu nghỉ dưỡng giữa trung tâm công nghệ Sydney.">Khu nghỉ dưỡng giữa trung tâm công nghệ Sydney.</span><span data-en="A residential resort in Sydney's tech heart.">A residential resort in Sydney's tech heart.</span></p>
           <div class="cl-card-stats">
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">$685<small>K</small></span>
+              <span class="cl-card-stat-num">$840<small>K</small></span>
               <span class="cl-card-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></span>
             </div>
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">5.5<small>%</small></span>
+              <span class="cl-card-stat-num">4.0<small>%</small></span>
               <span class="cl-card-stat-lbl">Yield</span>
             </div>
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">9.0<small>%</small></span>
+              <span class="cl-card-stat-num">—<small>%</small></span>
               <span class="cl-card-stat-lbl">IRR</span>
             </div>
           </div>
@@ -1700,10 +1231,10 @@ body.cl-modal-open { overflow:hidden; }
         <div class="cl-mini-donut">
           <svg viewBox="0 0 100 100">
             <circle class="cl-mini-donut-track" cx="50" cy="50" r="42"></circle>
-            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="42.2" data-final="42.2"></circle>
+            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9" data-final="263.9"></circle>
           </svg>
           <div class="cl-mini-donut-center">
-            <span class="cl-mini-donut-val" data-count-to="84">0</span>
+            <span class="cl-mini-donut-val" data-count-to="0">0</span>
             <span class="cl-mini-donut-lbl">NAC</span>
           </div>
         </div>
@@ -1713,32 +1244,32 @@ body.cl-modal-open { overflow:hidden; }
         <span class="cl-card-footer-arrow"><span data-vi="Mở dự án">Mở dự án</span><span data-en="Open listing">Open listing</span> <span>→</span></span>
       </div>
     </a>
-    <a class="cl-card reveal" href="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/white-city-living-london/" rel="noopener" data-city="fulham" data-listing="white-city-living-london" data-img="https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/white-city-living-london-hero/public" data-brand="Berkeley Group" data-name-vi="White City Living — Solaris One &amp; Two, 30 Tiện Ích Đẳng Cấp Thế Giới Tại Trung Tâm London" data-name-en="White City Living — The Solaris (UK RBI)" data-tag-vi="Tây London — Beach Club Mái Tháp, 8 Mẫu Cảnh Quan, 30 Tiện Ích Đẳng Cấp" data-tag-en="West London — Rooftop Beach Club, 8 Acres Landscaping, 30 World-Class Amenities" data-price="665" data-yield="4.5" data-irr="8.5" data-coc="3.5" data-rent="2495" data-score="85" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:9.5},{&quot;vi&quot;:&quot;Lợi Suất&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:6.5},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:8.5},{&quot;vi&quot;:&quot;Quản Lý&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:9},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:9},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:8.5}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/white-city-living-london/">
+    <a class="cl-card reveal" href="https://nomadassetcollective.com/property-hub-bat-dong-san/australia/downtown-zetland/" rel="noopener" data-city="sydney" data-listing="downtown-zetland" data-img="" data-brand="Downtown" data-name-vi="Downtown Zetland" data-name-en="Downtown Zetland" data-tag-vi="Sống kiểu làng phố ngay rìa trung tâm thành phố." data-tag-en="Village living on the edge of the city." data-price="800" data-yield="4.0" data-irr="" data-coc="" data-rent="" data-score="" data-subs="[]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/australia/downtown-zetland/">
       <div class="cl-card-img-wrap">
-        <div class="cl-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/white-city-living-london-hero/public')"></div>
+        <div class="cl-card-img" style="background-image:url('')"></div>
         <div class="cl-card-img-veil"></div>
         <div class="cl-card-chips">
-          <span class="cl-card-chip city">Fulham</span>
-          <span class="cl-card-chip">🛂 <span data-vi="Định cư">Định cư</span><span data-en="Residency">Residency</span></span>
+          <span class="cl-card-chip city">Sydney</span>
+          <span class="cl-card-chip">⚡ <span data-vi="Phải biết">Phải biết</span><span data-en="Must know">Must know</span></span>
           <span class="cl-card-chip live"><span data-vi="Live">Live</span><span data-en="Live">Live</span></span>
         </div>
-        <div class="cl-card-brandmark">Berkeley Group</div>
+        <div class="cl-card-brandmark">Downtown</div>
       </div>
       <div class="cl-card-body">
         <div class="cl-card-info">
-          <h3 class="cl-card-name"><span data-vi="White City Living — Solaris One &amp; Two, 30 Tiện Ích Đẳng Cấp Thế Giới Tại Trung Tâm London">White City Living — Solaris One &amp; Two, 30 Tiện Ích Đẳng Cấp Thế Giới Tại Trung Tâm London</span><span data-en="White City Living — The Solaris (UK RBI)">White City Living — The Solaris (UK RBI)</span></h3>
-          <p class="cl-card-tag"><span data-vi="Tây London — Beach Club Mái Tháp, 8 Mẫu Cảnh Quan, 30 Tiện Ích Đẳng Cấp">Tây London — Beach Club Mái Tháp, 8 Mẫu Cảnh Quan, 30 Tiện Ích Đẳng Cấp</span><span data-en="West London — Rooftop Beach Club, 8 Acres Landscaping, 30 World-Class Amenities">West London — Rooftop Beach Club, 8 Acres Landscaping, 30 World-Class Amenities</span></p>
+          <h3 class="cl-card-name"><span data-vi="Downtown Zetland">Downtown Zetland</span><span data-en="Downtown Zetland">Downtown Zetland</span></h3>
+          <p class="cl-card-tag"><span data-vi="Sống kiểu làng phố ngay rìa trung tâm thành phố.">Sống kiểu làng phố ngay rìa trung tâm thành phố.</span><span data-en="Village living on the edge of the city.">Village living on the edge of the city.</span></p>
           <div class="cl-card-stats">
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">$665<small>K</small></span>
+              <span class="cl-card-stat-num">$800<small>K</small></span>
               <span class="cl-card-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></span>
             </div>
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">4.5<small>%</small></span>
+              <span class="cl-card-stat-num">4.0<small>%</small></span>
               <span class="cl-card-stat-lbl">Yield</span>
             </div>
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">8.5<small>%</small></span>
+              <span class="cl-card-stat-num">—<small>%</small></span>
               <span class="cl-card-stat-lbl">IRR</span>
             </div>
           </div>
@@ -1746,102 +1277,10 @@ body.cl-modal-open { overflow:hidden; }
         <div class="cl-mini-donut">
           <svg viewBox="0 0 100 100">
             <circle class="cl-mini-donut-track" cx="50" cy="50" r="42"></circle>
-            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="39.6" data-final="39.6"></circle>
+            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9" data-final="263.9"></circle>
           </svg>
           <div class="cl-mini-donut-center">
-            <span class="cl-mini-donut-val" data-count-to="85">0</span>
-            <span class="cl-mini-donut-lbl">NAC</span>
-          </div>
-        </div>
-      </div>
-      <div class="cl-card-footer">
-        <span class="cl-card-footer-quick"><span data-vi="Xem nhanh">Xem nhanh</span><span data-en="Quick view">Quick view</span></span>
-        <span class="cl-card-footer-arrow"><span data-vi="Mở dự án">Mở dự án</span><span data-en="Open listing">Open listing</span> <span>→</span></span>
-      </div>
-    </a>
-    <a class="cl-card reveal" href="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/fulham-reach-london/" rel="noopener" data-city="fulham" data-listing="fulham-reach-london" data-img="https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/fulham-reach-london-hero/public" data-brand="Berkeley Group" data-name-vi="Fulham Reach — Palmer House, Bờ Thames Hammersmith" data-name-en="Fulham Reach — Palmer House (UK RBI)" data-tag-vi="Bờ Thames Tây London — Palmer House bởi St George, Bàn Giao Q2 2026, Lợi Suất 5,2%" data-tag-en="Thames-Side West London — Palmer House by St George, Q2 2026 Move-In, 5.2% Yield" data-price="576" data-yield="5.2" data-irr="8.5" data-coc="4.2" data-rent="2600" data-score="88" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:9.5},{&quot;vi&quot;:&quot;Lợi Suất&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:7.5},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:8.5},{&quot;vi&quot;:&quot;Quản Lý&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:9},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:9},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:9.5}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/fulham-reach-london/">
-      <div class="cl-card-img-wrap">
-        <div class="cl-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/fulham-reach-london-hero/public')"></div>
-        <div class="cl-card-img-veil"></div>
-        <div class="cl-card-chips">
-          <span class="cl-card-chip city">Fulham</span>
-          <span class="cl-card-chip">🛂 <span data-vi="Định cư">Định cư</span><span data-en="Residency">Residency</span></span>
-          <span class="cl-card-chip live"><span data-vi="Live">Live</span><span data-en="Live">Live</span></span>
-        </div>
-        <div class="cl-card-brandmark">Berkeley Group</div>
-      </div>
-      <div class="cl-card-body">
-        <div class="cl-card-info">
-          <h3 class="cl-card-name"><span data-vi="Fulham Reach — Palmer House, Bờ Thames Hammersmith">Fulham Reach — Palmer House, Bờ Thames Hammersmith</span><span data-en="Fulham Reach — Palmer House (UK RBI)">Fulham Reach — Palmer House (UK RBI)</span></h3>
-          <p class="cl-card-tag"><span data-vi="Bờ Thames Tây London — Palmer House bởi St George, Bàn Giao Q2 2026, Lợi Suất 5,2%">Bờ Thames Tây London — Palmer House bởi St George, Bàn Giao Q2 2026, Lợi Suất 5,2%</span><span data-en="Thames-Side West London — Palmer House by St George, Q2 2026 Move-In, 5.2% Yield">Thames-Side West London — Palmer House by St George, Q2 2026 Move-In, 5.2% Yield</span></p>
-          <div class="cl-card-stats">
-            <div class="cl-card-stat">
-              <span class="cl-card-stat-num">$576<small>K</small></span>
-              <span class="cl-card-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></span>
-            </div>
-            <div class="cl-card-stat">
-              <span class="cl-card-stat-num">5.2<small>%</small></span>
-              <span class="cl-card-stat-lbl">Yield</span>
-            </div>
-            <div class="cl-card-stat">
-              <span class="cl-card-stat-num">8.5<small>%</small></span>
-              <span class="cl-card-stat-lbl">IRR</span>
-            </div>
-          </div>
-        </div>
-        <div class="cl-mini-donut">
-          <svg viewBox="0 0 100 100">
-            <circle class="cl-mini-donut-track" cx="50" cy="50" r="42"></circle>
-            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="31.7" data-final="31.7"></circle>
-          </svg>
-          <div class="cl-mini-donut-center">
-            <span class="cl-mini-donut-val" data-count-to="88">0</span>
-            <span class="cl-mini-donut-lbl">NAC</span>
-          </div>
-        </div>
-      </div>
-      <div class="cl-card-footer">
-        <span class="cl-card-footer-quick"><span data-vi="Xem nhanh">Xem nhanh</span><span data-en="Quick view">Quick view</span></span>
-        <span class="cl-card-footer-arrow"><span data-vi="Mở dự án">Mở dự án</span><span data-en="Open listing">Open listing</span> <span>→</span></span>
-      </div>
-    </a>
-    <a class="cl-card reveal" href="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/bermondsey-place-london/" rel="noopener" data-city="bermondsey" data-listing="bermondsey-place-london" data-img="https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/bermondsey-place-london-hero/public" data-brand="Berkeley Group" data-name-vi="Bermondsey Place — The Art House &amp; Art Mill, Bờ Nam Thames" data-name-en="Bermondsey Place — The Art House &amp; Art Mill (UK RBI)" data-tag-vi="Bờ Nam London — Phong Cách Nghệ Thuật, Lợi Suất 5,5–6,1%, Bên Shard" data-tag-en="South Bank London — Art-Inspired Living, 5.5–6.1% Yield, Yards from The Shard" data-price="500" data-yield="5.8" data-irr="9.5" data-coc="4.5" data-rent="2400" data-score="82" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:9},{&quot;vi&quot;:&quot;Lợi Suất&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:8.5},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:8},{&quot;vi&quot;:&quot;Quản Lý&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:8.5},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:8.5},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:8}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/bermondsey-place-london/">
-      <div class="cl-card-img-wrap">
-        <div class="cl-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/bermondsey-place-london-hero/public')"></div>
-        <div class="cl-card-img-veil"></div>
-        <div class="cl-card-chips">
-          <span class="cl-card-chip city">Bermondsey</span>
-          <span class="cl-card-chip">🛂 <span data-vi="Định cư">Định cư</span><span data-en="Residency">Residency</span></span>
-          <span class="cl-card-chip live"><span data-vi="Live">Live</span><span data-en="Live">Live</span></span>
-        </div>
-        <div class="cl-card-brandmark">Berkeley Group</div>
-      </div>
-      <div class="cl-card-body">
-        <div class="cl-card-info">
-          <h3 class="cl-card-name"><span data-vi="Bermondsey Place — The Art House &amp; Art Mill, Bờ Nam Thames">Bermondsey Place — The Art House &amp; Art Mill, Bờ Nam Thames</span><span data-en="Bermondsey Place — The Art House &amp; Art Mill (UK RBI)">Bermondsey Place — The Art House &amp; Art Mill (UK RBI)</span></h3>
-          <p class="cl-card-tag"><span data-vi="Bờ Nam London — Phong Cách Nghệ Thuật, Lợi Suất 5,5–6,1%, Bên Shard">Bờ Nam London — Phong Cách Nghệ Thuật, Lợi Suất 5,5–6,1%, Bên Shard</span><span data-en="South Bank London — Art-Inspired Living, 5.5–6.1% Yield, Yards from The Shard">South Bank London — Art-Inspired Living, 5.5–6.1% Yield, Yards from The Shard</span></p>
-          <div class="cl-card-stats">
-            <div class="cl-card-stat">
-              <span class="cl-card-stat-num">$500<small>K</small></span>
-              <span class="cl-card-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></span>
-            </div>
-            <div class="cl-card-stat">
-              <span class="cl-card-stat-num">5.8<small>%</small></span>
-              <span class="cl-card-stat-lbl">Yield</span>
-            </div>
-            <div class="cl-card-stat">
-              <span class="cl-card-stat-num">9.5<small>%</small></span>
-              <span class="cl-card-stat-lbl">IRR</span>
-            </div>
-          </div>
-        </div>
-        <div class="cl-mini-donut">
-          <svg viewBox="0 0 100 100">
-            <circle class="cl-mini-donut-track" cx="50" cy="50" r="42"></circle>
-            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="47.5" data-final="47.5"></circle>
-          </svg>
-          <div class="cl-mini-donut-center">
-            <span class="cl-mini-donut-val" data-count-to="82">0</span>
+            <span class="cl-mini-donut-val" data-count-to="0">0</span>
             <span class="cl-mini-donut-lbl">NAC</span>
           </div>
         </div>
@@ -1885,60 +1324,38 @@ body.cl-modal-open { overflow:hidden; }
             <th data-sort="score" data-type="num">NAC<span class="sort-arrow">▾</span></th>
           </tr>
         </thead>
-        <tbody>          <tr data-listing="london-dock-wapping-london" data-city="Wapping" data-price="790" data-yield="4.7" data-irr="8.0" data-score="87">
+        <tbody>          <tr data-listing="yarra-park-alphington" data-city="Melbourne" data-price="1320" data-yield="3.5" data-irr="" data-score="">
             <td>
-              <span class="cl-tbl-name"><span data-vi="Khu Căn Hộ London Dock, độc tọa tại Wapping — Cách Tower Bridge chỉ 10” ">Khu Căn Hộ London Dock, độc tọa tại Wapping — Cách Tower Bridge chỉ 10” </span><span data-en="London Dock —  Jade Wharf (UK RBI)">London Dock —  Jade Wharf (UK RBI)</span></span>
-              <span class="cl-tbl-brand">Berkeley Group</span>
+              <span class="cl-tbl-name"><span data-vi="Yarra Park Alphington">Yarra Park Alphington</span><span data-en="Yarra Park Alphington">Yarra Park Alphington</span></span>
+              <span class="cl-tbl-brand">Yarra Park</span>
             </td>
-            <td>Wapping</td>
-            <td><span class="cl-tbl-val">$790<small>K</small></span></td>
-            <td><span class="cl-tbl-val">4.7<small>%</small></span></td>
-            <td><span class="cl-tbl-val">8.0<small>%</small></span></td>
-            <td><span class="cl-tbl-pill">87 / 100</span></td>
+            <td>Melbourne</td>
+            <td><span class="cl-tbl-val">$1.3<small>M</small></span></td>
+            <td><span class="cl-tbl-val">3.5<small>%</small></span></td>
+            <td><span class="cl-tbl-val">—<small>%</small></span></td>
+            <td><span class="cl-tbl-pill">— / 100</span></td>
           </tr>
-          <tr data-listing="oval-village-london" data-city="Oval" data-price="685" data-yield="5.5" data-irr="9.0" data-score="84">
+          <tr data-listing="natura-macquarie-park" data-city="Sydney" data-price="840" data-yield="4.0" data-irr="" data-score="">
             <td>
-              <span class="cl-tbl-name"><span data-vi="Oval Village — The Halo, Bên Sân Kia Oval Cricket Ground">Oval Village — The Halo, Bên Sân Kia Oval Cricket Ground</span><span data-en="Oval Village — The Halo (UK RBI)">Oval Village — The Halo (UK RBI)</span></span>
-              <span class="cl-tbl-brand">Berkeley Group</span>
+              <span class="cl-tbl-name"><span data-vi="Natura Macquarie Park">Natura Macquarie Park</span><span data-en="Natura Macquarie Park">Natura Macquarie Park</span></span>
+              <span class="cl-tbl-brand">Natura</span>
             </td>
-            <td>Oval</td>
-            <td><span class="cl-tbl-val">$685<small>K</small></span></td>
-            <td><span class="cl-tbl-val">5.5<small>%</small></span></td>
-            <td><span class="cl-tbl-val">9.0<small>%</small></span></td>
-            <td><span class="cl-tbl-pill">84 / 100</span></td>
+            <td>Sydney</td>
+            <td><span class="cl-tbl-val">$840<small>K</small></span></td>
+            <td><span class="cl-tbl-val">4.0<small>%</small></span></td>
+            <td><span class="cl-tbl-val">—<small>%</small></span></td>
+            <td><span class="cl-tbl-pill">— / 100</span></td>
           </tr>
-          <tr data-listing="white-city-living-london" data-city="Fulham" data-price="665" data-yield="4.5" data-irr="8.5" data-score="85">
+          <tr data-listing="downtown-zetland" data-city="Sydney" data-price="800" data-yield="4.0" data-irr="" data-score="">
             <td>
-              <span class="cl-tbl-name"><span data-vi="White City Living — Solaris One &amp; Two, 30 Tiện Ích Đẳng Cấp Thế Giới Tại Trung Tâm London">White City Living — Solaris One &amp; Two, 30 Tiện Ích Đẳng Cấp Thế Giới Tại Trung Tâm London</span><span data-en="White City Living — The Solaris (UK RBI)">White City Living — The Solaris (UK RBI)</span></span>
-              <span class="cl-tbl-brand">Berkeley Group</span>
+              <span class="cl-tbl-name"><span data-vi="Downtown Zetland">Downtown Zetland</span><span data-en="Downtown Zetland">Downtown Zetland</span></span>
+              <span class="cl-tbl-brand">Downtown</span>
             </td>
-            <td>Fulham</td>
-            <td><span class="cl-tbl-val">$665<small>K</small></span></td>
-            <td><span class="cl-tbl-val">4.5<small>%</small></span></td>
-            <td><span class="cl-tbl-val">8.5<small>%</small></span></td>
-            <td><span class="cl-tbl-pill">85 / 100</span></td>
-          </tr>
-          <tr data-listing="fulham-reach-london" data-city="Fulham" data-price="576" data-yield="5.2" data-irr="8.5" data-score="88">
-            <td>
-              <span class="cl-tbl-name"><span data-vi="Fulham Reach — Palmer House, Bờ Thames Hammersmith">Fulham Reach — Palmer House, Bờ Thames Hammersmith</span><span data-en="Fulham Reach — Palmer House (UK RBI)">Fulham Reach — Palmer House (UK RBI)</span></span>
-              <span class="cl-tbl-brand">Berkeley Group</span>
-            </td>
-            <td>Fulham</td>
-            <td><span class="cl-tbl-val">$576<small>K</small></span></td>
-            <td><span class="cl-tbl-val">5.2<small>%</small></span></td>
-            <td><span class="cl-tbl-val">8.5<small>%</small></span></td>
-            <td><span class="cl-tbl-pill">88 / 100</span></td>
-          </tr>
-          <tr data-listing="bermondsey-place-london" data-city="Bermondsey" data-price="500" data-yield="5.8" data-irr="9.5" data-score="82">
-            <td>
-              <span class="cl-tbl-name"><span data-vi="Bermondsey Place — The Art House &amp; Art Mill, Bờ Nam Thames">Bermondsey Place — The Art House &amp; Art Mill, Bờ Nam Thames</span><span data-en="Bermondsey Place — The Art House &amp; Art Mill (UK RBI)">Bermondsey Place — The Art House &amp; Art Mill (UK RBI)</span></span>
-              <span class="cl-tbl-brand">Berkeley Group</span>
-            </td>
-            <td>Bermondsey</td>
-            <td><span class="cl-tbl-val">$500<small>K</small></span></td>
-            <td><span class="cl-tbl-val">5.8<small>%</small></span></td>
-            <td><span class="cl-tbl-val">9.5<small>%</small></span></td>
-            <td><span class="cl-tbl-pill">82 / 100</span></td>
+            <td>Sydney</td>
+            <td><span class="cl-tbl-val">$800<small>K</small></span></td>
+            <td><span class="cl-tbl-val">4.0<small>%</small></span></td>
+            <td><span class="cl-tbl-val">—<small>%</small></span></td>
+            <td><span class="cl-tbl-pill">— / 100</span></td>
           </tr></tbody>
       </table>
     </div>
@@ -1946,10 +1363,60 @@ body.cl-modal-open { overflow:hidden; }
 </section>
 
 <!-- ═══ ASPIRATION CLOSE ═══ -->
+<!-- ═══ TRUST — track-record ribbon + representative journeys ═══ -->
+<section class="cl-trust reveal">
+  <div class="cl-track" aria-label="NAC Property Hub coverage">
+    <div class="cl-track-item">
+      <div class="cl-track-num">20<span class="cl-track-plus">+</span></div>
+      <div class="cl-track-lbl"><span data-vi="">Hồ Sơ Đã Thẩm Định</span><span data-en="">Vetted Listings</span></div>
+    </div>
+    <div class="cl-track-div" aria-hidden="true"></div>
+    <div class="cl-track-item">
+      <div class="cl-track-num">6</div>
+      <div class="cl-track-lbl"><span data-vi="">Quốc Gia</span><span data-en="">Countries</span></div>
+    </div>
+    <div class="cl-track-div" aria-hidden="true"></div>
+    <div class="cl-track-item">
+      <div class="cl-track-num">3</div>
+      <div class="cl-track-lbl"><span data-vi="">Châu Lục</span><span data-en="">Continents</span></div>
+    </div>
+  </div>
+  <div class="cl-journeys-head">
+    <div class="cl-journeys-lbl"><span data-vi="">Hành Trình Nhà Đầu Tư</span><span data-en="">Investor Journeys</span></div>
+    <h3 class="cl-journeys-title"><span data-vi="">Câu Chuyện Tiêu Biểu</span><span data-en="">Representative Journeys</span></h3>
+    <p class="cl-journeys-note"><span data-vi="">Tổng hợp từ nhiều hồ sơ khách hàng thực tế; chi tiết nhận dạng đã được thay đổi để bảo mật.</span><span data-en="">Composite accounts drawn from real client files; identifying details changed for privacy.</span></p>
+  </div>
+  <div class="cl-journeys-grid">
+    <a class="cl-journey-card" href="https://blog.nomadassetcollective.com/case-study-gia-dinh-doanh-nhan-tp-hcm-va-18-thang-chinh-phuc-thuong-tru-hy-lap-bai-hoc-thuc-te-tu-hanh-trinh/" target="_blank" rel="noopener">
+      <div class="cl-journey-prog">Greece Golden Visa</div>
+      <h4 class="cl-journey-h"><span data-vi="">Gia đình doanh nhân TP.HCM — thường trú Hy Lạp trong ~9 tháng</span><span data-en="">A HCMC business family — Greek residency in ~9 months</span></h4>
+      <div class="cl-journey-stat">€290,000 · Athens · 6.8% yield</div>
+      <span class="cl-journey-cta"><span data-vi="">Đọc hành trình →</span><span data-en="">Read the journey →</span></span>
+    </a>
+    <a class="cl-journey-card" href="https://blog.nomadassetcollective.com/case-study-nu-doanh-nhan-viet-va-hanh-trinh-canada-start-up-visa-tu-startup-ha-noi-den-pr-canada-trong-3-nam/" target="_blank" rel="noopener">
+      <div class="cl-journey-prog">Canada Start-Up Visa</div>
+      <h4 class="cl-journey-h"><span data-vi="">Nữ doanh nhân Hà Nội — PR Canada trong 3 năm</span><span data-en="">A Hanoi founder — Canadian PR in 3 years</span></h4>
+      <div class="cl-journey-stat">CAD 100k+ · Toronto · Family PR</div>
+      <span class="cl-journey-cta"><span data-vi="">Đọc hành trình →</span><span data-en="">Read the journey →</span></span>
+    </a>
+  </div>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Nomad Asset Collective — Representative Investor Journeys",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "item": { "@type": "Article", "headline": "Case Study: Gia Đình Doanh Nhân TP.HCM Và 18 Tháng Chinh Phục Thường Trú Hy Lạp", "about": "Greece Golden Visa", "url": "https://blog.nomadassetcollective.com/case-study-gia-dinh-doanh-nhan-tp-hcm-va-18-thang-chinh-phuc-thuong-tru-hy-lap-bai-hoc-thuc-te-tu-hanh-trinh/", "publisher": { "@type": "Organization", "name": "Nomad Asset Collective" } } },
+      { "@type": "ListItem", "position": 2, "item": { "@type": "Article", "headline": "Case Study: Nữ Doanh Nhân Việt Và Hành Trình Canada Start-Up Visa", "about": "Canada Start-Up Visa", "url": "https://blog.nomadassetcollective.com/case-study-nu-doanh-nhan-viet-va-hanh-trinh-canada-start-up-visa-tu-startup-ha-noi-den-pr-canada-trong-3-nam/", "publisher": { "@type": "Organization", "name": "Nomad Asset Collective" } } }
+    ]
+  }
+  </script>
+</section>
+
 <section class="cl-asp">
   <div class="cl-asp-inner reveal">
     <div class="cl-asp-mark">Nomad Asset Collective</div>
-    <p class="cl-asp-line"><span data-vi="Sở hữu một mảnh vàng của Thủ Đô  <strong>London</strong> lộng lẫy">Sở hữu một mảnh vàng của Thủ Đô  <strong>London</strong> lộng lẫy</span><span data-en="Own a London zone. Own <strong>Berkeley</strong>.">Own a London zone. Own <strong>Berkeley</strong>.</span></p>
+    <p class="cl-asp-line"><span data-vi="Sở hữu một bến đỗ. Sở hữu <strong>nước Úc</strong>.">Sở hữu một bến đỗ. Sở hữu <strong>nước Úc</strong>.</span><span data-en="Own a safe harbour. Own <strong>Australia</strong>.">Own a safe harbour. Own <strong>Australia</strong>.</span></p>
     <a href="https://calendar.app.google/owGkBM8Q5owKYwDd9" target="_blank" rel="noopener" class="cl-asp-cta">
       <span data-vi="Đặt Lịch Tư Vấn">Đặt Lịch Tư Vấn</span><span data-en="Schedule Consultation">Schedule Consultation</span>
       <span>→</span>
