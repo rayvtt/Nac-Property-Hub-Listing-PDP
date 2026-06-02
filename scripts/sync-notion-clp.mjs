@@ -295,10 +295,43 @@ function applyModel(html, model) {
   const total = ordered.length;
   const cityCount = usedCities.length;
 
+  // ── title + meta (page head) ──────────────────────────────────────
+  const titleText = `${country.nameEn} · NAC Property Collection`;
+  $('title').text(titleText);
+  $('meta[property="og:title"]').attr('content', titleText);
+  $('meta[name="twitter:title"]').attr('content', titleText);
+  const descText = total > 0
+    ? `Branded residences across ${country.nameEn} — ${total} curated listing${total === 1 ? '' : 's'} from NAC's Property Hub.`
+    : `Branded residences across ${country.nameEn} — curated listings from NAC's Property Hub.`;
+  $('meta[name="description"]').attr('content', descText);
+  $('meta[property="og:description"]').attr('content', descText);
+  $('meta[name="twitter:description"]').attr('content', descText);
+  const ogImg = ordered.find(l => l.heroImg)?.heroImg;
+  if (ogImg) {
+    $('meta[property="og:image"]').attr('content', ogImg);
+    $('meta[name="twitter:image"]').attr('content', ogImg);
+  }
+
   // ── editorial scalars ─────────────────────────────────────────────
   setBi($, '.cl-name', { vi: country.nameVi, en: country.nameEn });
   // header trail country label (mirrors PDP's NAC-id slot)
   if (country.nameEn) $('.nac-trail-id').text(country.nameEn);
+
+  // hero eyebrow — "Quốc gia · <name>" + live count badge
+  const eyebrowFirst = $('.cl-hero-eyebrow > span').not('.live').first();
+  if (eyebrowFirst.length) {
+    eyebrowFirst.html(biSpans(`Quốc gia · ${country.nameVi}`, `Country · ${country.nameEn}`));
+  }
+  const liveBadge = $('.cl-hero-eyebrow .live');
+  if (liveBadge.length) {
+    const en = total === 1 ? 'listing live' : 'listings live';
+    liveBadge.html(biSpans(`${total} dự án Live`, `${total} ${en}`));
+  }
+
+  // strip any Vietnam-only static SVG markers leftover from the template
+  $('.cl-map-faint-city, .cl-map-faint-lbl').remove();
+  // strip any HTML comments inside the SVG that mention specific cities
+  $('.cl-atlas-map svg').contents().filter(function () { return this.type === 'comment'; }).remove();
   setBi($, '.cl-hero-tag', body.heroTagline);
   setBi($, '.cl-intro-quote', body.introQuote);
   setBi($, '.cl-atlas-text-title', body.atlasTitle);
