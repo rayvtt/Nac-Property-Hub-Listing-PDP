@@ -308,6 +308,132 @@ function renderHeroChip(chip) {
   return `        <span class="cl-chip">${biSpans(chip.vi, chip.en)}</span>`;
 }
 
+// ─── managed SEO / GEO head block ────────────────────────────────────────────
+// Generates the full set of "structural" head tags for a CLP — canonical,
+// og:url/locale/site_name, twitter card, hreflang, robots, and a rich JSON-LD
+// @graph (CollectionPage + BreadcrumbList + ItemList of the actual listings).
+// applyModel() strips any existing managed tags first, then injects this fresh
+// block, so all CLPs converge to identical, correct, listing-aware structure on
+// every sync — current 6 countries and any future scaffold alike.
+
+const ORIGIN = 'https://nomadassetcollective.com';
+const HUB_PATH = '/property-hub-bat-dong-san';
+const CURRENCY_CODE = { USD: 'USD', EUR: 'EUR', GBP: 'GBP', AED: 'AED', SGD: 'SGD', JPY: 'JPY', CAD: 'CAD', AUD: 'AUD' };
+
+function clpCanonical(country) {
+  if (country.countryUrl) return country.countryUrl.replace(/\/?$/, '/');
+  const meta = COUNTRY_META[country.nameEn] || {};
+  const wp = meta.wpSlug || country.slug;
+  return `${ORIGIN}${HUB_PATH}/${wp}/`;
+}
+
+// Each listing → schema.org Product (universally indexed, supports offers +
+// brand + image). Branded residences are products being sold, so Product with
+// an Offer is the cleanest type for rich results + LLM extraction.
+function listingToJsonLd(l, position) {
+  const item = {
+    '@type': 'Product',
+    name: l.nameEn || l.nameVi,
+    category: l.hubType || 'Branded Residence',
+  };
+  if (l.heroImg) item.image = l.heroImg;
+  if (l.listingUrl) item.url = l.listingUrl;
+  if (l.brand) item.brand = { '@type': 'Brand', name: shortBrand(l.brand) };
+  if (l.regionCity) item.areaServed = l.regionCity;
+  if (l.purchasePrice != null) {
+    item.offers = {
+      '@type': 'Offer',
+      price: Math.round(l.purchasePrice),
+      priceCurrency: CURRENCY_CODE[l.currency] || 'USD',
+      availability: 'https://schema.org/InStock',
+      ...(l.listingUrl ? { url: l.listingUrl } : {}),
+    };
+  }
+  return { '@type': 'ListItem', position, item };
+}
+
+function buildManagedSeoHead(country, ordered, total, descText, ogImg) {
+  const canonical = clpCanonical(country);
+  const enCanonical = canonical.replace(`${ORIGIN}${HUB_PATH}/`, `${ORIGIN}/en${HUB_PATH}/`);
+  const titleText = `${country.nameEn} · NAC Property Collection`;
+
+  const graph = [
+    {
+      '@type': 'CollectionPage',
+      name: titleText,
+      description: descText,
+      url: canonical,
+      inLanguage: 'vi',
+      numberOfItems: total,
+      isPartOf: { '@type': 'WebSite', name: 'Nomad Asset Collective', url: `${ORIGIN}/` },
+      about: { '@type': 'Country', name: country.nameEn },
+      ...(ogImg ? { primaryImageOfPage: ogImg } : {}),
+      publisher: {
+        '@type': 'Organization',
+        name: 'Nomad Asset Collective',
+        url: `${ORIGIN}/`,
+        logo: `${ORIGIN}/wp-content/uploads/2026/05/nac-cover.png`,
+      },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${ORIGIN}/` },
+        { '@type': 'ListItem', position: 2, name: 'Property Hub', item: `${ORIGIN}${HUB_PATH}/` },
+        { '@type': 'ListItem', position: 3, name: country.nameEn, item: canonical },
+      ],
+    },
+  ];
+  if (total > 0) {
+    graph.push({
+      '@type': 'ItemList',
+      name: `Branded residences in ${country.nameEn}`,
+      numberOfItems: total,
+      itemListElement: ordered.map((l, i) => listingToJsonLd(l, i + 1)),
+    });
+  }
+  const jsonLd = { '@context': 'https://schema.org', '@graph': graph };
+
+  return [
+    `<meta property="og:url" content="${escAttr(canonical)}">`,
+    `<meta property="og:type" content="website">`,
+    `<meta property="og:locale" content="vi_VN">`,
+    `<meta property="og:locale:alternate" content="en_US">`,
+    `<meta property="og:site_name" content="Nomad Asset Collective">`,
+    `<meta name="twitter:card" content="summary_large_image">`,
+    `<meta name="twitter:title" content="${escAttr(titleText)}">`,
+    `<meta name="twitter:description" content="${escAttr(descText)}">`,
+    ...(ogImg ? [`<meta name="twitter:image" content="${escAttr(ogImg)}">`] : []),
+    `<link rel="canonical" href="${escAttr(canonical)}">`,
+    `<link rel="alternate" hreflang="vi" href="${escAttr(canonical)}">`,
+    `<link rel="alternate" hreflang="en" href="${escAttr(enCanonical)}">`,
+    `<link rel="alternate" hreflang="x-default" href="${escAttr(canonical)}">`,
+    `<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">`,
+    `<script type="application/ld+json">\n${JSON.stringify(jsonLd, null, 2)}\n</script>`,
+  ].join('\n');
+}
+
+// Strip the managed tags so re-sync never duplicates them. Leaves <title>,
+// meta description, og:title/og:description, og:image (updated in place).
+// SCOPED TO <head> — body JSON-LD (e.g. the case-study Article ItemList near
+// the footer) is editorial content and must be preserved.
+function stripManagedSeoHead($) {
+  const head = $('head');
+  head.find('link[rel="canonical"]').remove();
+  head.find('link[rel="alternate"][hreflang]').remove();
+  head.find('meta[property="og:url"]').remove();
+  head.find('meta[property="og:type"]').remove();
+  head.find('meta[property="og:locale"]').remove();
+  head.find('meta[property="og:locale:alternate"]').remove();
+  head.find('meta[property="og:site_name"]').remove();
+  head.find('meta[name="twitter:card"]').remove();
+  head.find('meta[name="twitter:title"]').remove();
+  head.find('meta[name="twitter:description"]').remove();
+  head.find('meta[name="twitter:image"]').remove();
+  head.find('meta[name="robots"]').remove();
+  head.find('script[type="application/ld+json"]').remove();
+}
+
 // ─── the patcher: model → patched HTML string ───────────────────────────────
 
 function applyModel(html, model) {
@@ -343,8 +469,13 @@ function applyModel(html, model) {
   const ogImg = ordered.find(l => l.heroImg)?.heroImg;
   if (ogImg) {
     $('meta[property="og:image"]').attr('content', ogImg);
-    $('meta[name="twitter:image"]').attr('content', ogImg);
   }
+
+  // ── managed SEO / GEO head (canonical, hreflang, twitter, JSON-LD @graph) ──
+  // Strip any prior managed tags, then inject a fresh listing-aware block so
+  // every CLP gets a complete, country-specific SEO/GEO header on every sync.
+  stripManagedSeoHead($);
+  $('head').append('\n' + buildManagedSeoHead(country, ordered, total, descText, ogImg) + '\n');
 
   // ── editorial scalars ─────────────────────────────────────────────
   setBi($, '.cl-name', { vi: country.nameVi, en: country.nameEn });
@@ -708,6 +839,7 @@ async function fetchCountryListings(notion, countryNameEn) {
   const num = (prop) => (prop && typeof prop.number === 'number' ? prop.number : null);
   const url = (prop) => (prop?.url) || (prop?.rich_text ? prop.rich_text.map(t => t.plain_text).join('').trim() : '') || '';
   const ms = (prop) => (prop && Array.isArray(prop.multi_select) ? prop.multi_select.map(s => s.name) : []);
+  const sel = (prop) => (prop && prop.select ? prop.select.name : null);
   const json = (prop) => { const t = rt(prop).trim(); if (!t) return []; try { return JSON.parse(t); } catch { return []; } };
 
   return results.map(page => {
@@ -720,6 +852,8 @@ async function fetchCountryListings(notion, countryNameEn) {
       taglineEn: rt(p['🏷️ Tagline EN']),
       brand: rt(p['✦ Brand']),
       purchasePrice: num(p['Purchase Price']),
+      currency: sel(p['Currency']),
+      hubType: sel(p['🏨 Hub Type']),
       yieldPct: num(p['Yield %']),
       irrPct: num(p['IRR %']),
       cocPct: num(p['Cash-on-Cash %']),
