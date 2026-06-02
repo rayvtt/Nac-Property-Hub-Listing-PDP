@@ -123,6 +123,18 @@ function classifySurface(urlStr) {
   return 'Sitewide';
 }
 
+// ─── Locked pages — never audited or modified by the SEO automation ───
+// Protects hand-maintained pages (e.g. the NAC Residence Index tool) from being
+// re-serialized/rewritten. Add a slug or path fragment here, or via the
+// SEO_LOCKED env var (comma-separated), to lock a page.
+const LOCKED = (process.env.SEO_LOCKED || 'nac-residence-index')
+  .split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+function isLocked(url = '', slug = '') {
+  const u = String(url).toLowerCase();
+  const s = String(slug).toLowerCase();
+  return LOCKED.some(p => p && (s === p || u.includes('/' + p)));
+}
+
 // 12-month theme calendar. M1 starts June 2026.
 const THEME_START = new Date('2026-06-01T00:00:00Z');
 const THEMES = [
@@ -458,6 +470,7 @@ function heuristicTasks(signals, gscByPage, ga4ByUrl, theme) {
   const tasks = [];
   for (const sig of signals) {
     if (sig.error) continue;
+    if (isLocked(sig.url)) { console.log(`  🔒 locked — skip audit: ${sig.url}`); continue; }
     const surface = classifySurface(sig.url);
     const gsc = gscByPage?.get(sig.url) || gscByPage?.get(sig.url + '/');
     const ga4 = ga4ByUrl?.get(sig.url) || ga4ByUrl?.get(sig.url + '/');

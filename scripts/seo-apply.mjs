@@ -49,6 +49,18 @@ const WP_USER = process.env.WP_USER || 'admin_web';
 const WP_PASS = process.env.WP_APP_PASSWORD;
 const ACF_HTML_FIELD = process.env.WP_ACF_FIELD || 'raw_html_code';
 
+// ─── Locked pages — never modified by the SEO automation ───
+// Protects hand-maintained pages (e.g. the NAC Residence Index tool) from being
+// re-serialized/rewritten via WP REST. Add a slug or path fragment here, or via
+// the SEO_LOCKED env var (comma-separated), to lock a page.
+const LOCKED = (process.env.SEO_LOCKED || 'nac-residence-index')
+  .split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+function isLocked(url = '', slug = '') {
+  const u = String(url).toLowerCase();
+  const s = String(slug).toLowerCase();
+  return LOCKED.some(p => p && (s === p || u.includes('/' + p)));
+}
+
 if (!NOTION_TOKEN) { console.error('NOTION_TOKEN required'); process.exit(1); }
 if (!ANTHROPIC_API_KEY) { console.error('ANTHROPIC_API_KEY required'); process.exit(1); }
 if (!WP_PASS) { console.error('WP_APP_PASSWORD required'); process.exit(1); }
@@ -422,6 +434,8 @@ async function main() {
     const url = t.url || '';
     const surf = t.surface || '';
     const pdpFile = await findPdpFile(t.slug);
+
+    if (isLocked(url, t.slug)) { console.log(`  🔒 skip ${t.taskId} (${t.slug}): page locked from SEO automation`); continue; }
 
     if (pdpFile && SCOPE.includes('pdp')) {
       eligible.push({ task: t, kind: 'pdp_file', path: pdpFile, url });
