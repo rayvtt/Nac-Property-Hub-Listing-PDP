@@ -368,7 +368,7 @@ Field used by both: `🆔 WP Page ID` (Number) on the Country DB. The Country UR
 
 **Prerequisite — Notion integration access:** The Country DB must be shared with the `NAC Property Lister` integration (the same one used by the LLP sync). One-time setup: open the Country DB → `···` menu → Connections → add `NAC Property Lister` with **edit** permission. Without this, both scripts fail with `Could not find database with ID: …`. Each new country row inherits access from its parent DB, so no per-row sharing is needed.
 
-**WP template requirement:** The country page in WP must use a template that echoes `<?php the_field('raw_html_code'); ?>` — same as PDPs. If the page existed before this pipeline (e.g. as a PDP parent), it likely has the default WP template and won't render the pushed HTML until the template is switched manually in WP admin → Pages → Page Attributes → Template.
+**WP template — auto-enforced:** Both `create-wp-clp-page.mjs` and `sync-wp-clp.mjs` set the page's `template` field to `nac-residence-index.php` (overridable via the `WP_TEMPLATE` repo variable) on every push. `sync-wp-clp` sends `{acf: {raw_html_code: …}, template: …}` in a single atomic PUT so a misconfigured page self-heals on the next cron tick. Without this, the ACF field group's template-bound location rule silently drops writes to `raw_html_code` — the PUT returns 200 OK but nothing lands. (If a cached page still shows stale content after the fix, purge LiteSpeed cache for that URL.)
 
 **End-to-end "Hub Status → Live" → WP for CLPs:**
 ```

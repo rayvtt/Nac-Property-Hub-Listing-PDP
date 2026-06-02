@@ -15,6 +15,11 @@ const WP_BASE = (process.env.WP_BASE_URL || 'https://nomadassetcollective.com').
 const WP_API = `${WP_BASE}/wp-json/wp/v2`;
 const WP_USER = process.env.WP_USER || 'admin_web';
 const WP_PASS = process.env.WP_APP_PASSWORD;
+// CLP pages must use the same template as PDPs (the one that echoes
+// `<?php the_field('raw_html_code'); ?>`). The ACF field group's
+// location rule is template-bound, so on the wrong template the
+// raw_html_code field is silently ignored on save.
+const WP_TEMPLATE = process.env.WP_TEMPLATE || 'nac-residence-index.php';
 const PROPERTY_HUB_PATH = process.env.WP_PROPERTY_HUB_PATH || 'property-hub-bat-dong-san';
 const NOTION_TOKEN = process.env.NOTION_TOKEN;
 const COUNTRY_DB_ID = process.env.NOTION_COUNTRY_DATABASE_ID || 'a01ef35ce9fd45b1bba3ec4de4da678c';
@@ -139,22 +144,36 @@ async function processOne(country) {
     || null;
 
   if (page) {
+    // Idempotently correct the template on existing pages. If the user
+    // (or a previous run) left it on the default WP template, the ACF
+    // field is hidden by the location rule and any sync push silently
+    // no-ops. Forcing it to WP_TEMPLATE self-heals that case.
+    let templateFixed = false;
+    if (WP_TEMPLATE && (page.template || '') !== WP_TEMPLATE) {
+      await wp(`/pages/${page.id}`, {
+        method: 'POST',
+        body: JSON.stringify({ template: WP_TEMPLATE }),
+      });
+      templateFixed = true;
+    }
     await writeBackToNotion(country.notionPageId, page.id);
-    return { slug: country.fileSlug, pageId: page.id, link: page.link, reused: true };
+    return { slug: country.fileSlug, pageId: page.id, link: page.link, reused: true, templateFixed };
   }
 
   // Not found — create it under hub root.
   if (!hubRoot) {
     return { slug: country.fileSlug, error: `WP page at /${PROPERTY_HUB_PATH}/${wpSlug}/ not found and hub root /${PROPERTY_HUB_PATH}/ not found either` };
   }
+  const createBody = {
+    title: country.countryNameEn || country.countryNameVi || wpSlug,
+    slug: wpSlug,
+    parent: hubRoot.id,
+    status: 'publish',
+  };
+  if (WP_TEMPLATE) createBody.template = WP_TEMPLATE;
   page = await wp('/pages', {
     method: 'POST',
-    body: JSON.stringify({
-      title: country.countryNameEn || country.countryNameVi || wpSlug,
-      slug: wpSlug,
-      parent: hubRoot.id,
-      status: 'publish',
-    }),
+    body: JSON.stringify(createBody),
   });
   await writeBackToNotion(country.notionPageId, page.id);
   return { slug: country.fileSlug, pageId: page.id, link: page.link };
