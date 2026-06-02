@@ -658,7 +658,7 @@ async function parseBody(notion, pageId) {
       const f = stripFlag(text);
       if (f) { body[EDITORIAL[section]] = body[EDITORIAL[section]] || {}; body[EDITORIAL[section]][f.lang] = f.text; }
     } else if (section === 'Hero Chips') {
-      if (text.includes('|')) {
+      if (b.type === 'bulleted_list_item' && text.includes('|')) {
         const [vi, en] = text.split('|').map(s => s.trim());
         body.heroChips.push({ vi, en });
       }
