@@ -299,24 +299,22 @@ M 88 56 C 100 50, 130 46, 158 52 …
 
 Notion's WYSIWYG is forgiving: extra blank lines, bold, italics, links — all fine. The parser only cares about heading names + emoji line markers + key-value rows under cities.
 
-### Auto-scaffold rule
+### Auto-scaffold rule — shipped
 
-The Country DB is **never maintained manually**. The sync script reads the Property Listings DB and:
+`scripts/sync-notion-clp.mjs` runs the auto-scaffold step at the start of every sync tick, **before** processing Live Country DB rows:
 
-1. **Discovers every Live country** — `SELECT DISTINCT Country FROM listings WHERE Hub Status = 'Live'`.
-2. **For each Live country with no matching Country DB row**, creates a new row with:
-   - `Country Name VI/EN`, `Slug`, `Country Code` filled from a country lookup table (built into the script)
-   - `🌏 Region` mirrored from the LLP Country→Region map
-   - `🔗 Country URL` computed from the slug
+1. **Discovers every Live country** — queries the LLP DB for `Hub Status = Live` and collects `DISTINCT Country`.
+2. **Discovers existing Country DB rows** — queries the Country DB (any status) and indexes by `Slug` + `Country Name EN`.
+3. **For each Live country without a matching Country DB row**, creates a Draft row using `COUNTRY_LOOKUP` (a table inside the script keyed by the LLP `Country` select value):
+   - `Country Name VI/EN`, `Slug`, `Country Code` from the lookup
+   - `🌏 Region` from the lookup
+   - `🔗 Country URL` computed as `…/property-hub-bat-dong-san/<wpSlug>/`
    - `Hub Status = Draft`
-   - Page body seeded from a Notion template with empty `##` sections labelled `(TODO)` so the editor knows what to fill
-3. **For each existing row**, refreshes auto fields (`📈 Listings Count`, `📤 Last Synced`); leaves the page body untouched.
-4. **For each row with `Hub Status = Live`**, renders `country/<slug>.html` from the HTML template using:
-   - Country DB **properties** (slug, country name, country code, plaque YoY)
-   - Country DB **page body sections** (taglines, chips, intro quote, atlas title/lead, collection title/lead, aspiration, SVG path, cities)
-   - LLP listings filtered by Country, sorted by Purchase Price desc (drives hero carousel, plaque entry/yield, filter pills, collection cards, compare table)
+   - Page body seeded with structured `##` sections (Hero Tagline, Hero Chips, Intro Quote, Atlas Title/Lead, Collection Title/Lead, Aspiration, SVG Path, Cities) filled with `TODO` placeholders + a generic SVG silhouette + one example `### TODO City` block — so the editor knows exactly what to fill.
+4. **If a country isn't in `COUNTRY_LOOKUP`**, the step logs a warning and skips that country — add an entry to the table (`scripts/sync-notion-clp.mjs`, top of file) to onboard a new country.
+5. **For each existing row with `Hub Status = Live`**, the main sync loop refreshes auto fields (`📈 Listings Count`, `📤 Last Synced`) and regenerates `country/<slug>.html`. Page body is never overwritten.
 
-A new listing in a brand-new country auto-creates a Draft row within one cron tick. The editor opens the row, fills in the page body (~15 minutes of writing), flips Hub Status to Live, and the CLP renders.
+A new Live listing in a brand-new country auto-creates a Draft row within one cron tick. The editor opens the row, fills in the page body (~15 minutes of writing), flips Hub Status to Live, and the next cron tick renders the CLP and pushes it to WP.
 
 ### Field categories — at a glance
 
