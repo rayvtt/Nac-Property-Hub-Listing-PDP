@@ -69,6 +69,17 @@
     .country-card-btn-live { background:var(--gold); border:1px solid var(--gold); color:#fff; }
     .country-card-btn-disabled { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); color:rgba(255,255,255,.35); cursor:default; pointer-events:none; }
 
+    @media(max-width:600px) {
+      .country-row { grid-template-columns:repeat(2,1fr); gap:8px; }
+      .country-card { aspect-ratio:1; }
+      .country-card-body { bottom:2.4rem; left:.7rem; right:.7rem; }
+      .country-card-meta .flag { font-size:.5rem; letter-spacing:.14em; }
+      .country-card-meta .name { font-size:.95rem; }
+      .country-card-meta .stat { font-size:.48rem; }
+      .country-card-btns { bottom:.5rem; left:.6rem; right:.6rem; gap:.3rem; }
+      .country-card-btn { padding:.28rem .35rem; font-size:.5rem; }
+    }
+
     footer { text-align:center; margin-top:2rem; font-family:var(--ff-mono); font-size:.65rem; color:var(--muted); letter-spacing:.08em; }
     footer a { color:var(--orange); text-decoration:none; }
   </style>
