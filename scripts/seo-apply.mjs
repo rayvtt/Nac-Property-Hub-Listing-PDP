@@ -266,8 +266,10 @@ async function findPdpFile(slug) {
   } catch { return null; }
 }
 
-async function wpFetch(pathname, options = {}) {
-  const res = await fetch(`${WP_API}${pathname}`, {
+async function wpFetch(pathname, options = {}, baseOverride) {
+  const base = (baseOverride || WP_BASE).replace(/\/$/, '');
+  const api = `${base}/wp-json/wp/v2`;
+  const res = await fetch(`${api}${pathname}`, {
     ...options,
     headers: {
       Authorization: WP_AUTH,
@@ -277,13 +279,26 @@ async function wpFetch(pathname, options = {}) {
     },
   });
   const text = await res.text();
-  if (!res.ok) throw new Error(`WP ${options.method || 'GET'} ${pathname} → ${res.status}: ${text.slice(0, 300)}`);
+  if (!res.ok) throw new Error(`WP ${options.method || 'GET'} ${base}${pathname} → ${res.status}: ${text.slice(0, 300)}`);
   return text ? JSON.parse(text) : null;
 }
 
-async function findWpPageBySlug(slug) {
-  const list = await wpFetch(`/pages?slug=${encodeURIComponent(slug)}&per_page=5&status=publish`);
-  return list[0] || null;
+async function findWpPageBySlug(slug, baseOverride) {
+  // Try pages first, then posts (blog posts on blog subdomain).
+  for (const endpoint of ['/pages', '/posts']) {
+    try {
+      const list = await wpFetch(`${endpoint}?slug=${encodeURIComponent(slug)}&per_page=5&status=publish`, {}, baseOverride);
+      if (list && list.length) return list[0];
+    } catch (err) {
+      // 401/403 on blog subdomain = no auth there. Log and try next.
+      if (/401|403/.test(err.message)) {
+        console.warn(`     ⚠ ${endpoint} on ${baseOverride || WP_BASE} returned auth error — skipping`);
+        return null;
+      }
+      // 404 just means slug doesn't exist at this endpoint, try next
+    }
+  }
+  return null;
 }
 
 // ─── Apply one task ─────────────────────────────────────────────────────────
@@ -373,15 +388,19 @@ async function main() {
       eligible.push({ task: t, kind: 'pdp_file', path: pdpFile, url });
     } else if (surf === 'Blog' && SCOPE.includes('blog')) {
       // Blog lives on blog.nomadassetcollective.com — separate WP site.
-      // For now: try WP REST on the main domain via slug lookup. If the
-      // page isn't found there, skip.
-      const derived = url || `${WP_BASE}/${t.slug}/`;
-      eligible.push({ task: t, kind: 'wp_page', url: derived });
+      // Route to the blog WP API. If WP_BLOG_BASE_URL isn't set, fall back
+      // to main and accept it'll likely 404 (logged as skip with reason).
+      const blogBase = (process.env.WP_BLOG_BASE_URL || 'https://blog.nomadassetcollective.com').replace(/\/$/, '');
+      const derived = url || `${blogBase}/${t.slug}/`;
+      eligible.push({ task: t, kind: 'wp_page', url: derived, wpBase: blogBase });
     } else if (MAIN_WP_SURFACES.includes(surf) && SCOPE.some(s => ['brochure','hub','tool','home','sitewide'].includes(s))) {
       // Any main-domain WP page — derive URL from surface + slug
       const prefix = surf === 'Brochure' ? '/brochures/' : '/';
       const derived = url || `${WP_BASE}${prefix}${t.slug}/`;
-      eligible.push({ task: t, kind: 'wp_page', url: derived });
+      eligible.push({ task: t, kind: 'wp_page', url: derived, wpBase: WP_BASE });
+    } else {
+      // Silent-drop visible: log the reason so we can see exactly why
+      console.log(`  ⌀ skip ${t.taskId} (${t.slug}): surface=${surf || 'null'}, no PDP file at properties/${t.slug}.html, no routing match`);
     }
   }
   console.log(`  ${eligible.length} eligible (in scope).\n`);
@@ -407,9 +426,15 @@ async function main() {
       surfaceTarget = { kind: 'pdp_file', path: first.path, url: first.url };
     } else {
       try {
-        const page = await findWpPageBySlug(first.task.slug);
-        if (!page) { console.log(`    ⚠ WP page not found for slug "${first.task.slug}" — skipping group`); for (const e of group) stats.skipped++; continue; }
-        surfaceTarget = { kind: 'wp_page', page, url: first.url };
+        const wpBase = first.wpBase || WP_BASE;
+        const page = await findWpPageBySlug(first.task.slug, wpBase);
+        if (!page) {
+          const reason = `WP page not found for slug "${first.task.slug}" on ${wpBase}`;
+          console.log(`    ⚠ ${reason}`);
+          for (const e of group) { await markSkipped(e.task, reason); stats.skipped++; }
+          continue;
+        }
+        surfaceTarget = { kind: 'wp_page', page, url: first.url, wpBase };
       } catch (err) {
         console.warn(`    ⚠ WP lookup failed: ${err.message}`);
         for (const e of group) stats.errored++;
@@ -487,12 +512,13 @@ async function main() {
       pdpFilesEdited.add(path.relative(ROOT, surfaceTarget.path));
       receipt = '(repo commit — see SEO apply commit)';
     } else {
+      const wpBase = surfaceTarget.wpBase || WP_BASE;
       if (!DRY) {
         const updated = await wpFetch(`/pages/${surfaceTarget.page.id}`, {
           method: 'POST',
           body: JSON.stringify({ acf: { [ACF_HTML_FIELD]: workingHtml } }),
-        });
-        receipt = `${WP_BASE}/wp-admin/post.php?post=${surfaceTarget.page.id}&action=edit`;
+        }, wpBase);
+        receipt = `${wpBase}/wp-admin/post.php?post=${surfaceTarget.page.id}&action=edit`;
       } else {
         receipt = '(dry-run — would PATCH WP)';
       }
