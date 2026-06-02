@@ -132,7 +132,46 @@ async function markSkipped(task, reason) {
 
 const SYSTEM_PROMPT = `You are an SEO/GEO copy expert for Nomad Asset Collective — luxury international real-estate and visa/residency programs, bilingual VI/EN. Match the page's brand and language; never invent facts. Output STRICT JSON only.`;
 
+// FREE meta description extractor — no Claude needed.
+// Tries on-page signals in order: og:description → first substantial paragraph
+// → H1 + intro snippet. Returns null if nothing usable; caller falls back
+// to Claude (which may also fail on no credits — graceful).
+function deriveMetaDescriptionFree(pageHtml) {
+  const $ = cheerio.load(pageHtml);
+
+  // 1. Existing og:description (often editorially set, just missing the
+  //    sibling <meta name="description"> tag)
+  const og = ($('meta[property="og:description"]').attr('content') || '').trim();
+  if (og.length >= 60 && og.length <= 160) return og;
+  if (og.length > 160) return og.slice(0, 155).replace(/\s+\S*$/, '') + '…';
+
+  // 2. First substantial <p> (skip tiny ones — header/breadcrumb fragments)
+  $('script, style, nav, footer, header, noscript').remove();
+  const paragraphs = $('p').map((_, el) => $(el).text().replace(/\s+/g, ' ').trim()).get()
+    .filter((t) => t.length >= 80 && t.length <= 400);
+  if (paragraphs.length) {
+    const p = paragraphs[0];
+    if (p.length <= 160) return p;
+    return p.slice(0, 155).replace(/\s+\S*$/, '') + '…';
+  }
+
+  // 3. H1 + brand suffix as last-resort template
+  const h1 = ($('h1').first().text() || '').trim();
+  if (h1) {
+    const base = `${h1} — Nomad Asset Collective`;
+    if (base.length <= 160) return base;
+    return h1.slice(0, 130).replace(/\s+\S*$/, '') + ' — NAC';
+  }
+
+  return null;
+}
+
 async function draftMetaDescription(pageHtml, pageUrl) {
+  // Try free extraction first
+  const free = deriveMetaDescriptionFree(pageHtml);
+  if (free) return free;
+
+  // Only call Claude as a last resort
   const $ = cheerio.load(pageHtml);
   const title = ($('head title').first().text() || '').trim();
   const h1 = ($('h1').first().text() || '').trim();
