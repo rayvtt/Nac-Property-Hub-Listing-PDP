@@ -53,5 +53,6 @@ jobs:
           WP_USER: ${{ vars.WP_USER || 'admin_web' }}
           WP_BASE_URL: ${{ vars.WP_BASE_URL || 'https://nomadassetcollective.com' }}
           WP_ACF_FIELD: ${{ vars.WP_ACF_FIELD || 'raw_html_code' }}
+          WP_TEMPLATE: ${{ vars.WP_TEMPLATE || 'nac-residence-index.php' }}
           ONLY_SLUG: ${{ github.event.inputs.only_slug }}
         run: node sync-wp-clp.mjs
