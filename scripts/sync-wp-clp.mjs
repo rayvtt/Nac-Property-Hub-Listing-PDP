@@ -73,14 +73,18 @@ async function findByCountryUrl(countryUrl) {
 }
 
 async function updatePageAcf(pageId, html) {
-  // Push HTML into raw_html_code AND enforce the correct WP template in the
-  // same request. The template enforcement is idempotent — if the page is
-  // already on the right template, the PUT is a no-op for that field.
-  const body = { acf: { [ACF_HTML_FIELD]: html } };
-  if (WP_TEMPLATE) body.template = WP_TEMPLATE;
+  // Mirror the proven PDP updater (sync-wp.mjs) exactly:
+  //   1. Pre-double every backslash so one survives WP's wp_unslash() — without
+  //      this, inline-JS regex escapes in the CLP (modal/filter logic) corrupt.
+  //   2. Send ONLY { acf: { raw_html_code } }. The previous version also sent
+  //      `template: WP_TEMPLATE`, which caused the POST to 200 without
+  //      persisting raw_html_code. Template is set once at page creation
+  //      (create-wp-clp-page.mjs); re-enforcing it on every content push is
+  //      unnecessary and was silently blocking the content update.
+  const safeHtml = html.replace(/\\/g, '\\\\');
   return wp(`/pages/${pageId}`, {
     method: 'POST',
-    body: JSON.stringify(body),
+    body: JSON.stringify({ acf: { [ACF_HTML_FIELD]: safeHtml } }),
   });
 }
 
@@ -145,8 +149,28 @@ async function syncOne(c) {
       : `Could not locate WP page from 🔗 Country URL "${c.countryUrl}" — run create-wp-clp-page first`,
     };
   }
+  // Guard: a WP REST GET can 200 with an error envelope (no `id`). Treat a
+  // missing id as a hard failure instead of silently "updating" page undefined.
+  if (!page.id) {
+    return { slug: c.fileSlug, error: `WP page resolved without an id (got: ${JSON.stringify(page).slice(0, 160)})` };
+  }
 
   await updatePageAcf(page.id, html);
+
+  // Verify the write actually persisted — the field can return 200 without
+  // changing. Re-GET and confirm a sentinel from the freshly-pushed HTML is now
+  // present in raw_html_code.
+  const sentinel = 'NAC Property Collection';
+  let verified = false;
+  try {
+    const check = await wp(`/pages/${page.id}?_fields=acf&context=edit`);
+    const saved = check?.acf?.[ACF_HTML_FIELD] || '';
+    verified = saved.includes(sentinel) && Math.abs(saved.length - html.length) < 4000;
+  } catch { /* verification GET failed — report unverified below */ }
+  if (!verified) {
+    return { slug: c.fileSlug, error: `pushed to page ${page.id} but raw_html_code did not persist (ACF REST write may be disabled for this page)` };
+  }
+
   return { slug: c.fileSlug, pageId: page.id, link: page.link };
 }
 
