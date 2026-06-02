@@ -649,6 +649,26 @@ body[data-theme="dark"] .nac-logo-light { display:none; }
 }
 
 /* ─── ASPIRATION ────────────────────────────── */
+/* ═══ TRUST — track-record ribbon + representative journeys ═══ */
+.cl-trust { max-width:var(--maxw); margin:0 auto; padding:0 var(--pad) 4.5rem; }
+.cl-track { display:flex; align-items:stretch; justify-content:center; margin:0 auto 3.5rem; max-width:760px; padding:1.9rem 1rem; border-radius:20px; background:var(--surface); border:1px solid var(--line); box-shadow:var(--shadow-md); }
+.cl-track-item { flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; gap:.45rem; padding:0 1rem; }
+.cl-track-num { font-family:var(--ff-display); font-size:2.6rem; font-weight:500; line-height:1; color:var(--gold); letter-spacing:-.01em; }
+.cl-track-plus { font-size:1.5rem; vertical-align:top; }
+.cl-track-lbl { font-family:var(--ff-mono); font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
+.cl-track-div { width:1px; background:var(--line); align-self:center; height:46px; flex:0 0 auto; }
+.cl-journeys-head { text-align:center; margin-bottom:1.9rem; }
+.cl-journeys-lbl { font-family:var(--ff-mono); font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--orange); font-weight:500; margin-bottom:.6rem; }
+.cl-journeys-title { font-family:var(--ff-display); font-size:1.9rem; font-weight:500; color:var(--display); letter-spacing:-.005em; margin-bottom:.7rem; }
+.cl-journeys-note { font-size:.82rem; line-height:1.6; color:var(--muted); max-width:560px; margin:0 auto; }
+.cl-journeys-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; max-width:880px; margin:0 auto; }
+.cl-journey-card { display:flex; flex-direction:column; gap:.75rem; padding:1.8rem; border-radius:18px; background:var(--surface); border:1px solid var(--line); box-shadow:var(--shadow-md); text-decoration:none; transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+.cl-journey-card:hover { transform:translateY(-4px); border-color:var(--gold); box-shadow:var(--shadow-lg); }
+.cl-journey-prog { font-family:var(--ff-mono); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--orange); }
+.cl-journey-h { font-family:var(--ff-display); font-size:1.25rem; font-weight:500; line-height:1.3; color:var(--display); margin:0; }
+.cl-journey-stat { font-family:var(--ff-mono); font-size:.76rem; letter-spacing:.04em; color:var(--muted); }
+.cl-journey-cta { font-family:var(--ff-display); font-size:.95rem; color:var(--gold); margin-top:auto; }
+@media(max-width:680px) { .cl-journeys-grid { grid-template-columns:1fr; } .cl-track-num { font-size:1.9rem; } .cl-track-lbl { font-size:.56rem; letter-spacing:.08em; } .cl-track-item { padding:0 .4rem; } .cl-track-div { height:34px; } .cl-journeys-title { font-size:1.55rem; } }
 .cl-asp {
   padding:9rem var(--pad); text-align:center;
   background:radial-gradient(ellipse at center, var(--surface-2) 0%, var(--bg) 70%);
@@ -1435,6 +1455,56 @@ body.cl-modal-open { overflow:hidden; }
 </section>
 
 <!-- ═══ ASPIRATION CLOSE ═══ -->
+<!-- ═══ TRUST — track-record ribbon + representative journeys ═══ -->
+<section class="cl-trust reveal">
+  <div class="cl-track" aria-label="NAC Property Hub coverage">
+    <div class="cl-track-item">
+      <div class="cl-track-num">20<span class="cl-track-plus">+</span></div>
+      <div class="cl-track-lbl"><span data-vi="">Hồ Sơ Đã Thẩm Định</span><span data-en="">Vetted Listings</span></div>
+    </div>
+    <div class="cl-track-div" aria-hidden="true"></div>
+    <div class="cl-track-item">
+      <div class="cl-track-num">6</div>
+      <div class="cl-track-lbl"><span data-vi="">Quốc Gia</span><span data-en="">Countries</span></div>
+    </div>
+    <div class="cl-track-div" aria-hidden="true"></div>
+    <div class="cl-track-item">
+      <div class="cl-track-num">3</div>
+      <div class="cl-track-lbl"><span data-vi="">Châu Lục</span><span data-en="">Continents</span></div>
+    </div>
+  </div>
+  <div class="cl-journeys-head">
+    <div class="cl-journeys-lbl"><span data-vi="">Hành Trình Nhà Đầu Tư</span><span data-en="">Investor Journeys</span></div>
+    <h3 class="cl-journeys-title"><span data-vi="">Câu Chuyện Tiêu Biểu</span><span data-en="">Representative Journeys</span></h3>
+    <p class="cl-journeys-note"><span data-vi="">Tổng hợp từ nhiều hồ sơ khách hàng thực tế; chi tiết nhận dạng đã được thay đổi để bảo mật.</span><span data-en="">Composite accounts drawn from real client files; identifying details changed for privacy.</span></p>
+  </div>
+  <div class="cl-journeys-grid">
+    <a class="cl-journey-card" href="https://blog.nomadassetcollective.com/case-study-gia-dinh-doanh-nhan-tp-hcm-va-18-thang-chinh-phuc-thuong-tru-hy-lap-bai-hoc-thuc-te-tu-hanh-trinh/" target="_blank" rel="noopener">
+      <div class="cl-journey-prog">Greece Golden Visa</div>
+      <h4 class="cl-journey-h"><span data-vi="">Gia đình doanh nhân TP.HCM — thường trú Hy Lạp trong ~9 tháng</span><span data-en="">A HCMC business family — Greek residency in ~9 months</span></h4>
+      <div class="cl-journey-stat">€290,000 · Athens · 6.8% yield</div>
+      <span class="cl-journey-cta"><span data-vi="">Đọc hành trình →</span><span data-en="">Read the journey →</span></span>
+    </a>
+    <a class="cl-journey-card" href="https://blog.nomadassetcollective.com/case-study-nu-doanh-nhan-viet-va-hanh-trinh-canada-start-up-visa-tu-startup-ha-noi-den-pr-canada-trong-3-nam/" target="_blank" rel="noopener">
+      <div class="cl-journey-prog">Canada Start-Up Visa</div>
+      <h4 class="cl-journey-h"><span data-vi="">Nữ doanh nhân Hà Nội — PR Canada trong 3 năm</span><span data-en="">A Hanoi founder — Canadian PR in 3 years</span></h4>
+      <div class="cl-journey-stat">CAD 100k+ · Toronto · Family PR</div>
+      <span class="cl-journey-cta"><span data-vi="">Đọc hành trình →</span><span data-en="">Read the journey →</span></span>
+    </a>
+  </div>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Nomad Asset Collective — Representative Investor Journeys",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "item": { "@type": "Article", "headline": "Case Study: Gia Đình Doanh Nhân TP.HCM Và 18 Tháng Chinh Phục Thường Trú Hy Lạp", "about": "Greece Golden Visa", "url": "https://blog.nomadassetcollective.com/case-study-gia-dinh-doanh-nhan-tp-hcm-va-18-thang-chinh-phuc-thuong-tru-hy-lap-bai-hoc-thuc-te-tu-hanh-trinh/", "publisher": { "@type": "Organization", "name": "Nomad Asset Collective" } } },
+      { "@type": "ListItem", "position": 2, "item": { "@type": "Article", "headline": "Case Study: Nữ Doanh Nhân Việt Và Hành Trình Canada Start-Up Visa", "about": "Canada Start-Up Visa", "url": "https://blog.nomadassetcollective.com/case-study-nu-doanh-nhan-viet-va-hanh-trinh-canada-start-up-visa-tu-startup-ha-noi-den-pr-canada-trong-3-nam/", "publisher": { "@type": "Organization", "name": "Nomad Asset Collective" } } }
+    ]
+  }
+  </script>
+</section>
+
 <section class="cl-asp">
   <div class="cl-asp-inner reveal">
     <div class="cl-asp-mark">Nomad Asset Collective</div>
