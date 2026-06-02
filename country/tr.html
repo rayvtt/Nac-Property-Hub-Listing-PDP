@@ -414,7 +414,7 @@ body[data-theme="dark"] .nac-logo-light { display:none; }
   position:absolute; top:38%; transform:translateY(-50%);
   width:48px; height:48px; border-radius:50%;
   background:rgba(255,255,255,.96); border:1px solid var(--line-strong);
-  box-shadow:var(--shadow-md); color:var(--display);
+  box-shadow:var(--shadow-md); color:#0f1a36; /* hardcoded — bg is fixed white, so text must not flip with --display in dark mode */
   font-size:1.2rem; font-family:var(--ff-display); font-weight:500;
   display:inline-flex; align-items:center; justify-content:center;
   opacity:0; transition:opacity .25s ease, transform .2s ease, background .2s ease, color .2s ease;
@@ -493,7 +493,7 @@ body[data-theme="dark"] .nac-logo-light { display:none; }
 
 /* City chip on cards */
 .cl-card-chip.city {
-  background:rgba(255,255,255,.95); color:var(--display);
+  background:rgba(255,255,255,.95); color:#0f1a36; /* hardcoded — chip bg is fixed white, so text must not flip with --display in dark mode */
   border:none; padding:.3rem .65rem .3rem .55rem;
   display:inline-flex; align-items:center; gap:.3rem;
   font-family:var(--ff-mono); font-size:.55rem; letter-spacing:.16em; font-weight:600;
