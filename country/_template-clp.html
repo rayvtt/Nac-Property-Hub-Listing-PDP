@@ -414,6 +414,7 @@ body[data-theme="dark"] .nac-logo-light { display:none; }
   position:relative; display:grid; grid-template-columns:1fr; overflow:hidden;
   border-radius:18px; background:var(--surface); border:1px solid var(--line);
   box-shadow:var(--shadow-sm); cursor:pointer;
+  color:inherit; text-decoration:none; /* .cl-card is an <a>; reset link styling */
   transition:transform .35s cubic-bezier(.2,.6,.2,1), box-shadow .35s ease, border-color .35s ease;
 }
 @media(max-width:680px) { .cl-card { flex:0 0 86vw; } }
@@ -1830,14 +1831,18 @@ body.cl-modal-open { overflow:hidden; }
     body.classList.remove('cl-modal-open');
   }
 
-  document.querySelectorAll('.cl-card').forEach(card => {
-    card.addEventListener('click', (e) => {
-      // If clicking the footer arrow, open full listing; otherwise open quick-view modal
-      if (e.target.closest('.cl-card-footer-arrow')) {
-        window.location.href = card.dataset.url;
-      } else {
-        openModal(card);
-      }
+  // Card click model:
+  // - The card itself is an <a href="<listing URL>">, so clicking anywhere on
+  //   the card navigates to the PDP via the browser's default <a> handling.
+  //   No JS hooks needed for the primary navigation.
+  // - The "Xem nhanh / Quick view" pill in the footer opens the modal instead.
+  //   preventDefault + stopPropagation stop the parent <a> from navigating.
+  document.querySelectorAll('.cl-card-footer-quick').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const card = btn.closest('.cl-card');
+      if (card) openModal(card);
     });
   });
   closeBtn.addEventListener('click', closeModal);

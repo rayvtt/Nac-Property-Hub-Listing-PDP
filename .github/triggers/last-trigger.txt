@@ -15,3 +15,4 @@
 2026-06-02T04:42:49Z chat: auto-scaffold Country DB rows from Live LLP listings (process gap fixed)
 2026-06-02T05:24:52Z chat: auto-enforce WP CLP template (fix UK + self-heal future drift)
 2026-06-02T08:02:48Z chat: chip nowrap + mobile tighten
+2026-06-02T09:02:54Z chat: cards become real <a> links to PDP
