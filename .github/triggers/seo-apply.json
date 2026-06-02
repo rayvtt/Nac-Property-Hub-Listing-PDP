@@ -2,5 +2,5 @@
   "max_tasks": 40,
   "scope": "pdp,brochure,hub,tool,blog,sitewide",
   "dry_run": "false",
-  "_comment": "Apply 24 schema tasks with freshly-drafted JSON-LD blocks"
+  "_comment": "Apply Approved tasks (incl. SEO-837 → SEO-841)."
 }
