@@ -49,6 +49,40 @@ const OUT = getArg('--out');
 const COUNTRY_DB_ID = process.env.NOTION_COUNTRY_DATABASE_ID || 'a01ef35ce9fd45b1bba3ec4de4da678c';
 const LLP_DB_ID = process.env.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9';
 
+// COUNTRY_LOOKUP — maps the Notion Property Listings 'Country' select value
+// → Country DB row metadata. The auto-scaffold step uses this when a new
+// country gets a Live listing without a matching Country DB row.
+// Add entries here as you onboard new countries.
+const COUNTRY_LOOKUP = {
+  'Vietnam':         { slug: 'vn',  code: 'VN', nameVi: 'Việt Nam',         wpSlug: 'vietnam',         region: 'asia',   flag: '🇻🇳' },
+  'United Kingdom':  { slug: 'uk',  code: 'GB', nameVi: 'Vương Quốc Anh',   wpSlug: 'uk',              region: 'uk',     flag: '🇬🇧' },
+  'Turkey':          { slug: 'tr',  code: 'TR', nameVi: 'Thổ Nhĩ Kỳ',       wpSlug: 'turkey',          region: 'me',     flag: '🇹🇷' },
+  'Cyprus':          { slug: 'cy',  code: 'CY', nameVi: 'Síp',              wpSlug: 'cyprus',          region: 'eu',     flag: '🇨🇾' },
+  'Greece':          { slug: 'gr',  code: 'GR', nameVi: 'Hy Lạp',           wpSlug: 'greece',          region: 'eu',     flag: '🇬🇷' },
+  'Panama':          { slug: 'pa',  code: 'PA', nameVi: 'Panama',           wpSlug: 'panama',          region: 'caribe', flag: '🇵🇦' },
+  'Singapore':       { slug: 'sg',  code: 'SG', nameVi: 'Singapore',        wpSlug: 'singapore',       region: 'asia',   flag: '🇸🇬' },
+  'Thailand':        { slug: 'th',  code: 'TH', nameVi: 'Thái Lan',         wpSlug: 'thailand',        region: 'asia',   flag: '🇹🇭' },
+  'Indonesia':       { slug: 'id',  code: 'ID', nameVi: 'Indonesia',        wpSlug: 'indonesia',       region: 'asia',   flag: '🇮🇩' },
+  'Philippines':     { slug: 'ph',  code: 'PH', nameVi: 'Philippines',      wpSlug: 'philippines',     region: 'asia',   flag: '🇵🇭' },
+  'Malaysia':        { slug: 'my',  code: 'MY', nameVi: 'Malaysia',         wpSlug: 'malaysia',        region: 'asia',   flag: '🇲🇾' },
+  'Japan':           { slug: 'jp',  code: 'JP', nameVi: 'Nhật Bản',         wpSlug: 'japan',           region: 'asia',   flag: '🇯🇵' },
+  'Cambodia':        { slug: 'kh',  code: 'KH', nameVi: 'Campuchia',        wpSlug: 'cambodia',        region: 'asia',   flag: '🇰🇭' },
+  'UAE':             { slug: 'ae',  code: 'AE', nameVi: 'UAE',              wpSlug: 'uae',             region: 'me',     flag: '🇦🇪' },
+  'Dubai':           { slug: 'ae',  code: 'AE', nameVi: 'UAE',              wpSlug: 'uae',             region: 'me',     flag: '🇦🇪' },
+  'Spain':           { slug: 'es',  code: 'ES', nameVi: 'Tây Ban Nha',      wpSlug: 'spain',           region: 'eu',     flag: '🇪🇸' },
+  'Portugal':        { slug: 'pt',  code: 'PT', nameVi: 'Bồ Đào Nha',       wpSlug: 'portugal',        region: 'eu',     flag: '🇵🇹' },
+  'Montenegro':      { slug: 'mne', code: 'ME', nameVi: 'Montenegro',       wpSlug: 'montenegro',      region: 'eu',     flag: '🇲🇪' },
+  'Mexico':          { slug: 'mx',  code: 'MX', nameVi: 'Mexico',           wpSlug: 'mexico',          region: 'caribe', flag: '🇲🇽' },
+  'Colombia':        { slug: 'co',  code: 'CO', nameVi: 'Colombia',         wpSlug: 'colombia',        region: 'caribe', flag: '🇨🇴' },
+  'Costa Rica':      { slug: 'cr',  code: 'CR', nameVi: 'Costa Rica',       wpSlug: 'costa-rica',      region: 'caribe', flag: '🇨🇷' },
+  'Saint Lucia':     { slug: 'lc',  code: 'LC', nameVi: 'Saint Lucia',      wpSlug: 'saint-lucia',     region: 'caribe', flag: '🇱🇨' },
+  'Antigua and Barbuda': { slug: 'ag', code: 'AG', nameVi: 'Antigua và Barbuda', wpSlug: 'antigua-barbuda', region: 'caribe', flag: '🇦🇬' },
+  'Grenada':         { slug: 'gd',  code: 'GD', nameVi: 'Grenada',          wpSlug: 'grenada',         region: 'caribe', flag: '🇬🇩' },
+  'Vanuatu':         { slug: 'vu',  code: 'VU', nameVi: 'Vanuatu',          wpSlug: 'vanuatu',         region: 'pac',    flag: '🇻🇺' },
+  'United States':   { slug: 'us',  code: 'US', nameVi: 'Hoa Kỳ',           wpSlug: 'usa',             region: 'us',     flag: '🇺🇸' },
+  'USA':             { slug: 'us',  code: 'US', nameVi: 'Hoa Kỳ',           wpSlug: 'usa',             region: 'us',     flag: '🇺🇸' },
+};
+
 // ─── small utils ──────────────────────────────────────────────────────────
 
 const norm = (s) => String(s ?? '')
@@ -516,6 +550,137 @@ async function parseBody(notion, pageId) {
   return body;
 }
 
+// ─── Auto-scaffold ─────────────────────────────────────────────────────────
+// When a new country gets a Live listing in the LLP without a corresponding
+// Country DB row, create a Draft row with auto-fields + a structured page
+// body so the editor can fill in the editorial and flip Hub Status = Live.
+
+const block = {
+  p: (text) => ({ object: 'block', type: 'paragraph', paragraph: { rich_text: [{ type: 'text', text: { content: text } }] } }),
+  quote: (text) => ({ object: 'block', type: 'quote', quote: { rich_text: [{ type: 'text', text: { content: text } }] } }),
+  h2: (text) => ({ object: 'block', type: 'heading_2', heading_2: { rich_text: [{ type: 'text', text: { content: text } }] } }),
+  h3: (text) => ({ object: 'block', type: 'heading_3', heading_3: { rich_text: [{ type: 'text', text: { content: text } }] } }),
+  bullet: (text) => ({ object: 'block', type: 'bulleted_list_item', bulleted_list_item: { rich_text: [{ type: 'text', text: { content: text } }] } }),
+  code: (text, language = 'plain text') => ({ object: 'block', type: 'code', code: { rich_text: [{ type: 'text', text: { content: text } }], language } }),
+};
+
+function defaultBodyBlocks(meta, countryEn) {
+  const todoVi = '🇻🇳 TODO: viết nội dung tiếng Việt.';
+  const todoEn = `🇬🇧 TODO: write English copy for ${countryEn}.`;
+  return [
+    block.quote(`Sync target: country/${meta.slug}.html · regenerated from this page + Live listings in 🏠 NAC - Property Listings where Country = ${countryEn}. Edit each ## section below. Flip Hub Status = Live once filled in.`),
+    block.h2('Hero Tagline'),
+    block.p(todoVi), block.p(todoEn),
+    block.h2('Hero Chips'),
+    block.p('One chip per line. Format: VI | EN (separate with a single pipe).'),
+    block.bullet('TODO chip 1 VI | TODO chip 1 EN'),
+    block.bullet('TODO chip 2 VI | TODO chip 2 EN'),
+    block.bullet('TODO chip 3 VI | TODO chip 3 EN'),
+    block.h2('Intro Quote'),
+    block.p(todoVi), block.p(todoEn),
+    block.h2('Atlas Title'),
+    block.p(todoVi), block.p(todoEn),
+    block.h2('Atlas Lead'),
+    block.p(todoVi), block.p(todoEn),
+    block.h2('Collection Title'),
+    block.p(todoVi), block.p(todoEn),
+    block.h2('Collection Lead'),
+    block.p('🇻🇳 Vuốt, kéo, hoặc lọc theo thành phố. Bấm thẻ để xem nhanh, mũi tên để mở dự án.'),
+    block.p('🇬🇧 Swipe, drag, or filter by city. Click a card for quick view, the arrow for the full listing.'),
+    block.h2('Aspiration'),
+    block.p(`🇻🇳 TODO: câu kết về ${meta.nameVi}. Format: Sở hữu một X. Sở hữu <strong>${meta.nameVi}</strong>.`),
+    block.p(`🇬🇧 TODO: closing line about ${countryEn}. Format: Own a X. Own <strong>${countryEn}</strong>.`),
+    block.h2('SVG Path'),
+    block.p('Stylized country silhouette (320×420 viewBox). Replace the d= value below with a path that matches the country shape.'),
+    block.code('M 100 100 C 130 80, 180 80, 220 100 C 240 120, 240 200, 220 280 C 180 320, 130 320, 100 280 C 80 200, 80 120, 100 100 Z'),
+    block.h2('Cities'),
+    block.p('One ### heading per city. Replace TODO with real city data. match: aliases must overlap with the listing\'s Region/City + District values so the script can assign each listing to a city.'),
+    block.h3('TODO City'),
+    block.bullet('slug: todo-slug'),
+    block.bullet('match: todo, alias1, alias2'),
+    block.bullet('region_vi: TODO miền · vùng'),
+    block.bullet('region_en: TODO region · area'),
+    block.bullet('airport_vi: TODO sân bay · X phút'),
+    block.bullet('airport_en: TODO airport · X min'),
+    block.bullet('lat: 0.00°N'),
+    block.bullet('lng: 0.00°E'),
+    block.bullet('pin_x: 160'),
+    block.bullet('pin_y: 210'),
+    block.bullet('label_offset_x: 14'),
+  ];
+}
+
+async function scaffoldMissingCountries(notion) {
+  // Discover all Live countries in the LLP
+  const liveCountries = new Set();
+  let cursor;
+  do {
+    const res = await notion.databases.query({
+      database_id: LLP_DB_ID,
+      filter: { property: 'Hub Status', select: { equals: 'Live' } },
+      start_cursor: cursor,
+      page_size: 100,
+    });
+    for (const page of res.results) {
+      const sel = page.properties.Country?.select;
+      if (sel?.name) liveCountries.add(sel.name);
+    }
+    cursor = res.has_more ? res.next_cursor : undefined;
+  } while (cursor);
+
+  // Discover existing Country DB rows (any status, dedup by Slug)
+  const existingSlugs = new Set();
+  const existingNamesEn = new Set();
+  cursor = undefined;
+  do {
+    const res = await notion.databases.query({
+      database_id: COUNTRY_DB_ID,
+      start_cursor: cursor,
+      page_size: 100,
+    });
+    for (const page of res.results) {
+      const p = page.properties;
+      const slug = (p.Slug?.rich_text || []).map(t => t.plain_text).join('');
+      if (slug) existingSlugs.add(slug);
+      const nameEn = (p['Country Name EN']?.rich_text || []).map(t => t.plain_text).join('');
+      if (nameEn) existingNamesEn.add(nameEn);
+    }
+    cursor = res.has_more ? res.next_cursor : undefined;
+  } while (cursor);
+
+  const created = [];
+  const skipped = [];
+  for (const country of liveCountries) {
+    if (existingNamesEn.has(country)) continue;
+    const meta = COUNTRY_LOOKUP[country];
+    if (!meta) {
+      console.warn(`  ⚠ Auto-scaffold: no COUNTRY_LOOKUP entry for "${country}" — add one to scripts/sync-notion-clp.mjs`);
+      skipped.push(country);
+      continue;
+    }
+    if (existingSlugs.has(meta.slug)) continue;
+
+    const countryUrl = `https://nomadassetcollective.com/property-hub-bat-dong-san/${meta.wpSlug}/`;
+    await notion.pages.create({
+      parent: { database_id: COUNTRY_DB_ID },
+      icon: { type: 'emoji', emoji: meta.flag },
+      properties: {
+        'Country Name VI': { title: [{ text: { content: meta.nameVi } }] },
+        'Country Name EN': { rich_text: [{ text: { content: country } }] },
+        'Slug': { rich_text: [{ text: { content: meta.slug } }] },
+        'Country Code': { rich_text: [{ text: { content: meta.code } }] },
+        'Hub Status': { select: { name: 'Draft' } },
+        '🌏 Region': { select: { name: meta.region } },
+        '🔗 Country URL': { url: countryUrl },
+      },
+      children: defaultBodyBlocks(meta, country),
+    });
+    console.log(`  + Auto-scaffolded Country DB row: ${country} (slug=${meta.slug}, status=Draft) — editor fills body, flips to Live`);
+    created.push(country);
+  }
+  return { created, skipped };
+}
+
 async function fetchCountryListings(notion, countryNameEn) {
   let results = [];
   let cursor;
@@ -609,6 +774,17 @@ async function runLive() {
   const TOKEN = process.env.NOTION_TOKEN;
   if (!TOKEN) { console.error('NOTION_TOKEN env var is required'); process.exit(1); }
   const notion = new Client({ auth: TOKEN });
+
+  // Auto-scaffold step: for any country with a Live LLP listing but no Country DB
+  // row, create a Draft row with auto-fields + a structured body template.
+  // Failure here logs a warning but doesn't block the main sync.
+  try {
+    const { created, skipped } = await scaffoldMissingCountries(notion);
+    if (created.length) console.log(`Auto-scaffolded ${created.length} Country DB row(s): ${created.join(', ')}`);
+    if (skipped.length) console.log(`Auto-scaffold skipped ${skipped.length} country(ies) (no COUNTRY_LOOKUP entry): ${skipped.join(', ')}`);
+  } catch (err) {
+    console.warn(`Auto-scaffold step failed: ${err.message} — continuing with existing rows`);
+  }
 
   let rows = [];
   let cursor;
