@@ -339,8 +339,13 @@ body[data-theme="dark"] .nac-logo-light { display:none; }
 .cl-atlas-pinlist-city { font-family:var(--ff-display); font-size:1.2rem; font-style:italic; color:var(--display); font-weight:500; }
 .cl-atlas-pinlist-meta { font-family:var(--ff-mono); font-size:.58rem; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin-top:.2rem; }
 .cl-atlas-pinlist-count {
-  font-family:var(--ff-mono); font-size:.6rem; letter-spacing:.14em; padding:.4rem .7rem;
+  font-family:var(--ff-mono); font-size:.6rem; letter-spacing:.14em; padding:.35rem .65rem;
   background:var(--gold-soft); color:var(--gold); border-radius:999px; font-weight:500;
+  white-space:nowrap; flex-shrink:0; line-height:1;
+}
+@media(max-width:680px) {
+  .cl-atlas-pinlist a { padding:.85rem 1rem; gap:.6rem; }
+  .cl-atlas-pinlist-count { font-size:.52rem; letter-spacing:.1em; padding:.3rem .55rem; }
 }
 
 /* SVG map */
