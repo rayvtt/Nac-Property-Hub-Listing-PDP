@@ -100,6 +100,20 @@ function readTask(page) {
   const p = page.properties;
   const txt = (prop) => prop?.rich_text?.map((t) => t.plain_text).join('') ?? '';
   const sel = (prop) => prop?.select?.name ?? null;
+  // URL property: try native .url first, then rich_text (some rows have URL
+  // stored as rich_text wrapped in markdown like "[https://...](https://...)").
+  const readUrl = (prop) => {
+    if (!prop) return null;
+    if (prop.url) return prop.url;
+    const raw = (prop.rich_text || []).map((t) => t.plain_text).join('').trim();
+    if (!raw) return null;
+    // Strip markdown link syntax [text](url) → url
+    const md = raw.match(/^\[[^\]]*\]\(([^)]+)\)$/);
+    if (md) return md[1].trim();
+    // Or plain URL text
+    if (/^https?:\/\//.test(raw)) return raw;
+    return null;
+  };
   const taskId = p['Task ID']?.unique_id
     ? `${p['Task ID'].unique_id.prefix}-${p['Task ID'].unique_id.number}`
     : null;
@@ -111,7 +125,7 @@ function readTask(page) {
     priority: sel(p['Priority']),
     surface: sel(p['Surface']),
     category: sel(p['Category']),
-    url: p['URL']?.url ?? null,
+    url: readUrl(p['URL']),
     slug: txt(p['Slug']),
     issue: txt(p['Issue']),
     proposedFix: txt(p['Proposed Fix']),
@@ -336,19 +350,29 @@ async function wpFetch(pathname, options = {}, baseOverride) {
 
 async function findWpPageBySlug(slug, baseOverride) {
   // Try pages first, then posts (blog posts on blog subdomain).
+  // Note: NO `status=publish` filter — when authenticated, WP REST treats that
+  // param differently (security plugins, edit-status caps) and silently
+  // returned [] for pages that ARE publicly published. Default unauth view is
+  // publish-only anyway; the auth context just inherits that.
+  const base = baseOverride || WP_BASE;
   for (const endpoint of ['/pages', '/posts']) {
     try {
-      const list = await wpFetch(`${endpoint}?slug=${encodeURIComponent(slug)}&per_page=5&status=publish`, {}, baseOverride);
-      if (list && list.length) return list[0];
+      const list = await wpFetch(`${endpoint}?slug=${encodeURIComponent(slug)}&per_page=5`, {}, base);
+      if (Array.isArray(list) && list.length) return list[0];
+      // Empty array — try next endpoint
     } catch (err) {
-      // 401/403 on blog subdomain = no auth there. Log and try next.
       if (/401|403/.test(err.message)) {
-        console.warn(`     ⚠ ${endpoint} on ${baseOverride || WP_BASE} returned auth error — skipping`);
-        return null;
+        console.warn(`     ⚠ ${endpoint} on ${base} → auth error: ${err.message.slice(0, 120)}`);
+        // Don't return — auth failure on /pages may be a route-specific block;
+        // continue to /posts which often has more permissive ACLs.
+      } else if (/404|400/.test(err.message)) {
+        // Slug not at this endpoint — try next
+      } else {
+        console.warn(`     ⚠ ${endpoint} on ${base} → unexpected: ${err.message.slice(0, 120)}`);
       }
-      // 404 just means slug doesn't exist at this endpoint, try next
     }
   }
+  console.warn(`     ⚠ no WP page/post found for slug "${slug}" on ${base} (auth: ${WP_USER})`);
   return null;
 }
 
