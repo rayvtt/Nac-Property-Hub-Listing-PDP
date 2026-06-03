@@ -27,3 +27,4 @@
 2026-06-02T22:20:00Z chat: RETRY WP publish (Imunify360 blocked prior runner IP) — fire create-wp-clp-page + create-wp-page + sync-wp + sync-wp-clp for AU country + 3 listings
 2026-06-03T05:14:00Z chat: AU parent page now exists (create-wp-clp-page #38 OK) — final round: fire create-wp-page for the 3 AU PDPs + sync-wp to push their HTML
 2026-06-03T05:18:00Z chat: AU WP parent confirmed (page 2228 in Notion) — re-fire create-wp-page; prior round missed it on WP REST slug-propagation lag. Then sync-wp pushes the 3 PDP HTMLs.
+2026-06-03T05:30:00Z chat: PR #220 merged (create-wp-page parent lookup now uses status= list, busts cached-empty) — fire create-wp-page to nest the 3 AU PDPs under /australia/ + sync-wp to push their HTML
