@@ -67,14 +67,20 @@ async function listChildren(id) {
   return out;
 }
 
-async function walk(id, name, depth) {
+// A "project" folder = a child of one of these listing buckets, whose own
+// name isn't itself a bucket. We tally the recursive image count for each so
+// the build list (≥5 images = enough to fill a PDP) is obvious.
+const CATEGORY = /^(COMPLETED|OFF[\s_-]*THE[\s_-]*PLAN|OF\s+THE\s+PLAN|TOWNHOUSE|HOUSE\s*&\s*LAND|COMMERCIALS|APARTMENT)\b/i;
+const projects = [];
+
+async function walk(id, name, depth, parentName = '') {
   const pad = '  '.repeat(depth);
   let children;
   try {
     children = await listChildren(id);
   } catch (e) {
     console.log(`${pad}✗ ${name} (${id}): ${e.message}`);
-    return;
+    return 0;
   }
   const folders = children.filter(f => f.mimeType === 'application/vnd.google-apps.folder');
   const files = children.filter(f => f.mimeType !== 'application/vnd.google-apps.folder');
@@ -83,15 +89,18 @@ async function walk(id, name, depth) {
   const tag = files.length ? `  [files:${files.length} img:${imgs} pdf:${pdfs}]` : '';
   console.log(`${pad}📁 ${name}  (${id})${tag}`);
   folderCount++;
-  if (folderCount > FOLDER_CAP) {
-    console.log(`${pad}  … (folder cap ${FOLDER_CAP} reached — stopping)`);
-    process.exit(0);
+
+  let recImg = imgs;
+  if (folderCount <= FOLDER_CAP && depth < MAX_DEPTH) {
+    for (const f of folders) recImg += await walk(f.id, f.name, depth + 1, name);
+  } else if (folders.length) {
+    console.log(`${pad}  … ${folders.length} subfolder(s) (depth/cap limit)`);
   }
-  if (depth >= MAX_DEPTH) {
-    if (folders.length) console.log(`${pad}  … ${folders.length} subfolder(s) (max depth ${MAX_DEPTH})`);
-    return;
+
+  if (CATEGORY.test(parentName) && !CATEGORY.test(name)) {
+    projects.push({ name, id, recImg });
   }
-  for (const f of folders) await walk(f.id, f.name, depth + 1);
+  return recImg;
 }
 
 (async () => {
@@ -99,4 +108,11 @@ async function walk(id, name, depth) {
   const meta = await drive.files.get({ fileId: ROOT, fields: 'id, name' });
   await walk(ROOT, meta.data.name, 0);
   console.log(`\nDone. ${folderCount} folder(s) printed.`);
+
+  projects.sort((a, b) => b.recImg - a.recImg);
+  console.log(`\n===== PROJECT IMAGE TALLY (${projects.length} projects) =====`);
+  for (const p of projects) {
+    console.log(`${p.recImg >= 5 ? '✅' : '  '} ${String(p.recImg).padStart(3)} imgs  ${p.name}  (${p.id})`);
+  }
+  console.log(`\n${projects.filter(p => p.recImg >= 5).length} project(s) with >=5 images (PDP-ready).`);
 })().catch(e => { console.error(e); process.exit(1); });
