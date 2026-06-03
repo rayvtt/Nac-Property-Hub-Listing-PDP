@@ -178,6 +178,27 @@ const MIN_FILE_SIZE = 150_000;
 const MIN_BYTES_PER_PIXEL = 0.05;
 ```
 
+### Unacceptable images — NEVER a hero/cover or gallery shot
+
+**A floor plan, a map / location diagram, or a bare land-lot photo is never an
+acceptable listing image — anywhere user-facing (hero, Notion cover, gallery,
+hub, CLP).** These are hard-dropped in `filterAndRank()` **before** slot
+selection:
+
+| Drop | How it's caught |
+|---|---|
+| **Floor / site / unit plans, elevations, sections, schedules** | filename (`FLOORPLAN_RX`) **and** content — plans are flat white line-art: `looksLikePlan()` flags `whiteFrac ≥ 0.25 && meanSat ≤ 0.12` via ImageMagick. Calibrated: plan ≈ white 0.62 / sat 0.05; real photos (even bright white interiors) ≤ 0.03 / ≥ 0.17 |
+| **Maps / location diagrams** | filename (`MAP_RX`). NB: aerial **photos** are fine and are *not* matched |
+| **Bare land / lots / vacant sites** | filename (`LANDLOT_RX`) + visual review |
+| **Oversized stitched plans/panoramas** | `> 50 MP` or `> 18 MB` (also blow Cloudflare's 20 MB / 100 MP upload cap → 5413/5443) |
+
+**Viability rule:** if a listing has **no acceptable photo** after this cascade
+(only plans/maps/lots were available), it should **never be made Live / scaffolded
+/ processed** — and if one slipped through, retire it with the
+`delete-listings` workflow (`scripts/delete-listings.mjs`). Count only
+*acceptable* images toward any "≥ N images = PDP-ready" bar; floor plans, maps
+and land lots do not count.
+
 ### Berkeley CDN URL bumping
 
 The script swaps `?h=121&w=250` → `?h=1080&w=1920` on Berkeley `.ashx` URLs. This works for `/gallery/` paths reliably. `/feature/` and `/thumbnail/` paths often stay stuck at their original size — these get filtered out by the width/size cascade.

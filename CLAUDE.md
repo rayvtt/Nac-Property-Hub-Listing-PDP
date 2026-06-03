@@ -250,6 +250,10 @@ Author all of these at creation time. Only the *italicised* ones are auto-filled
 
 **Before flipping `Hub Status → Live`, verify the row has no empty applicable field.** When generating a batch, run this completeness check on every row first — going Live triggers the public WP page, so placeholder numbers go live with it.
 
+### A listing needs real photos — or it does NOT ship
+
+**A floor plan, a map / location diagram, or a bare land-lot photo is NOT an acceptable listing image.** A listing whose only available imagery is plans/maps/lots is **not viable** and must **never be made Live, scaffolded, or processed** in the first place. When assessing a source folder, count only *real* photos (renders/exteriors/interiors/amenities/aerials) toward the "enough images to fill a PDP" bar — floor plans, maps, and land lots do **not** count. `sync-images` hard-drops all three (see `NAC-IMAGE-SYNC.md` → "Unacceptable images") so they can't become a hero/cover or gallery shot. If one ships anyway (no usable hero), **retire it** end-to-end with the `delete-listings` workflow (`scripts/delete-listings.mjs` → deletes the WP page, archives the Notion row, removes the HTML, rebuilds the index). Driven by a `delete-listings:slug-a,slug-b` token on the last `.github/triggers/last-trigger.txt` line.
+
 ## Listing URL convention
 
 Canonical NAC Listing URL pattern (stored in Notion `Listing URL`, parsed by `sync-wp.mjs`):
