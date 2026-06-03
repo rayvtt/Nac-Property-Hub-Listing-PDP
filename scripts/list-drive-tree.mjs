@@ -27,8 +27,8 @@ const HAS_DRIVE_OAUTH = !!(GSC_OAUTH_CLIENT_ID && GSC_OAUTH_CLIENT_SECRET && GSC
 // Default root = "03.AUSTRALIA 2026". A blank env (e.g. workflow_dispatch with
 // no input) also falls back to this.
 const ROOT = (process.env.DRIVE_TREE_ROOT || '').trim() || '1n4F9kZ2nfTsRH0qGW-OtXCqT_zN9Nzu-';
-const MAX_DEPTH = Number(process.env.DRIVE_TREE_DEPTH || 6);
-const FOLDER_CAP = 500;
+const MAX_DEPTH = Number(process.env.DRIVE_TREE_DEPTH || 8);
+const FOLDER_CAP = 900;
 
 function getDriveClient() {
   if (GOOGLE_SERVICE_ACCOUNT_JSON) {
