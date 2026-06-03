@@ -584,14 +584,23 @@ async function fetchAU() {
 function compose(pg) {
   const p = pg.properties;
   const slug = rt(p['🔗 Slug']);
-  const suburb = rt(p['📍 District']) || (rt(p['Region/City']).split(',')[0] || '').trim();
-  const city = (rt(p['Region/City']).split(',')[1] || '').trim() || 'Sydney';
+  const districtRaw = rt(p['📍 District']) || (rt(p['Region/City']).split(',')[0] || '').trim();
+  const geoHay = `${rt(p['📍 District'])} ${rt(p['Region/City'])}`.toLowerCase();
+  // City from the state/city token (some rows carry "Suburb, NSW 2113").
+  const city = /\bvic\b|melbourne/i.test(geoHay) ? 'Melbourne' : 'Sydney';
   const hubType = p['🏨 Hub Type']?.select?.name || 'Condo';
   const brand = rt(p['✦ Brand']) || rt(p['Property Name']);
   const yld = ((p['Yield %']?.number || 0) * 100).toFixed(1);
   const [tEn, tVi] = typeWord[hubType] || typeWord.Condo;
-  const prof = SUBURB_PROFILES[suburb];
-  if (!prof) return { slug, skip: `no suburb profile for "${suburb}"` };
+  // Exact key first; else find a profile key contained in the district/region
+  // string (handles "Macquarie Park, NSW 2113", "Green Square, Zetland NSW…").
+  let suburb = districtRaw;
+  let prof = SUBURB_PROFILES[suburb];
+  if (!prof) {
+    const key = Object.keys(SUBURB_PROFILES).find(k => geoHay.includes(k.toLowerCase()));
+    if (key) { prof = SUBURB_PROFILES[key]; suburb = key; }
+  }
+  if (!prof) return { slug, skip: `no suburb profile for "${districtRaw}"` };
   const c = { brand, type: tEn, typeVi: tVi, yld, city, suburb };
   const note = prof.note(c);
   const pros = [...prof.pros, ...uniPros(c)].slice(0, 5);
