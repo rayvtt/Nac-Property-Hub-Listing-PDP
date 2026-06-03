@@ -477,7 +477,7 @@
 
   <!-- RESIDENCE MIX & INDICATIVE PRICING (populated only for listings with
        unit-type inventory, e.g. TR; hidden on every other listing) -->
-  <section class="nac-bands-section" id="nac-bands" data-notion-when="price_bands" hidden>
+  <section class="nac-bands-section" id="nac-bands" data-notion-when="price_bands">
     <style>
       .nac-bands-section{padding:66px 24px;background:var(--surface-2);}
       .nac-bands-wrap{max-width:600px;margin:0 auto;}
@@ -495,8 +495,17 @@
     <div class="nac-bands-wrap reveal">
       <div class="nac-bands-eye"><span data-vi="">Cơ Cấu Căn Hộ</span><span data-en="">Residence Mix</span></div>
       <h3 class="nac-bands-title"><span data-vi="">Giá Theo Loại Căn</span><span data-en="">Indicative Pricing</span></h3>
-      <div class="nac-bands-table" data-notion-list="price_bands"></div>
-      <p class="nac-bands-note"><span data-vi="">Giá khởi điểm, đã trừ lợi nhuận cho thuê lại 3 năm (4%/năm). </span><span data-en="">From-prices, net of the optional 3-year sublease (4%/year). </span><span data-vi="" data-notion="handover_vi"></span><span data-en="" data-notion="handover_en"></span></p>
+      <div class="nac-bands-table" data-notion-list="price_bands">
+            <div class="nac-band">
+              <span class="nac-band-type"><span data-vi="">2 Phòng Ngủ (2+1)</span><span data-en="">2 Bedroom (2+1)</span></span>
+              <span class="nac-band-price"><span class="nac-band-lead"><span data-vi="">từ</span><span data-en="">from</span></span>$475,000</span>
+            </div>
+          
+            <div class="nac-band">
+              <span class="nac-band-type"><span data-vi="">Penthouse / Duplex</span><span data-en="">Penthouse / Duplex</span></span>
+              <span class="nac-band-price"><span class="nac-band-lead"><span data-vi="">từ</span><span data-en="">from</span></span>$489,000</span>
+            </div></div>
+      <p class="nac-bands-note"><span data-vi="">Giá khởi điểm, đã trừ lợi nhuận cho thuê lại 3 năm (4%/năm). </span><span data-en="">From-prices, net of the optional 3-year sublease (4%/year). </span><span data-vi="" data-notion="handover_vi">Bàn giao: ngay (nhận nhà liền)</span><span data-en="" data-notion="handover_en">Handover: ready now</span></p>
     </div>
   </section>
 
