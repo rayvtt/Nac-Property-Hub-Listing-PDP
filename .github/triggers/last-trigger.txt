@@ -1,7 +1,6 @@
-2026-06-03T15:00:00Z chat: push patched AU HTML to WordPress — sync-wp
 2026-06-03T15:20:00Z chat: personalise editorial — sample batch (4 listings)
-2026-06-03T15:55:00Z chat: personalise editorial for ALL AU listings (real write done, ~49 rows)
+2026-06-03T15:55:00Z chat: personalise editorial for ALL AU listings (real write done)
 2026-06-03T16:05:00Z chat: propagate personalised AU editorial + image fixes to HTML/WP
 2026-06-03T18:00:47Z chat: validate Imunify360 retry+gate end-to-end
-2026-06-03T22:25:00Z chat: (failed — fields missing) create İstanbul Turkey CBI listings
-2026-06-03T22:40:00Z chat: Notion schema now has Price Bands/Handover fields — create the İstanbul Turkey CBI listings Live — generate-tr:live
+2026-06-03T22:40:00Z chat: create the İstanbul Turkey CBI listings Live — generate-tr:live
+2026-06-03T22:55:00Z chat: re-run AU personalisation to add Excerpts + Willow fallback — personalise-au:all
