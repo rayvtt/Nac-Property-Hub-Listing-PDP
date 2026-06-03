@@ -4,3 +4,4 @@
 2026-06-03T23:05:00Z chat: Hyatt images to Cloudflare — sync-images:only:hyatt-regency-ho-tram
 2026-06-03T23:15:00Z chat: re-hero'd Marmara Pearl + Elite Complex — propagate TR heroes
 2026-06-03T23:25:00Z chat: old Bağcılar Garden (NAC-60) set Live + bands/handover/folder — pull CF images — sync-images:only:bagcilar-garden-istanbul
+2026-06-03T23:45:00Z chat: backfill SEO/GEO/LLM structured data across all live PDPs (post #250 merge)
