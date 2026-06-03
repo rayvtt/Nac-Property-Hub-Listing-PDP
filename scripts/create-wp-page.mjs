@@ -92,8 +92,10 @@ async function detectTemplate() {
 async function lookupParentPage(countrySlug) {
   // Country pages live one level under /<PROPERTY_HUB_PATH>/. Filter by
   // matching the link path to disambiguate from any other page with the same
-  // slug elsewhere on the site.
-  const pages = await wp(`/pages?slug=${encodeURIComponent(countrySlug)}&per_page=10`);
+  // slug elsewhere on the site. Query all statuses (not just the publish
+  // default) so a freshly-created country page is found, and to bust WP's
+  // cached-empty response for the bare slug query string.
+  const pages = await wp(`/pages?slug=${encodeURIComponent(countrySlug)}&per_page=10&status=publish,draft,private,future,pending`);
   if (!pages.length) return null;
   const targetPath = `/${PROPERTY_HUB_PATH}/${countrySlug}/`;
   return pages.find(p => p.link.includes(targetPath)) || pages[0];
