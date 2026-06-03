@@ -29,3 +29,4 @@
 2026-06-03T05:18:00Z chat: AU WP parent confirmed (page 2228 in Notion) — re-fire create-wp-page; prior round missed it on WP REST slug-propagation lag. Then sync-wp pushes the 3 PDP HTMLs.
 2026-06-03T05:30:00Z chat: PR #220 merged (create-wp-page parent lookup now uses status= list, busts cached-empty) — fire create-wp-page to nest the 3 AU PDPs under /australia/ + sync-wp to push their HTML
 2026-06-03T05:32:00Z chat: 3 AU PDP WP pages created (2230 natura, 2231 zetland, 2232 yarra-park) — fire sync-wp to push their raw_html_code now that the pages exist
+2026-06-03T05:55:00Z chat: Drive folders now shared with the Google service account — re-fire sync-images for the 3 AU listings (brochure images → Cloudflare → Notion), then sync-notion patches heroes/gallery/CLP
