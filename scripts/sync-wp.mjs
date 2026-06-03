@@ -99,7 +99,8 @@ async function waitForWpReachable() {
     try {
       const probe = await wp(`/pages?per_page=1&status=publish`);
       if (Array.isArray(probe) && probe.length > 0) return true;
-      console.error(`  WP canary: endpoint returned ${Array.isArray(probe) ? probe.length : 'non-array'} page(s) (attempt ${attempt}/${maxAttempts}) — likely bot-gated, waiting…`);
+      const snippet = JSON.stringify(probe).slice(0, 200);
+      console.error(`  WP canary: endpoint returned ${Array.isArray(probe) ? probe.length : 'non-array'} page(s) (attempt ${attempt}/${maxAttempts}) — likely bot-gated, waiting… body=${snippet}`);
     } catch (e) {
       console.error(`  WP canary: ${e.message} (attempt ${attempt}/${maxAttempts})`);
     }
