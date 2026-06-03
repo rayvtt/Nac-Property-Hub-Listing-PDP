@@ -1,0 +1,85 @@
+name: Delete Listings (retire from WP + Notion + repo)
+
+# Retires listings that shouldn't be public (no usable hero photo, etc.):
+#   - deletes the WordPress page
+#   - archives the Notion row (drops it from every Live-driven query)
+#   - git-rm's properties/<slug>.html and rebuilds index.html
+#
+# Trigger: workflow_dispatch (SLUGS input) — or, because workflow_dispatch is
+# 403 for the app integration, a trigger-file push whose LAST line contains
+#   delete-listings:slug-a,slug-b,slug-c
+on:
+  workflow_dispatch:
+    inputs:
+      slugs:
+        description: "Comma/space-separated slugs to retire"
+        required: true
+        default: ""
+  push:
+    branches: [main]
+    paths:
+      - ".github/triggers/**"
+
+concurrency:
+  group: delete-listings
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+
+      - name: Resolve slugs
+        id: resolve
+        run: |
+          SLUGS="${{ github.event.inputs.slugs }}"
+          if [ -z "$SLUGS" ]; then
+            LAST="$(tail -n1 "$GITHUB_WORKSPACE/.github/triggers/last-trigger.txt" 2>/dev/null || true)"
+            SLUGS="$(echo "$LAST" | sed -n 's/.*delete-listings:\([A-Za-z0-9,_-]\{1,\}\).*/\1/p')"
+          fi
+          SLUGS="$(echo "$SLUGS" | tr ',' ' ' | xargs || true)"
+          echo "slugs=$SLUGS" >> "$GITHUB_OUTPUT"
+          if [ -z "$SLUGS" ]; then echo "No slugs to delete — exiting cleanly."; fi
+
+      - name: Retire (WP delete + Notion archive)
+        if: steps.resolve.outputs.slugs != ''
+        working-directory: scripts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9' }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          WP_USER: ${{ vars.WP_USER || 'admin_web' }}
+          WP_BASE_URL: ${{ vars.WP_BASE_URL || 'https://nomadassetcollective.com' }}
+          SLUGS: ${{ steps.resolve.outputs.slugs }}
+        run: node delete-listings.mjs
+
+      - name: Remove HTML + rebuild index
+        if: steps.resolve.outputs.slugs != ''
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9' }}
+          NOTION_COUNTRY_DATABASE_ID: ${{ vars.NOTION_COUNTRY_DATABASE_ID || 'a01ef35ce9fd45b1bba3ec4de4da678c' }}
+        run: |
+          for slug in ${{ steps.resolve.outputs.slugs }}; do
+            git rm -f "properties/$slug.html" 2>/dev/null && echo "removed properties/$slug.html" || echo "no file properties/$slug.html"
+          done
+          node scripts/update-index.mjs
+          git config user.name "nac-notion-bot"
+          git config user.email "nac-notion-bot@users.noreply.github.com"
+          git add properties/ index.html
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+          else
+            git commit -m "retire listings: ${{ steps.resolve.outputs.slugs }} (remove HTML + rebuild index)"
+            git push
+          fi
