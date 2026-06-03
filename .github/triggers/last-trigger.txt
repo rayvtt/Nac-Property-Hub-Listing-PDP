@@ -1,15 +1,8 @@
-2026-06-03T09:06:00Z chat: CGI renders on Cloudflare + Notion for 3 AU listings — propagate to HTML/WP
-2026-06-03T09:16:00Z chat: 3 AU rows fully back-filled — render donut/pros/cons/features/process + push WP
-2026-06-03T12:32:32Z chat: sync AU CLP with new label_offset_y on Sydney/Melbourne
-2026-06-03T12:38:23Z chat: re-fire sync-wp-clp for AU after cron regenerated au.html
-2026-06-03T12:43:47Z chat: retry sync-wp-clp (prev runner blocked by Imunify360)
 2026-06-03T12:46:00Z chat: 47 new AU listings created Live (bulk generator) — fire full pipeline
-2026-06-03T12:52:00Z chat: PR #229 (uniform AU WP titles "Name — City/Region" + Notion page covers) — fire create-wp-page (retitle existing + create remaining) + sync-images (backfill covers, pull remaining CGIs) + sync-notion/clp + sync-wp(+clp)
-2026-06-03T13:40:00Z chat: re-pick all Australia images with the new floor-plan exclusion (content + filename) and CF size guard — sync-images:replace:Australia
-2026-06-03T13:46:50Z chat: expand AU atlas — 5 city pins (Macquarie/W Sydney/Sydney/Box Hill/Melbourne)
-2026-06-03T13:48:49Z chat: push 5-city AU CLP to WP
+2026-06-03T12:52:00Z chat: PR #229 (uniform AU WP titles + Notion page covers)
+2026-06-03T13:40:00Z chat: re-pick all Australia images with floor-plan exclusion + CF size guard
 2026-06-03T13:55:38Z chat: retry — Imunify360 blocked previous runner
-2026-06-03T14:05:00Z chat: re-fire AU image re-pick now that the $GITHUB_WORKSPACE path fix landed — sync-images:replace:Australia
-2026-06-03T14:13:25Z chat: re-sync AU atlas with label_anchor=end fan layout
+2026-06-03T14:05:00Z chat: re-fire AU image re-pick after $GITHUB_WORKSPACE path fix — sync-images:replace:Australia
 2026-06-03T14:15:31Z chat: push AU anchor=end atlas to WP
-2026-06-03T14:48:00Z chat: AU image re-pick done (floor plans/maps/lots excluded; 3 listings re-hero'd in Notion) — propagate to HTML via sync-notion then WP via sync-wp
+2026-06-03T14:48:00Z chat: AU image re-pick done (floor plans/maps/lots excluded; 3 listings re-hero'd in Notion)
+2026-06-03T15:00:00Z chat: push patched AU HTML (re-picked + re-hero'd images) to WordPress — sync-wp
