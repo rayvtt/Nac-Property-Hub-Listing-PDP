@@ -11,3 +11,4 @@
 2026-06-03T13:55:38Z chat: retry — Imunify360 blocked previous runner
 2026-06-03T14:05:00Z chat: re-fire AU image re-pick now that the $GITHUB_WORKSPACE path fix landed — sync-images:replace:Australia
 2026-06-03T14:13:25Z chat: re-sync AU atlas with label_anchor=end fan layout
+2026-06-03T14:15:31Z chat: push AU anchor=end atlas to WP
