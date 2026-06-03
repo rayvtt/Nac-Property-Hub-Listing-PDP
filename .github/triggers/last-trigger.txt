@@ -24,3 +24,4 @@
 2026-06-02T15:48:10Z chat: kick sync-wp-clp to push clean MY/TH/SG/AE HTML
 2026-06-02T21:45:00Z chat: 3 AU listings Live (natura-macquarie-park, downtown-zetland, yarra-park-alphington) — fire create-pdp + create-wp-page + sync-images + update-index
 2026-06-02T22:12:00Z chat: Australia (au) country Live — fire create-wp-clp-page + sync-notion-clp to stand up the /australia/ WP parent, then re-fire create-wp-page for the 3 AU PDPs
+2026-06-02T22:20:00Z chat: RETRY WP publish (Imunify360 blocked prior runner IP) — fire create-wp-clp-page + create-wp-page + sync-wp + sync-wp-clp for AU country + 3 listings
