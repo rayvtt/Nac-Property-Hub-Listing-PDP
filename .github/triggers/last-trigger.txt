@@ -1,5 +1,6 @@
 2026-06-03T09:06:00Z chat: CGI renders on Cloudflare + Notion for 3 AU listings — propagate to HTML/WP
-2026-06-03T09:16:00Z chat: 3 AU rows fully back-filled (IRR/CoC/ROI/Cash Flow/rental income/expenses/Payback/Min Hold + NAC Score + Pros/Cons/Features/Sub-Scores/Process JSON + NAC Note/Key Markets/Airport/YoY/cine) — fire sync-notion + sync-notion-clp + sync-wp + sync-wp-clp to render the donut/pros/cons/features/process sections + push to WordPress
+2026-06-03T09:16:00Z chat: 3 AU rows fully back-filled — render donut/pros/cons/features/process + push WP
 2026-06-03T12:32:32Z chat: sync AU CLP with new label_offset_y on Sydney/Melbourne
 2026-06-03T12:38:23Z chat: re-fire sync-wp-clp for AU after cron regenerated au.html
 2026-06-03T12:43:47Z chat: retry sync-wp-clp (prev runner blocked by Imunify360)
+2026-06-03T12:46:00Z chat: 47 new AU listings created Live (bulk generator) — fire create-pdp + create-wp-page + sync-images + sync-notion + create-wp-clp-page + sync-notion-clp + sync-wp(+clp) to scaffold PDPs, create WP pages under /australia/, pull CGI images, rebuild CLP/index
