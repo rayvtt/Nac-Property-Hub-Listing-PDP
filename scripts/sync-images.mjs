@@ -684,7 +684,11 @@ async function updateNotionImages(pageId, urls) {
   if (urls[2]) props['🖼️ Image 2'] = { url: urls[2] };
   if (urls[3]) props['🖼️ Image 3'] = { url: urls[3] };
   if (urls[4]) props['🖼️ Image 4'] = { url: urls[4] };
-  await notion.pages.update({ page_id: pageId, properties: props });
+  const update = { page_id: pageId, properties: props };
+  // Also set the Notion page cover (banner) to the hero so the row is
+  // visually identifiable in gallery/board views.
+  if (urls[0]) update.cover = { type: 'external', external: { url: urls[0] } };
+  await notion.pages.update(update);
 }
 
 // ─── Main ───────────────────────────────────────────────────────────────
@@ -696,7 +700,14 @@ async function processProperty(prop) {
   const isCloudflare = prop.imageUrl?.includes('imagedelivery.net');
 
   if (isCloudflare && !REPLACE) {
-    console.log('  ⤳ already on Cloudflare Images, skipping (--replace to override)');
+    // Already imaged — just make sure the Notion page cover is set (idempotent
+    // backfill for rows imaged before cover support existed).
+    try {
+      await getNotion().pages.update({ page_id: prop.pageId, cover: { type: 'external', external: { url: prop.imageUrl } } });
+      console.log('  ⤳ already on Cloudflare Images — cover ensured, skipping');
+    } catch (e) {
+      console.log(`  ⤳ already on Cloudflare Images, skipping (cover update failed: ${e.message})`);
+    }
     return;
   }
   if (!isPlaceholder && !REPLACE && !LOCAL_PDF) {

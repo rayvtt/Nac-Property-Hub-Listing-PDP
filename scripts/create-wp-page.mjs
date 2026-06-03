@@ -153,12 +153,27 @@ async function fetchLiveProperties() {
     return {
       notionPageId: page.id,
       propertyName: richText(p['Property Name']),
+      brand: richText(p['✦ Brand']),
+      regionCity: richText(p['Region/City']),
       slug: richText(p['🔗 Slug']),
       country: readSelect(p['Country']),
       wpPageId: readNumber(p['🆔 WP Page ID']),
       listingUrl: readUrl(p['Listing URL']),
     };
   });
+}
+
+// Uniform LLP page title: "Listing Name — City / Region".
+// Scoped to Australia for now: ✦ Brand there is a clean short name and
+// Region/City is "Suburb, City". Other countries keep their Property Name title
+// (their ✦ Brand is often a descriptive sentence, so we don't touch them).
+function pageTitle(prop) {
+  const loc = (prop.regionCity || '').trim();
+  if (prop.country === 'Australia' && loc) {
+    const name = (prop.brand || prop.propertyName || '').trim();
+    return `${name} — ${loc}`;
+  }
+  return (prop.propertyName || '').trim();
 }
 
 async function writeBackToNotion(notionPageId, { wpPageId, listingUrl, currentListingUrl }) {
@@ -216,7 +231,7 @@ async function processOne(prop) {
 
   const template = await detectTemplate();
   const page = await createPage({
-    title: prop.propertyName,
+    title: pageTitle(prop),
     slug: prop.slug,
     parentId: parent.id,
     template,
@@ -240,7 +255,22 @@ async function main() {
   const needsCreate = properties.filter(p => !p.wpPageId);
   console.log(`  ${properties.length} Live, ${needsCreate.length} missing WP Page ID`);
 
-  if (!needsCreate.length) { console.log('Nothing to do.'); return; }
+  // Normalize existing Australia page titles to "Listing Name — City / Region".
+  let retitled = 0;
+  for (const prop of properties.filter(p => p.wpPageId && p.country === 'Australia')) {
+    try {
+      const want = pageTitle(prop);
+      if (!want) continue;
+      const cur = await wp(`/pages/${prop.wpPageId}?context=edit`);
+      const curTitle = (cur && cur.title && (cur.title.raw ?? cur.title.rendered)) || '';
+      if (curTitle !== want) {
+        await wp(`/pages/${prop.wpPageId}`, { method: 'POST', body: JSON.stringify({ title: want }) });
+        console.log(`  ✎ retitled ${prop.slug} → "${want}"`);
+        retitled++;
+      }
+    } catch (e) { console.error(`  ✗ retitle ${prop.slug}: ${e.message}`); }
+  }
+  if (retitled) console.log(`  ${retitled} AU title(s) normalized.`);
 
   let ok = 0, fail = 0, skip = 0;
   for (const prop of needsCreate) {
