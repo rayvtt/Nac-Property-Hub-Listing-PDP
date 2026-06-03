@@ -600,7 +600,32 @@ function compose(pg) {
     const key = Object.keys(SUBURB_PROFILES).find(k => geoHay.includes(k.toLowerCase()));
     if (key) { prof = SUBURB_PROFILES[key]; suburb = key; }
   }
-  if (!prof) return { slug, skip: `no suburb profile for "${districtRaw}"` };
+  // Generic city-level fallback for an unmatched/garbled district (e.g. the
+  // "Willow" row) — still personalised editorial, no invented suburb facts.
+  if (!prof) {
+    suburb = city;
+    prof = {
+      taglineEn: `AUD-freehold ${tEn} living in ${city}`,
+      taglineVi: `${cap(tVi)} freehold định giá AUD tại ${city}`,
+      blurbEn: `a freehold residence in ${city} — an established, rule-of-law Australian market with deep migration- and education-driven rental demand`,
+      blurbVi: `một căn nhà freehold tại ${city} — thị trường Úc pháp quyền lâu đời với nhu cầu thuê lớn từ di trú & giáo dục`,
+      marketEn: `${city} is one of the world's most liveable, rule-of-law property markets — AUD-denominated, with deep migration- and education-led demand and resilient long-run capital growth.`,
+      marketVi: `${city} là một trong những thị trường BĐS đáng sống & pháp quyền nhất thế giới — định giá AUD, nhu cầu lớn từ di trú & giáo dục, tăng giá vốn bền bỉ.`,
+      note: (cc) => ({
+        en: `NAC reads ${cc.brand} as a capital-growth and safe-haven hold in ${city}: a freehold, AUD-denominated ${cc.type} with FIRB approval and an education/migration pathway. The ~${cc.yld}% yield is modest, but Australian rule of law, a stable currency and metropolitan rental demand underpin durable value. Pricing here is a NAC estimate pending the developer price list.`,
+        vi: `NAC xem ${cc.brand} là khoản đầu tư tăng giá vốn & trú ẩn an toàn tại ${city}: một căn ${cc.typeVi} freehold, định giá AUD, được FIRB duyệt, kèm lộ trình giáo dục/định cư. Lợi suất ~${cc.yld}% khiêm tốn, nhưng pháp quyền Úc, tiền tệ ổn định và nhu cầu thuê đô thị giữ giá trị bền vững. Giá là NAC ước tính, chờ bảng giá CĐT.`,
+      }),
+      pros: [
+        { en: `Established ${city} rental market — migration & education demand`, vi: `Thị trường thuê ${city} lâu đời — nhu cầu di trú & giáo dục` },
+        { en: `Metropolitan ${city} location with strong long-run capital growth`, vi: `Vị trí đô thị ${city} với tăng giá vốn dài hạn mạnh` },
+      ],
+      feats: [
+        { icon: '🏙️', en: `Established ${city} metropolitan location`, vi: `Vị trí đô thị ${city} lâu đời` },
+        { icon: '📈', en: 'Resilient long-run capital growth', vi: 'Tăng giá vốn dài hạn bền bỉ' },
+      ],
+      conRisk: { en: 'Capital-growth hold — metro apartment supply rewards a well-chosen aspect', vi: 'Khoản đầu tư tăng giá vốn — nguồn cung căn hộ đô thị đòi hỏi chọn hướng tốt' },
+    };
+  }
   const c = { brand, type: tEn, typeVi: tVi, yld, city, suburb };
   const note = prof.note(c);
   const pros = [...prof.pros, ...uniPros(c)].slice(0, 5);
@@ -610,8 +635,13 @@ function compose(pg) {
     en: `${brand} is ${prof.blurbEn}. AUD-denominated and FIRB-approved for foreign buyers, it suits families pursuing Australian education, migration optionality, or stable-currency diversification. Pricing is a NAC estimate pending the developer price list.`,
     vi: `${brand} là ${prof.blurbVi}. Định giá AUD và được FIRB duyệt cho người nước ngoài; phù hợp gia đình hướng đến giáo dục Úc, lựa chọn định cư, hoặc đa dạng hóa tiền tệ ổn định. Giá là NAC ước tính, chờ bảng giá CĐT.`,
   };
+  const excerpt = {
+    en: `${prof.taglineEn}. Freehold ${tEn}, FIRB-approved for foreign buyers.`,
+    vi: `${prof.taglineVi}. ${cap(tVi)} freehold, được FIRB duyệt cho người nước ngoài.`,
+  };
   const props = {
     '🏷️ Tagline EN': txt(prof.taglineEn), '🏷️ Tagline VI': txt(prof.taglineVi),
+    'Excerpt EN': txt(excerpt.en), 'Excerpt VI': txt(excerpt.vi),
     '💬 NAC Note EN': txt(note.en), '💬 NAC Note VI': txt(note.vi),
     '✅ Pros JSON': txt(JSON.stringify(pros)),
     '⚠️ Cons JSON': txt(JSON.stringify(cons)),
