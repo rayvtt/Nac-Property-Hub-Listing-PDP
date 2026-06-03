@@ -31,3 +31,4 @@
 2026-06-03T05:32:00Z chat: 3 AU PDP WP pages created (2230 natura, 2231 zetland, 2232 yarra-park) — fire sync-wp to push their raw_html_code now that the pages exist
 2026-06-03T05:55:00Z chat: Drive folders now shared with the Google service account — re-fire sync-images for the 3 AU listings (brochure images → Cloudflare → Notion), then sync-notion patches heroes/gallery/CLP
 2026-06-03T06:45:00Z chat: GOOGLE_SERVICE_ACCOUNT_JSON secret now set (+ PR #221 prefers SA) — re-fire sync-images; SA auth should read the shared Drive folders → brochure images → Cloudflare → Notion → sync-notion patches heroes/gallery/CLP
+2026-06-03T08:30:00Z chat: SA key re-pasted (prior value failed JSON.parse) — re-fire sync-images; SA should now auth + read the 3 AU Drive folders → brochures → Cloudflare → Notion
