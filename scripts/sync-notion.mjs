@@ -9,10 +9,14 @@ import * as cheerio from 'cheerio';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  completeStructuredData, resolveGeo, buildLlmsTxt, loadCache, saveCache,
+} from './seo-geo-llm.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const PROPERTIES_DIR = path.join(ROOT, 'properties');
+const GEOCACHE_FILE = path.join(__dirname, 'geocode-cache.json');
 
 const TOKEN = process.env.NOTION_TOKEN;
 const DATABASE_ID = process.env.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9';
@@ -128,6 +132,13 @@ function extractProperty(page) {
     handoverVi: richText(p['🔑 Handover VI']),
     tags: readMultiSelect(p['Tags']),
     hubStatus: readSelect(p['Hub Status']),
+    // ─ fields consumed by the SEO/GEO/LLM structured-data completer ─
+    freehold: p['Freehold']?.checkbox === true,
+    immigrationType: readSelect(p['🛂 Immigration Type']),
+    investmentProgram: readSelect(p['Investment Program']),
+    listingDate: p['Listing Date']?.date?.start || null,
+    // prop.geo is resolved in main() (async geocode) and read by the completer
+    geo: null,
   };
 }
 
@@ -556,6 +567,12 @@ function patch(html, prop) {
     if (prop.monthlyRent != null) roi.attr('data-rent', String(Math.round(prop.monthlyRent)));
   }
 
+  // ─── SEO / GEO / LLM structured data ────────────────────────────────────
+  // Completes the half of the <head> JSON-LD that patchHeadSeo leaves as
+  // `{token}` placeholders: RealEstateListing geo/offers/brand/amenities,
+  // the whole FAQPage, and BreadcrumbList. Idempotent — see seo-geo-llm.mjs.
+  completeStructuredData($, prop);
+
   return $.html();
 }
 
@@ -583,6 +600,11 @@ async function main() {
   const properties = await fetchLiveProperties();
   console.log(`  ${properties.length} Live properties found`);
 
+  // Geocode cache (City+District+Country → lat/lng). Loaded once, persisted at
+  // the end so the next run is a pure cache hit (no Nominatim calls).
+  const geocache = await loadCache(GEOCACHE_FILE);
+  const geocacheSizeBefore = Object.keys(geocache).length;
+
   let changed = 0;
   let failed = 0;
   for (const prop of properties) {
@@ -594,6 +616,14 @@ async function main() {
       } catch {
         console.log(`  ⤳ ${prop.slug}: no HTML yet (skipped — create from template later)`);
         continue;
+      }
+      // Resolve geo coordinates (cached; geocodes only on first sight). Failure
+      // → null, and the completer omits the geo block rather than ship `{lat}`.
+      try {
+        prop.geo = await resolveGeo(prop, { cache: geocache });
+      } catch (e) {
+        console.warn(`  ⚠ ${prop.slug}: geocode failed (${e.message}) — geo omitted`);
+        prop.geo = null;
       }
       const patched = patch(existing, prop);
       if (patched === existing) {
@@ -611,6 +641,26 @@ async function main() {
       failed++;
     }
   }
+  // Persist the geocode cache if it grew (new coordinates resolved).
+  if (Object.keys(geocache).length !== geocacheSizeBefore) {
+    try { await saveCache(GEOCACHE_FILE, geocache); console.log('  ↳ geocode cache updated'); }
+    catch (e) { console.warn(`  ⚠ could not save geocode cache: ${e.message}`); }
+  }
+
+  // Regenerate the root llms.txt LLM/GEO discovery index from all Live rows.
+  try {
+    const llms = buildLlmsTxt(properties);
+    const llmsFile = path.join(ROOT, 'llms.txt');
+    let prevLlms = '';
+    try { prevLlms = await fs.readFile(llmsFile, 'utf-8'); } catch {}
+    if (llms !== prevLlms) {
+      await fs.writeFile(llmsFile, llms, 'utf-8');
+      console.log('  ↳ llms.txt regenerated');
+    }
+  } catch (e) {
+    console.warn(`  ⚠ could not write llms.txt: ${e.message}`);
+  }
+
   console.log(`Done. ${changed} file(s) changed, ${failed} failed.`);
   // Exit non-zero ONLY if every property failed (config/network issue);
   // partial failures don't block the rest of the pipeline.
