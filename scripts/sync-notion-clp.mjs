@@ -273,20 +273,18 @@ function renderCompareRow(l) {
           </tr>`;
 }
 
-function renderPin(c, count) {
+function renderPin(c) {
   const x = c.pinX, y = c.pinY;
   // anchor "end" lets clustered right-side pins grow their labels leftward
   // into the empty map centre instead of off the right viewBox edge.
   const anchor = c.labelAnchor === 'end' || c.labelAnchor === 'middle' ? c.labelAnchor : 'start';
   const lblX = x + (c.labelOffsetX ?? 14);
   const lblY = y + (c.labelOffsetY ?? 0);
-  const word = count === 1 ? 'Listing' : 'Listings';
   return `        <g class="cl-pin-group" onclick="window.clFilterCity &amp;&amp; clFilterCity('${c.slug}')">
           <circle class="cl-pin-halo" cx="${x}" cy="${y}" r="7"></circle>
           <circle class="cl-pin-ring" cx="${x}" cy="${y}" r="6"></circle>
           <circle class="cl-pin-core" cx="${x}" cy="${y}" r="3"></circle>
-          <text class="cl-pin-lbl" x="${lblX}" y="${lblY - 2}" text-anchor="${anchor}">${escText(c.name)}</text>
-          <text class="cl-pin-cnt" x="${lblX}" y="${lblY + 10}" text-anchor="${anchor}">${count} ${word}</text>
+          <text class="cl-pin-lbl" x="${lblX}" y="${lblY + 3}" text-anchor="${anchor}">${escText(c.name)}</text>
         </g>`;
 }
 
@@ -554,7 +552,7 @@ function applyModel(html, model) {
       usedCities.map(c => renderPinlistItem(c, counts.get(c.slug))).join('\n'));
     // SVG pins: drop existing groups, append fresh ones after the faint-city group
     $('.cl-pin-group').remove();
-    const pinSvg = usedCities.map(c => renderPin(c, counts.get(c.slug))).join('\n');
+    const pinSvg = usedCities.map(c => renderPin(c)).join('\n');
     // insert before the compass rose if present, else append to svg
     const compass = $('.cl-map-compass');
     if (compass.length) compass.first().before(pinSvg + '\n');
