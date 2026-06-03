@@ -453,37 +453,26 @@
 
   <!-- RESIDENCE MIX & INDICATIVE PRICING (populated only for listings with
        unit-type inventory, e.g. TR; hidden on every other listing) -->
-  <section class="nac-bands-section" id="nac-bands" data-notion-when="price_bands">
+  <section class="nac-bands-section" id="nac-bands" data-notion-when="price_bands" hidden>
     <style>
-      .nac-bands-section{padding:64px 24px;background:var(--surface-2);}
-      .nac-bands-wrap{max-width:980px;margin:0 auto;}
+      .nac-bands-section{padding:66px 24px;background:var(--surface-2);}
+      .nac-bands-wrap{max-width:600px;margin:0 auto;}
       .nac-bands-eye{font-family:var(--ff-display);letter-spacing:.18em;text-transform:uppercase;font-size:.72rem;color:var(--orange);text-align:center;margin-bottom:10px;}
-      .nac-bands-title{font-family:var(--ff-display);font-size:1.55rem;font-weight:500;color:var(--display);text-align:center;margin:0 0 6px;letter-spacing:-.005em;}
-      .nac-bands-sub{font-size:.82rem;color:var(--muted);text-align:center;max-width:640px;margin:0 auto 28px;line-height:1.6;}
-      .nac-bands-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;max-width:760px;margin:0 auto;}
-      .nac-band{flex:0 1 200px;max-width:230px;border:1px solid var(--line);border-radius:14px;padding:20px 18px;background:var(--surface);text-align:center;}
-      .nac-band-type{font-family:var(--ff-display);font-weight:500;color:var(--display);font-size:1rem;margin-bottom:8px;}
-      .nac-band-price{font-size:1.18rem;font-weight:600;color:var(--display);}
-      .nac-band-lead{font-size:.7rem;font-weight:400;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
-      .nac-band-units{font-size:.74rem;color:var(--muted);margin-top:6px;}
-      .nac-bands-note{font-size:.76rem;color:var(--muted);text-align:center;margin-top:22px;line-height:1.6;}
-      @media(max-width:680px){.nac-bands-section{padding:48px 18px;}}
+      .nac-bands-title{font-family:var(--ff-display);font-size:1.5rem;font-weight:500;color:var(--display);text-align:center;margin:0 0 30px;letter-spacing:-.005em;}
+      .nac-bands-table{margin:0 auto;}
+      .nac-band{display:flex;justify-content:space-between;align-items:baseline;gap:1.5rem;padding:1.05rem .25rem;border-bottom:1px solid var(--line);}
+      .nac-band:last-child{border-bottom:none;}
+      .nac-band-type{font-family:var(--ff-display);font-size:1.18rem;font-weight:500;color:var(--display);}
+      .nac-band-price{font-size:1.04rem;color:var(--display);white-space:nowrap;}
+      .nac-band-lead{font-size:.64rem;font-weight:400;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-right:.5rem;}
+      .nac-bands-note{font-size:.74rem;color:var(--muted);text-align:center;margin-top:26px;line-height:1.6;}
+      @media(max-width:680px){.nac-bands-section{padding:50px 18px;}.nac-band-type{font-size:1.06rem;}}
     </style>
     <div class="nac-bands-wrap reveal">
       <div class="nac-bands-eye"><span data-vi="">Cơ Cấu Căn Hộ</span><span data-en="">Residence Mix</span></div>
-      <h3 class="nac-bands-title"><span data-vi="">Giá Tham Khảo Theo Loại Căn</span><span data-en="">Indicative Pricing by Residence Type</span></h3>
-      <p class="nac-bands-sub"><span data-vi="">Giá khởi điểm theo từng loại căn, đã trừ lợi nhuận cho thuê lại 3 năm (4%/năm).</span><span data-en="">Entry ("from") prices per unit type, net of the 3-year sublease profit (4%/year).</span></p>
-      <div class="nac-bands-grid" data-notion-list="price_bands">
-            <div class="nac-band">
-              <div class="nac-band-type"><span data-vi="">2 Phòng Ngủ (2+1)</span><span data-en="">2 Bedroom (2+1)</span></div>
-              <div class="nac-band-price"><span class="nac-band-lead"><span data-vi="">từ</span><span data-en="">from</span></span> $479,000</div>
-              <div class="nac-band-units">1 <span data-vi="">căn</span><span data-en="">unit</span></div>
-            </div></div>
-      <p class="nac-bands-note">
-        <span data-vi="">Tùy chọn cho thuê lại 3 năm, lợi nhuận 4%/năm (tổng 12%) trừ thẳng vào giá bán; bàn giao nội thất cơ bản.</span><span data-en="">Optional 3-year sublease at 4%/year (12% total) deducted directly from price; basic furniture included.</span>
-        <br>
-        <span data-vi="" data-notion="handover_vi">Bàn giao: tháng 5/2026</span><span data-en="" data-notion="handover_en">Handover: May 2026</span>
-      </p>
+      <h3 class="nac-bands-title"><span data-vi="">Giá Theo Loại Căn</span><span data-en="">Indicative Pricing</span></h3>
+      <div class="nac-bands-table" data-notion-list="price_bands"></div>
+      <p class="nac-bands-note"><span data-vi="">Giá khởi điểm, đã trừ lợi nhuận cho thuê lại 3 năm (4%/năm). </span><span data-en="">From-prices, net of the optional 3-year sublease (4%/year). </span><span data-vi="" data-notion="handover_vi"></span><span data-en="" data-notion="handover_en"></span></p>
     </div>
   </section>
 
