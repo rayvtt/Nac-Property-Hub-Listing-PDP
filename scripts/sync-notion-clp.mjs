@@ -275,6 +275,9 @@ function renderCompareRow(l) {
 
 function renderPin(c, count) {
   const x = c.pinX, y = c.pinY;
+  // anchor "end" lets clustered right-side pins grow their labels leftward
+  // into the empty map centre instead of off the right viewBox edge.
+  const anchor = c.labelAnchor === 'end' || c.labelAnchor === 'middle' ? c.labelAnchor : 'start';
   const lblX = x + (c.labelOffsetX ?? 14);
   const lblY = y + (c.labelOffsetY ?? 0);
   const word = count === 1 ? 'Listing' : 'Listings';
@@ -282,8 +285,8 @@ function renderPin(c, count) {
           <circle class="cl-pin-halo" cx="${x}" cy="${y}" r="7"></circle>
           <circle class="cl-pin-ring" cx="${x}" cy="${y}" r="6"></circle>
           <circle class="cl-pin-core" cx="${x}" cy="${y}" r="3"></circle>
-          <text class="cl-pin-lbl" x="${lblX}" y="${lblY - 2}" text-anchor="start">${escText(c.name)}</text>
-          <text class="cl-pin-cnt" x="${lblX}" y="${lblY + 10}" text-anchor="start">${count} ${word}</text>
+          <text class="cl-pin-lbl" x="${lblX}" y="${lblY - 2}" text-anchor="${anchor}">${escText(c.name)}</text>
+          <text class="cl-pin-cnt" x="${lblX}" y="${lblY + 10}" text-anchor="${anchor}">${count} ${word}</text>
         </g>`;
 }
 
@@ -676,6 +679,7 @@ async function parseBody(notion, pageId) {
         else if (key === 'pin_y') city.pinY = Number(val);
         else if (key === 'label_offset_x') city.labelOffsetX = Number(val);
         else if (key === 'label_offset_y') city.labelOffsetY = Number(val);
+        else if (key === 'label_anchor') city.labelAnchor = val.toLowerCase();
         else if (key === 'lat') city.lat = val;
         else if (key === 'lng') city.lng = val;
         else if (key === 'match') city.match = val.split(',').map(s => s.trim()).filter(Boolean);
@@ -743,6 +747,7 @@ function defaultBodyBlocks(meta, countryEn) {
     block.bullet('pin_y: 210'),
     block.bullet('label_offset_x: 14'),
     block.bullet('label_offset_y: 0'),
+    block.bullet('label_anchor: start'),
   ];
 }
 
