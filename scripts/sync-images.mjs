@@ -523,6 +523,41 @@ async function listPdfsInDriveFolder(folderId) {
   return filtered;
 }
 
+// List loose image files (JPG/PNG/WebP) in a Drive folder, recursing into
+// subfolders up to `maxDepth` levels. Many partner folders keep the renders as
+// loose files in a nested "CGIs" / "Renders" subfolder (e.g. project →
+// "MACQUARIE PARK, NATURA" → "CGIs"), NOT inside a PDF — listPdfsInDriveFolder
+// only sees top-level PDFs and misses these. BFS with a scan cap so a huge
+// shared drive can't blow up. Returns [{ id, name, size }].
+async function listImagesInDriveFolder(folderId, maxDepth = 4) {
+  const drive = getDriveClient();
+  const images = [];
+  let frontier = [{ id: folderId, depth: 0 }];
+  let scanned = 0;
+  while (frontier.length && scanned < 80) {
+    const next = [];
+    for (const node of frontier) {
+      if (scanned >= 80) break;
+      scanned++;
+      const res = await drive.files.list({
+        q: `'${node.id}' in parents and (mimeType contains 'image/' or mimeType = 'application/vnd.google-apps.folder')`,
+        fields: 'files(id, name, mimeType, size)',
+        pageSize: 200,
+      });
+      for (const f of res.data.files || []) {
+        if (f.mimeType === 'application/vnd.google-apps.folder') {
+          if (node.depth + 1 < maxDepth) next.push({ id: f.id, depth: node.depth + 1 });
+        } else if (/\.(jpe?g|png|webp)$/i.test(f.name || '')) {
+          // Restrict to CF-Images-friendly formats; skip tiff/gif/svg/heic.
+          images.push({ id: f.id, name: f.name, size: f.size });
+        }
+      }
+    }
+    frontier = next;
+  }
+  return images;
+}
+
 async function downloadDrivePdf(fileId, destPath) {
   const drive = getDriveClient();
   const res = await drive.files.get({ fileId, alt: 'media' }, { responseType: 'arraybuffer' });
@@ -747,6 +782,23 @@ async function processProperty(prop) {
           console.log(`    ↓ ${df.name}…`);
           await downloadDrivePdf(df.id, dest);
           pdfs.push({ path: dest, name: df.name });
+        }
+        // Also collect loose image files (CGI renders etc.) nested in
+        // subfolders like ".../CGIs" — these aren't inside any PDF, so the
+        // PDF-only path above misses them. They flow into the same
+        // filter+rank+upload step as every other candidate.
+        const driveImgs = await listImagesInDriveFolder(folderId);
+        if (driveImgs.length) {
+          console.log(`     found ${driveImgs.length} loose Drive image(s)`);
+          let n = 0;
+          for (const im of driveImgs.slice(0, 40)) {
+            const ext = (im.name.match(/\.(jpe?g|png|webp)$/i) || ['.jpg'])[0];
+            const dest = path.join(workDir, `drive-img-${++n}${ext}`);
+            try {
+              await downloadDrivePdf(im.id, dest); // generic alt:media binary fetch
+              candidates.push({ path: dest, src: 'drive-img', srcRef: im.name });
+            } catch (e) { /* skip individual image failures */ }
+          }
         }
       }
     }
