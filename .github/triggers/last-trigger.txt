@@ -1,6 +1,6 @@
-2026-06-03T15:20:00Z chat: personalise editorial — sample batch (4 listings)
 2026-06-03T15:55:00Z chat: personalise editorial for ALL AU listings (real write done)
 2026-06-03T16:05:00Z chat: propagate personalised AU editorial + image fixes to HTML/WP
 2026-06-03T18:00:47Z chat: validate Imunify360 retry+gate end-to-end
 2026-06-03T22:40:00Z chat: create the İstanbul Turkey CBI listings Live — generate-tr:live
-2026-06-03T22:55:00Z chat: re-run AU personalisation to add Excerpts + Willow fallback — personalise-au:all
+2026-06-03T22:55:00Z chat: re-run AU personalisation — Excerpts + Willow fallback (audit now 50/50)
+2026-06-03T23:05:00Z chat: move Hyatt Regency images to Cloudflare (keep current good ones) + propagate AU excerpts/Willow — sync-images:only:hyatt-regency-ho-tram
