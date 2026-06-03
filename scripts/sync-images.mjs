@@ -80,8 +80,23 @@ const MAX_FILE_BYTES = 18_000_000;  // under CF's 20 MB hard cap, leaving margin
 // Floor / site / unit plans and other line-drawing schematics. Matched against
 // the source filename (Drive) or URL.
 const FLOORPLAN_RX = /(floor[\s_-]*plan|floor[\s_-]*plate|site[\s_-]*plan|master[\s_-]*plan|masterplan|unit[\s_-]*plan|apartment[\s_-]*plan|key[\s_-]*plan|level[\s_-]*\d|\btypical\b|podium|\bplan\b|\bplans\b|\bfp\d|schedule|elevation|section[\s_-]*drawing|floorplan)/i;
-function isFloorPlanRef(srcRef) {
-  return FLOORPLAN_RX.test(String(srcRef || '').toLowerCase());
+
+// Maps / location diagrams — never acceptable as a listing image. (Aerial PHOTOS
+// are fine and are NOT matched here; only map/diagram keywords.)
+const MAP_RX = /(\bmap\b|location[\s_-]*map|locality|context[\s_-]*plan|connection[s]?[\s_-]*map|transport[\s_-]*map|precinct[\s_-]*map|street[\s_-]*map|wayfinding|distance[s]?[\s_-]*map|google[\s_-]*map)/i;
+
+// Bare land / lot photos — empty sites, not a building. Filename-only signal
+// (content can't be told from any landscape); visual review catches the rest.
+const LANDLOT_RX = /(\blot[\s_-]*\d|\bland[\s_-]*(lot|parcel|size)|vacant|allotment|cleared[\s_-]*site|empty[\s_-]*site|raw[\s_-]*land)/i;
+
+// A floor plan, map, or land-lot image is NEVER an acceptable listing image —
+// not as a hero/cover and not in the gallery (user rule). Drop on filename.
+function isUnusableRef(srcRef) {
+  const lc = String(srcRef || '').toLowerCase();
+  if (FLOORPLAN_RX.test(lc)) return 'floor/site plan (filename)';
+  if (MAP_RX.test(lc)) return 'map/location diagram (filename)';
+  if (LANDLOT_RX.test(lc)) return 'bare land/lot (filename)';
+  return null;
 }
 
 // Content-based plan detection. Floor plans are flat white line-art: a large
@@ -363,7 +378,8 @@ async function filterAndRank(candidates) {
   // CF upload (5413/5443) so dropping them lets real photos win the slots.
   const megapixels = (img) => img.pixels / 1_000_000;
   const dropReason = (img) => {
-    if (isFloorPlanRef(img.srcRef || img.path)) return 'floor/site plan (filename)';
+    const byName = isUnusableRef(img.srcRef || img.path);
+    if (byName) return byName;
     if (megapixels(img) > MAX_MEGAPIXELS) return `${megapixels(img).toFixed(0)}MP > ${MAX_MEGAPIXELS}MP (stitched plan/panorama — CF limit)`;
     if (img.size > MAX_FILE_BYTES) return `${(img.size / 1e6).toFixed(0)}MB > CF limit`;
     if (looksLikePlan(img.path)) return 'floor/site plan (content: white line-art)';
