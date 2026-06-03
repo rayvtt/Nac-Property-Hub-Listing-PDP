@@ -68,6 +68,23 @@ const MIN_BYTES_PER_PIXEL = 0.05;   // Brochure abstract graphics (waves, colour
                                     // far below 0.05 bytes/pixel because of large flat regions.
                                     // Real photos sit at 0.1-0.3 bytes/pixel.
 
+// Cloudflare Images upload limits: 20 MB file, 100 megapixels. We also drop
+// anything that looks like a floor/site plan or a stitched panorama — these
+// must NEVER become a hero/cover or a gallery image (user-facing rule), and the
+// huge stitched plans (e.g. 23000×6134 = 141 MP, 89 MB) blow the CF limits and
+// fail the upload (error 5413/5443) anyway.
+const MAX_MEGAPIXELS = 45;          // real photos from these sources cap ~16-20 MP; 45+ MP is a
+                                    // stitched plan/diagram/panorama, not a shootable hero
+const MAX_FILE_BYTES = 18_000_000;  // under CF's 20 MB hard cap, leaving margin
+const MAX_ASPECT_RATIO = 2.6;       // ultra-wide = panorama strip or multi-floor plan board
+
+// Floor / site / unit plans and other line-drawing schematics. Matched against
+// the source filename (Drive) or URL. Drives a hard drop in filterAndRank.
+const FLOORPLAN_RX = /(floor[\s_-]*plan|floor[\s_-]*plate|site[\s_-]*plan|master[\s_-]*plan|masterplan|unit[\s_-]*plan|apartment[\s_-]*plan|key[\s_-]*plan|level[\s_-]*\d|\btypical\b|podium|\bplan\b|\bplans\b|\bfp\d|schedule|elevation|section[\s_-]*drawing|floorplan)/i;
+function isFloorPlanRef(srcRef) {
+  return FLOORPLAN_RX.test(String(srcRef || '').toLowerCase());
+}
+
 // ─── CLI parsing ────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
 const flag = (name) => args.includes(name);
@@ -291,7 +308,7 @@ function classifyImage(srcRef) {
 
   // OVERVIEW — exterior building, neighbourhood, area context
   if (/\/(external|exterior)/.test(lc)) return 'overview';
-  if (/(townhouses|current-phase-image|phase-thumb|aerial|outdoor|site-plan|building|courtyard)/.test(lc)) return 'overview';
+  if (/(townhouses|current-phase-image|phase-thumb|aerial|outdoor|building|courtyard)/.test(lc)) return 'overview';
   if (/(neighbourhood|park-life|connections-map|burgess-park|food-drink|cultural|kia-oval|cricket)/.test(lc)) return 'overview';
   if (/thames|river/.test(lc)) return 'overview';
   if (/(amenity-image|facilities-image)/.test(lc)) return 'overview'; // generic building facility renders
@@ -315,11 +332,37 @@ async function filterAndRank(candidates) {
   }
   // Dedupe by content hash
   const seen = new Set();
-  const unique = enriched.filter(img => {
+  const deduped = enriched.filter(img => {
     if (seen.has(img.hash)) return false;
     seen.add(img.hash);
     return true;
   });
+
+  // Hard-drop floor/site plans, oversized stitched panoramas, and anything that
+  // would blow Cloudflare's upload limits. Floor plans must never reach a hero
+  // or gallery slot (user-facing rule); the giant stitched plans also fail the
+  // CF upload (5413/5443) so dropping them lets real photos win the slots.
+  const megapixels = (img) => img.pixels / 1_000_000;
+  const aspect = (img) => img.width / Math.max(1, img.height);
+  const dropReason = (img) => {
+    if (isFloorPlanRef(img.srcRef || img.path)) return 'floor/site plan (filename)';
+    if (megapixels(img) > MAX_MEGAPIXELS) return `${megapixels(img).toFixed(0)}MP > ${MAX_MEGAPIXELS}MP (stitched plan/panorama)`;
+    if (img.size > MAX_FILE_BYTES) return `${(img.size / 1e6).toFixed(0)}MB > CF limit`;
+    if (aspect(img) > MAX_ASPECT_RATIO) return `aspect ${aspect(img).toFixed(1)}:1 (panorama/plan board)`;
+    return null;
+  };
+  const unique = [];
+  let dropped = 0;
+  for (const img of deduped) {
+    const reason = dropReason(img);
+    if (reason) {
+      dropped++;
+      console.log(`     ✂ dropped ${img.src}/${path.basename(String(img.srcRef || img.path))} — ${reason}`);
+    } else {
+      unique.push(img);
+    }
+  }
+  if (dropped) console.log(`     ✂ excluded ${dropped} floor-plan/oversize candidate(s)`);
   // Filter cascade (two-pass — strict first, relaxed only if shortage):
   //   Strict:  width ≥ 1500, landscape, ≥150KB, ≥0.05 b/px
   //   Relaxed: width ≥ 1000, landscape, ≥80KB,  ≥0.04 b/px
