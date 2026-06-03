@@ -5,3 +5,4 @@
 2026-06-03T15:40:00Z chat: dry pass over all AU editorial — fixed postcoded-district matcher
 2026-06-03T15:55:00Z chat: personalise editorial for ALL AU listings (real write done, ~49 rows)
 2026-06-03T16:05:00Z chat: propagate personalised AU editorial + 4 re-hero'd images to HTML/WP — sync-notion then sync-wp
+2026-06-03T18:00:47Z chat: validate Imunify360 retry+gate end-to-end
