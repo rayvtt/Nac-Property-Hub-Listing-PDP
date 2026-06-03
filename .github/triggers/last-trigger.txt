@@ -33,3 +33,4 @@
 2026-06-03T06:45:00Z chat: GOOGLE_SERVICE_ACCOUNT_JSON secret now set (+ PR #221 prefers SA) — re-fire sync-images; SA auth should read the shared Drive folders → brochure images → Cloudflare → Notion → sync-notion patches heroes/gallery/CLP
 2026-06-03T08:30:00Z chat: SA key re-pasted (prior value failed JSON.parse) — re-fire sync-images; SA should now auth + read the 3 AU Drive folders → brochures → Cloudflare → Notion
 2026-06-03T08:55:00Z chat: PR #222 merged (sync-images now pulls loose CGI images from Drive, BFS 4 levels) — re-fire sync-images; should collect the CGI renders → Cloudflare → Notion → sync-notion patches heroes/gallery/CLP
+2026-06-03T09:06:00Z chat: CGI renders now on Cloudflare + Notion for all 3 AU listings (natura 4096x2730, zetland 3280x1848, yarra 4096x2784) — fire sync-notion + sync-notion-clp + sync-wp + sync-wp-clp to patch heroes/gallery/CLP carousel + push to WordPress
