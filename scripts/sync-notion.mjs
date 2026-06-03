@@ -243,7 +243,15 @@ function fmtUsd(n) { return '$' + Math.round(Number(n)).toLocaleString('en-US');
 // Band shape: { en, vi, from (USD number), units (int) }. Shows the entry
 // ("from") price; "from" is net of the 3-yr/4% sublease per the source sheet.
 function renderPriceBands(bands) {
-  return bands.map(b => `
+  // Order bands smallest → largest: studio · 1BR · 2BR · 3BR · 4BR · penthouse.
+  const rank = (b) => {
+    const s = (b.en || '').toLowerCase();
+    if (s.includes('studio')) return 0;
+    if (s.includes('penthouse') || s.includes('duplex')) return 90;
+    const m = s.match(/(\d+)\s*bed/) || s.match(/\b(\d)\s*\+\s*1\b/);
+    return m ? parseInt(m[1], 10) : 50;
+  };
+  return [...bands].sort((a, b) => rank(a) - rank(b)).map(b => `
             <div class="nac-band">
               <div class="nac-band-type"><span data-vi>${esc(b.vi)}</span><span data-en>${esc(b.en)}</span></div>
               <div class="nac-band-price"><span class="nac-band-lead"><span data-vi>từ</span><span data-en>from</span></span> ${fmtUsd(b.from)}</div>
