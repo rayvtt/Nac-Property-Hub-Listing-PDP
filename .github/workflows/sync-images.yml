@@ -72,6 +72,12 @@ jobs:
           # NB: this step runs in working-directory: scripts, so reference the
           # trigger file via $GITHUB_WORKSPACE (repo root), not a relative path.
           LAST_TRIGGER="$(tail -n1 "$GITHUB_WORKSPACE/.github/triggers/last-trigger.txt" 2>/dev/null || true)"
+          # Single-slug re-pick: "sync-images:only:<slug>" → --slug <slug> --replace
+          ONLY="$(echo "$LAST_TRIGGER" | sed -n 's/.*sync-images:only:\([a-z0-9-]\{1,\}\).*/\1/p')"
+          if [ -n "$ONLY" ]; then
+            echo "trigger requested single-slug re-pick: $ONLY"
+            ARGS="--slug $ONLY --replace"
+          fi
           if echo "$LAST_TRIGGER" | grep -qi 'sync-images:replace'; then
             echo "trigger requested --replace (full re-pick)"
             ARGS="$ARGS --replace"
