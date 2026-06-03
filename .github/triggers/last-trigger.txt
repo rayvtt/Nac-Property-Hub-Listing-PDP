@@ -12,3 +12,4 @@
 2026-06-03T14:05:00Z chat: re-fire AU image re-pick now that the $GITHUB_WORKSPACE path fix landed — sync-images:replace:Australia
 2026-06-03T14:13:25Z chat: re-sync AU atlas with label_anchor=end fan layout
 2026-06-03T14:15:31Z chat: push AU anchor=end atlas to WP
+2026-06-03T14:48:00Z chat: AU image re-pick done (floor plans/maps/lots excluded; 3 listings re-hero'd in Notion) — propagate to HTML via sync-notion then WP via sync-wp
