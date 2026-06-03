@@ -123,6 +123,9 @@ function extractProperty(page) {
     cons: readJsonField(p['⚠️ Cons JSON']),
     process: readJsonField(p['🔄 Process JSON']),
     subScores: readJsonField(p['📊 Sub-Scores JSON']),
+    priceBands: readJsonField(p['💲 Price Bands JSON']),
+    handoverEn: richText(p['🔑 Handover EN']),
+    handoverVi: richText(p['🔑 Handover VI']),
     tags: readMultiSelect(p['Tags']),
     hubStatus: readSelect(p['Hub Status']),
   };
@@ -233,6 +236,19 @@ function renderProcess(steps) {
             </div>
           </div>`;
   }).join('\n          ');
+}
+
+function fmtUsd(n) { return '$' + Math.round(Number(n)).toLocaleString('en-US'); }
+// Residence Mix & Indicative Pricing — one card per unit-type band.
+// Band shape: { en, vi, from (USD number), units (int) }. Shows the entry
+// ("from") price; "from" is net of the 3-yr/4% sublease per the source sheet.
+function renderPriceBands(bands) {
+  return bands.map(b => `
+            <div class="nac-band">
+              <div class="nac-band-type"><span data-vi>${esc(b.vi)}</span><span data-en>${esc(b.en)}</span></div>
+              <div class="nac-band-price"><span class="nac-band-lead"><span data-vi>từ</span><span data-en>from</span></span> ${fmtUsd(b.from)}</div>
+              ${b.units ? `<div class="nac-band-units">${b.units} <span data-vi>căn</span><span data-en>${Number(b.units) > 1 ? 'units' : 'unit'}</span></div>` : ''}
+            </div>`).join('\n          ');
 }
 
 function renderDonutRows(scores) {
@@ -407,6 +423,8 @@ function patch(html, prop) {
     yield_pct_unit: prop.yieldPct != null ? fmt1(prop.yieldPct) + '%' : null,
     irr_pct_unit: prop.irrPct != null ? fmt1(prop.irrPct) + '%' : null,
     coc_pct_unit: prop.cocPct != null ? fmt1(prop.cocPct) + '%' : null,
+    handover_en: prop.handoverEn,
+    handover_vi: prop.handoverVi,
   };
   for (const [key, value] of Object.entries(textMap)) {
     if (value == null || value === '') continue;
@@ -513,6 +531,12 @@ function patch(html, prop) {
     const enriched = enrichSubScores(prop.subScores);
     $(`script[data-notion-json="sub_scores"]`).text(JSON.stringify(enriched));
     $(`[data-notion-list="donut_rows"]`).html(renderDonutRows(prop.subScores));
+  }
+  // Residence Mix & Indicative Pricing — only revealed when the listing has
+  // band data (TR inventory). Stays hidden on every other listing.
+  if (prop.priceBands && prop.priceBands.length) {
+    $(`[data-notion-list="price_bands"]`).html(renderPriceBands(prop.priceBands));
+    $(`[data-notion-when="price_bands"]`).removeAttr('hidden');
   }
 
   // ROI sim data attributes (on the section root)
