@@ -233,6 +233,23 @@ Notion Hub Status → Live
 
 Total end-to-end "Hub Status → Live" to fully-populated WP page: ~10–15 min, zero manual triggers.
 
+## Listing data completeness — back-fill EVERY Notion field
+
+**A new listing is not "done" until every applicable field on its Property Listings row is filled.** Empty fields don't error — they silently fall back to the PDP template's placeholder values, which is worse than blank. (Cautionary example: the 2026-06 Australia batch — `natura-macquarie-park`, `downtown-zetland`, `yarra-park-alphington` — shipped with the template's default **IRR 13.8% / Cash-on-Cash 8.1%** showing identically on all three, plus empty Pros/Cons/Features/Sub-Scores/Process sections, **Monthly Rental Income**, **Payback Years**, and **NAC Note**. Treat a half-filled row as a bug, not a draft.)
+
+Author all of these at creation time. Only the *italicised* ones are auto-filled by the pipeline:
+
+- **Financials (numeric):** `Purchase Price` · `Yield %` · `IRR %` · `Cash-on-Cash %` · `ROI %` · `Cash Flow` · `Monthly Rental Income` · `Monthly Expenses` · `Payback Years` · `Price Per M2` · `Minimum Hold Period`
+- **Taxonomy / gate:** `Country` · `Currency` · `Region` · `Region/City` · `📍 District` · `🏨 Hub Type` · `🛂 Immigration Type` · `Investment Program` · `Exit Strategy` · `Tags` · `Freehold` · `🌟 Hotel-Branded` · `💸 Tax-Friendly` · `Status` · `Hub Status` · `🔗 Slug` · *`Listing URL`* · *`Property ID`* (auto)
+- **Editorial — bilingual VI + EN:** `Excerpt` · `📝 Desc` · `🏷️ Tagline` · `📜 Statement` · `✦ Brand` + `✦ Brand Intro` · `🌍 Market` · `🌏 Key Markets` · `🏖️ Beach` · `✈️ Airport` · `📈 Property YoY` · `💬 NAC Note` · `Name VI`
+- **Score + JSON metadata (the most-missed — fill these):** `⭐ NAC Score` · `📊 Sub-Scores JSON` · `✅ Pros JSON` · `⚠️ Cons JSON` · `✨ Features JSON` · `🔄 Process JSON`
+- **Cine titles:** `🎬 Cine 1/2/3 VI`+`EN` — fill in Notion, **or** leave blank ONLY when `ANTHROPIC_API_KEY` has credit (the generator fills blanks; on a $0 balance they stay empty).
+- **Images (pipeline-filled):** *`Image URL`* · *`🖼️ Image 1-4`* · *`Mobile Image URL`* come from `sync-images` — but you must set **`GS Source Folder`** (or `🌐 Berkeley Page URL` / `📷 Image URLs JSON`) so it has a source to pull from.
+
+**JSON field shapes:** before writing the JSON fields, `notion-fetch` an already-complete listing (e.g. `pullman-panama-city`, `nobu-da-nang`, `grand-marina-…`) and copy the exact structure — `✅ Pros JSON` / `⚠️ Cons JSON` / `✨ Features JSON` / `🔄 Process JSON` / `📊 Sub-Scores JSON` each have a shape the PDP renderer expects; a malformed or empty value renders a blank or placeholder section. `📊 Sub-Scores JSON` must align with `⭐ NAC Score` (drives the count-up donut) — see `NAC-PDP-DESIGN.md`.
+
+**Before flipping `Hub Status → Live`, verify the row has no empty applicable field.** When generating a batch, run this completeness check on every row first — going Live triggers the public WP page, so placeholder numbers go live with it.
+
 ## Listing URL convention
 
 Canonical NAC Listing URL pattern (stored in Notion `Listing URL`, parsed by `sync-wp.mjs`):
