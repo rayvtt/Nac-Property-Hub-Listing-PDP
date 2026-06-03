@@ -95,6 +95,50 @@ Templates and references:
 - Manual single-file run: `cd scripts && ANTHROPIC_API_KEY=... npm run titles -- <slug>` (no `<slug>` = all files).
 - Cost: ~$0.001/image with Haiku 4.5; a typical PDP has 3 cine blocks (≈$0.003 per scaffold).
 
+## SEO / GEO / LLM scaffolding (auto, per listing)
+
+The PDP template ships a full SEO package in `<head>` — `RealEstateListing` +
+`FAQPage` + `BreadcrumbList` JSON-LD, OG/Twitter cards — but as `{token}`
+placeholders. `sync-notion.mjs::patchHeadSeo()` fills the *prose* half (title,
+meta description, keywords, canonical, og/twitter title+desc, JSON-LD
+name/description/url). **`scripts/seo-geo-llm.mjs` fills the *structured* half**
+(this used to ship broken on 67 PDPs as literal `{lat}` / `{purchase price as
+number}` / `{Hotel/Brand name}` / `{Amenity}` / empty FAQ):
+
+- **`completeStructuredData($, prop)`** — called at the end of `patch()` in
+  `sync-notion.mjs`. Completes, by `@type`:
+  - `RealEstateListing` → `geo`, `offers` (real price + the listing's actual
+    `Currency`, not hardcoded USD), `brand`, `amenityFeature` (from `✨ Features
+    JSON`), `datePosted`/`validThrough` (token-gated so written once, never
+    churned), ISO-3166 `addressCountry`, hero `image`.
+  - `FAQPage` → 5 Q&As rebuilt from Notion financials/location/score. Only emits
+    questions it can answer with real data — never a `{token}` answer.
+  - `BreadcrumbList` → country + property names/hrefs.
+  - **Idempotent**: deterministic from Notion fields → re-running yields
+    byte-identical output (verified).
+- **Geo**: the Notion DB has no lat/lng field, so `resolveGeo()` geocodes
+  City+District+Country via OpenStreetMap **Nominatim**, cached in
+  `scripts/geocode-cache.json` (committed; next run is a pure cache hit, zero
+  network). Geocode failure → the `geo` block is **omitted** (absent geo is
+  valid; `{lat}` is not).
+- **`llms.txt`** (repo root) is regenerated from all Live rows on every sync —
+  an [llmstxt.org](https://llmstxt.org) discovery index (one bullet per listing:
+  canonical URL + brand/location/price/yield/NAC-score). NOTE: served at GH
+  Pages today; needs WP upload to sit at `nomadassetcollective.com/llms.txt`.
+- **Tracking + notify** (`scripts/seo-scaffold-log.mjs`, run at the tail of
+  `create-pdp.yml` for each `new_slugs`): records an **Applied** task in the
+  `🚀 NAC - SEO Tasks` DB (`ada6bd2f8c324773b0d026f9db78d3a2`, Surface=PDP,
+  Category=Schema) and posts a **comment on the listing's Notion row** as the
+  notification. Idempotent (skips slugs already logged); never hard-fails the
+  pipeline. Requires the NAC PDP Sync integration to have **Insert comments**
+  capability for the comment to post — the task row records either way.
+- **Audit guard**: `seo-audit.mjs` now flags `schemaBroken` (P0) when any
+  JSON-LD block has `{token}` placeholders or fails to parse — presence-only
+  checks missed the original rot.
+
+`seo-geo-llm.mjs` is pure (cheerio + Notion field shape, no Notion client), so
+it unit-tests offline against the template / any PDP.
+
 ## Image pipeline (PDF / Berkeley web → Cloudflare Images → Notion)
 
 This is the production-ready replacement for the manual "screenshot from brochure → resize → upload to WP media" workflow. End-to-end: source images → extract → classify → upload → write URLs back to Notion. The next `sync-notion.yml` cron tick then propagates the URLs into the HTML files everywhere they appear.

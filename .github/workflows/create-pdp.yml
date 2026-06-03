@@ -80,12 +80,12 @@ jobs:
         run: |
           git config user.name "nac-notion-bot"
           git config user.email "nac-notion-bot@users.noreply.github.com"
-          git add properties/ index.html
+          git add properties/ index.html llms.txt scripts/geocode-cache.json
           if git diff --cached --quiet; then
             echo "No new PDP files or index changes to commit."
             exit 0
           fi
-          git commit -m "auto: scaffold PDP HTML + rebuild index for new Live listings"
+          git commit -m "auto: scaffold PDP HTML + SEO/GEO/LLM data + rebuild index for new Live listings"
 
           for attempt in 1 2 3 4 5; do
             if git push origin main; then
@@ -113,3 +113,12 @@ jobs:
             echo "Dispatching sync-images.yml for $slug"
             gh workflow run sync-images.yml -f only_slug="$slug"
           done
+
+      - name: Track + notify SEO/GEO/LLM scaffold (Notion)
+        if: steps.scaffold.outputs.new_slugs != ''
+        working-directory: scripts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9' }}
+          SEO_TASKS_DB_ID: ${{ vars.SEO_TASKS_DB_ID || 'ada6bd2f8c324773b0d026f9db78d3a2' }}
+        run: node seo-scaffold-log.mjs "${{ steps.scaffold.outputs.new_slugs }}"

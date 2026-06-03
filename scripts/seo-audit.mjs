@@ -226,17 +226,23 @@ async function extractSignals(pageUrl) {
   })).get();
 
   const schemaTypes = [];
+  // schemaBroken: a JSON-LD block that fails to parse OR still contains a
+  // `{Token}` template placeholder. Presence-only checks miss this — it's how
+  // 67 PDPs shipped with `{lat}`/`{purchase price as number}` in valid-looking
+  // <script> tags. Flag it so the applier/scaffolder can re-complete the page.
+  let schemaBroken = false;
   $('script[type="application/ld+json"]').each((_, el) => {
     const txt = $(el).text().trim();
     if (!txt) return;
+    if (/\{[A-Za-z][^}\n]{0,48}\}/.test(txt)) schemaBroken = true; // unfilled placeholder
     try {
       const json = JSON.parse(txt);
-      const arr = Array.isArray(json) ? json : [json];
+      const arr = Array.isArray(json) ? json : (json['@graph'] || [json]);
       arr.forEach((node) => {
-        const t = node['@type'];
+        const t = node && node['@type'];
         if (t) schemaTypes.push(...(Array.isArray(t) ? t : [t]));
       });
-    } catch {}
+    } catch { schemaBroken = true; } // malformed JSON-LD
   });
 
   const bodyText = $('body').text().replace(/\s+/g, ' ').trim();
@@ -275,6 +281,7 @@ async function extractSignals(pageUrl) {
     h2sSample: h2s.slice(0, 5),
     hreflang,
     schemaTypes,
+    schemaBroken,
     bodyWordCount,
     imgsTotal,
     imgsMissingAlt,
@@ -557,6 +564,16 @@ function heuristicTasks(signals, gscByPage, ga4ByUrl, theme) {
           ? 'Add RealEstateListing + BreadcrumbList + FAQPage JSON-LD blocks.'
           : 'Add at minimum WebPage + BreadcrumbList JSON-LD.',
         impactScore: impactBase * 4,
+      });
+    } else if (sig.schemaBroken) {
+      push({
+        title: `Broken/placeholder JSON-LD — ${slug || sig.url}`,
+        priority: 'P0', category: 'Schema', autoApplicable: true,
+        issue: 'JSON-LD contains unfilled {Token} placeholders or fails to parse. Search engines drop invalid structured data and LLMs mis-read it.',
+        proposedFix: surface === 'PDP'
+          ? 'Re-run sync-notion.mjs (seo-geo-llm.mjs) to complete RealEstateListing/FAQPage/BreadcrumbList from Notion.'
+          : 'Replace placeholder tokens with real values.',
+        impactScore: impactBase * 6,
       });
     }
     if (!sig.ogImage) {

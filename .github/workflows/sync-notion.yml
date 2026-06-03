@@ -66,12 +66,12 @@ jobs:
         run: |
           git config user.name "nac-notion-bot"
           git config user.email "nac-notion-bot@users.noreply.github.com"
-          if git diff --quiet -- properties/ index.html; then
+          if git diff --quiet -- properties/ index.html llms.txt scripts/geocode-cache.json; then
             echo "No HTML changes."
             exit 0
           fi
-          git add properties/ index.html
-          git commit -m "chore(notion-sync): refresh PDP content from Notion"
+          git add properties/ index.html llms.txt scripts/geocode-cache.json
+          git commit -m "chore(notion-sync): refresh PDP content + SEO/GEO/LLM structured data from Notion"
 
           # Retry push up to 5 times — rebase on top of main if it has moved
           # while this run was working. This prevents silent skips when other
