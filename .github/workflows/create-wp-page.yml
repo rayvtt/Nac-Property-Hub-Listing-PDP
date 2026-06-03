@@ -21,7 +21,9 @@ on:
     types: [notion-update, new-listing]
 
 concurrency:
-  group: create-wp-page
+  # Shared WP-REST serialisation gate (see sync-wp-clp.yml for rationale):
+  # one WordPress-touching run at a time so Imunify360 never sees a swarm.
+  group: wordpress-rest
   cancel-in-progress: false
 
 permissions:

@@ -24,7 +24,14 @@ on:
     types: [notion-update, new-country]
 
 concurrency:
-  group: sync-wp-clp
+  # Shared across every workflow that calls the WordPress REST API. WP sits
+  # behind Imunify360 bot-protection that trips when several GitHub-runner IPs
+  # hit it at once (the */5 cron fires create-wp-page + create-wp-clp-page +
+  # sync-wp-clp simultaneously). A shared group serialises all WP I/O to one
+  # run at a time. cancel-in-progress:false queues; GitHub keeps 1 running + 1
+  # pending, so a run that loses the race is dropped — safe here because every
+  # WP workflow is idempotent and re-fires on the next */5 tick.
+  group: wordpress-rest
   cancel-in-progress: false
 
 permissions:
