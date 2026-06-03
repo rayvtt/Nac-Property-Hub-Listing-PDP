@@ -276,13 +276,14 @@ function renderCompareRow(l) {
 function renderPin(c, count) {
   const x = c.pinX, y = c.pinY;
   const lblX = x + (c.labelOffsetX ?? 14);
+  const lblY = y + (c.labelOffsetY ?? 0);
   const word = count === 1 ? 'Listing' : 'Listings';
   return `        <g class="cl-pin-group" onclick="window.clFilterCity &amp;&amp; clFilterCity('${c.slug}')">
           <circle class="cl-pin-halo" cx="${x}" cy="${y}" r="7"></circle>
           <circle class="cl-pin-ring" cx="${x}" cy="${y}" r="6"></circle>
           <circle class="cl-pin-core" cx="${x}" cy="${y}" r="3"></circle>
-          <text class="cl-pin-lbl" x="${lblX}" y="${y - 2}" text-anchor="start">${escText(c.name)}</text>
-          <text class="cl-pin-cnt" x="${lblX}" y="${y + 10}" text-anchor="start">${count} ${word}</text>
+          <text class="cl-pin-lbl" x="${lblX}" y="${lblY - 2}" text-anchor="start">${escText(c.name)}</text>
+          <text class="cl-pin-cnt" x="${lblX}" y="${lblY + 10}" text-anchor="start">${count} ${word}</text>
         </g>`;
 }
 
@@ -674,6 +675,7 @@ async function parseBody(notion, pageId) {
         else if (key === 'pin_x') city.pinX = Number(val);
         else if (key === 'pin_y') city.pinY = Number(val);
         else if (key === 'label_offset_x') city.labelOffsetX = Number(val);
+        else if (key === 'label_offset_y') city.labelOffsetY = Number(val);
         else if (key === 'lat') city.lat = val;
         else if (key === 'lng') city.lng = val;
         else if (key === 'match') city.match = val.split(',').map(s => s.trim()).filter(Boolean);
@@ -740,6 +742,7 @@ function defaultBodyBlocks(meta, countryEn) {
     block.bullet('pin_x: 160'),
     block.bullet('pin_y: 210'),
     block.bullet('label_offset_x: 14'),
+    block.bullet('label_offset_y: 0'),
   ];
 }
 
