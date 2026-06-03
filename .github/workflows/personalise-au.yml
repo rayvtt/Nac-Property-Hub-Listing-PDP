@@ -1,0 +1,73 @@
+name: Personalise AU Listings (editorial)
+
+# Rewrites templated AU editorial (tagline / NAC note / Pros·Cons·Features /
+# Market / Brand Intro / Desc) with suburb-grounded copy. Notion-only writes;
+# the next sync-notion tick propagates to HTML, then sync-wp to WordPress.
+#
+# workflow_dispatch is 403 for the app integration, so a trigger-file push
+# drives it via a token on the LAST trigger line:
+#   personalise-au:slug-a,slug-b   → just those slugs
+#   personalise-au:all             → every AU Live listing
+# Append ":dry" to preview in the log without writing (e.g. personalise-au:all:dry).
+on:
+  workflow_dispatch:
+    inputs:
+      sample_slugs:
+        description: "Comma/space slugs (empty = all AU)"
+        required: false
+        default: ""
+      dry_run:
+        description: "true = log only"
+        required: false
+        default: "false"
+  push:
+    branches: [main]
+    paths:
+      - ".github/triggers/**"
+      - "scripts/personalise-au.mjs"
+
+concurrency:
+  group: personalise-au
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  personalise:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+      - name: Resolve token
+        id: r
+        run: |
+          SAMPLE="${{ github.event.inputs.sample_slugs }}"
+          DRY="${{ github.event.inputs.dry_run }}"
+          # On a push to main (script change) with no token, do nothing.
+          TOK="$(tail -n1 "$GITHUB_WORKSPACE/.github/triggers/last-trigger.txt" 2>/dev/null | sed -n 's/.*personalise-au:\([A-Za-z0-9,_:-]*\).*/\1/p')"
+          if [ -n "$TOK" ]; then
+            case "$TOK" in *:dry) DRY=true; TOK="${TOK%:dry}";; esac
+            if [ "$TOK" != "all" ]; then SAMPLE="$(echo "$TOK" | tr ',' ' ')"; fi
+            echo "run=1" >> "$GITHUB_OUTPUT"
+          elif [ -n "${{ github.event_name }}" ] && [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "run=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=0" >> "$GITHUB_OUTPUT"
+          fi
+          echo "sample=$SAMPLE" >> "$GITHUB_OUTPUT"
+          echo "dry=$DRY" >> "$GITHUB_OUTPUT"
+      - name: Personalise
+        if: steps.r.outputs.run == '1'
+        working-directory: scripts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9' }}
+          SAMPLE_SLUGS: ${{ steps.r.outputs.sample }}
+          DRY_RUN: ${{ steps.r.outputs.dry }}
+        run: node personalise-au.mjs
