@@ -1,7 +1,7 @@
-2026-06-03T12:46:00Z chat: 47 new AU listings created Live (bulk generator) — fire full pipeline
 2026-06-03T13:40:00Z chat: re-pick all Australia images with floor-plan exclusion + CF size guard
-2026-06-03T14:48:00Z chat: AU image re-pick done (floor plans/maps/lots excluded; 3 listings re-hero'd in Notion)
+2026-06-03T14:48:00Z chat: AU image re-pick done (floor plans/maps/lots excluded; 3 listings re-hero'd)
 2026-06-03T15:00:00Z chat: push patched AU HTML to WordPress — sync-wp
 2026-06-03T15:20:00Z chat: personalise editorial — sample batch (4 listings)
-2026-06-03T15:40:00Z chat: dry pass over all AU editorial — 43/50 matched, fixed postcoded-district matcher
-2026-06-03T15:55:00Z chat: personalise editorial for ALL AU listings (real write) — personalise-au:all
+2026-06-03T15:40:00Z chat: dry pass over all AU editorial — fixed postcoded-district matcher
+2026-06-03T15:55:00Z chat: personalise editorial for ALL AU listings (real write done, ~49 rows)
+2026-06-03T16:05:00Z chat: propagate personalised AU editorial + 4 re-hero'd images to HTML/WP — sync-notion then sync-wp
