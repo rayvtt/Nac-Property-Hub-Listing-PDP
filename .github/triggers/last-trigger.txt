@@ -5,3 +5,4 @@
 2026-06-03T12:43:47Z chat: retry sync-wp-clp (prev runner blocked by Imunify360)
 2026-06-03T12:46:00Z chat: 47 new AU listings created Live (bulk generator) — fire full pipeline
 2026-06-03T12:52:00Z chat: PR #229 (uniform AU WP titles "Name — City/Region" + Notion page covers) — fire create-wp-page (retitle existing + create remaining) + sync-images (backfill covers, pull remaining CGIs) + sync-notion/clp + sync-wp(+clp)
+2026-06-03T13:40:00Z chat: re-pick all Australia images with the new floor-plan exclusion (content + filename) and CF size guard — sync-images:replace:Australia
