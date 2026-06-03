@@ -264,9 +264,8 @@ function renderPriceBands(bands) {
   };
   return [...bands].sort((a, b) => rank(a) - rank(b)).map(b => `
             <div class="nac-band">
-              <div class="nac-band-type"><span data-vi>${esc(b.vi)}</span><span data-en>${esc(b.en)}</span></div>
-              <div class="nac-band-price"><span class="nac-band-lead"><span data-vi>từ</span><span data-en>from</span></span> ${fmtUsd(b.from)}</div>
-              ${b.units ? `<div class="nac-band-units">${b.units} <span data-vi>căn</span><span data-en>${Number(b.units) > 1 ? 'units' : 'unit'}</span></div>` : ''}
+              <span class="nac-band-type"><span data-vi>${esc(b.vi)}</span><span data-en>${esc(b.en)}</span></span>
+              <span class="nac-band-price"><span class="nac-band-lead"><span data-vi>từ</span><span data-en>from</span></span>${fmtUsd(b.from)}</span>
             </div>`).join('\n          ');
 }
 
