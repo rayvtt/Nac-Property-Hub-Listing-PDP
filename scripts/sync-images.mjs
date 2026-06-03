@@ -437,18 +437,25 @@ function pickFinalFive(ranked) {
 // account "Just Work" without per-folder service-account adds. Falls back
 // to the service account JSON when OAuth isn't configured.
 function getDriveClient() {
+  // Service account first when its key is present: SA keys never expire, so the
+  // automation needs no periodic re-auth. User-delegated OAuth (GSC_OAUTH_*) is
+  // the fallback — its refresh token CAN expire/revoke (→ invalid_grant), so
+  // it's not used as the primary path. The GSC_OAUTH_* secrets stay in place
+  // (still consumed by seo-audit); they're just not preferred for Drive here.
+  if (GOOGLE_SERVICE_ACCOUNT_JSON) {
+    const credentials = JSON.parse(GOOGLE_SERVICE_ACCOUNT_JSON);
+    const auth = new google.auth.GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+    });
+    return google.drive({ version: 'v3', auth });
+  }
   if (HAS_DRIVE_OAUTH) {
     const auth = new google.auth.OAuth2(GSC_OAUTH_CLIENT_ID, GSC_OAUTH_CLIENT_SECRET);
     auth.setCredentials({ refresh_token: GSC_OAUTH_REFRESH_TOKEN });
     return google.drive({ version: 'v3', auth });
   }
-  if (!GOOGLE_SERVICE_ACCOUNT_JSON) throw new Error('No Drive auth configured (need GSC_OAUTH_* or GOOGLE_SERVICE_ACCOUNT_JSON)');
-  const credentials = JSON.parse(GOOGLE_SERVICE_ACCOUNT_JSON);
-  const auth = new google.auth.GoogleAuth({
-    credentials,
-    scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-  });
-  return google.drive({ version: 'v3', auth });
+  throw new Error('No Drive auth configured (need GOOGLE_SERVICE_ACCOUNT_JSON or GSC_OAUTH_*)');
 }
 
 function parseFolderIdFromUrl(url) {
