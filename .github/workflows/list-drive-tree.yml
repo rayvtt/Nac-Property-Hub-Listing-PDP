@@ -1,0 +1,53 @@
+name: List Drive Tree (discovery)
+
+# Prints a Drive folder tree to the Actions log using the service account, so
+# new project folders that the chat Drive connector can't enumerate (e.g. under
+# "03.AUSTRALIA 2026") can be discovered. Read-only.
+on:
+  workflow_dispatch:
+    inputs:
+      root:
+        description: "Drive folder ID to walk (blank = 03.AUSTRALIA 2026)"
+        required: false
+        default: ""
+      depth:
+        description: "Max recursion depth (default 6)"
+        required: false
+        default: ""
+  push:
+    branches: [main]
+    paths:
+      - "scripts/list-drive-tree.mjs"
+      - ".github/triggers/drive-tree.txt"
+
+concurrency:
+  group: list-drive-tree
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  list:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install npm deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+
+      - name: Print Drive tree
+        working-directory: scripts
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          GSC_OAUTH_CLIENT_ID: ${{ secrets.GSC_OAUTH_CLIENT_ID }}
+          GSC_OAUTH_CLIENT_SECRET: ${{ secrets.GSC_OAUTH_CLIENT_SECRET }}
+          GSC_OAUTH_REFRESH_TOKEN: ${{ secrets.GSC_OAUTH_REFRESH_TOKEN }}
+          DRIVE_TREE_ROOT: ${{ github.event.inputs.root }}
+          DRIVE_TREE_DEPTH: ${{ github.event.inputs.depth }}
+        run: node list-drive-tree.mjs
