@@ -47,6 +47,6 @@ jobs:
           GSC_OAUTH_CLIENT_SECRET: ${{ secrets.GSC_OAUTH_CLIENT_SECRET }}
           GSC_OAUTH_REFRESH_TOKEN: ${{ secrets.GSC_OAUTH_REFRESH_TOKEN }}
           # First run (on merge) is a DRY RUN. Flip these to publish for real.
-          DRY_RUN: ${{ github.event.inputs.dry_run || 'true' }}
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
           HUB_STATUS: ${{ github.event.inputs.hub_status || 'Live' }}
         run: node generate-au-listings.mjs

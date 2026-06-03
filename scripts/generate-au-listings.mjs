@@ -84,8 +84,12 @@ function tc(s) { return s.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()).r
 function parseName(raw) {
   let n = raw.replace(/-\d{8}T\d{6}Z(-\d+)?(-\d+)?$/i, '').replace(/\s*-\s*B[àa]n giao.*$/i, '').trim();
   let suburb = '', brand = n;
-  const m = n.match(/^([^,–-]+)[,–-]\s*(.+)$/);
+  // Split on comma first, else a SPACED dash (so "668-670" isn't broken).
+  const m = n.match(/^(.+?),\s*(.+)$/) || n.match(/^(.+?)\s[–-]\s(.+)$/);
   if (m) { suburb = m[1].trim(); brand = m[2].trim(); }
+  // Folder naming is inconsistent (some "Suburb, Brand", some "Street, Suburb").
+  // If the left part looks like a street address, treat it as the brand instead.
+  if (/^\d/.test(suburb) && !/^\d/.test(brand)) { const t = suburb; suburb = brand; brand = t; }
   const sKey = suburb.toUpperCase();
   suburb = SUBURB_FIX[sKey] || tc(suburb);
   brand = tc(brand).replace(/\s+/g, ' ').trim();
@@ -121,7 +125,7 @@ function buildProps(p) {
   const city = p.city, type = p.type;
   const [tEn, tVi] = typeWord[type] || typeWord.Condo;
   const f = financials(city, type);
-  const propName = `${brand} — ${suburb}`;
+  const propName = brand.toLowerCase() === suburb.toLowerCase() ? brand : `${brand} — ${suburb}`;
   const slug = slugify(`${brand}-${suburb}`).slice(0, 60);
   const listingUrl = `https://nomadassetcollective.com/property-hub-bat-dong-san/australia/${slug}/`;
   const folderUrl = `https://drive.google.com/drive/folders/${p.id}`;
