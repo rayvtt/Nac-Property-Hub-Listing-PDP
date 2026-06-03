@@ -21,9 +21,9 @@ on:
       - ".github/triggers/**"
 
 concurrency:
-  # Shared WP-REST serialisation gate (see sync-wp-clp.yml for rationale):
-  # one WordPress-touching run at a time so Imunify360 never sees a swarm.
-  group: wordpress-rest
+  # Own group (event-triggered; doesn't share the */5 cron swarm). The wp()
+  # helper carries retry/backoff for Imunify360 (see sync-wp-clp.yml).
+  group: delete-listings
   cancel-in-progress: false
 
 permissions:

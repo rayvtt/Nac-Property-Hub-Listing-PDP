@@ -20,9 +20,10 @@ on:
     types: [notion-update, new-country]
 
 concurrency:
-  # Shared WP-REST serialisation gate (see sync-wp-clp.yml for rationale):
-  # one WordPress-touching run at a time so Imunify360 never sees a swarm.
-  group: wordpress-rest
+  # Own group. Pulled out of the shared `wordpress-rest` gate because the */5
+  # cron swarm caused every 3rd run to be cancelled-while-pending. The wp()
+  # helper now carries retry/backoff for the bot-gate (see sync-wp-clp.yml).
+  group: create-wp-clp-page
   cancel-in-progress: false
 
 permissions:

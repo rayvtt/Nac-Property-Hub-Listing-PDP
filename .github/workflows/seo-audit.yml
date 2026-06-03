@@ -12,9 +12,9 @@ on:
         default: "true"
 
 concurrency:
-  # Shared WP-REST serialisation gate (see sync-wp-clp.yml for rationale):
-  # one WordPress-touching run at a time so Imunify360 never sees a swarm.
-  group: wordpress-rest
+  # Own group (bi-monthly schedule; out-of-band of the */5 swarm). TODO: port
+  # the wp() retry/backoff helper to seo-audit.mjs.
+  group: seo-audit
   cancel-in-progress: false
 
 jobs:
