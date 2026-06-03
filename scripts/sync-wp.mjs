@@ -37,21 +37,75 @@ const notion = new Client({ auth: NOTION_TOKEN });
 
 // ─── WP REST helpers ────────────────────────────────────────────────────────
 
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+// nomadassetcollective.com sits behind Imunify360 bot-protection, which
+// intermittently 403/503s GitHub-runner IPs and sometimes serves a JS-challenge
+// HTML body in place of JSON. Both manifest as transient, whole-run failures
+// that clear on a retry. Retry GETs (idempotent) with exponential backoff;
+// surface the error only after several attempts so a real outage still fails.
 async function wp(pathname, options = {}) {
-  const res = await fetch(`${WP_API}${pathname}`, {
-    ...options,
-    headers: {
-      Authorization: AUTH,
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      ...(options.headers || {}),
-    },
-  });
-  const text = await res.text();
-  if (!res.ok) {
-    throw new Error(`WP ${options.method || 'GET'} ${pathname} → ${res.status} ${res.statusText}: ${text.slice(0, 400)}`);
+  const method = options.method || 'GET';
+  const retryable = method === 'GET';
+  const maxAttempts = retryable ? 5 : 1;
+  let lastErr;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    let res, text;
+    try {
+      res = await fetch(`${WP_API}${pathname}`, {
+        ...options,
+        headers: {
+          Authorization: AUTH,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          ...(options.headers || {}),
+        },
+      });
+      text = await res.text();
+    } catch (e) {
+      lastErr = e; // network-level failure
+      if (attempt < maxAttempts) { await sleep(2000 * 2 ** (attempt - 1)); continue; }
+      throw e;
+    }
+    if (res.ok) {
+      if (!text) return null;
+      try {
+        return JSON.parse(text);
+      } catch {
+        // 200 but non-JSON = Imunify360 challenge page masquerading as success.
+        lastErr = new Error(`WP ${method} ${pathname} → 200 non-JSON (bot challenge?): ${text.slice(0, 120)}`);
+        if (retryable && attempt < maxAttempts) { await sleep(2000 * 2 ** (attempt - 1)); continue; }
+        throw lastErr;
+      }
+    }
+    lastErr = new Error(`WP ${method} ${pathname} → ${res.status} ${res.statusText}: ${text.slice(0, 400)}`);
+    // 403/429/5xx from the bot-gate are transient; retry idempotent GETs.
+    if (retryable && (res.status === 403 || res.status === 429 || res.status >= 500) && attempt < maxAttempts) {
+      await sleep(2000 * 2 ** (attempt - 1));
+      continue;
+    }
+    throw lastErr;
   }
-  return text ? JSON.parse(text) : null;
+  throw lastErr;
+}
+
+// Confirm the WP REST endpoint is actually reachable (not bot-gated) before we
+// interpret "0 candidates" as "page genuinely missing". When Imunify360 blocks
+// the runner, EVERY lookup returns empty, so without this canary the run wrongly
+// reports all 60 listings as "did not match any WP page". Wait it out instead.
+async function waitForWpReachable() {
+  const maxAttempts = 7; // ~5 min total with the backoff below
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      const probe = await wp(`/pages?per_page=1&status=publish`);
+      if (Array.isArray(probe) && probe.length > 0) return true;
+      console.error(`  WP canary: endpoint returned ${Array.isArray(probe) ? probe.length : 'non-array'} page(s) (attempt ${attempt}/${maxAttempts}) — likely bot-gated, waiting…`);
+    } catch (e) {
+      console.error(`  WP canary: ${e.message} (attempt ${attempt}/${maxAttempts})`);
+    }
+    if (attempt < maxAttempts) await sleep(15000 * attempt); // 15s,30s,45s,60s,75s,90s
+  }
+  return false;
 }
 
 const normalizeUrl = (u) => String(u || '').replace(/\/+$/, '').toLowerCase();
@@ -153,6 +207,13 @@ async function syncOne(prop) {
 // ─── Main ───────────────────────────────────────────────────────────────────
 
 async function main() {
+  console.log(`Checking WP REST endpoint is reachable (not bot-gated)…`);
+  if (!await waitForWpReachable()) {
+    console.error('WP REST endpoint never returned pages — bot-gate (Imunify360) or outage. Aborting before mislabeling every listing as missing; re-run will retry.');
+    process.exit(1);
+  }
+  console.log('  WP REST reachable.\n');
+
   console.log(`Fetching Live properties from Notion…`);
   let properties = await fetchLiveProperties();
   if (ONLY_SLUG) properties = properties.filter(p => p.slug === ONLY_SLUG);
