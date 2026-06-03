@@ -37,21 +37,74 @@ if (!NOTION_TOKEN) { console.error('NOTION_TOKEN env var is required'); process.
 const AUTH = 'Basic ' + Buffer.from(`${WP_USER}:${WP_PASS}`).toString('base64');
 const notion = new Client({ auth: NOTION_TOKEN });
 
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+// True when an otherwise-valid JSON body is actually an Imunify360 bot-gate
+// envelope ({"message":"Access denied by Imunify360 …"}) served with HTTP 200.
+// This is the exact shape that previously slipped through as a real response
+// and surfaced as "WP page resolved without an id".
+function isBotGateBody(parsed) {
+  const m = parsed && typeof parsed === 'object' && typeof parsed.message === 'string' ? parsed.message : '';
+  return /imunify360|access denied by|bot-protection/i.test(m);
+}
+
+// nomadassetcollective.com sits behind Imunify360 bot-protection, which
+// intermittently 403/503s GitHub-runner IPs, serves a JS-challenge HTML body
+// in place of JSON, or returns a 200 JSON "access denied" envelope. All three
+// are transient and clear on a retry. Mirrors the proven helper in sync-wp.mjs:
+// retry idempotent GETs with exponential backoff; surface the error only after
+// several attempts so a real outage still fails the run.
 async function wp(pathname, options = {}) {
-  const res = await fetch(`${WP_API}${pathname}`, {
-    ...options,
-    headers: {
-      Authorization: AUTH,
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      ...(options.headers || {}),
-    },
-  });
-  const text = await res.text();
-  if (!res.ok) {
-    throw new Error(`WP ${options.method || 'GET'} ${pathname} → ${res.status} ${res.statusText}: ${text.slice(0, 400)}`);
+  const method = options.method || 'GET';
+  const retryable = method === 'GET';
+  const maxAttempts = retryable ? 5 : 1;
+  let lastErr;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    let res, text;
+    try {
+      res = await fetch(`${WP_API}${pathname}`, {
+        ...options,
+        headers: {
+          Authorization: AUTH,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          ...(options.headers || {}),
+        },
+      });
+      text = await res.text();
+    } catch (e) {
+      lastErr = e; // network-level failure
+      if (attempt < maxAttempts) { await sleep(2000 * 2 ** (attempt - 1)); continue; }
+      throw e;
+    }
+    if (res.ok) {
+      if (!text) return null;
+      let parsed;
+      try {
+        parsed = JSON.parse(text);
+      } catch {
+        // 200 but non-JSON = Imunify360 challenge page masquerading as success.
+        lastErr = new Error(`WP ${method} ${pathname} → 200 non-JSON (bot challenge?): ${text.slice(0, 120)}`);
+        if (retryable && attempt < maxAttempts) { await sleep(2000 * 2 ** (attempt - 1)); continue; }
+        throw lastErr;
+      }
+      // 200 JSON, but it's the Imunify360 "access denied" envelope, not a page.
+      if (isBotGateBody(parsed)) {
+        lastErr = new Error(`WP ${method} ${pathname} → 200 bot-gate envelope: ${parsed.message.slice(0, 120)}`);
+        if (retryable && attempt < maxAttempts) { await sleep(2000 * 2 ** (attempt - 1)); continue; }
+        throw lastErr;
+      }
+      return parsed;
+    }
+    lastErr = new Error(`WP ${method} ${pathname} → ${res.status} ${res.statusText}: ${text.slice(0, 400)}`);
+    // 403/429/5xx from the bot-gate are transient; retry idempotent GETs.
+    if (retryable && (res.status === 403 || res.status === 429 || res.status >= 500) && attempt < maxAttempts) {
+      await sleep(2000 * 2 ** (attempt - 1));
+      continue;
+    }
+    throw lastErr;
   }
-  return text ? JSON.parse(text) : null;
+  throw lastErr;
 }
 
 const normalizeUrl = (u) => String(u || '').replace(/\/+$/, '').toLowerCase();
