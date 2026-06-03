@@ -68,21 +68,39 @@ const MIN_BYTES_PER_PIXEL = 0.05;   // Brochure abstract graphics (waves, colour
                                     // far below 0.05 bytes/pixel because of large flat regions.
                                     // Real photos sit at 0.1-0.3 bytes/pixel.
 
-// Cloudflare Images upload limits: 20 MB file, 100 megapixels. We also drop
-// anything that looks like a floor/site plan or a stitched panorama — these
-// must NEVER become a hero/cover or a gallery image (user-facing rule), and the
-// huge stitched plans (e.g. 23000×6134 = 141 MP, 89 MB) blow the CF limits and
-// fail the upload (error 5413/5443) anyway.
-const MAX_MEGAPIXELS = 45;          // real photos from these sources cap ~16-20 MP; 45+ MP is a
-                                    // stitched plan/diagram/panorama, not a shootable hero
+// A floor/site/unit plan must NEVER become a hero/cover or a gallery image
+// (user-facing rule). They're caught two ways — by filename and by content —
+// because plans come at full photo resolution (e.g. 8000×5565 = 44.5 MP, 1.44
+// aspect, indistinguishable from a real render by dimensions alone). We also
+// cap megapixels/bytes so a giant stitched plan (23000×6134 = 141 MP, 89 MB)
+// can't blow Cloudflare's upload limits (errors 5413/5443).
+const MAX_MEGAPIXELS = 50;          // CF-upload safety; real photos here cap ~16-45 MP
 const MAX_FILE_BYTES = 18_000_000;  // under CF's 20 MB hard cap, leaving margin
-const MAX_ASPECT_RATIO = 2.6;       // ultra-wide = panorama strip or multi-floor plan board
 
 // Floor / site / unit plans and other line-drawing schematics. Matched against
-// the source filename (Drive) or URL. Drives a hard drop in filterAndRank.
+// the source filename (Drive) or URL.
 const FLOORPLAN_RX = /(floor[\s_-]*plan|floor[\s_-]*plate|site[\s_-]*plan|master[\s_-]*plan|masterplan|unit[\s_-]*plan|apartment[\s_-]*plan|key[\s_-]*plan|level[\s_-]*\d|\btypical\b|podium|\bplan\b|\bplans\b|\bfp\d|schedule|elevation|section[\s_-]*drawing|floorplan)/i;
 function isFloorPlanRef(srcRef) {
   return FLOORPLAN_RX.test(String(srcRef || '').toLowerCase());
+}
+
+// Content-based plan detection. Floor plans are flat white line-art: a large
+// fraction of near-white pixels and very low colour saturation. Real renders —
+// even bright all-white interiors — have gradients/shadows/reflections, so they
+// never hit a high pure-white fraction. Calibrated on known samples:
+//   floor plan : white≈0.62, meanSat≈0.05   →  DROP
+//   photos     : white≤0.03, meanSat≥0.17   →  keep
+// Uses ImageMagick (already a CI dependency). Fails safe (returns false) if the
+// command errors so the pipeline never breaks.
+function looksLikePlan(filePath) {
+  try {
+    const whiteFrac = Number(sh(`convert "${filePath}" -resize 160x160! -colorspace Gray -threshold 94% -format "%[fx:mean]" info:`).trim());
+    const meanSat = Number(sh(`convert "${filePath}" -resize 160x160! -colorspace HSL -channel G -separate +channel -format "%[fx:mean]" info:`).trim());
+    if (!Number.isFinite(whiteFrac) || !Number.isFinite(meanSat)) return false;
+    return whiteFrac >= 0.25 && meanSat <= 0.12;
+  } catch {
+    return false;
+  }
 }
 
 // ─── CLI parsing ────────────────────────────────────────────────────────
@@ -93,6 +111,7 @@ const opt = (name) => {
   return i >= 0 ? args[i + 1] : null;
 };
 const ONLY_SLUG = opt('--slug');
+const ONLY_COUNTRY = process.env.ONLY_COUNTRY || opt('--country') || '';
 const LOCAL_PDF = opt('--pdf');
 const BERKELEY_PAGE_ARG = opt('--berkeley-page');
 const BERKELEY_URLS_FILE = opt('--berkeley-urls');
@@ -343,12 +362,11 @@ async function filterAndRank(candidates) {
   // or gallery slot (user-facing rule); the giant stitched plans also fail the
   // CF upload (5413/5443) so dropping them lets real photos win the slots.
   const megapixels = (img) => img.pixels / 1_000_000;
-  const aspect = (img) => img.width / Math.max(1, img.height);
   const dropReason = (img) => {
     if (isFloorPlanRef(img.srcRef || img.path)) return 'floor/site plan (filename)';
-    if (megapixels(img) > MAX_MEGAPIXELS) return `${megapixels(img).toFixed(0)}MP > ${MAX_MEGAPIXELS}MP (stitched plan/panorama)`;
+    if (megapixels(img) > MAX_MEGAPIXELS) return `${megapixels(img).toFixed(0)}MP > ${MAX_MEGAPIXELS}MP (stitched plan/panorama — CF limit)`;
     if (img.size > MAX_FILE_BYTES) return `${(img.size / 1e6).toFixed(0)}MB > CF limit`;
-    if (aspect(img) > MAX_ASPECT_RATIO) return `aspect ${aspect(img).toFixed(1)}:1 (panorama/plan board)`;
+    if (looksLikePlan(img.path)) return 'floor/site plan (content: white line-art)';
     return null;
   };
   const unique = [];
@@ -961,6 +979,13 @@ async function main() {
       properties = properties.filter(p =>
         !p.imageUrl || p.imageUrl.includes('/wp-content/uploads/2026/05/')
       );
+    }
+    // Optional country scope — lets a --replace sweep target one market (e.g.
+    // re-pick all Australia listings) without disturbing established listings
+    // in other countries.
+    if (ONLY_COUNTRY) {
+      properties = properties.filter(p => (p.country || '').toLowerCase() === ONLY_COUNTRY.toLowerCase());
+      console.log(`  country scope: ${ONLY_COUNTRY} → ${properties.length} listing(s)`);
     }
   }
 

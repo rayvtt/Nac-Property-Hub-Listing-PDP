@@ -65,4 +65,18 @@ jobs:
           if [ "${{ github.event.inputs.replace }}" = "true" ]; then
             ARGS="$ARGS --replace"
           fi
+          # Chat-driven replace: workflow_dispatch isn't available to the app
+          # integration (403), so a trigger-file push can request a full re-pick
+          # by putting the token "sync-images:replace" on the LAST trigger line.
+          # Optionally scope to a country: "sync-images:replace:Australia".
+          LAST_TRIGGER="$(tail -n1 .github/triggers/last-trigger.txt 2>/dev/null || true)"
+          if echo "$LAST_TRIGGER" | grep -qi 'sync-images:replace'; then
+            echo "trigger requested --replace (full re-pick)"
+            ARGS="$ARGS --replace"
+            SCOPE="$(echo "$LAST_TRIGGER" | sed -n 's/.*sync-images:replace:\([A-Za-z]\{1,\}\).*/\1/p')"
+            if [ -n "$SCOPE" ]; then
+              echo "country scope: $SCOPE"
+              export ONLY_COUNTRY="$SCOPE"
+            fi
+          fi
           node sync-images.mjs $ARGS
