@@ -60,3 +60,5 @@ async function fetchAU() {
     }
   }
 })().catch(e => { console.error(e); process.exit(1); });
+
+// re-run audit after excerpt + Willow fallback
