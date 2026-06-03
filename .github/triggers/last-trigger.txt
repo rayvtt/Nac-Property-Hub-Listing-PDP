@@ -8,3 +8,4 @@
 2026-06-03T13:40:00Z chat: re-pick all Australia images with the new floor-plan exclusion (content + filename) and CF size guard — sync-images:replace:Australia
 2026-06-03T13:46:50Z chat: expand AU atlas — 5 city pins (Macquarie/W Sydney/Sydney/Box Hill/Melbourne)
 2026-06-03T13:48:49Z chat: push 5-city AU CLP to WP
+2026-06-03T13:55:38Z chat: retry — Imunify360 blocked previous runner
