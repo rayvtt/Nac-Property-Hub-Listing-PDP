@@ -1,0 +1,52 @@
+name: Generate AU Listings (bulk Draft/Live)
+
+# Bulk-creates Notion rows for every AU project with >=5 images (idempotent —
+# skips folders already wired to a row). Runs on merge of the script + manual
+# dispatch. Toggle DRY_RUN / HUB_STATUS below.
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "true = log only, no writes"
+        required: false
+        default: "true"
+      hub_status:
+        description: "Draft or Live"
+        required: false
+        default: "Draft"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/generate-au-listings.mjs"
+
+concurrency:
+  group: generate-au-listings
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install npm deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+      - name: Generate
+        working-directory: scripts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9' }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          GSC_OAUTH_CLIENT_ID: ${{ secrets.GSC_OAUTH_CLIENT_ID }}
+          GSC_OAUTH_CLIENT_SECRET: ${{ secrets.GSC_OAUTH_CLIENT_SECRET }}
+          GSC_OAUTH_REFRESH_TOKEN: ${{ secrets.GSC_OAUTH_REFRESH_TOKEN }}
+          # First run (on merge) is a DRY RUN. Flip these to publish for real.
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'true' }}
+          HUB_STATUS: ${{ github.event.inputs.hub_status || 'Live' }}
+        run: node generate-au-listings.mjs
