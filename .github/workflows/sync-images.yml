@@ -89,4 +89,10 @@ jobs:
               export ONLY_COUNTRY="$SCOPE"
             fi
           fi
+          # Curated, source-verified URL lists (official developer renders):
+          # skip only the bytes/pixel abstract-graphic heuristic.
+          if echo "$LAST_TRIGGER" | grep -qi 'sync-images:trust'; then
+            echo "trigger requested --trust-urls"
+            ARGS="$ARGS --trust-urls"
+          fi
           node sync-images.mjs $ARGS

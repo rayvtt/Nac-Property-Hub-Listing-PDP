@@ -133,6 +133,11 @@ const BERKELEY_URLS_FILE = opt('--berkeley-urls');
 const DRY_RUN = flag('--dry-run');
 const KEEP_TMP = flag('--keep-tmp');
 const REPLACE = flag('--replace');
+// When a curated, source-verified URL list is provided (e.g. official developer
+// renders), skip ONLY the bytes/pixel abstract-graphic heuristic — big, heavily
+// compressed architectural renders legitimately sit below 0.05 b/px. Width /
+// orientation / size checks and the floor-plan/map/lot exclusion still apply.
+const TRUST_URLS = flag('--trust-urls') || /^(1|true|yes)$/i.test(process.env.TRUST_URLS || '');
 
 // ─── Helpers ────────────────────────────────────────────────────────────
 function sh(cmd, opts = {}) {
@@ -409,16 +414,18 @@ async function filterAndRank(candidates) {
   // We try strict first; if it produces <5 candidates, we re-run with the
   // relaxed pass and merge unique results. Strict candidates still rank above
   // relaxed ones via the existing pixel-area sort.
+  const minBpx = TRUST_URLS ? 0 : MIN_BYTES_PER_PIXEL;
+  const minBpxRelaxed = TRUST_URLS ? 0 : 0.04;
   const passStrict = (img) =>
     img.width >= MIN_WIDTH
     && img.width >= img.height
     && img.size >= MIN_FILE_SIZE
-    && img.bytesPerPixel >= MIN_BYTES_PER_PIXEL;
+    && img.bytesPerPixel >= minBpx;
   const passRelaxed = (img) =>
     img.width >= 1000
     && img.width >= img.height
     && img.size >= 80_000
-    && img.bytesPerPixel >= 0.04;
+    && img.bytesPerPixel >= minBpxRelaxed;
 
   const strict = unique.filter(passStrict);
   let filtered = strict;
