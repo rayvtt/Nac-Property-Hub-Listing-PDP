@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>AU Listing Personalisation — Status Board</title>
+<style>
+  :root{--cream:#F7F3EC;--navy:#0F1A36;--ink:#1b2440;--orange:#E8743B;--gold:#B9892F;
+        --done:#2e9d6b;--draft:#3b7dd8;--band:#e0a72e;--block:#d8493b;--na:#c7ccd6;--line:rgba(15,26,54,.12)}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       background:var(--cream);color:var(--ink);font-size:13px;line-height:1.4}
+  header{padding:18px 22px 10px;border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:5}
+  h1{margin:0 0 2px;font-size:18px;color:var(--navy);letter-spacing:-.01em}
+  .sub{font-size:12px;color:#5b6478}
+  .bar{height:9px;border-radius:6px;background:#e7e2d8;overflow:hidden;margin:10px 0 4px;max-width:520px}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--done),#46b985)}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 2px;font-size:11.5px;align-items:center}
+  .legend b{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  button.btn{font:inherit;font-size:11.5px;padding:5px 10px;border:1px solid var(--line);border-radius:7px;
+       background:#fff;color:var(--navy);cursor:pointer}
+  button.btn:hover{border-color:var(--orange);color:var(--orange)}
+  .wrap{padding:14px 16px 60px;overflow-x:auto}
+  table{border-collapse:separate;border-spacing:0;width:100%;min-width:880px;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  th,td{padding:6px 7px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+  thead th{position:sticky;top:64px;background:#fbf9f4;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:#5b6478;z-index:3}
+  td.name,th.name{text-align:left;white-space:normal;min-width:200px;position:sticky;left:0;background:#fff;z-index:2}
+  thead th.name{background:#fbf9f4;z-index:4}
+  tr.group td{background:var(--navy);color:#fff;text-align:left;font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:600;position:sticky;left:0}
+  td.name a{color:var(--navy);text-decoration:none;font-weight:600}
+  td.name a:hover{color:var(--orange)}
+  td.name .slug{display:block;font-size:10.5px;color:#8a92a3;font-weight:400}
+  td.pct{font-variant-numeric:tabular-nums;font-weight:700;color:var(--navy)}
+  .cell{display:inline-block;width:20px;height:20px;border-radius:5px;cursor:pointer;line-height:20px;font-size:11px;color:#fff;font-weight:700}
+  .s-done{background:var(--done)} .s-draft{background:var(--draft)} .s-band{background:var(--band)}
+  .s-block{background:var(--block)} .s-na{background:var(--na);color:#6b7282}
+  .note{font-size:10.5px;color:var(--block);text-align:left;white-space:normal;max-width:240px}
+  .flag td{background:#fdf3f1}
+  .dimsum{display:flex;gap:10px;flex-wrap:wrap;margin:10px 16px 0}
+  .dimcard{flex:1 1 130px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:8px 10px}
+  .dimcard h4{margin:0 0 5px;font-size:11px;color:var(--navy);text-transform:uppercase;letter-spacing:.03em}
+  .dimcard .mini{height:7px;border-radius:5px;background:#eee;overflow:hidden;display:flex}
+  .dimcard .mini > i{display:block;height:100%}
+  .exc{margin:16px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--block);border-radius:9px;padding:12px 14px}
+  .exc h3{margin:0 0 6px;font-size:13px;color:var(--block)}
+  .exc li{margin:3px 0}
+  footer{padding:14px 22px;color:#7a8294;font-size:11px;border-top:1px solid var(--line);background:#fff}
+  a.doc{color:var(--orange);font-weight:600;text-decoration:none}
+  code{background:#eee;padding:1px 4px;border-radius:4px;font-size:11px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏗️ AU Listing Personalisation — Status Board</h1>
+  <div class="sub">49 Australian listings · 9 dimensions to reach <b>fully personalised</b>. Gate &amp; method:
+    <a class="doc" href="https://github.com/rayvtt/Nac-Property-Hub-Listing-PDP/blob/claude/listing-llp-uA2ka/PERSONALISATION-CHECKLIST.md">PERSONALISATION-CHECKLIST.md</a> ·
+    bespoke content: <a class="doc" href="https://github.com/rayvtt/Nac-Property-Hub-Listing-PDP/blob/claude/listing-llp-uA2ka/LLP-GENERATION.md">LLP-GENERATION.md</a>
+  </div>
+  <div class="bar"><i id="ovbar" style="width:0%"></i></div>
+  <div class="sub"><b id="ovpct">0%</b> fully personalised (<span id="ovcells">0</span> / <span id="ovtot">0</span> cells done) · reviewed <span id="rev">2026-06-04</span></div>
+  <div class="legend">
+    <span><b class="s-done" style="background:var(--done)"></b>Done — live &amp; bespoke</span>
+    <span><b style="background:var(--draft)"></b>Drafted — bespoke ready in LLP-GENERATION.md, not yet written</span>
+    <span><b style="background:var(--band)"></b>Banded / generic — live, needs authoring</span>
+    <span><b style="background:var(--block)"></b>Blocked / broken</span>
+    <span><b style="background:var(--na)"></b>n/a</span>
+  </div>
+  <div class="toolbar">
+    <button class="btn" onclick="cycleHint()">Tip: click a cell to cycle status</button>
+    <button class="btn" onclick="exportJSON()">⬇ Export current JSON</button>
+    <button class="btn" onclick="resetLocal()">↺ Reset my edits</button>
+  </div>
+</header>
+
+<div class="dimsum" id="dimsum"></div>
+
+<div class="exc">
+  <h3>⚠ Per-listing exceptions — do not run the blanket flow</h3>
+  <ul>
+    <li><code>sanctuary-willow</code> — district/geo wrong (points to Carlingford); fix to <b>Wentworth Point NSW 2127</b> before SEO regen.</li>
+    <li><code>beyond-hurstville</code> — research worker returned no project block; financials estimated, building facts unconfirmed. Confirm before publishing.</li>
+    <li><code>14-asquith-street-box-hill-south</code> — <b>no real project at the address</b>; do <b>not</b> flip Live. Retire or hold.</li>
+    <li><code>natura-macquarie-park</code> — already fully personalised. Reference standard.</li>
+  </ul>
+</div>
+
+<div class="wrap">
+  <table id="grid">
+    <thead><tr>
+      <th class="name">Listing</th>
+      <th title="Identity & taxonomy">ID</th>
+      <th title="Financials (price/rent/yield/IRR/CoC/payback)">Fin</th>
+      <th title="NAC score + sub-scores">NAC</th>
+      <th title="Editorial (tagline/desc/NAC note) bilingual">Edit</th>
+      <th title="Pros/Cons/Features JSON">JSON</th>
+      <th title="Cine titles (§05/08/11 captions)">Cine</th>
+      <th title="Hero + gallery images">Img</th>
+      <th title="Geo / map / SEO">Geo</th>
+      <th title="Viability + pre-Live QA">QA</th>
+      <th>%</th>
+    </tr></thead>
+    <tbody id="body"></tbody>
+  </table>
+</div>
+
+<footer>
+  Status data is embedded below as JSON (machine-readable for the agent). Manual cell clicks save to
+  this browser only (localStorage) — use <b>Export current JSON</b> to persist them back into the file via commit.
+</footer>
+
+<script id="data" type="application/json">
+{
+  "reviewed": "2026-06-04",
+  "dims": ["id","fin","nac","edit","json","cine","img","geo","qa"],
+  "groups": [
+    {"metro":"SYDNEY — Inner South","suburb":"Zetland", "rows":[
+      ["Alba","alba-zetland"],["Downtown","downtown-zetland"],["Luna","luna-zetland"],["The Avenues","the-avenues-zetland"]]},
+    {"metro":"SYDNEY — Inner South","suburb":"Waterloo", "rows":[
+      ["Danks St District","danks-st-district-waterloo"],["Tb.W","tb-w-waterloo"]]},
+    {"metro":"SYDNEY — Inner South","suburb":"Erskineville", "rows":[
+      ["Lillian Residence","lillian-residence-erskineville"]]},
+    {"metro":"SYDNEY — NW","suburb":"Macquarie Park", "rows":[
+      ["Macquarie Rise","macquarie-rise-macquarie-rise"],["Natura ★ref","natura-macquarie-park"],
+      ["Parkside MQ","parkside-mq-macquarie-park"],["The Macquarie Collection","the-macquarie-collection-macquarie-park"],
+      ["Trilogy","trilogy-macquarie-park"]]},
+    {"metro":"SYDNEY — NW","suburb":"Carlingford", "rows":[
+      ["88 Livie","88-livie-carlingford"],["Luxton","luxton-carlingford"],
+      ["The Carling","the-carling-carlingford"],["Homeland Residences","homeland-residences-carlingford"]]},
+    {"metro":"SYDNEY — North","suburb":"North Sydney", "rows":[
+      ["Aura","aura-north-sydney"],["Serendipity","serendipity-north-sydney"]]},
+    {"metro":"SYDNEY — West","suburb":"Parramatta", "rows":[
+      ["180 George","180-george-parramatta"],["Cosmopolitan","cosmopolitan-parramatta"],
+      ["One City Square","one-city-square-parramatta"],["Paramount on Parkes","paramount-on-parkes-parramatta"]]},
+    {"metro":"SYDNEY — East","suburb":"Pagewood", "rows":[
+      ["The Signature Collection","the-signature-collection-pagewood-rivera"]]},
+    {"metro":"SYDNEY — West","suburb":"Burwood", "rows":[
+      ["17 George St","17-george-st-burwood"],["Genesis","genesis-burwood"],["Victoria Place","victoria-place-burwood"]]},
+    {"metro":"SYDNEY — SW","suburb":"Auburn", "rows":[["Stage 2 - Auburn","stage-2-auburn-auburn-square"]]},
+    {"metro":"SYDNEY — SW","suburb":"Bankstown", "rows":[["Spring Square","spring-square-bankstown"]]},
+    {"metro":"SYDNEY — SW","suburb":"Lakemba", "rows":[["The Luminar Residences","the-luminar-residences-lakemba"]]},
+    {"metro":"SYDNEY — West","suburb":"Blacktown", "rows":[["2nd Avenue","2nd-avenue-blacktown"]]},
+    {"metro":"SYDNEY — South","suburb":"Arncliffe", "rows":[
+      ["Arncliffe Central","arncliffe-central-arncliffe"],["Duncan House","duncan-house-arncliffe"]]},
+    {"metro":"SYDNEY — Inner West","suburb":"Ashbury", "rows":[
+      ["Ashbury Apartment","ashbury-apartment-ashbury"],["Ashbury Terrace","ashbury-terrace-ashbury-terrace"]]},
+    {"metro":"SYDNEY — South","suburb":"Caringbah", "rows":[
+      ["Caringbah Greens","caringbah-greens-caringbah"],["Live","live-caringbah"]]},
+    {"metro":"SYDNEY — South","suburb":"Hurstville", "rows":[["Beyond","beyond-hurstville"]]},
+    {"metro":"SYDNEY — Olympic Pk","suburb":"Wentworth Point", "rows":[["Sanctuary (Willow)","sanctuary-willow"]]},
+    {"metro":"MELBOURNE — CBD","suburb":"Melbourne CBD", "rows":[
+      ["640","640-melbourne-cbd"],["West Side Place","west-side-place-melbourne-cbd"]]},
+    {"metro":"MELBOURNE — Inner","suburb":"Southbank", "rows":[["Aura (Melb Sq St.3)","aura-melbourne-square-stage-3-southbank"]]},
+    {"metro":"MELBOURNE — Inner","suburb":"South Melbourne", "rows":[
+      ["Park Modern","park-modern-south-melbourne"],["R.Evolution","r-evolution-south-melbourne"]]},
+    {"metro":"MELBOURNE — Inner","suburb":"Alphington", "rows":[["Yarra Park","yarra-park-alphington"]]},
+    {"metro":"MELBOURNE — East","suburb":"Box Hill South", "rows":[
+      ["14 Asquith Street","14-asquith-street-box-hill-south"],["325 Station St","325-station-st-box-hill-south"],
+      ["34 Birdwood St","34-birdwood-st-box-hill-south"]]},
+    {"metro":"MELBOURNE — East","suburb":"Box Hill North", "rows":[["668-670 Elgar Rd","668-670-elgar-rd-box-hill-north"]]},
+    {"metro":"MELBOURNE — East","suburb":"Blackburn", "rows":[["380 Middleborough Rd","380-middleborough-road-blackburn"]]}
+  ],
+  "default":  {"id":"done","fin":"draft","nac":"draft","edit":"draft","json":"draft","cine":"band","img":"done","geo":"done","qa":"done"},
+  "override": {
+    "natura-macquarie-park": {"fin":"done","nac":"done","edit":"done","json":"done","cine":"done"},
+    "sanctuary-willow":      {"geo":"block","note":"district/geo → Wentworth Point NSW 2127"},
+    "beyond-hurstville":     {"fin":"band","qa":"band","note":"project unconfirmed — verify before publishing"},
+    "14-asquith-street-box-hill-south": {"fin":"band","qa":"block","note":"no real project — do NOT flip Live"}
+  }
+}
+</script>
+
+<script>
+  const DATA = JSON.parse(document.getElementById('data').textContent);
+  const DIMS = DATA.dims, DIMLABEL={id:"Identity",fin:"Financials",nac:"NAC score",edit:"Editorial",json:"JSON",cine:"Cine",img:"Images",geo:"Geo",qa:"QA"};
+  const ORDER=["done","draft","band","block","na"];
+  const LS='nac-llp-status-v1';
+  let local = JSON.parse(localStorage.getItem(LS)||'{}');
+
+  function statusFor(slug,dim){
+    if(local[slug] && local[slug][dim]) return local[slug][dim];
+    const o=DATA.override[slug]||{};
+    if(o[dim]) return o[dim];
+    return DATA.default[dim];
+  }
+  function noteFor(slug){ const o=DATA.override[slug]||{}; return o.note||''; }
+
+  function render(){
+    const tb=document.getElementById('body'); tb.innerHTML='';
+    let done=0,tot=0; const dimCount={}; DIMS.forEach(d=>dimCount[d]={done:0,draft:0,band:0,block:0,na:0});
+    let lastGroup='';
+    DATA.groups.forEach(g=>{
+      const key=g.metro+' · '+g.suburb;
+      if(key!==lastGroup){ const tr=document.createElement('tr'); tr.className='group';
+        const td=document.createElement('td'); td.colSpan=DIMS.length+2; td.textContent=key; tr.appendChild(td); tb.appendChild(tr); lastGroup=key; }
+      g.rows.forEach(([name,slug])=>{
+        const tr=document.createElement('tr'); const note=noteFor(slug);
+        if(DATA.override[slug] && (DATA.override[slug].qa==='block'||DATA.override[slug].geo==='block')) tr.className='flag';
+        const nm=document.createElement('td'); nm.className='name';
+        nm.innerHTML=`<a href="properties/${slug}.html" target="_blank">${name}</a><span class="slug">${slug}</span>`+
+                     (note?`<span class="note">⚠ ${note}</span>`:'');
+        tr.appendChild(nm);
+        let rdone=0;
+        DIMS.forEach(d=>{ const s=statusFor(slug,d); dimCount[d][s]++; if(s!=='na'){tot++; if(s==='done'){done++; rdone++;}}
+          const td=document.createElement('td'); const c=document.createElement('span');
+          c.className='cell s-'+s; c.title=DIMLABEL[d]+': '+s;
+          c.textContent={done:'✓',draft:'·',band:'!',block:'✕',na:'–'}[s];
+          c.onclick=()=>{ const cur=statusFor(slug,d); const nx=ORDER[(ORDER.indexOf(cur)+1)%ORDER.length];
+            local[slug]=local[slug]||{}; local[slug][d]=nx; localStorage.setItem(LS,JSON.stringify(local)); render(); };
+          td.appendChild(c); tr.appendChild(td); });
+        const pc=document.createElement('td'); pc.className='pct'; pc.textContent=Math.round(rdone/DIMS.length*100)+'%';
+        tr.appendChild(pc); tb.appendChild(tr);
+      });
+    });
+    document.getElementById('ovpct').textContent=Math.round(done/tot*100)+'%';
+    document.getElementById('ovbar').style.width=(done/tot*100)+'%';
+    document.getElementById('ovcells').textContent=done; document.getElementById('ovtot').textContent=tot;
+    document.getElementById('rev').textContent=DATA.reviewed;
+    // dimension summary
+    const ds=document.getElementById('dimsum'); ds.innerHTML='';
+    DIMS.forEach(d=>{ const c=dimCount[d]; const t=c.done+c.draft+c.band+c.block;
+      const seg=(n,col)=>n?`<i style="width:${n/t*100}%;background:${col}"></i>`:'';
+      const card=document.createElement('div'); card.className='dimcard';
+      card.innerHTML=`<h4>${DIMLABEL[d]}</h4><div class="mini">${seg(c.done,'var(--done)')}${seg(c.draft,'var(--draft)')}${seg(c.band,'var(--band)')}${seg(c.block,'var(--block)')}</div>`+
+                     `<div style="font-size:10.5px;color:#5b6478;margin-top:4px">${c.done}✓ ${c.draft}· ${c.band}! ${c.block}✕</div>`;
+      ds.appendChild(card); });
+  }
+  function exportJSON(){
+    const out=JSON.parse(JSON.stringify(DATA)); out.override=JSON.parse(JSON.stringify(DATA.override));
+    Object.keys(local).forEach(slug=>{ out.override[slug]=Object.assign({},out.override[slug]||{},local[slug]); });
+    const blob=new Blob([JSON.stringify(out,null,2)],{type:'application/json'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='listing-status.json'; a.click();
+  }
+  function resetLocal(){ if(confirm('Clear your local cell edits?')){ local={}; localStorage.removeItem(LS); render(); } }
+  function cycleHint(){ alert('Click any coloured cell to cycle: Done → Drafted → Banded → Blocked → n/a.\nEdits save to this browser; Export JSON to persist via commit.'); }
+  render();
+</script>
+</body>
+</html>
