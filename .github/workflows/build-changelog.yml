@@ -1,0 +1,47 @@
+name: Build Changelog
+
+# Regenerates listing-changelog.json (the live-change feed on listing-status.html)
+# from git history of properties/*.html. Pure git — no secrets. Rolling window.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "properties/*.html"
+      - "scripts/build-changelog.mjs"
+      - ".github/triggers/**"
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+    inputs:
+      days: { description: "Window in days", required: false, default: "14" }
+
+concurrency:
+  group: build-changelog
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }   # full history needed to diff snapshots
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: Build changelog
+        env:
+          CHANGELOG_DAYS: ${{ github.event.inputs.days || '14' }}
+        run: node scripts/build-changelog.mjs
+      - name: Commit if changed
+        run: |
+          if ! git diff --quiet -- listing-changelog.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add listing-changelog.json
+            git commit -m "chore(changelog): refresh listing-changelog.json"
+            git push
+          else
+            echo "no changelog changes"
+          fi
