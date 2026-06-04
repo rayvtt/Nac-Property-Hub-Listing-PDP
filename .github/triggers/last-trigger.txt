@@ -8,3 +8,4 @@
 2026-06-04T10:05:00Z chat: generate Greece Oikos listings as Draft — generate-gr:draft
 2026-06-04T10:20:00Z chat: web-source images for Greece Oikos drafts — sync-images:only:thiseos-kallithea-athens,the-one-glyfada-athens,opus-residence-kallithea,boulevard-residence-kallithea,meridia-piraeus-athens,kifisia-suites-park-18,riviera-suites-palaio-faliro,levante-villas-galaxidi,izi-lux-kallithea-athens
 2026-06-04T10:35:00Z chat: upload official Oikos renders to CF for 7 GR drafts — sync-images:only:the-one-glyfada-athens,boulevard-residence-kallithea,opus-residence-kallithea,meridia-piraeus-athens,kifisia-suites-park-18,izi-lux-kallithea-athens,levante-villas-galaxidi sync-images:trust
+2026-06-04T10:45:00Z chat: 7 Greece Oikos listings flipped Live — scaffold PDP + create WP page (The One, Boulevard, Opus, Meridia, Kifisia Suites, Izi Lux, Levante)
