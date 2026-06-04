@@ -75,6 +75,7 @@ Templates and references:
 - [`NAC-FOOTER.md`](./NAC-FOOTER.md) — bilingual gold title, wave underline, 5-icon social row, 3-col nav.
 - [`NAC-BACKLINKS.md`](./NAC-BACKLINKS.md) — canonical URLs for every NAC button across all PDPs.
 - [`NAC-CERTIFICATION-BOX.md`](./NAC-CERTIFICATION-BOX.md) — closing sign-off block: NAC × IMC seal (vertical on desktop, horizontal on mobile), IMC compliance prose, meta tag row, 3-line reviewer card (Ray Vũ).
+- [`NAC-LLP-PERSONALISATION.md`](./NAC-LLP-PERSONALISATION.md) — canonical per-listing + per-city personalisation checklist (the "is it bespoke or showing template defaults?" reference): editorial fields and their templated-smell tells, `📊 Market Stats JSON` per-city requirement, Plan-B journey rule, audit cadence, city rollout tracker.
 
 ## Notion sync
 
@@ -289,6 +290,51 @@ Total end-to-end "Hub Status → Live" to fully-populated WP page: ~10–15 min,
 - **Refresh**: runs as a step in `.github/workflows/sync-notion.yml` (every 5 min + on push to `.github/triggers/**`), so new listings appear and completed work ticks itself with zero manual triggers. Output is **content-stable** (timestamp only bumps on a real status change) → no churn commits. Run locally with `cd scripts && node build-llp-status.mjs`; CI-style staleness check with `node build-llp-status.mjs --check`.
 - When working a listing to completion, **finish against the dashboard** — drive its row to all-green (or set a justified override) rather than eyeballing the PDP.
 
+### Live-change ledger + activity feed (left column of the dashboard)
+
+The dashboard's left column is a **live activity feed** of every listing change
+(`[time] · country · listing · field from→to`); **`listing-changelog.json`**
+(repo root) is its data source.
+
+- **Generator**: `scripts/build-changelog.mjs` — reconstructs changes by diffing
+  git history of `properties/*.html`. This is the **only reliable old→new source**
+  — Notion's API has no field-value history, but `sync-notion` commits an HTML
+  snapshot on every change, so consecutive blobs recover the full log.
+- **Permanent ledger** by default (scans the FULL history, deterministic, never
+  drops events). `CHANGELOG_DAYS=<n>` scopes a rolling window if ever needed.
+  Genesis tree is used as a silent baseline so the initial bulk import isn't
+  reported as 60+ "added" events. Tracks NAC score / price / yield / IRR / CoC /
+  payback / market-stats / price-bands / hero+gallery / editorial / new+removed.
+- **Workflow**: `.github/workflows/build-changelog.yml` — refreshes the JSON on
+  push to `properties/*` + every 30 min (pure git, no secrets, GITHUB_TOKEN
+  commit). So changes from **any source or session** show up automatically — no
+  chat session needs to be open.
+
+### ⚠️ The dashboard PRESENTATION is hand-maintained — don't clobber it
+
+`build-llp-status.mjs` only **swaps the `<script id="data">` block** (regex,
+between the markers) and leaves the rest of `listing-status.html` intact. The
+page's CSS/markup/JS is a bespoke **Apple-aesthetic design** (frosted header,
+completion ring + count-up, dot-matrix with per-row completion bars, segmented
+country filter, sticky-frozen column headers, the live feed). When editing the
+dashboard: **preserve the `<script id="data" type="application/json">` … `</script>`
+markers** and never regenerate the whole file from a template — restyle in place.
+
+## Per-city market stats — §04 Market cards (`📊 Market Stats JSON`)
+
+The four §04 "Market" stat cards (`.nac-mkt`) used to be hardcoded in the PDP
+template → identical on every listing. They're now **per-metro, Notion-driven**:
+
+- Field `📊 Market Stats JSON` — array of `{val, vi, en}` (typically 4). Empty →
+  the template default cards stand (no regression). `sync-notion.mjs::renderMarketStats()`
+  renders `.nac-mkt` when the field is present.
+- **Bulk rollout**: `scripts/set-market-stats.mjs` (+ `set-market-stats.yml`,
+  token `set-market-stats:write`) maps each Live listing to its metro
+  (Sydney/Melbourne/İstanbul/London/Limassol/Panama City/Da Nang/HCMC/Ho Tram/
+  Athens/Galaxidi) and writes real, sourced 2024 figures. Idempotent; unmapped
+  metros are left as-is. Extend `CITY_STATS` + `METRO_RULES` for new cities.
+- Full per-listing + per-city personalisation checklist: **`NAC-LLP-PERSONALISATION.md`**.
+
 ## Listing data completeness — back-fill EVERY Notion field
 
 **A new listing is not "done" until every applicable field on its Property Listings row is filled.** Empty fields don't error — they silently fall back to the PDP template's placeholder values, which is worse than blank. (Cautionary example: the 2026-06 Australia batch — `natura-macquarie-park`, `downtown-zetland`, `yarra-park-alphington` — shipped with the template's default **IRR 13.8% / Cash-on-Cash 8.1%** showing identically on all three, plus empty Pros/Cons/Features/Sub-Scores/Process sections, **Monthly Rental Income**, **Payback Years**, and **NAC Note**. Treat a half-filled row as a bug, not a draft.)
@@ -299,6 +345,7 @@ Author all of these at creation time. Only the *italicised* ones are auto-filled
 - **Taxonomy / gate:** `Country` · `Currency` · `Region` · `Region/City` · `📍 District` · `🏨 Hub Type` · `🛂 Immigration Type` · `Investment Program` · `Exit Strategy` · `Tags` · `Freehold` · `🌟 Hotel-Branded` · `💸 Tax-Friendly` · `Status` · `Hub Status` · `🔗 Slug` · *`Listing URL`* · *`Property ID`* (auto)
 - **Editorial — bilingual VI + EN:** `Excerpt` · `📝 Desc` · `🏷️ Tagline` · `📜 Statement` · `✦ Brand` + `✦ Brand Intro` · `🌍 Market` · `🌏 Key Markets` · `🏖️ Beach` · `✈️ Airport` · `📈 Property YoY` · `💬 NAC Note` · `Name VI`
 - **Score + JSON metadata (the most-missed — fill these):** `⭐ NAC Score` · `📊 Sub-Scores JSON` · `✅ Pros JSON` · `⚠️ Cons JSON` · `✨ Features JSON` · `🔄 Process JSON`
+- **Per-city / structural JSON:** `📊 Market Stats JSON` (per-metro §04 cards — see *Per-city market stats* above) · `💲 Price Bands JSON` (Residence Mix table; reveals only when present; currency-aware) · `🔑 Handover EN/VI` — both used by the Greece/Turkey generators (`scripts/generate-gr-listings.mjs`, `generate-tr-listings.mjs`).
 - **Cine titles:** `🎬 Cine 1/2/3 VI`+`EN` — fill in Notion, **or** leave blank ONLY when `ANTHROPIC_API_KEY` has credit (the generator fills blanks; on a $0 balance they stay empty).
 - **Images (pipeline-filled):** *`Image URL`* · *`🖼️ Image 1-4`* · *`Mobile Image URL`* come from `sync-images` — but you must set **`GS Source Folder`** (or `🌐 Berkeley Page URL` / `📷 Image URLs JSON`) so it has a source to pull from.
 
