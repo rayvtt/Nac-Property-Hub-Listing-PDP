@@ -45,9 +45,9 @@ jobs:
             FILE=.github/triggers/apply-financials.txt
             if grep -qi 'dry-run' "$FILE" 2>/dev/null; then echo "DRY_RUN=1" >> "$GITHUB_ENV"; fi
             ONLY_LINE=$(grep -i '^only:' "$FILE" 2>/dev/null | tail -1 | sed 's/^only:[[:space:]]*//I' || true)
-            [ -n "$ONLY_LINE" ] && echo "ONLY=$ONLY_LINE" >> "$GITHUB_ENV"
+            if [ -n "$ONLY_LINE" ]; then echo "ONLY=$ONLY_LINE" >> "$GITHUB_ENV"; fi
           else
-            [ "${{ inputs.dry_run }}" = "true" ] && echo "DRY_RUN=1" >> "$GITHUB_ENV"
+            if [ "${{ inputs.dry_run }}" = "true" ]; then echo "DRY_RUN=1" >> "$GITHUB_ENV"; fi
             echo "ONLY=${{ inputs.only }}" >> "$GITHUB_ENV"
           fi
       - name: Apply financials
