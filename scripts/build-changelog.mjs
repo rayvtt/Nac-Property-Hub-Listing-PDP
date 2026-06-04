@@ -13,7 +13,7 @@
 import { execSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 
-const DAYS = parseInt(process.env.CHANGELOG_DAYS || '14', 10);
+const DAYS = parseInt(process.env.CHANGELOG_DAYS || '30', 10);
 const SINCE = `${DAYS} days ago`;
 const sh = (cmd) => execSync(cmd, { maxBuffer: 1 << 28, encoding: 'utf8' });
 const shQuiet = (cmd) => { try { return sh(cmd); } catch { return ''; } };
