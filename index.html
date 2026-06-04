@@ -1218,5 +1218,38 @@
       } catch (_) {}
     })();
   </script>
+<!-- ===== NAC personalisation-status pop-up (injected; lives OUTSIDE the INDEX_CARDS/COUNTRIES markers so update-index.mjs rebuilds never touch it) ===== -->
+<style>
+  #nac-ps-fab{position:fixed;right:18px;bottom:18px;z-index:9998;background:#0F1A36;color:#fff;border:none;
+    border-radius:999px;padding:11px 16px;font:600 13px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    box-shadow:0 6px 22px rgba(15,26,54,.28);cursor:pointer;display:flex;align-items:center;gap:8px}
+  #nac-ps-fab:hover{background:#E8743B}
+  #nac-ps-fab .dot{width:8px;height:8px;border-radius:50%;background:#E8743B;animation:nacpulse 2s infinite}
+  #nac-ps-fab:hover .dot{background:#fff}
+  @keyframes nacpulse{0%{box-shadow:0 0 0 0 rgba(232,116,59,.5)}70%{box-shadow:0 0 0 7px rgba(232,116,59,0)}100%{box-shadow:0 0 0 0 rgba(232,116,59,0)}}
+  #nac-ps-ov{position:fixed;inset:0;z-index:9999;background:rgba(15,26,54,.55);display:none}
+  #nac-ps-ov.open{display:block}
+  #nac-ps-modal{position:absolute;inset:3vh 3vw;background:#F7F3EC;border-radius:14px;overflow:hidden;
+    box-shadow:0 24px 70px rgba(0,0,0,.4);display:flex;flex-direction:column}
+  #nac-ps-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#0F1A36;color:#fff;font:600 13px/1.2 -apple-system,sans-serif}
+  #nac-ps-head a{color:#E8743B;text-decoration:none;font-size:12px;margin-right:8px}
+  #nac-ps-close{background:none;border:none;color:#fff;font-size:22px;line-height:1;cursor:pointer;padding:0 4px}
+  #nac-ps-frame{flex:1;border:none;width:100%;background:#F7F3EC}
+</style>
+<button id="nac-ps-fab" onclick="document.getElementById('nac-ps-ov').classList.add('open');var f=document.getElementById('nac-ps-frame');if(!f.getAttribute('src'))f.setAttribute('src','listing-status.html');">
+  <span class="dot"></span> Personalisation Status
+</button>
+<div id="nac-ps-ov" onclick="if(event.target===this)this.classList.remove('open')">
+  <div id="nac-ps-modal">
+    <div id="nac-ps-head">
+      <span>🏗️ AU Listing Personalisation — Status Board</span>
+      <span><a href="listing-status.html" target="_blank">open full page&nbsp;↗</a>
+      <button id="nac-ps-close" onclick="document.getElementById('nac-ps-ov').classList.remove('open')" title="Close (Esc)">×</button></span>
+    </div>
+    <iframe id="nac-ps-frame" title="Listing personalisation status"></iframe>
+  </div>
+</div>
+<script>document.addEventListener('keydown',function(e){if(e.key==='Escape'){var o=document.getElementById('nac-ps-ov');if(o)o.classList.remove('open');}});</script>
+<!-- ===== /NAC personalisation-status pop-up ===== -->
 </body>
 </html>
