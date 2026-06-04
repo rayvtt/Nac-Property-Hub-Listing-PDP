@@ -64,6 +64,26 @@
   footer{padding:14px 22px;color:#7a8294;font-size:11px;border-top:1px solid var(--line);background:#fff}
   a.doc{color:var(--orange);font-weight:600;text-decoration:none}
   code{background:#eee;padding:1px 4px;border-radius:4px;font-size:11px}
+  /* ── Live-change feed (left) ───────────────────────────────────────── */
+  .layout{display:flex;align-items:flex-start;gap:14px;padding:12px 16px 60px}
+  .board{flex:1 1 auto;min-width:0}
+  .feed{flex:0 0 348px;position:sticky;top:70px;max-height:calc(100vh - 88px);overflow:auto;
+        background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .feed h3{margin:0 0 3px;font-size:12px;color:var(--navy);text-transform:uppercase;letter-spacing:.05em}
+  .feed .meta{font-size:10.5px;color:#8a92a3;margin-bottom:6px}
+  .feed .day{margin:11px 0 3px;font-size:10.5px;color:#8a92a3;text-transform:uppercase;letter-spacing:.06em;
+        border-top:1px solid var(--line);padding-top:8px;font-weight:600}
+  .feed .it{display:grid;grid-template-columns:34px 1fr;gap:7px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:11.5px}
+  .feed .it .t{color:#9aa2b2;font-variant-numeric:tabular-nums}
+  .feed .it .who{font-weight:600;color:var(--navy)}
+  .feed .it .ct{color:#9aa2b2;font-weight:400;font-size:10.5px}
+  .feed .it .chg{color:#3b4658;margin-top:1px;word-break:break-word}
+  .feed .it .chg b{color:var(--navy)} .feed .arrow{color:#b9bfca;padding:0 2px}
+  .feed .lab{display:inline-block;font-size:9px;text-transform:uppercase;letter-spacing:.03em;padding:1px 4px;border-radius:4px;margin-right:5px;font-weight:700}
+  .k-num{background:#e8f3ec;color:var(--done)} .k-money{background:#eef3fb;color:var(--draft)}
+  .k-set{background:#fdf3e7;color:var(--band)} .k-text{background:#f0eefb;color:#6a4fb0}
+  .k-event{background:#fdecea;color:var(--block)}
+  @media(max-width:900px){.layout{flex-direction:column}.feed{flex:none;width:100%;position:static;max-height:420px}}
 </style>
 </head>
 <body>
@@ -94,6 +114,10 @@
   </div>
 </header>
 
+<div class="layout">
+<aside class="feed" id="feed"><h3>🪵 Live changes</h3><div class="meta">loading…</div></aside>
+<main class="board">
+
 <div class="dimsum" id="dimsum"></div>
 <div class="exc" id="exc" style="display:none"></div>
 
@@ -114,6 +138,9 @@
     </tr></thead>
     <tbody id="body"></tbody>
   </table>
+</div>
+
+</main>
 </div>
 
 <footer>
@@ -262,6 +289,34 @@
 
   buildCountryChips();
   render();
+</script>
+
+<script>
+  // ── Live-change feed — reads listing-changelog.json (built from git history) ──
+  (function(){
+    var el=document.getElementById('feed');
+    function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+    fetch('listing-changelog.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(d){
+      if(!d||!d.entries||!d.entries.length){el.innerHTML='<h3>🪵 Live changes</h3><div class="meta">No changelog generated yet.</div>';return;}
+      var FLAG=d.flags||{};
+      var h='<h3>🪵 Live changes · all listings</h3>';
+      h+='<div class="meta">'+d.count+' events · last '+d.windowDays+'d · built '+esc(d.generated.slice(0,16).replace('T',' '))+'Z</div>';
+      var lastDay='';
+      d.entries.forEach(function(e){
+        var day=e.ts.slice(0,10);
+        if(day!==lastDay){h+='<div class="day">'+day+'</div>';lastDay=day;}
+        var chg;
+        if(e.kind==='event'){ chg = e.to==='added' ? '＋ listing added' : e.to==='removed' ? '✕ listing removed' : esc(e.to); }
+        else if(e.from==null){ chg='set <b>'+esc(e.to)+'</b>'; }
+        else { chg=esc(e.from)+'<span class="arrow">→</span><b>'+esc(e.to)+'</b>'; }
+        h+='<div class="it"><span class="t">'+e.ts.slice(11,16)+'</span><span>'+
+           '<span class="lab k-'+e.kind+'">'+esc(e.label)+'</span>'+
+           '<span class="who">'+esc(e.name)+'</span> <span class="ct">'+(FLAG[e.country]||'')+' '+esc(e.country||'')+'</span>'+
+           '<div class="chg">'+chg+'</div></span></div>';
+      });
+      el.innerHTML=h;
+    }).catch(function(){el.innerHTML='<h3>🪵 Live changes</h3><div class="meta">changelog fetch failed.</div>';});
+  })();
 </script>
 </body>
 </html>
