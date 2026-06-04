@@ -1,0 +1,17 @@
+{
+  "_README": "Human-only status calls for the LLP dashboard. These ALWAYS win over the auto-derived value from build-llp-status.mjs. Keys = slug. Per slug set any of: id|fin|nac|edit|json|cine|img|geo|qa to done|draft|band|block|na, plus an optional note. Use 'draft' to mark a dimension whose bespoke content is staged in LLP-GENERATION.md but not yet written to Notion/HTML. Remove an entry once the auto value is correct on its own.",
+  "sanctuary-willow": {
+    "geo": "block",
+    "note": "district/geo wrong (Carlingford placeholder) → fix to Wentworth Point NSW 2127 before SEO regen"
+  },
+  "beyond-hurstville": {
+    "fin": "band",
+    "qa": "band",
+    "note": "project unconfirmed — research worker returned no project block; financials estimated. Verify before publishing"
+  },
+  "14-asquith-street-box-hill-south": {
+    "fin": "band",
+    "qa": "block",
+    "note": "no real project at the address — do NOT flip Live; retire or hold"
+  }
+}
