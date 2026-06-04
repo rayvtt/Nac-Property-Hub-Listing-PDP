@@ -62,15 +62,23 @@ jobs:
           NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9' }}
         run: node update-index.mjs
 
+      - name: Rebuild LLP completeness dashboard
+        # Auto-derives the 9-dimension personalisation status from the freshly
+        # synced properties/*.html and regenerates listing-status.html/.json.
+        # Content-stable: only changes when real status changes, so no churn.
+        working-directory: scripts
+        run: node build-llp-status.mjs
+
       - name: Commit and push (with rebase retry)
         run: |
           git config user.name "nac-notion-bot"
           git config user.email "nac-notion-bot@users.noreply.github.com"
-          if git diff --quiet -- properties/ index.html llms.txt scripts/geocode-cache.json; then
+          PATHS="properties/ index.html llms.txt scripts/geocode-cache.json listing-status.html listing-status.json"
+          if git diff --quiet -- $PATHS; then
             echo "No HTML changes."
             exit 0
           fi
-          git add properties/ index.html llms.txt scripts/geocode-cache.json
+          git add $PATHS
           git commit -m "chore(notion-sync): refresh PDP content + SEO/GEO/LLM structured data from Notion"
 
           # Retry push up to 5 times — rebase on top of main if it has moved

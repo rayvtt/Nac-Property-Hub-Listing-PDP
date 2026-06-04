@@ -277,6 +277,18 @@ Notion Hub Status → Live
 
 Total end-to-end "Hub Status → Live" to fully-populated WP page: ~10–15 min, zero manual triggers.
 
+## LLP completeness dashboard — the shared progress board
+
+**`listing-status.html`** (repo root, served on GitHub Pages, also reachable via the floating "Personalisation Status" pop-up on `index.html`) is the **single source of truth for how personalised each listing is**. Both Ray and Claude check progress here. It is **auto-generated** — never hand-edit the data block.
+
+- **Generator**: `scripts/build-llp-status.mjs`. Scans every `properties/*.html`, derives a 9-dimension status per listing, and writes `listing-status.json` (machine-readable, read this in-repo to see current state) + injects the data block into `listing-status.html` (human view, with thumbnails + filters).
+- **Dimensions**: `id · fin · nac · edit · json · cine · img · geo · qa`. Statuses: `done` (bespoke/complete) · `band` (generic / shares a fingerprint with sibling listings) · `block` (missing/broken/placeholder) · `draft` / `na` (override-only).
+- **Auto-ticks**: status is derived from what actually shipped in the HTML, so once `sync-notion` patches real Notion content (or a banded cluster is de-banded), the **next build flips the cells automatically** — no manual ticking.
+- **De-banding**: `fin` / `nac` / `edit` / `cine` fingerprints are hashed across all listings. A fingerprint **shared by >1 listing → `band`** (cell tooltip shows the cluster size); **unique → `done`**. This is what surfaces the "33 AU listings sharing IRR 8.5 / CoC 2.9 / NAC 74" banding — and it resolves itself the moment you write bespoke numbers.
+- **Human-only calls** (QA viability, known-broken, "drafted in LLP-GENERATION.md but not written") live in **`scripts/llp-status-overrides.json`** (`slug → {dim: status, note}`) and always win over the auto value. The dashboard's "Export overrides JSON" button emits this exact shape.
+- **Refresh**: runs as a step in `.github/workflows/sync-notion.yml` (every 5 min + on push to `.github/triggers/**`), so new listings appear and completed work ticks itself with zero manual triggers. Output is **content-stable** (timestamp only bumps on a real status change) → no churn commits. Run locally with `cd scripts && node build-llp-status.mjs`; CI-style staleness check with `node build-llp-status.mjs --check`.
+- When working a listing to completion, **finish against the dashboard** — drive its row to all-green (or set a justified override) rather than eyeballing the PDP.
+
 ## Listing data completeness — back-fill EVERY Notion field
 
 **A new listing is not "done" until every applicable field on its Property Listings row is filled.** Empty fields don't error — they silently fall back to the PDP template's placeholder values, which is worse than blank. (Cautionary example: the 2026-06 Australia batch — `natura-macquarie-park`, `downtown-zetland`, `yarra-park-alphington` — shipped with the template's default **IRR 13.8% / Cash-on-Cash 8.1%** showing identically on all three, plus empty Pros/Cons/Features/Sub-Scores/Process sections, **Monthly Rental Income**, **Payback Years**, and **NAC Note**. Treat a half-filled row as a bug, not a draft.)
