@@ -17,6 +17,10 @@ on:
         description: "Comma-separated slugs to restrict to (blank = all)"
         type: string
         default: ""
+  push:
+    branches: [main]
+    paths:
+      - ".github/triggers/apply-financials.txt"
 
 permissions:
   contents: read
@@ -32,11 +36,23 @@ jobs:
       - name: Install deps
         working-directory: scripts
         run: npm install --no-audit --no-fund
+      - name: Resolve dry-run / only
+        # workflow_dispatch uses the inputs; a trigger-file push reads markers
+        # from .github/triggers/apply-financials.txt — a line containing
+        # "dry-run" forces a dry run; a line "only: slug-a,slug-b" scopes it.
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            FILE=.github/triggers/apply-financials.txt
+            if grep -qi 'dry-run' "$FILE" 2>/dev/null; then echo "DRY_RUN=1" >> "$GITHUB_ENV"; fi
+            ONLY_LINE=$(grep -i '^only:' "$FILE" 2>/dev/null | tail -1 | sed 's/^only:[[:space:]]*//I' || true)
+            [ -n "$ONLY_LINE" ] && echo "ONLY=$ONLY_LINE" >> "$GITHUB_ENV"
+          else
+            [ "${{ inputs.dry_run }}" = "true" ] && echo "DRY_RUN=1" >> "$GITHUB_ENV"
+            echo "ONLY=${{ inputs.only }}" >> "$GITHUB_ENV"
+          fi
       - name: Apply financials
         working-directory: scripts
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9' }}
-          DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
-          ONLY: ${{ inputs.only }}
         run: node apply-llp-financials.mjs
