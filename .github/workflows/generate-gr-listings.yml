@@ -1,0 +1,66 @@
+name: Generate GR Listings
+
+# Creates the Greece (Athens-area) Oikos Notion listings from the developer
+# price sheet. Idempotent (skips existing slugs). Safe by default: a script-path
+# push runs a DRY preview; go live via a trigger token.
+#   generate-gr:dry    → preview only
+#   generate-gr:draft  → create as Draft
+#   generate-gr:live   → create Live (fires the full pipeline)
+on:
+  workflow_dispatch:
+    inputs:
+      hub_status: { description: "Draft or Live", required: false, default: "Draft" }
+      dry_run:    { description: "true = log only", required: false, default: "true" }
+  push:
+    branches: [main]
+    paths:
+      - "scripts/generate-gr-listings.mjs"
+      - ".github/triggers/**"
+
+concurrency:
+  group: generate-gr-listings
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+      - name: Resolve mode
+        id: r
+        run: |
+          DRY="${{ github.event.inputs.dry_run || 'true' }}"
+          HS="${{ github.event.inputs.hub_status || 'Draft' }}"
+          RUN=0
+          [ "${{ github.event_name }}" = "workflow_dispatch" ] && RUN=1
+          if [ "${{ github.event_name }}" = "push" ]; then
+            TOK="$(tail -n1 "$GITHUB_WORKSPACE/.github/triggers/last-trigger.txt" 2>/dev/null | sed -n 's/.*generate-gr:\([a-z]*\).*/\1/p')"
+            if [ -n "$TOK" ]; then
+              RUN=1
+              case "$TOK" in
+                live)  DRY=false; HS=Live;;
+                draft) DRY=false; HS=Draft;;
+                *)     DRY=true;;
+              esac
+            elif git -C "$GITHUB_WORKSPACE" log -1 --name-only --pretty=format: | grep -q 'scripts/generate-gr-listings.mjs'; then
+              RUN=1; DRY=true
+            fi
+          fi
+          echo "run=$RUN" >> "$GITHUB_OUTPUT"; echo "dry=$DRY" >> "$GITHUB_OUTPUT"; echo "hs=$HS" >> "$GITHUB_OUTPUT"
+      - name: Generate
+        if: steps.r.outputs.run == '1'
+        working-directory: scripts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9' }}
+          DRY_RUN: ${{ steps.r.outputs.dry }}
+          HUB_STATUS: ${{ steps.r.outputs.hs }}
+        run: node generate-gr-listings.mjs

@@ -253,7 +253,7 @@ function fmtUsd(n) { return '$' + Math.round(Number(n)).toLocaleString('en-US');
 // Residence Mix & Indicative Pricing — one card per unit-type band.
 // Band shape: { en, vi, from (USD number), units (int) }. Shows the entry
 // ("from") price; "from" is net of the 3-yr/4% sublease per the source sheet.
-function renderPriceBands(bands) {
+function renderPriceBands(bands, currency) {
   // Order bands smallest → largest: studio · 1BR · 2BR · 3BR · 4BR · penthouse.
   const rank = (b) => {
     const s = (b.en || '').toLowerCase();
@@ -265,7 +265,7 @@ function renderPriceBands(bands) {
   return [...bands].sort((a, b) => rank(a) - rank(b)).map(b => `
             <tr>
               <td class="nac-band-type"><span data-vi>${esc(b.vi)}</span><span data-en>${esc(b.en)}</span></td>
-              <td class="nac-band-price"><span class="nac-band-lead"><span data-vi>từ</span><span data-en>from</span></span>${fmtUsd(b.from)}</td>
+              <td class="nac-band-price"><span class="nac-band-lead"><span data-vi>từ</span><span data-en>from</span></span>${fmtMoneyFull(b.from, currency)}</td>
             </tr>`).join('\n          ');
 }
 
@@ -553,7 +553,7 @@ function patch(html, prop) {
   // Residence Mix & Indicative Pricing — only revealed when the listing has
   // band data (TR inventory). Stays hidden on every other listing.
   if (prop.priceBands && prop.priceBands.length) {
-    $(`[data-notion-list="price_bands"]`).html(renderPriceBands(prop.priceBands));
+    $(`[data-notion-list="price_bands"]`).html(renderPriceBands(prop.priceBands, prop.currency));
     $(`[data-notion-when="price_bands"]`).removeAttr('hidden');
   }
 
