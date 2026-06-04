@@ -5,13 +5,16 @@
     "note": "district/geo wrong (Carlingford placeholder) → fix to Wentworth Point NSW 2127 before SEO regen"
   },
   "beyond-hurstville": {
-    "fin": "band",
     "qa": "band",
-    "note": "project unconfirmed — research worker returned no project block; financials estimated. Verify before publishing"
+    "note": "project unconfirmed — financials now bespoke but estimated; verify the building facts before publishing"
   },
   "14-asquith-street-box-hill-south": {
-    "fin": "band",
     "qa": "block",
     "note": "no real project at the address — do NOT flip Live; retire or hold"
+  },
+  "danks-st-district-waterloo": {
+    "fin": "band",
+    "nac": "band",
+    "note": "Notion row not Live (archived/missing) — bespoke financials in au-financials.json could not sync; restore the Live row or retire the orphan PDP"
   }
 }
