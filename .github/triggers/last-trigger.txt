@@ -11,3 +11,4 @@
 2026-06-04T10:45:00Z chat: 7 Greece Oikos listings flipped Live — scaffold PDP + create WP page (The One, Boulevard, Opus, Meridia, Kifisia Suites, Izi Lux, Levante)
 2026-06-04T14:40:00Z chat: per-city market-stat cards populated on 7 GR listings — sync-notion re-render + sync-wp push
 2026-06-04T19:25:00Z chat: push re-rendered per-city market cards to WP (HTML already on main) — sync-wp
+2026-06-04T19:55:00Z chat: roll out per-metro market stats hub-wide — set-market-stats:write
