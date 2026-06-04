@@ -1,7 +1,7 @@
 {
- "generated": "2026-06-04T20:32:30.734Z",
+ "generated": "2026-06-04T20:33:29.421Z",
  "windowDays": 14,
- "count": 287,
+ "count": 364,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -20,7 +20,843 @@
  },
  "entries": [
   {
-   "ts": "2026-06-04T19:16:14+00:00",
+   "ts": "2026-06-04T22:08:24+02:00",
+   "country": null,
+   "slug": "pearl-park-paphos-cyprus-rbi",
+   "name": "{Property Name}",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": "Live",
+   "to": "removed"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "14-asquith-street-box-hill-south",
+   "name": "14 Asquith Street",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+9–10% | ~1.8% | 3.8% | 5.2M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "17-george-st-burwood",
+   "name": "17 George St",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "180-george-parramatta",
+   "name": "180 George",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "2nd-avenue-blacktown",
+   "name": "2nd Avenue",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "325-station-st-box-hill-south",
+   "name": "325 Station St",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+9–10% | ~1.8% | 3.8% | 5.2M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "34-birdwood-st-box-hill-south",
+   "name": "34 Birdwood St",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+9–10% | ~1.8% | 3.8% | 5.2M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "380-middleborough-road-blackburn",
+   "name": "380 Middleborough Road",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+9–10% | ~1.8% | 3.8% | 5.2M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "640-melbourne-cbd",
+   "name": "640",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+9–10% | ~1.8% | 3.8% | 5.2M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "668-670-elgar-rd-box-hill-north",
+   "name": "668-670 Elgar Rd",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+9–10% | ~1.8% | 3.8% | 5.2M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "88-livie-carlingford",
+   "name": "88 Livie",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "alba-zetland",
+   "name": "Alba",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "arncliffe-central-arncliffe",
+   "name": "Arncliffe Central",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "ashbury-apartment-ashbury",
+   "name": "Ashbury Apartment",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "ashbury-terrace-ashbury-terrace",
+   "name": "Ashbury Terrace · Quiet, leafy living in Sydney’s inner west",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "aura-melbourne-square-stage-3-southbank",
+   "name": "Aura ( Melbourne Square Stage 3)",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+9–10% | ~1.8% | 3.8% | 5.2M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "aura-north-sydney",
+   "name": "Aura",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "turkey",
+   "slug": "bagcilar-garden-istanbul",
+   "name": "Bagcilar Garden",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+30% | 5–8% | 8,416 | 16M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "turkey",
+   "slug": "bagcilar-garden-phase-2-istanbul",
+   "name": "Bağcılar Garden Phase II",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+30% | 5–8% | 8,416 | 16M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "uk",
+   "slug": "bermondsey-place-london",
+   "name": "Bermondsey Place",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "38% | 7–9% | ~0% | 999yr",
+   "to": "4.5% | +3.7% | +19.8% | 20M+"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "beyond-hurstville",
+   "name": "Beyond",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "caringbah-greens-caringbah",
+   "name": "Caringbah Greens",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "cosmopolitan-parramatta",
+   "name": "Cosmopolitan",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "downtown-zetland",
+   "name": "Downtown Zetland · Inner-city renewal living at Green Square",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "duncan-house-arncliffe",
+   "name": "Duncan House",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "turkey",
+   "slug": "elite-complex-istanbul",
+   "name": "Elite Complex",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+30% | 5–8% | 8,416 | 16M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "uk",
+   "slug": "fulham-reach-london",
+   "name": "Fulham Reach",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "Q2 2026 | 4 lines | 5–7% | 999yr",
+   "to": "4.5% | +3.7% | +19.8% | 20M+"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "genesis-burwood",
+   "name": "Genesis",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "vietnam",
+   "slug": "grand-marina-sai-gon-bason-by-jw-marriot",
+   "name": "Grand Marina Saigon",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "35–50% | &gt;80% | 500m | $5,800",
+   "to": "+24% | $3,150/m² | 5,050 | ~3.9%"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "homeland-residences-carlingford",
+   "name": "Homeland Residences",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "turkey",
+   "slug": "horizon-park-istanbul",
+   "name": "Horizon Park",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+30% | 5–8% | 8,416 | 16M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "vietnam",
+   "slug": "hyatt-regency-ho-tram",
+   "name": "Hyatt Regency Hồ Tràm · The first Hyatt Regency branded villas in southern Vietnam",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "17.5M | 2h | ~4% | 5★"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "greece",
+   "slug": "keranis-ports-residences-piraeus-athens",
+   "name": "Keranis Ports Residences",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "~8M | +12% | +8.4% | 4–8%"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "turkey",
+   "slug": "legend-residences-sariyer",
+   "name": "Legend",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+30% | 5–8% | 8,416 | 16M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "lillian-residence-erskineville",
+   "name": "Lillian Residence",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "cyprus",
+   "slug": "limassol-blu-marine-dao-sip",
+   "name": "Limassol Blu Marine",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "€300K | 4–8 tháng | ~6.5% | 0%",
+   "to": "+10.7% | 5–6% | 28% | €3,200/m²"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "cyprus",
+   "slug": "limassol-del-mar-dao-sip",
+   "name": "Limassol Del Mar",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "+8–12% | €300K | 4–8 tháng | 0%",
+   "to": "+10.7% | 5–6% | 28% | €3,200/m²"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "live-caringbah",
+   "name": "Live",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "uk",
+   "slug": "london-dock-wapping-london",
+   "name": "London Dock",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "2,000 | 3–5% | ~0% | 999yr",
+   "to": "4.5% | +3.7% | +19.8% | 20M+"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "luna-zetland",
+   "name": "Luna",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "luxton-carlingford",
+   "name": "Luxton",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "macquarie-rise-macquarie-rise",
+   "name": "Macquarie Rise · Metro-connected living at Sydney’s tech &amp; university hub",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "turkey",
+   "slug": "marmara-pearl-istanbul",
+   "name": "Marmara Pearl",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+30% | 5–8% | 8,416 | 16M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "vietnam",
+   "slug": "mo",
+   "name": "Mandarin Oriental Residences, Da Nang · Beachfront Mandarin Oriental Villas · Quiet Luxury Debut in Vietnam",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "10M+ | 70–80% | $250+ | +30–45%",
+   "to": "10.9M | +32% | 4–4.5% | $2,500+/m²"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "natura-macquarie-park",
+   "name": "Natura Macquarie Park · Metro-connected living at Sydney’s tech &amp; university hub",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "vietnam",
+   "slug": "nobu-da-nang",
+   "name": "Nobu Residences Da Nang",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "10.9M | +32% | 4–4.5% | $2,500+/m²"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "greece",
+   "slug": "ocean-gate-building-piraeus-waterfront",
+   "name": "Ocean Gate Building",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "~8M | +12% | +8.4% | 4–8%"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "one-city-square-parramatta",
+   "name": "One City Square",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "uk",
+   "slug": "oval-village-london",
+   "name": "Oval Village",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "£300K | 4–7% | ~0% | 999yr",
+   "to": "4.5% | +3.7% | +19.8% | 20M+"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "paramount-on-parkes-parramatta",
+   "name": "Paramount On Parkes",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "park-modern-south-melbourne",
+   "name": "Park Modern",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+9–10% | ~1.8% | 3.8% | 5.2M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "parkside-mq-macquarie-park",
+   "name": "Parkside MQ",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "cyprus",
+   "slug": "pearl-park-beachfront-condo-paphos",
+   "name": "Pearl Park",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+10.7% | 5–6% | 28% | €3,200/m²"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "panama",
+   "slug": "pullman-panama-city",
+   "name": "Pullman Panama City  · Accor-Branded Tower · Punta Pacifica Bay · FNV-Eligible",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "$92B | +9.2% | 70–80% | +25–40%",
+   "to": "+10.1% | 7.8% | USD | +12%"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "r-evolution-south-melbourne",
+   "name": "R.Evolution",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+9–10% | ~1.8% | 3.8% | 5.2M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "turkey",
+   "slug": "referans-residence-beylikduzu-istanbul",
+   "name": "Referans Residence",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+30% | 5–8% | 8,416 | 16M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "sanctuary-willow",
+   "name": "Sanctuary",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "panama",
+   "slug": "santa-maria-panama",
+   "name": "Santa Maria Luxury Apartments",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+10.1% | 7.8% | USD | +12%"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "turkey",
+   "slug": "sefakoy-residence-boulevard-istanbul",
+   "name": "Sefakoy Residence (Boulevard Sefaköy)",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+30% | 5–8% | 8,416 | 16M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "serendipity-north-sydney",
+   "name": "Serendipity",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "spring-square-bankstown",
+   "name": "Spring Square",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "stage-2-auburn-auburn-square",
+   "name": "Stage 2 - Auburn",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "tb-w-waterloo",
+   "name": "Tb.W",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "the-avenues-zetland",
+   "name": "The Avenues",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "the-carling-carlingford",
+   "name": "The Carling",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "the-luminar-residences-lakemba",
+   "name": "The Luminar Residences",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "the-macquarie-collection-macquarie-park",
+   "name": "The Macquarie Collection",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "the-signature-collection-pagewood-rivera",
+   "name": "The Signature Collection",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "turkey",
+   "slug": "topkapi-nova-residence-istanbul",
+   "name": "Topkapı Nova Residence Phase II",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+30% | 5–8% | 8,416 | 16M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "trilogy-macquarie-park",
+   "name": "Trilogy",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "victoria-place-burwood",
+   "name": "Victoria Place",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+5.6% | ~1.5% | 3–4% | 446K"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "turkey",
+   "slug": "w-suite-istanbul",
+   "name": "W Suite Istanbul",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+30% | 5–8% | 8,416 | 16M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "west-side-place-melbourne-cbd",
+   "name": "West Side Place",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+9–10% | ~1.8% | 3.8% | 5.2M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "uk",
+   "slug": "white-city-living-london",
+   "name": "White City Living",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "£3B | 10K+ | Elizabeth | 999yr",
+   "to": "4.5% | +3.7% | +19.8% | 20M+"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "australia",
+   "slug": "yarra-park-alphington",
+   "name": "Yarra Park Alphington · Riverside renewal living in Melbourne’s inner north-east",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+9–10% | ~1.8% | 3.8% | 5.2M"
+  },
+  {
+   "ts": "2026-06-04T20:04:34Z",
+   "country": "turkey",
+   "slug": "yeni-garden-avrupa-konutlari-bagcilar",
+   "name": "Yeni Garden",
+   "field": "market",
+   "label": "Market stats",
+   "kind": "set",
+   "from": "33M+ | 23% | 80–95% | +30–45%",
+   "to": "+30% | 5–8% | 8,416 | 16M"
+  },
+  {
+   "ts": "2026-06-04T19:16:14Z",
    "country": "greece",
    "slug": "boulevard-residence-kallithea",
    "name": "Boulevard",
@@ -31,7 +867,7 @@
    "to": "~8M | +12% | +8.4% | 4–8%"
   },
   {
-   "ts": "2026-06-04T19:16:14+00:00",
+   "ts": "2026-06-04T19:16:14Z",
    "country": "greece",
    "slug": "izi-lux-kallithea-athens",
    "name": "Izi Lux",
@@ -42,7 +878,7 @@
    "to": "~8M | +12% | +8.4% | 4–8%"
   },
   {
-   "ts": "2026-06-04T19:16:14+00:00",
+   "ts": "2026-06-04T19:16:14Z",
    "country": "greece",
    "slug": "kifisia-suites-park-18",
    "name": "Kifisia Suites",
@@ -53,7 +889,7 @@
    "to": "~8M | +12% | +8.4% | 4–8%"
   },
   {
-   "ts": "2026-06-04T19:16:14+00:00",
+   "ts": "2026-06-04T19:16:14Z",
    "country": "greece",
    "slug": "levante-villas-galaxidi",
    "name": "Levante Villas",
@@ -64,7 +900,7 @@
    "to": "2.5h | +8.4% | 30 min | €250k+"
   },
   {
-   "ts": "2026-06-04T19:16:14+00:00",
+   "ts": "2026-06-04T19:16:14Z",
    "country": "greece",
    "slug": "meridia-piraeus-athens",
    "name": "Meridia",
@@ -75,7 +911,7 @@
    "to": "~8M | +12% | +8.4% | 4–8%"
   },
   {
-   "ts": "2026-06-04T19:16:14+00:00",
+   "ts": "2026-06-04T19:16:14Z",
    "country": "greece",
    "slug": "opus-residence-kallithea",
    "name": "Opus Residence",
@@ -86,7 +922,7 @@
    "to": "~8M | +12% | +8.4% | 4–8%"
   },
   {
-   "ts": "2026-06-04T19:16:14+00:00",
+   "ts": "2026-06-04T19:16:14Z",
    "country": "greece",
    "slug": "the-one-glyfada-athens",
    "name": "The One",
@@ -97,7 +933,7 @@
    "to": "~8M | +12% | +8.4% | 4–8%"
   },
   {
-   "ts": "2026-06-04T10:35:00+00:00",
+   "ts": "2026-06-04T10:35:00Z",
    "country": "greece",
    "slug": "boulevard-residence-kallithea",
    "name": "Boulevard",
@@ -108,7 +944,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-04T10:35:00+00:00",
+   "ts": "2026-06-04T10:35:00Z",
    "country": "greece",
    "slug": "izi-lux-kallithea-athens",
    "name": "Izi Lux",
@@ -119,7 +955,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-04T10:35:00+00:00",
+   "ts": "2026-06-04T10:35:00Z",
    "country": "greece",
    "slug": "kifisia-suites-park-18",
    "name": "Kifisia Suites",
@@ -130,7 +966,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-04T10:35:00+00:00",
+   "ts": "2026-06-04T10:35:00Z",
    "country": "greece",
    "slug": "levante-villas-galaxidi",
    "name": "Levante Villas",
@@ -141,7 +977,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-04T10:35:00+00:00",
+   "ts": "2026-06-04T10:35:00Z",
    "country": "greece",
    "slug": "meridia-piraeus-athens",
    "name": "Meridia",
@@ -152,7 +988,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-04T10:35:00+00:00",
+   "ts": "2026-06-04T10:35:00Z",
    "country": "greece",
    "slug": "opus-residence-kallithea",
    "name": "Opus Residence",
@@ -163,7 +999,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-04T10:35:00+00:00",
+   "ts": "2026-06-04T10:35:00Z",
    "country": "greece",
    "slug": "the-one-glyfada-athens",
    "name": "The One",
@@ -174,7 +1010,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T22:57:05+00:00",
+   "ts": "2026-06-03T22:57:05Z",
    "country": "turkey",
    "slug": "bagcilar-garden-istanbul",
    "name": "Bagcilar Garden",
@@ -185,7 +1021,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T22:40:02+00:00",
+   "ts": "2026-06-03T22:40:02Z",
    "country": "turkey",
    "slug": "elite-complex-istanbul",
    "name": "Elite Complex",
@@ -196,7 +1032,7 @@
    "to": "elite-complex-istanbul-1,elite-complex-istanbul-2,el…"
   },
   {
-   "ts": "2026-06-03T22:40:02+00:00",
+   "ts": "2026-06-03T22:40:02Z",
    "country": "turkey",
    "slug": "marmara-pearl-istanbul",
    "name": "Marmara Pearl",
@@ -207,7 +1043,7 @@
    "to": "marmara-pearl-istanbul-2,marmara-pearl-istanbul-3,ma…"
   },
   {
-   "ts": "2026-06-03T22:35:15+00:00",
+   "ts": "2026-06-03T22:35:15Z",
    "country": "australia",
    "slug": "sanctuary-willow",
    "name": "Sanctuary",
@@ -218,7 +1054,7 @@
    "to": "AUD-freehold apartment living in Sydney"
   },
   {
-   "ts": "2026-06-03T22:35:15+00:00",
+   "ts": "2026-06-03T22:35:15Z",
    "country": "australia",
    "slug": "sanctuary-willow",
    "name": "Sanctuary",
@@ -229,7 +1065,7 @@
    "to": "NAC reads Sanctuary as a capital-growth and safe-hav…"
   },
   {
-   "ts": "2026-06-03T22:35:15+00:00",
+   "ts": "2026-06-03T22:35:15Z",
    "country": "australia",
    "slug": "sanctuary-willow",
    "name": "Sanctuary",
@@ -240,7 +1076,7 @@
    "to": "Sydney is one of the world's most liveable, rule-of-…"
   },
   {
-   "ts": "2026-06-03T22:35:15+00:00",
+   "ts": "2026-06-03T22:35:15Z",
    "country": "australia",
    "slug": "sanctuary-willow",
    "name": "Sanctuary",
@@ -251,7 +1087,7 @@
    "to": "Sanctuary is a freehold residence in Sydney — an est…"
   },
   {
-   "ts": "2026-06-03T22:30:32+00:00",
+   "ts": "2026-06-03T22:30:32Z",
    "country": "turkey",
    "slug": "bagcilar-garden-phase-2-istanbul",
    "name": "Bağcılar Garden Phase II",
@@ -262,7 +1098,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T22:30:32+00:00",
+   "ts": "2026-06-03T22:30:32Z",
    "country": "turkey",
    "slug": "elite-complex-istanbul",
    "name": "Elite Complex",
@@ -273,7 +1109,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T22:30:32+00:00",
+   "ts": "2026-06-03T22:30:32Z",
    "country": "turkey",
    "slug": "horizon-park-istanbul",
    "name": "Horizon Park",
@@ -284,7 +1120,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T22:30:32+00:00",
+   "ts": "2026-06-03T22:30:32Z",
    "country": "turkey",
    "slug": "legend-residences-sariyer",
    "name": "Legend",
@@ -295,7 +1131,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T22:30:32+00:00",
+   "ts": "2026-06-03T22:30:32Z",
    "country": "turkey",
    "slug": "marmara-pearl-istanbul",
    "name": "Marmara Pearl",
@@ -306,7 +1142,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T22:30:32+00:00",
+   "ts": "2026-06-03T22:30:32Z",
    "country": "turkey",
    "slug": "topkapi-nova-residence-istanbul",
    "name": "Topkapı Nova Residence Phase II",
@@ -317,7 +1153,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "14-asquith-street-box-hill-south",
    "name": "14 Asquith Street",
@@ -328,7 +1164,7 @@
    "to": "Transport-hub city living in Melbourne’s east"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "14-asquith-street-box-hill-south",
    "name": "14 Asquith Street",
@@ -339,7 +1175,7 @@
    "to": "Box Hill is one of Melbourne’s busiest suburban cent…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "14-asquith-street-box-hill-south",
    "name": "14 Asquith Street",
@@ -350,7 +1186,7 @@
    "to": "Box Hill is one of Melbourne’s busiest suburban hubs…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "14-asquith-street-box-hill-south",
    "name": "14 Asquith Street",
@@ -361,7 +1197,7 @@
    "to": "14 Asquith Street is an address at Box Hill — a majo…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "17-george-st-burwood",
    "name": "17 George St",
@@ -372,7 +1208,7 @@
    "to": "Rail-hub city living in Sydney’s inner west"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "17-george-st-burwood",
    "name": "17 George St",
@@ -383,7 +1219,7 @@
    "to": "Burwood is a major inner-west centre ~10 km from the…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "17-george-st-burwood",
    "name": "17 George St",
@@ -394,7 +1230,7 @@
    "to": "Burwood is a major inner-west centre ~10 km from the…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "17-george-st-burwood",
    "name": "17 George St",
@@ -405,7 +1241,7 @@
    "to": "17 George St is an address in Burwood — a major inne…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "180-george-parramatta",
    "name": "180 George",
@@ -416,7 +1252,7 @@
    "to": "At the heart of Sydney’s second CBD"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "180-george-parramatta",
    "name": "180 George",
@@ -427,7 +1263,7 @@
    "to": "Parramatta is Sydney’s second CBD — heavy rail, ligh…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "180-george-parramatta",
    "name": "180 George",
@@ -438,7 +1274,7 @@
    "to": "Parramatta is Sydney’s designated second CBD — heavy…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "180-george-parramatta",
    "name": "180 George",
@@ -449,7 +1285,7 @@
    "to": "180 George is an address in Parramatta — Sydney’s se…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "2nd-avenue-blacktown",
    "name": "2nd Avenue",
@@ -460,7 +1296,7 @@
    "to": "Affordable family growth in Western Sydney"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "2nd-avenue-blacktown",
    "name": "2nd Avenue",
@@ -471,7 +1307,7 @@
    "to": "Blacktown is a major Western Sydney centre on a key …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "2nd-avenue-blacktown",
    "name": "2nd Avenue",
@@ -482,7 +1318,7 @@
    "to": "Blacktown is a major Western Sydney centre on a key …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "2nd-avenue-blacktown",
    "name": "2nd Avenue",
@@ -493,7 +1329,7 @@
    "to": "2nd Avenue is an address in Blacktown — a major West…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "325-station-st-box-hill-south",
    "name": "325 Station St",
@@ -504,7 +1340,7 @@
    "to": "Transport-hub city living in Melbourne’s east"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "325-station-st-box-hill-south",
    "name": "325 Station St",
@@ -515,7 +1351,7 @@
    "to": "Box Hill is one of Melbourne’s busiest suburban cent…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "325-station-st-box-hill-south",
    "name": "325 Station St",
@@ -526,7 +1362,7 @@
    "to": "Box Hill is one of Melbourne’s busiest suburban hubs…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "325-station-st-box-hill-south",
    "name": "325 Station St",
@@ -537,7 +1373,7 @@
    "to": "325 Station St is an address at Box Hill — a major e…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "34-birdwood-st-box-hill-south",
    "name": "34 Birdwood St",
@@ -548,7 +1384,7 @@
    "to": "Transport-hub city living in Melbourne’s east"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "34-birdwood-st-box-hill-south",
    "name": "34 Birdwood St",
@@ -559,7 +1395,7 @@
    "to": "Box Hill is one of Melbourne’s busiest suburban cent…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "34-birdwood-st-box-hill-south",
    "name": "34 Birdwood St",
@@ -570,7 +1406,7 @@
    "to": "Box Hill is one of Melbourne’s busiest suburban hubs…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "34-birdwood-st-box-hill-south",
    "name": "34 Birdwood St",
@@ -581,7 +1417,7 @@
    "to": "34 Birdwood St is an address at Box Hill — a major e…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "640-melbourne-cbd",
    "name": "640",
@@ -592,7 +1428,7 @@
    "to": "Free-tram-zone living in the heart of Melbourne"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "640-melbourne-cbd",
    "name": "640",
@@ -603,7 +1439,7 @@
    "to": "The Melbourne CBD core sits inside the Free Tram Zon…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "640-melbourne-cbd",
    "name": "640",
@@ -614,7 +1450,7 @@
    "to": "The Melbourne CBD is the city core — inside the Free…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "640-melbourne-cbd",
    "name": "640",
@@ -625,7 +1461,7 @@
    "to": "640 is a high-rise address in the Melbourne CBD — th…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "668-670-elgar-rd-box-hill-north",
    "name": "668-670 Elgar Rd",
@@ -636,7 +1472,7 @@
    "to": "Transport-hub city living in Melbourne’s east"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "668-670-elgar-rd-box-hill-north",
    "name": "668-670 Elgar Rd",
@@ -647,7 +1483,7 @@
    "to": "Box Hill is one of Melbourne’s busiest suburban cent…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "668-670-elgar-rd-box-hill-north",
    "name": "668-670 Elgar Rd",
@@ -658,7 +1494,7 @@
    "to": "Box Hill is one of Melbourne’s busiest suburban hubs…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "668-670-elgar-rd-box-hill-north",
    "name": "668-670 Elgar Rd",
@@ -669,7 +1505,7 @@
    "to": "668-670 Elgar Rd is an address at Box Hill — a major…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "alba-zetland",
    "name": "Alba",
@@ -680,7 +1516,7 @@
    "to": "Inner-city renewal living at Green Square"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "alba-zetland",
    "name": "Alba",
@@ -691,7 +1527,7 @@
    "to": "Zetland sits at the heart of Green Square — one of A…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "alba-zetland",
    "name": "Alba",
@@ -702,7 +1538,7 @@
    "to": "Zetland anchors the Green Square renewal — one of Au…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "alba-zetland",
    "name": "Alba",
@@ -713,7 +1549,7 @@
    "to": "Alba is an apartment address in Zetland — the heart …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "arncliffe-central-arncliffe",
    "name": "Arncliffe Central",
@@ -724,7 +1560,7 @@
    "to": "Airport-line living by the Cooks River"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "arncliffe-central-arncliffe",
    "name": "Arncliffe Central",
@@ -735,7 +1571,7 @@
    "to": "Arncliffe sits in Sydney’s St George area on the air…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "arncliffe-central-arncliffe",
    "name": "Arncliffe Central",
@@ -746,7 +1582,7 @@
    "to": "Arncliffe sits in Sydney’s St George area on the air…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "arncliffe-central-arncliffe",
    "name": "Arncliffe Central",
@@ -757,7 +1593,7 @@
    "to": "Arncliffe Central is an address in Arncliffe — a St …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "ashbury-apartment-ashbury",
    "name": "Ashbury Apartment",
@@ -768,7 +1604,7 @@
    "to": "Quiet, leafy living in Sydney’s inner west"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "ashbury-apartment-ashbury",
    "name": "Ashbury Apartment",
@@ -779,7 +1615,7 @@
    "to": "Ashbury is a quiet, leafy and tightly-held inner-wes…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "ashbury-apartment-ashbury",
    "name": "Ashbury Apartment",
@@ -790,7 +1626,7 @@
    "to": "Ashbury is a quiet, leafy inner-west pocket between …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "ashbury-apartment-ashbury",
    "name": "Ashbury Apartment",
@@ -801,7 +1637,7 @@
    "to": "Ashbury Apartment is a low-key residential address i…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "ashbury-terrace-ashbury-terrace",
    "name": "Ashbury Terrace · Quiet, leafy living in Sydney’s inner west",
@@ -812,7 +1648,7 @@
    "to": "Quiet, leafy living in Sydney’s inner west"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "ashbury-terrace-ashbury-terrace",
    "name": "Ashbury Terrace · Quiet, leafy living in Sydney’s inner west",
@@ -823,7 +1659,7 @@
    "to": "Ashbury is a quiet, leafy and tightly-held inner-wes…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "ashbury-terrace-ashbury-terrace",
    "name": "Ashbury Terrace · Quiet, leafy living in Sydney’s inner west",
@@ -834,7 +1670,7 @@
    "to": "Ashbury is a quiet, leafy inner-west pocket between …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "ashbury-terrace-ashbury-terrace",
    "name": "Ashbury Terrace · Quiet, leafy living in Sydney’s inner west",
@@ -845,7 +1681,7 @@
    "to": "Ashbury Terrace is a low-key residential address in …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "aura-north-sydney",
    "name": "Aura",
@@ -856,7 +1692,7 @@
    "to": "Harbourside corporate living, a Metro from the CBD"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "aura-north-sydney",
    "name": "Aura",
@@ -867,7 +1703,7 @@
    "to": "North Sydney is a major corporate district just acro…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "aura-north-sydney",
    "name": "Aura",
@@ -878,7 +1714,7 @@
    "to": "North Sydney is a major corporate district just acro…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "aura-north-sydney",
    "name": "Aura",
@@ -889,7 +1725,7 @@
    "to": "Aura is an address in North Sydney — a major harbour…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "beyond-hurstville",
    "name": "Beyond",
@@ -900,7 +1736,7 @@
    "to": "Rail-hub city living in Sydney’s south"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "beyond-hurstville",
    "name": "Beyond",
@@ -911,7 +1747,7 @@
    "to": "Hurstville is a major southern-Sydney centre ~16 km …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "beyond-hurstville",
    "name": "Beyond",
@@ -922,7 +1758,7 @@
    "to": "Hurstville is a major southern-Sydney centre ~16 km …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "beyond-hurstville",
    "name": "Beyond",
@@ -933,7 +1769,7 @@
    "to": "Beyond is an address in Hurstville — a major St Geor…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "caringbah-greens-caringbah",
    "name": "Caringbah Greens",
@@ -944,7 +1780,7 @@
    "to": "Shire living near Cronulla’s beaches"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "caringbah-greens-caringbah",
    "name": "Caringbah Greens",
@@ -955,7 +1791,7 @@
    "to": "Caringbah is established Sutherland Shire — a beachs…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "caringbah-greens-caringbah",
    "name": "Caringbah Greens",
@@ -966,7 +1802,7 @@
    "to": "Caringbah is established Sutherland Shire — a beachs…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "caringbah-greens-caringbah",
    "name": "Caringbah Greens",
@@ -977,7 +1813,7 @@
    "to": "Caringbah Greens is an address in Caringbah — an est…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "cosmopolitan-parramatta",
    "name": "Cosmopolitan",
@@ -988,7 +1824,7 @@
    "to": "At the heart of Sydney’s second CBD"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "cosmopolitan-parramatta",
    "name": "Cosmopolitan",
@@ -999,7 +1835,7 @@
    "to": "Parramatta is Sydney’s second CBD — heavy rail, ligh…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "cosmopolitan-parramatta",
    "name": "Cosmopolitan",
@@ -1010,7 +1846,7 @@
    "to": "Parramatta is Sydney’s designated second CBD — heavy…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "cosmopolitan-parramatta",
    "name": "Cosmopolitan",
@@ -1021,7 +1857,7 @@
    "to": "Cosmopolitan is an address in Parramatta — Sydney’s …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "danks-st-district-waterloo",
    "name": "Danks St District",
@@ -1032,7 +1868,7 @@
    "to": "City-edge living with a Metro on the way"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "danks-st-district-waterloo",
    "name": "Danks St District",
@@ -1043,7 +1879,7 @@
    "to": "Waterloo is an inner-city renewal pocket beside Gree…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "danks-st-district-waterloo",
    "name": "Danks St District",
@@ -1054,7 +1890,7 @@
    "to": "Waterloo is an inner-city renewal pocket next to Gre…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "danks-st-district-waterloo",
    "name": "Danks St District",
@@ -1065,7 +1901,7 @@
    "to": "Danks St District is an apartment address in Waterlo…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "downtown-zetland",
    "name": "Downtown Zetland · Inner-city renewal living at Green Square",
@@ -1076,7 +1912,7 @@
    "to": "Inner-city renewal living at Green Square"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "downtown-zetland",
    "name": "Downtown Zetland · Inner-city renewal living at Green Square",
@@ -1087,7 +1923,7 @@
    "to": "Zetland sits at the heart of Green Square — one of A…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "downtown-zetland",
    "name": "Downtown Zetland · Inner-city renewal living at Green Square",
@@ -1098,7 +1934,7 @@
    "to": "Zetland anchors the Green Square renewal — one of Au…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "downtown-zetland",
    "name": "Downtown Zetland · Inner-city renewal living at Green Square",
@@ -1109,7 +1945,7 @@
    "to": "Downtown is an apartment address in Zetland — the he…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "duncan-house-arncliffe",
    "name": "Duncan House",
@@ -1120,7 +1956,7 @@
    "to": "Airport-line living by the Cooks River"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "duncan-house-arncliffe",
    "name": "Duncan House",
@@ -1131,7 +1967,7 @@
    "to": "Arncliffe sits in Sydney’s St George area on the air…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "duncan-house-arncliffe",
    "name": "Duncan House",
@@ -1142,7 +1978,7 @@
    "to": "Arncliffe sits in Sydney’s St George area on the air…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "duncan-house-arncliffe",
    "name": "Duncan House",
@@ -1153,7 +1989,7 @@
    "to": "Duncan House is an address in Arncliffe — a St Georg…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "genesis-burwood",
    "name": "Genesis",
@@ -1164,7 +2000,7 @@
    "to": "Rail-hub city living in Sydney’s inner west"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "genesis-burwood",
    "name": "Genesis",
@@ -1175,7 +2011,7 @@
    "to": "Burwood is a major inner-west centre ~10 km from the…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "genesis-burwood",
    "name": "Genesis",
@@ -1186,7 +2022,7 @@
    "to": "Burwood is a major inner-west centre ~10 km from the…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "genesis-burwood",
    "name": "Genesis",
@@ -1197,7 +2033,7 @@
    "to": "Genesis is an address in Burwood — a major inner-wes…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "homeland-residences-carlingford",
    "name": "Homeland Residences",
@@ -1208,7 +2044,7 @@
    "to": "Light-rail family living in Sydney’s school belt"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "homeland-residences-carlingford",
    "name": "Homeland Residences",
@@ -1219,7 +2055,7 @@
    "to": "Carlingford is established north-west Sydney family …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "homeland-residences-carlingford",
    "name": "Homeland Residences",
@@ -1230,7 +2066,7 @@
    "to": "Carlingford is established family north-west Sydney …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "homeland-residences-carlingford",
    "name": "Homeland Residences",
@@ -1241,7 +2077,7 @@
    "to": "Homeland Residences is a residential address in Carl…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "lillian-residence-erskineville",
    "name": "Lillian Residence",
@@ -1252,7 +2088,7 @@
    "to": "Village living on the city’s inner-west edge"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "lillian-residence-erskineville",
    "name": "Lillian Residence",
@@ -1263,7 +2099,7 @@
    "to": "Erskineville is a tightly-held inner-west village be…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "lillian-residence-erskineville",
    "name": "Lillian Residence",
@@ -1274,7 +2110,7 @@
    "to": "Erskineville is a tightly-held inner-west village ne…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "lillian-residence-erskineville",
    "name": "Lillian Residence",
@@ -1285,7 +2121,7 @@
    "to": "Lillian Residence is an address in Erskineville — a …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "live-caringbah",
    "name": "Live",
@@ -1296,7 +2132,7 @@
    "to": "Shire living near Cronulla’s beaches"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "live-caringbah",
    "name": "Live",
@@ -1307,7 +2143,7 @@
    "to": "Caringbah is established Sutherland Shire — a beachs…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "live-caringbah",
    "name": "Live",
@@ -1318,7 +2154,7 @@
    "to": "Caringbah is established Sutherland Shire — a beachs…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "live-caringbah",
    "name": "Live",
@@ -1329,7 +2165,7 @@
    "to": "Live is an address in Caringbah — an established Sut…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "luna-zetland",
    "name": "Luna",
@@ -1340,7 +2176,7 @@
    "to": "Inner-city renewal living at Green Square"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "luna-zetland",
    "name": "Luna",
@@ -1351,7 +2187,7 @@
    "to": "Zetland sits at the heart of Green Square — one of A…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "luna-zetland",
    "name": "Luna",
@@ -1362,7 +2198,7 @@
    "to": "Zetland anchors the Green Square renewal — one of Au…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "luna-zetland",
    "name": "Luna",
@@ -1373,7 +2209,7 @@
    "to": "Luna is an apartment address in Zetland — the heart …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "luxton-carlingford",
    "name": "Luxton",
@@ -1384,7 +2220,7 @@
    "to": "Light-rail family living in Sydney’s school belt"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "luxton-carlingford",
    "name": "Luxton",
@@ -1395,7 +2231,7 @@
    "to": "Carlingford is established north-west Sydney family …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "luxton-carlingford",
    "name": "Luxton",
@@ -1406,7 +2242,7 @@
    "to": "Carlingford is established family north-west Sydney …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "luxton-carlingford",
    "name": "Luxton",
@@ -1417,7 +2253,7 @@
    "to": "Luxton is a residential address in Carlingford — an …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "macquarie-rise-macquarie-rise",
    "name": "Macquarie Rise · Metro-connected living at Sydney’s tech &amp; university hub",
@@ -1428,7 +2264,7 @@
    "to": "Metro-connected living at Sydney’s tech &amp; univer…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "macquarie-rise-macquarie-rise",
    "name": "Macquarie Rise · Metro-connected living at Sydney’s tech &amp; university hub",
@@ -1439,7 +2275,7 @@
    "to": "Macquarie Park is one of Sydney’s few true live-wher…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "macquarie-rise-macquarie-rise",
    "name": "Macquarie Rise · Metro-connected living at Sydney’s tech &amp; university hub",
@@ -1450,7 +2286,7 @@
    "to": "Macquarie Park is one of Sydney’s rare precincts whe…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "macquarie-rise-macquarie-rise",
    "name": "Macquarie Rise · Metro-connected living at Sydney’s tech &amp; university hub",
@@ -1461,7 +2297,7 @@
    "to": "Macquarie Rise is a residential address in Macquarie…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "natura-macquarie-park",
    "name": "Natura Macquarie Park · Metro-connected living at Sydney’s tech &amp; university hub",
@@ -1472,7 +2308,7 @@
    "to": "Metro-connected living at Sydney’s tech &amp; univer…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "natura-macquarie-park",
    "name": "Natura Macquarie Park · Metro-connected living at Sydney’s tech &amp; university hub",
@@ -1483,7 +2319,7 @@
    "to": "Macquarie Park is one of Sydney’s few true live-wher…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "natura-macquarie-park",
    "name": "Natura Macquarie Park · Metro-connected living at Sydney’s tech &amp; university hub",
@@ -1494,7 +2330,7 @@
    "to": "Macquarie Park is one of Sydney’s rare precincts whe…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "natura-macquarie-park",
    "name": "Natura Macquarie Park · Metro-connected living at Sydney’s tech &amp; university hub",
@@ -1505,7 +2341,7 @@
    "to": "Natura is a residential address in Macquarie Park — …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "one-city-square-parramatta",
    "name": "One City Square",
@@ -1516,7 +2352,7 @@
    "to": "At the heart of Sydney’s second CBD"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "one-city-square-parramatta",
    "name": "One City Square",
@@ -1527,7 +2363,7 @@
    "to": "Parramatta is Sydney’s second CBD — heavy rail, ligh…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "one-city-square-parramatta",
    "name": "One City Square",
@@ -1538,7 +2374,7 @@
    "to": "Parramatta is Sydney’s designated second CBD — heavy…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "one-city-square-parramatta",
    "name": "One City Square",
@@ -1549,7 +2385,7 @@
    "to": "One City Square is an address in Parramatta — Sydney…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "paramount-on-parkes-parramatta",
    "name": "Paramount On Parkes",
@@ -1560,7 +2396,7 @@
    "to": "At the heart of Sydney’s second CBD"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "paramount-on-parkes-parramatta",
    "name": "Paramount On Parkes",
@@ -1571,7 +2407,7 @@
    "to": "Parramatta is Sydney’s second CBD — heavy rail, ligh…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "paramount-on-parkes-parramatta",
    "name": "Paramount On Parkes",
@@ -1582,7 +2418,7 @@
    "to": "Parramatta is Sydney’s designated second CBD — heavy…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "paramount-on-parkes-parramatta",
    "name": "Paramount On Parkes",
@@ -1593,7 +2429,7 @@
    "to": "Paramount On Parkes is an address in Parramatta — Sy…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "park-modern-south-melbourne",
    "name": "Park Modern",
@@ -1604,7 +2440,7 @@
    "to": "Market-and-tram living on the CBD fringe"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "park-modern-south-melbourne",
    "name": "Park Modern",
@@ -1615,7 +2451,7 @@
    "to": "South Melbourne is a heritage CBD-fringe suburb buil…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "park-modern-south-melbourne",
    "name": "Park Modern",
@@ -1626,7 +2462,7 @@
    "to": "South Melbourne is a heritage CBD-fringe suburb buil…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "park-modern-south-melbourne",
    "name": "Park Modern",
@@ -1637,7 +2473,7 @@
    "to": "Park Modern is an address in South Melbourne — a her…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "parkside-mq-macquarie-park",
    "name": "Parkside MQ",
@@ -1648,7 +2484,7 @@
    "to": "Metro-connected living at Sydney’s tech &amp; univer…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "parkside-mq-macquarie-park",
    "name": "Parkside MQ",
@@ -1659,7 +2495,7 @@
    "to": "Macquarie Park is one of Sydney’s few true live-wher…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "parkside-mq-macquarie-park",
    "name": "Parkside MQ",
@@ -1670,7 +2506,7 @@
    "to": "Macquarie Park is one of Sydney’s rare precincts whe…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "parkside-mq-macquarie-park",
    "name": "Parkside MQ",
@@ -1681,7 +2517,7 @@
    "to": "Parkside MQ is a residential address in Macquarie Pa…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "r-evolution-south-melbourne",
    "name": "R.Evolution",
@@ -1692,7 +2528,7 @@
    "to": "Market-and-tram living on the CBD fringe"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "r-evolution-south-melbourne",
    "name": "R.Evolution",
@@ -1703,7 +2539,7 @@
    "to": "South Melbourne is a heritage CBD-fringe suburb buil…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "r-evolution-south-melbourne",
    "name": "R.Evolution",
@@ -1714,7 +2550,7 @@
    "to": "South Melbourne is a heritage CBD-fringe suburb buil…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "r-evolution-south-melbourne",
    "name": "R.Evolution",
@@ -1725,7 +2561,7 @@
    "to": "R.Evolution is an address in South Melbourne — a her…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "serendipity-north-sydney",
    "name": "Serendipity",
@@ -1736,7 +2572,7 @@
    "to": "Harbourside corporate living, a Metro from the CBD"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "serendipity-north-sydney",
    "name": "Serendipity",
@@ -1747,7 +2583,7 @@
    "to": "North Sydney is a major corporate district just acro…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "serendipity-north-sydney",
    "name": "Serendipity",
@@ -1758,7 +2594,7 @@
    "to": "North Sydney is a major corporate district just acro…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "serendipity-north-sydney",
    "name": "Serendipity",
@@ -1769,7 +2605,7 @@
    "to": "Serendipity is an address in North Sydney — a major …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "spring-square-bankstown",
    "name": "Spring Square",
@@ -1780,7 +2616,7 @@
    "to": "Metro-upgrade &amp; university growth in the south-w…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "spring-square-bankstown",
    "name": "Spring Square",
@@ -1791,7 +2627,7 @@
    "to": "Bankstown is a major south-west Sydney centre being …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "spring-square-bankstown",
    "name": "Spring Square",
@@ -1802,7 +2638,7 @@
    "to": "Bankstown is a major south-west Sydney centre being …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "spring-square-bankstown",
    "name": "Spring Square",
@@ -1813,7 +2649,7 @@
    "to": "Spring Square is an address in Bankstown — a Canterb…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "stage-2-auburn-auburn-square",
    "name": "Stage 2 - Auburn",
@@ -1824,7 +2660,7 @@
    "to": "Value city-rail living near Olympic Park"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "stage-2-auburn-auburn-square",
    "name": "Stage 2 - Auburn",
@@ -1835,7 +2671,7 @@
    "to": "Auburn sits on the main western line between Parrama…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "stage-2-auburn-auburn-square",
    "name": "Stage 2 - Auburn",
@@ -1846,7 +2682,7 @@
    "to": "Auburn sits on the main western rail line between Pa…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "stage-2-auburn-auburn-square",
    "name": "Stage 2 - Auburn",
@@ -1857,7 +2693,7 @@
    "to": "Stage 2 - Auburn is an address in Auburn — a multicu…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "tb-w-waterloo",
    "name": "Tb.W",
@@ -1868,7 +2704,7 @@
    "to": "City-edge living with a Metro on the way"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "tb-w-waterloo",
    "name": "Tb.W",
@@ -1879,7 +2715,7 @@
    "to": "Waterloo is an inner-city renewal pocket beside Gree…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "tb-w-waterloo",
    "name": "Tb.W",
@@ -1890,7 +2726,7 @@
    "to": "Waterloo is an inner-city renewal pocket next to Gre…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "tb-w-waterloo",
    "name": "Tb.W",
@@ -1901,7 +2737,7 @@
    "to": "Tb.W is an apartment address in Waterloo — an inner-…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-avenues-zetland",
    "name": "The Avenues",
@@ -1912,7 +2748,7 @@
    "to": "Inner-city renewal living at Green Square"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-avenues-zetland",
    "name": "The Avenues",
@@ -1923,7 +2759,7 @@
    "to": "Zetland sits at the heart of Green Square — one of A…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-avenues-zetland",
    "name": "The Avenues",
@@ -1934,7 +2770,7 @@
    "to": "Zetland anchors the Green Square renewal — one of Au…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-avenues-zetland",
    "name": "The Avenues",
@@ -1945,7 +2781,7 @@
    "to": "The Avenues is an apartment address in Zetland — the…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-carling-carlingford",
    "name": "The Carling",
@@ -1956,7 +2792,7 @@
    "to": "Light-rail family living in Sydney’s school belt"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-carling-carlingford",
    "name": "The Carling",
@@ -1967,7 +2803,7 @@
    "to": "Carlingford is established north-west Sydney family …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-carling-carlingford",
    "name": "The Carling",
@@ -1978,7 +2814,7 @@
    "to": "Carlingford is established family north-west Sydney …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-carling-carlingford",
    "name": "The Carling",
@@ -1989,7 +2825,7 @@
    "to": "The Carling is a residential address in Carlingford …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-luminar-residences-lakemba",
    "name": "The Luminar Residences",
@@ -2000,7 +2836,7 @@
    "to": "Value, high-yield rail living in Sydney’s south-west"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-luminar-residences-lakemba",
    "name": "The Luminar Residences",
@@ -2011,7 +2847,7 @@
    "to": "Lakemba is a multicultural Canterbury-Bankstown subu…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-luminar-residences-lakemba",
    "name": "The Luminar Residences",
@@ -2022,7 +2858,7 @@
    "to": "Lakemba is a multicultural Canterbury-Bankstown subu…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-luminar-residences-lakemba",
    "name": "The Luminar Residences",
@@ -2033,7 +2869,7 @@
    "to": "The Luminar Residences is an address in Lakemba — a …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-macquarie-collection-macquarie-park",
    "name": "The Macquarie Collection",
@@ -2044,7 +2880,7 @@
    "to": "Metro-connected living at Sydney’s tech &amp; univer…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-macquarie-collection-macquarie-park",
    "name": "The Macquarie Collection",
@@ -2055,7 +2891,7 @@
    "to": "Macquarie Park is one of Sydney’s few true live-wher…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-macquarie-collection-macquarie-park",
    "name": "The Macquarie Collection",
@@ -2066,7 +2902,7 @@
    "to": "Macquarie Park is one of Sydney’s rare precincts whe…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-macquarie-collection-macquarie-park",
    "name": "The Macquarie Collection",
@@ -2077,7 +2913,7 @@
    "to": "The Macquarie Collection is a residential address in…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-signature-collection-pagewood-rivera",
    "name": "The Signature Collection",
@@ -2088,7 +2924,7 @@
    "to": "Eastern-suburbs living by Westfield Eastgardens"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-signature-collection-pagewood-rivera",
    "name": "The Signature Collection",
@@ -2099,7 +2935,7 @@
    "to": "Pagewood is an established south-east Sydney pocket …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-signature-collection-pagewood-rivera",
    "name": "The Signature Collection",
@@ -2110,7 +2946,7 @@
    "to": "Pagewood sits in south-east Sydney beside Westfield …"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "the-signature-collection-pagewood-rivera",
    "name": "The Signature Collection",
@@ -2121,7 +2957,7 @@
    "to": "The Signature Collection is a residential address in…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "victoria-place-burwood",
    "name": "Victoria Place",
@@ -2132,7 +2968,7 @@
    "to": "Rail-hub city living in Sydney’s inner west"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "victoria-place-burwood",
    "name": "Victoria Place",
@@ -2143,7 +2979,7 @@
    "to": "Burwood is a major inner-west centre ~10 km from the…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "victoria-place-burwood",
    "name": "Victoria Place",
@@ -2154,7 +2990,7 @@
    "to": "Burwood is a major inner-west centre ~10 km from the…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "victoria-place-burwood",
    "name": "Victoria Place",
@@ -2165,7 +3001,7 @@
    "to": "Victoria Place is an address in Burwood — a major in…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "west-side-place-melbourne-cbd",
    "name": "West Side Place",
@@ -2176,7 +3012,7 @@
    "to": "Free-tram-zone living in the heart of Melbourne"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "west-side-place-melbourne-cbd",
    "name": "West Side Place",
@@ -2187,7 +3023,7 @@
    "to": "The Melbourne CBD core sits inside the Free Tram Zon…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "west-side-place-melbourne-cbd",
    "name": "West Side Place",
@@ -2198,7 +3034,7 @@
    "to": "The Melbourne CBD is the city core — inside the Free…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "west-side-place-melbourne-cbd",
    "name": "West Side Place",
@@ -2209,7 +3045,7 @@
    "to": "West Side Place is a high-rise address in the Melbou…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "yarra-park-alphington",
    "name": "Yarra Park Alphington · Riverside renewal living in Melbourne’s inner north-east",
@@ -2220,7 +3056,7 @@
    "to": "Riverside renewal living in Melbourne’s inner north-…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "yarra-park-alphington",
    "name": "Yarra Park Alphington · Riverside renewal living in Melbourne’s inner north-east",
@@ -2231,7 +3067,7 @@
    "to": "Alphington is a leafy, riverside inner-north-east su…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "yarra-park-alphington",
    "name": "Yarra Park Alphington · Riverside renewal living in Melbourne’s inner north-east",
@@ -2242,7 +3078,7 @@
    "to": "Alphington is a leafy, riverside inner-north-east su…"
   },
   {
-   "ts": "2026-06-03T17:53:14+00:00",
+   "ts": "2026-06-03T17:53:14Z",
    "country": "australia",
    "slug": "yarra-park-alphington",
    "name": "Yarra Park Alphington · Riverside renewal living in Melbourne’s inner north-east",
@@ -2253,7 +3089,7 @@
    "to": "Yarra Park is an address in Alphington — a leafy, ri…"
   },
   {
-   "ts": "2026-06-03T17:47:25+00:00",
+   "ts": "2026-06-03T17:47:25Z",
    "country": "australia",
    "slug": "380-middleborough-road-blackburn",
    "name": "380 Middleborough Road",
@@ -2264,7 +3100,7 @@
    "to": "Leafy, station-side townhouse living in Melbourne’s …"
   },
   {
-   "ts": "2026-06-03T17:47:25+00:00",
+   "ts": "2026-06-03T17:47:25Z",
    "country": "australia",
    "slug": "380-middleborough-road-blackburn",
    "name": "380 Middleborough Road",
@@ -2275,7 +3111,7 @@
    "to": "Blackburn is established, leafy east-Melbourne famil…"
   },
   {
-   "ts": "2026-06-03T17:47:25+00:00",
+   "ts": "2026-06-03T17:47:25Z",
    "country": "australia",
    "slug": "380-middleborough-road-blackburn",
    "name": "380 Middleborough Road",
@@ -2286,7 +3122,7 @@
    "to": "Blackburn is established east-Melbourne family terri…"
   },
   {
-   "ts": "2026-06-03T17:47:25+00:00",
+   "ts": "2026-06-03T17:47:25Z",
    "country": "australia",
    "slug": "380-middleborough-road-blackburn",
    "name": "380 Middleborough Road",
@@ -2297,7 +3133,7 @@
    "to": "380 Middleborough Road is a low-rise townhouse addre…"
   },
   {
-   "ts": "2026-06-03T17:47:25+00:00",
+   "ts": "2026-06-03T17:47:25Z",
    "country": "australia",
    "slug": "88-livie-carlingford",
    "name": "88 Livie",
@@ -2308,7 +3144,7 @@
    "to": "Light-rail family living in Sydney’s school belt"
   },
   {
-   "ts": "2026-06-03T17:47:25+00:00",
+   "ts": "2026-06-03T17:47:25Z",
    "country": "australia",
    "slug": "88-livie-carlingford",
    "name": "88 Livie",
@@ -2319,7 +3155,7 @@
    "to": "Carlingford is established north-west Sydney family …"
   },
   {
-   "ts": "2026-06-03T17:47:25+00:00",
+   "ts": "2026-06-03T17:47:25Z",
    "country": "australia",
    "slug": "88-livie-carlingford",
    "name": "88 Livie",
@@ -2330,7 +3166,7 @@
    "to": "Carlingford is established family north-west Sydney …"
   },
   {
-   "ts": "2026-06-03T17:47:25+00:00",
+   "ts": "2026-06-03T17:47:25Z",
    "country": "australia",
    "slug": "88-livie-carlingford",
    "name": "88 Livie",
@@ -2341,7 +3177,7 @@
    "to": "88 Livie is a residential address in Carlingford — a…"
   },
   {
-   "ts": "2026-06-03T17:47:25+00:00",
+   "ts": "2026-06-03T17:47:25Z",
    "country": "australia",
    "slug": "aura-melbourne-square-stage-3-southbank",
    "name": "Aura ( Melbourne Square Stage 3)",
@@ -2352,7 +3188,7 @@
    "to": "Riverfront high-rise in Melbourne’s arts precinct"
   },
   {
-   "ts": "2026-06-03T17:47:25+00:00",
+   "ts": "2026-06-03T17:47:25Z",
    "country": "australia",
    "slug": "aura-melbourne-square-stage-3-southbank",
    "name": "Aura ( Melbourne Square Stage 3)",
@@ -2363,7 +3199,7 @@
    "to": "Southbank is Melbourne’s riverfront arts-and-dining …"
   },
   {
-   "ts": "2026-06-03T17:47:25+00:00",
+   "ts": "2026-06-03T17:47:25Z",
    "country": "australia",
    "slug": "aura-melbourne-square-stage-3-southbank",
    "name": "Aura ( Melbourne Square Stage 3)",
@@ -2374,7 +3210,7 @@
    "to": "Southbank is Melbourne’s riverfront arts precinct — …"
   },
   {
-   "ts": "2026-06-03T17:47:25+00:00",
+   "ts": "2026-06-03T17:47:25Z",
    "country": "australia",
    "slug": "aura-melbourne-square-stage-3-southbank",
    "name": "Aura ( Melbourne Square Stage 3)",
@@ -2385,7 +3221,7 @@
    "to": "Aura ( Melbourne Square Stage 3) is a high-rise addr…"
   },
   {
-   "ts": "2026-06-03T17:37:05+00:00",
+   "ts": "2026-06-03T17:37:05Z",
    "country": "australia",
    "slug": "trilogy-macquarie-park",
    "name": "Trilogy",
@@ -2396,7 +3232,7 @@
    "to": "Metro-connected living at Sydney’s tech &amp; univer…"
   },
   {
-   "ts": "2026-06-03T17:37:05+00:00",
+   "ts": "2026-06-03T17:37:05Z",
    "country": "australia",
    "slug": "trilogy-macquarie-park",
    "name": "Trilogy",
@@ -2407,7 +3243,7 @@
    "to": "Macquarie Park is one of Sydney’s few true live-wher…"
   },
   {
-   "ts": "2026-06-03T17:37:05+00:00",
+   "ts": "2026-06-03T17:37:05Z",
    "country": "australia",
    "slug": "trilogy-macquarie-park",
    "name": "Trilogy",
@@ -2418,7 +3254,7 @@
    "to": "Macquarie Park is one of Sydney’s rare precincts whe…"
   },
   {
-   "ts": "2026-06-03T17:37:05+00:00",
+   "ts": "2026-06-03T17:37:05Z",
    "country": "australia",
    "slug": "trilogy-macquarie-park",
    "name": "Trilogy",
@@ -2429,7 +3265,7 @@
    "to": "Trilogy is a residential address in Macquarie Park —…"
   },
   {
-   "ts": "2026-06-03T17:10:46+00:00",
+   "ts": "2026-06-03T17:10:46Z",
    "country": "australia",
    "slug": "380-middleborough-road-blackburn",
    "name": "380 Middleborough Road",
@@ -2440,7 +3276,7 @@
    "to": "380-middleborough-road-blackburn-2,380-middleborough…"
   },
   {
-   "ts": "2026-06-03T17:10:46+00:00",
+   "ts": "2026-06-03T17:10:46Z",
    "country": "australia",
    "slug": "88-livie-carlingford",
    "name": "88 Livie",
@@ -2451,7 +3287,7 @@
    "to": "88-livie-carlingford-1,88-livie-carlingford-2,88-liv…"
   },
   {
-   "ts": "2026-06-03T17:10:46+00:00",
+   "ts": "2026-06-03T17:10:46Z",
    "country": "australia",
    "slug": "duncan-house-arncliffe",
    "name": "Duncan House",
@@ -2462,7 +3298,7 @@
    "to": "duncan-house-arncliffe-1,duncan-house-arncliffe-2,du…"
   },
   {
-   "ts": "2026-06-03T17:10:46+00:00",
+   "ts": "2026-06-03T17:10:46Z",
    "country": "australia",
    "slug": "tb-w-waterloo",
    "name": "Tb.W",
@@ -2473,7 +3309,7 @@
    "to": "tb-w-waterloo-2,tb-w-waterloo-4"
   },
   {
-   "ts": "2026-06-03T14:53:53+00:00",
+   "ts": "2026-06-03T14:53:53Z",
    "country": "australia",
    "slug": "14-asquith-street-box-hill-south",
    "name": "14 Asquith Street",
@@ -2484,7 +3320,7 @@
    "to": "14-asquith-street-box-hill-south-2,14-asquith-street…"
   },
   {
-   "ts": "2026-06-03T14:53:53+00:00",
+   "ts": "2026-06-03T14:53:53Z",
    "country": "australia",
    "slug": "640-melbourne-cbd",
    "name": "640",
@@ -2495,7 +3331,7 @@
    "to": "640-melbourne-cbd-1,640-melbourne-cbd-2,640-melbourn…"
   },
   {
-   "ts": "2026-06-03T14:53:53+00:00",
+   "ts": "2026-06-03T14:53:53Z",
    "country": "australia",
    "slug": "genesis-burwood",
    "name": "Genesis",
@@ -2506,7 +3342,7 @@
    "to": "genesis-burwood-1,genesis-burwood-2,genesis-burwood-…"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "14-asquith-street-box-hill-south",
    "name": "14 Asquith Street",
@@ -2517,7 +3353,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "17-george-st-burwood",
    "name": "17 George St",
@@ -2528,7 +3364,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "180-george-parramatta",
    "name": "180 George",
@@ -2539,7 +3375,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "2nd-avenue-blacktown",
    "name": "2nd Avenue",
@@ -2550,7 +3386,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "325-station-st-box-hill-south",
    "name": "325 Station St",
@@ -2561,7 +3397,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "34-birdwood-st-box-hill-south",
    "name": "34 Birdwood St",
@@ -2572,7 +3408,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "380-middleborough-road-blackburn",
    "name": "380 Middleborough Road",
@@ -2583,7 +3419,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "640-melbourne-cbd",
    "name": "640",
@@ -2594,7 +3430,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "668-670-elgar-rd-box-hill-north",
    "name": "668-670 Elgar Rd",
@@ -2605,7 +3441,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "88-livie-carlingford",
    "name": "88 Livie",
@@ -2616,7 +3452,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "alba-zetland",
    "name": "Alba",
@@ -2627,7 +3463,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "arncliffe-central-arncliffe",
    "name": "Arncliffe Central",
@@ -2638,7 +3474,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "ashbury-apartment-ashbury",
    "name": "Ashbury Apartment",
@@ -2649,7 +3485,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "ashbury-terrace-ashbury-terrace",
    "name": "Ashbury Terrace · Freehold townhouse living in Ashbury Terrace",
@@ -2660,7 +3496,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "aura-melbourne-square-stage-3-southbank",
    "name": "Aura ( Melbourne Square Stage 3)",
@@ -2671,7 +3507,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "aura-north-sydney",
    "name": "Aura",
@@ -2682,7 +3518,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "beyond-hurstville",
    "name": "Beyond",
@@ -2693,7 +3529,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "caringbah-greens-caringbah",
    "name": "Caringbah Greens",
@@ -2704,7 +3540,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "cosmopolitan-parramatta",
    "name": "Cosmopolitan",
@@ -2715,7 +3551,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "danks-st-district-waterloo",
    "name": "Danks St District",
@@ -2726,7 +3562,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "duncan-house-arncliffe",
    "name": "Duncan House",
@@ -2737,7 +3573,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "genesis-burwood",
    "name": "Genesis",
@@ -2748,7 +3584,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "homeland-residences-carlingford",
    "name": "Homeland Residences",
@@ -2759,7 +3595,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "lillian-residence-erskineville",
    "name": "Lillian Residence",
@@ -2770,7 +3606,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "live-caringbah",
    "name": "Live",
@@ -2781,7 +3617,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "luna-zetland",
    "name": "Luna",
@@ -2792,7 +3628,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "luxton-carlingford",
    "name": "Luxton",
@@ -2803,7 +3639,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "macquarie-rise-macquarie-rise",
    "name": "Macquarie Rise · Freehold apartment living in Macquarie Rise",
@@ -2814,7 +3650,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "one-city-square-parramatta",
    "name": "One City Square",
@@ -2825,7 +3661,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "paramount-on-parkes-parramatta",
    "name": "Paramount On Parkes",
@@ -2836,7 +3672,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "park-modern-south-melbourne",
    "name": "Park Modern",
@@ -2847,7 +3683,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "parkside-mq-macquarie-park",
    "name": "Parkside MQ",
@@ -2858,7 +3694,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "r-evolution-south-melbourne",
    "name": "R.Evolution",
@@ -2869,7 +3705,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "sanctuary-willow",
    "name": "Sanctuary",
@@ -2880,7 +3716,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "serendipity-north-sydney",
    "name": "Serendipity",
@@ -2891,7 +3727,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "spring-square-bankstown",
    "name": "Spring Square",
@@ -2902,7 +3738,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "stage-2-auburn-auburn-square",
    "name": "Stage 2 - Auburn",
@@ -2913,7 +3749,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "tb-w-waterloo",
    "name": "Tb.W",
@@ -2924,7 +3760,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "the-avenues-zetland",
    "name": "The Avenues",
@@ -2935,7 +3771,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "the-carling-carlingford",
    "name": "The Carling",
@@ -2946,7 +3782,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "the-luminar-residences-lakemba",
    "name": "The Luminar Residences",
@@ -2957,7 +3793,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "the-macquarie-collection-macquarie-park",
    "name": "The Macquarie Collection",
@@ -2968,7 +3804,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "the-signature-collection-pagewood-rivera",
    "name": "The Signature Collection",
@@ -2979,7 +3815,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "trilogy-macquarie-park",
    "name": "Trilogy",
@@ -2990,7 +3826,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "victoria-place-burwood",
    "name": "Victoria Place",
@@ -3001,7 +3837,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T12:46:06+00:00",
+   "ts": "2026-06-03T12:46:06Z",
    "country": "australia",
    "slug": "west-side-place-melbourne-cbd",
    "name": "West Side Place",
@@ -3012,7 +3848,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-03T09:31:58+00:00",
+   "ts": "2026-06-03T09:31:58Z",
    "country": "australia",
    "slug": "downtown-zetland",
    "name": "Downtown Zetland · Village living on the edge of the city.",
@@ -3023,7 +3859,7 @@
    "to": "74"
   },
   {
-   "ts": "2026-06-03T09:31:58+00:00",
+   "ts": "2026-06-03T09:31:58Z",
    "country": "australia",
    "slug": "downtown-zetland",
    "name": "Downtown Zetland · Village living on the edge of the city.",
@@ -3034,7 +3870,7 @@
    "to": "8.5"
   },
   {
-   "ts": "2026-06-03T09:31:58+00:00",
+   "ts": "2026-06-03T09:31:58Z",
    "country": "australia",
    "slug": "downtown-zetland",
    "name": "Downtown Zetland · Village living on the edge of the city.",
@@ -3045,7 +3881,7 @@
    "to": "2.9"
   },
   {
-   "ts": "2026-06-03T09:31:58+00:00",
+   "ts": "2026-06-03T09:31:58Z",
    "country": "australia",
    "slug": "downtown-zetland",
    "name": "Downtown Zetland · Village living on the edge of the city.",
@@ -3056,7 +3892,7 @@
    "to": "13.0"
   },
   {
-   "ts": "2026-06-03T09:31:58+00:00",
+   "ts": "2026-06-03T09:31:58Z",
    "country": "australia",
    "slug": "natura-macquarie-park",
    "name": "Natura Macquarie Park · A residential resort in Sydney's tech heart.",
@@ -3067,7 +3903,7 @@
    "to": "76"
   },
   {
-   "ts": "2026-06-03T09:31:58+00:00",
+   "ts": "2026-06-03T09:31:58Z",
    "country": "australia",
    "slug": "natura-macquarie-park",
    "name": "Natura Macquarie Park · A residential resort in Sydney's tech heart.",
@@ -3078,7 +3914,7 @@
    "to": "8.5"
   },
   {
-   "ts": "2026-06-03T09:31:58+00:00",
+   "ts": "2026-06-03T09:31:58Z",
    "country": "australia",
    "slug": "natura-macquarie-park",
    "name": "Natura Macquarie Park · A residential resort in Sydney's tech heart.",
@@ -3089,7 +3925,7 @@
    "to": "2.8"
   },
   {
-   "ts": "2026-06-03T09:31:58+00:00",
+   "ts": "2026-06-03T09:31:58Z",
    "country": "australia",
    "slug": "natura-macquarie-park",
    "name": "Natura Macquarie Park · A residential resort in Sydney's tech heart.",
@@ -3100,7 +3936,7 @@
    "to": "13.0"
   },
   {
-   "ts": "2026-06-03T09:31:58+00:00",
+   "ts": "2026-06-03T09:31:58Z",
    "country": "australia",
    "slug": "yarra-park-alphington",
    "name": "Yarra Park Alphington · Riverside townhome living, minutes from the city.",
@@ -3111,7 +3947,7 @@
    "to": "74"
   },
   {
-   "ts": "2026-06-03T09:31:58+00:00",
+   "ts": "2026-06-03T09:31:58Z",
    "country": "australia",
    "slug": "yarra-park-alphington",
    "name": "Yarra Park Alphington · Riverside townhome living, minutes from the city.",
@@ -3122,7 +3958,7 @@
    "to": "8.0"
   },
   {
-   "ts": "2026-06-03T09:31:58+00:00",
+   "ts": "2026-06-03T09:31:58Z",
    "country": "australia",
    "slug": "yarra-park-alphington",
    "name": "Yarra Park Alphington · Riverside townhome living, minutes from the city.",
@@ -3133,7 +3969,7 @@
    "to": "2.9"
   },
   {
-   "ts": "2026-06-03T09:31:58+00:00",
+   "ts": "2026-06-03T09:31:58Z",
    "country": "australia",
    "slug": "yarra-park-alphington",
    "name": "Yarra Park Alphington · Riverside townhome living, minutes from the city.",
@@ -3144,7 +3980,7 @@
    "to": "13.0"
   },
   {
-   "ts": "2026-06-02T22:07:37+00:00",
+   "ts": "2026-06-02T22:07:37Z",
    "country": "australia",
    "slug": "downtown-zetland",
    "name": "Downtown Zetland · Village living on the edge of the city.",
@@ -3155,7 +3991,7 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-02T22:07:37+00:00",
+   "ts": "2026-06-02T22:07:37Z",
    "country": "australia",
    "slug": "natura-macquarie-park",
    "name": "Natura Macquarie Park · A residential resort in Sydney's tech heart.",
@@ -3166,10 +4002,21 @@
    "to": "added"
   },
   {
-   "ts": "2026-06-02T22:07:37+00:00",
+   "ts": "2026-06-02T22:07:37Z",
    "country": "australia",
    "slug": "yarra-park-alphington",
    "name": "Yarra Park Alphington · Riverside townhome living, minutes from the city.",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-05-22T08:59:06Z",
+   "country": "vietnam",
+   "slug": "the-one-sai-gon",
+   "name": "The One Sài Gòn",
    "field": "listing",
    "label": "Listing",
    "kind": "event",
