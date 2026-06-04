@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-04T20:17:03Z",
+  "generated": "2026-06-04T20:19:46Z",
   "reviewed": "2026-06-04",
-  "fingerprint": "55a2618fdba68d25",
+  "fingerprint": "96997920063057f4",
   "dims": [
     "id",
     "fin",
@@ -14,7 +14,7 @@
     "qa"
   ],
   "imgHash": "qse3Pw84PrZ2S0PQOTtixw",
-  "total": 87,
+  "total": 86,
   "countries": [
     {
       "code": "AU",
@@ -57,12 +57,6 @@
       "name": "Panama",
       "flag": "🇵🇦",
       "count": 2
-    },
-    {
-      "code": "XX",
-      "name": "Unknown",
-      "flag": "🏳️",
-      "count": 1
     }
   ],
   "groups": [
@@ -2221,9 +2215,9 @@
           "thumb": "@https://zentima-img.zentima.com/properties/1751455623-hero_2x.webp",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
-            "edit": "band",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
             "json": "done",
             "cine": "band",
             "img": "block",
@@ -2231,11 +2225,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "fin": 2,
-            "nac": 2,
-            "edit": 2
-          }
+          "dup": {}
         }
       ]
     },
@@ -2288,36 +2278,6 @@
           },
           "note": "",
           "dup": {}
-        }
-      ]
-    },
-    {
-      "country": "Unknown",
-      "code": "XX",
-      "flag": "🏳️",
-      "region": "Universal Area",
-      "rows": [
-        {
-          "name": "Pearl Park — Aristo Developers, Paphos (Cyprus RBI)",
-          "slug": "pearl-park-paphos-cyprus-rbi",
-          "thumb": "@https://zentima-img.zentima.com/properties/1751455623-hero_2x.webp",
-          "st": {
-            "id": "block",
-            "fin": "band",
-            "nac": "band",
-            "edit": "band",
-            "json": "done",
-            "cine": "band",
-            "img": "block",
-            "geo": "block",
-            "qa": "done"
-          },
-          "note": "",
-          "dup": {
-            "fin": 2,
-            "nac": 2,
-            "edit": 2
-          }
         }
       ]
     }
