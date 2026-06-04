@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-04T20:19:46Z",
+  "generated": "2026-06-04T21:02:36Z",
   "reviewed": "2026-06-04",
-  "fingerprint": "96997920063057f4",
+  "fingerprint": "e78040286592157f",
   "dims": [
     "id",
     "fin",
@@ -98,8 +98,8 @@
           "thumb": "arncliffe-central-arncliffe-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -109,8 +109,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 2
           }
         },
@@ -120,8 +118,8 @@
           "thumb": "duncan-house-arncliffe-1",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -131,8 +129,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 2
           }
         }
@@ -150,8 +146,8 @@
           "thumb": "ashbury-apartment-ashbury-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -160,10 +156,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "fin": 33,
-            "nac": 34
-          }
+          "dup": {}
         }
       ]
     },
@@ -179,8 +172,8 @@
           "thumb": "ashbury-terrace-ashbury-terrace-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -189,10 +182,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "fin": 3,
-            "nac": 8
-          }
+          "dup": {}
         }
       ]
     },
@@ -208,8 +198,8 @@
           "thumb": "stage-2-auburn-auburn-square-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -218,10 +208,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "fin": 33,
-            "nac": 34
-          }
+          "dup": {}
         }
       ]
     },
@@ -237,8 +224,8 @@
           "thumb": "spring-square-bankstown-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -247,10 +234,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "fin": 33,
-            "nac": 34
-          }
+          "dup": {}
         }
       ]
     },
@@ -266,8 +250,8 @@
           "thumb": "380-middleborough-road-blackburn-4",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -276,10 +260,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "fin": 5,
-            "nac": 8
-          }
+          "dup": {}
         }
       ]
     },
@@ -295,8 +276,8 @@
           "thumb": "2nd-avenue-blacktown-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -305,10 +286,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "fin": 33,
-            "nac": 34
-          }
+          "dup": {}
         }
       ]
     },
@@ -324,8 +302,8 @@
           "thumb": "668-670-elgar-rd-box-hill-north-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -334,10 +312,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "fin": 5,
-            "nac": 8
-          }
+          "dup": {}
         }
       ]
     },
@@ -354,7 +329,7 @@
           "st": {
             "id": "done",
             "fin": "band",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -364,8 +339,6 @@
           },
           "note": "no real project at the address — do NOT flip Live; retire or hold",
           "dup": {
-            "fin": 5,
-            "nac": 8,
             "cine": 3
           }
         },
@@ -375,8 +348,8 @@
           "thumb": "325-station-st-box-hill-south-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -386,8 +359,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 5,
-            "nac": 8,
             "cine": 3
           }
         },
@@ -397,8 +368,8 @@
           "thumb": "34-birdwood-st-box-hill-south-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -408,8 +379,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 5,
-            "nac": 8,
             "cine": 3
           }
         }
@@ -427,8 +396,8 @@
           "thumb": "17-george-st-burwood-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -438,8 +407,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 3
           }
         },
@@ -449,8 +416,8 @@
           "thumb": "genesis-burwood-2",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -460,8 +427,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 3
           }
         },
@@ -471,8 +436,8 @@
           "thumb": "victoria-place-burwood-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -482,8 +447,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 3
           }
         }
@@ -501,8 +464,8 @@
           "thumb": "caringbah-greens-caringbah-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -512,8 +475,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 2
           }
         },
@@ -523,8 +484,8 @@
           "thumb": "live-caringbah-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -534,8 +495,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 2
           }
         }
@@ -553,7 +512,7 @@
           "thumb": "88-livie-carlingford-2",
           "st": {
             "id": "done",
-            "fin": "band",
+            "fin": "done",
             "nac": "band",
             "edit": "done",
             "json": "done",
@@ -564,8 +523,7 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
+            "nac": 2,
             "cine": 4
           }
         },
@@ -575,8 +533,8 @@
           "thumb": "homeland-residences-carlingford-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -586,8 +544,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 3,
-            "nac": 8,
             "cine": 4
           }
         },
@@ -597,7 +553,7 @@
           "thumb": "luxton-carlingford-hero",
           "st": {
             "id": "done",
-            "fin": "band",
+            "fin": "done",
             "nac": "band",
             "edit": "done",
             "json": "done",
@@ -608,8 +564,7 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
+            "nac": 2,
             "cine": 4
           }
         },
@@ -619,8 +574,8 @@
           "thumb": "the-carling-carlingford-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -630,8 +585,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 4
           }
         }
@@ -649,8 +602,8 @@
           "thumb": "lillian-residence-erskineville-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -659,10 +612,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "fin": 33,
-            "nac": 34
-          }
+          "dup": {}
         }
       ]
     },
@@ -679,7 +629,7 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -688,9 +638,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 34
-          }
+          "dup": {}
         }
       ]
     },
@@ -707,7 +655,7 @@
           "st": {
             "id": "done",
             "fin": "band",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -716,10 +664,7 @@
             "qa": "band"
           },
           "note": "project unconfirmed — research worker returned no project block; financials estimated. Verify before publishing",
-          "dup": {
-            "fin": 33,
-            "nac": 34
-          }
+          "dup": {}
         }
       ]
     },
@@ -735,8 +680,8 @@
           "thumb": "the-luminar-residences-lakemba-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -745,10 +690,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "fin": 33,
-            "nac": 34
-          }
+          "dup": {}
         }
       ]
     },
@@ -782,8 +724,8 @@
           "thumb": "parkside-mq-macquarie-park-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -793,8 +735,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 3
           }
         },
@@ -804,8 +744,8 @@
           "thumb": "the-macquarie-collection-macquarie-park-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -815,8 +755,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 3
           }
         },
@@ -826,8 +764,8 @@
           "thumb": "trilogy-macquarie-park-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -837,8 +775,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 3
           }
         }
@@ -856,8 +792,8 @@
           "thumb": "macquarie-rise-macquarie-rise-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -866,10 +802,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "fin": 33,
-            "nac": 34
-          }
+          "dup": {}
         }
       ]
     },
@@ -885,8 +818,8 @@
           "thumb": "640-melbourne-cbd-1",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -896,8 +829,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 5,
-            "nac": 5,
             "cine": 2
           }
         },
@@ -907,8 +838,8 @@
           "thumb": "west-side-place-melbourne-cbd-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -918,8 +849,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 5,
-            "nac": 5,
             "cine": 2
           }
         }
@@ -937,8 +866,8 @@
           "thumb": "aura-north-sydney-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -948,8 +877,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 2
           }
         },
@@ -959,8 +886,8 @@
           "thumb": "serendipity-north-sydney-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -970,8 +897,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 2
           }
         }
@@ -989,8 +914,8 @@
           "thumb": "the-signature-collection-pagewood-rivera-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -999,10 +924,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "fin": 3,
-            "nac": 8
-          }
+          "dup": {}
         }
       ]
     },
@@ -1018,8 +940,8 @@
           "thumb": "180-george-parramatta-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -1029,8 +951,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 4
           }
         },
@@ -1040,7 +960,7 @@
           "thumb": "cosmopolitan-parramatta-hero",
           "st": {
             "id": "done",
-            "fin": "band",
+            "fin": "done",
             "nac": "band",
             "edit": "done",
             "json": "done",
@@ -1051,8 +971,7 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
+            "nac": 2,
             "cine": 4
           }
         },
@@ -1062,7 +981,7 @@
           "thumb": "one-city-square-parramatta-hero",
           "st": {
             "id": "done",
-            "fin": "band",
+            "fin": "done",
             "nac": "band",
             "edit": "done",
             "json": "done",
@@ -1073,8 +992,7 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
+            "nac": 2,
             "cine": 4
           }
         },
@@ -1084,8 +1002,8 @@
           "thumb": "paramount-on-parkes-parramatta-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -1095,8 +1013,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 4
           }
         }
@@ -1114,8 +1030,8 @@
           "thumb": "park-modern-south-melbourne-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -1125,8 +1041,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 5,
-            "nac": 5,
             "cine": 2
           }
         },
@@ -1136,8 +1050,8 @@
           "thumb": "r-evolution-south-melbourne-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -1147,8 +1061,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 5,
-            "nac": 5,
             "cine": 2
           }
         }
@@ -1166,8 +1078,8 @@
           "thumb": "aura-melbourne-square-stage-3-southbank-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -1176,10 +1088,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "fin": 5,
-            "nac": 5
-          }
+          "dup": {}
         }
       ]
     },
@@ -1195,8 +1104,8 @@
           "thumb": "danks-st-district-waterloo-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -1206,8 +1115,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 2
           }
         },
@@ -1217,8 +1124,8 @@
           "thumb": "tb-w-waterloo-4",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -1228,8 +1135,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 2
           }
         }
@@ -1247,8 +1152,8 @@
           "thumb": "sanctuary-willow-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -1257,10 +1162,7 @@
             "qa": "done"
           },
           "note": "district/geo wrong (Carlingford placeholder) → fix to Wentworth Point NSW 2127 before SEO regen",
-          "dup": {
-            "fin": 33,
-            "nac": 34
-          }
+          "dup": {}
         }
       ]
     },
@@ -1276,8 +1178,8 @@
           "thumb": "alba-zetland-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -1287,8 +1189,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 3
           }
         },
@@ -1298,8 +1198,8 @@
           "thumb": "luna-zetland-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -1309,8 +1209,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 3
           }
         },
@@ -1320,8 +1218,8 @@
           "thumb": "the-avenues-zetland-hero",
           "st": {
             "id": "done",
-            "fin": "band",
-            "nac": "band",
+            "fin": "done",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -1331,8 +1229,6 @@
           },
           "note": "",
           "dup": {
-            "fin": 33,
-            "nac": 34,
             "cine": 3
           }
         }
