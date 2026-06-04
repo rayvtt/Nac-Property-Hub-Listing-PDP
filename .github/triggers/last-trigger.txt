@@ -13,3 +13,4 @@
 2026-06-04T19:25:00Z chat: push re-rendered per-city market cards to WP (HTML already on main) — sync-wp
 2026-06-04T19:55:00Z chat: roll out per-metro market stats hub-wide — set-market-stats:write
 2026-06-04T20:10:00Z chat: re-render per-metro market cards into HTML (Notion now populated) — sync-notion
+2026-06-04T20:20:00Z chat: push per-metro market cards to WP hub-wide (HTML re-rendered on main) — sync-wp
