@@ -1,0 +1,57 @@
+name: Set Market Stats
+
+# Populates per-metro `📊 Market Stats JSON` on every Live listing so the §04
+# Market cards differ by city. Idempotent. Safe by default: a script-path push
+# runs a DRY preview; write via a trigger token.
+#   set-market-stats:dry    → preview only
+#   set-market-stats:write  → write to Notion
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run: { description: "true = log only", required: false, default: "true" }
+  push:
+    branches: [main]
+    paths:
+      - "scripts/set-market-stats.mjs"
+      - ".github/triggers/**"
+
+concurrency:
+  group: set-market-stats
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+      - name: Resolve mode
+        id: r
+        run: |
+          DRY="${{ github.event.inputs.dry_run || 'true' }}"
+          RUN=0
+          [ "${{ github.event_name }}" = "workflow_dispatch" ] && RUN=1
+          if [ "${{ github.event_name }}" = "push" ]; then
+            TOK="$(tail -n1 "$GITHUB_WORKSPACE/.github/triggers/last-trigger.txt" 2>/dev/null | sed -n 's/.*set-market-stats:\([a-z]*\).*/\1/p')"
+            if [ -n "$TOK" ]; then
+              RUN=1; [ "$TOK" = "write" ] && DRY=false || DRY=true
+            elif git -C "$GITHUB_WORKSPACE" log -1 --name-only --pretty=format: | grep -q 'scripts/set-market-stats.mjs'; then
+              RUN=1; DRY=true
+            fi
+          fi
+          echo "run=$RUN" >> "$GITHUB_OUTPUT"; echo "dry=$DRY" >> "$GITHUB_OUTPUT"
+      - name: Run
+        if: steps.r.outputs.run == '1'
+        working-directory: scripts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9' }}
+          DRY_RUN: ${{ steps.r.outputs.dry }}
+        run: node set-market-stats.mjs
