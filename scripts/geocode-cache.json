@@ -301,5 +301,32 @@
   "District 1, Ho Chi Minh City, Vietnam": {
     "lat": 10.7753939,
     "lng": 106.6996249
+  },
+  "Izi Lux — Athens (Golden Visa), Kallithea, Athens, Greece": null,
+  "Kallithea, Kallithea, Athens, Greece": {
+    "lat": 37.9604095,
+    "lng": 23.6969304
+  },
+  "Levante Villas — Galaxidi (Golden Visa), Galaxidi, Greece, Greece": null,
+  "Galaxidi, Galaxidi, Greece, Greece": {
+    "lat": 38.3741591,
+    "lng": 22.384194
+  },
+  "Kifisia Suites — Park 18 — Athens (Golden Visa), Kifisia, Athens, Greece": null,
+  "Kifisia, Kifisia, Athens, Greece": {
+    "lat": 38.0736082,
+    "lng": 23.8082244
+  },
+  "Meridia — Athens (Golden Visa), Piraeus, Athens, Greece": null,
+  "Piraeus, Piraeus, Athens, Greece": {
+    "lat": 37.953875,
+    "lng": 23.6721092
+  },
+  "Boulevard — Athens (Golden Visa), Kallithea, Athens, Greece": null,
+  "Opus Residence — Athens (Golden Visa), Kallithea, Athens, Greece": null,
+  "The One — Athens (Golden Visa), Glyfada, Athens, Greece": null,
+  "Glyfada, Glyfada, Athens, Greece": {
+    "lat": 37.8725475,
+    "lng": 23.7401865
   }
 }
