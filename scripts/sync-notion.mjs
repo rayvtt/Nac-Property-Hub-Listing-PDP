@@ -263,10 +263,10 @@ function renderPriceBands(bands) {
     return m ? parseInt(m[1], 10) : 50;
   };
   return [...bands].sort((a, b) => rank(a) - rank(b)).map(b => `
-            <div class="nac-band">
-              <span class="nac-band-type"><span data-vi>${esc(b.vi)}</span><span data-en>${esc(b.en)}</span></span>
-              <span class="nac-band-price"><span class="nac-band-lead"><span data-vi>từ</span><span data-en>from</span></span>${fmtUsd(b.from)}</span>
-            </div>`).join('\n          ');
+            <tr>
+              <td class="nac-band-type"><span data-vi>${esc(b.vi)}</span><span data-en>${esc(b.en)}</span></td>
+              <td class="nac-band-price"><span class="nac-band-lead"><span data-vi>từ</span><span data-en>from</span></span>${fmtUsd(b.from)}</td>
+            </tr>`).join('\n          ');
 }
 
 function renderDonutRows(scores) {
