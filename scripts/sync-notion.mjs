@@ -128,6 +128,7 @@ function extractProperty(page) {
     process: readJsonField(p['🔄 Process JSON']),
     subScores: readJsonField(p['📊 Sub-Scores JSON']),
     priceBands: readJsonField(p['💲 Price Bands JSON']),
+    marketStats: readJsonField(p['📊 Market Stats JSON']),
     handoverEn: richText(p['🔑 Handover EN']),
     handoverVi: richText(p['🔑 Handover VI']),
     tags: readMultiSelect(p['Tags']),
@@ -267,6 +268,13 @@ function renderPriceBands(bands, currency) {
               <td class="nac-band-type"><span data-vi>${esc(b.vi)}</span><span data-en>${esc(b.en)}</span></td>
               <td class="nac-band-price"><span class="nac-band-lead"><span data-vi>từ</span><span data-en>from</span></span>${fmtMoneyFull(b.from, currency)}</td>
             </tr>`).join('\n          ');
+}
+
+// Market-context stat cards (§04 Market). Per-listing/per-city via Notion
+// `📊 Market Stats JSON` — array of { val, vi, en }. When the field is empty the
+// listing keeps the template's hardcoded default cards (no regression).
+function renderMarketStats(stats) {
+  return stats.map(s => `<div class="nac-mkt-card"><div class="nac-mkt-val">${esc(s.val)}</div><div class="nac-mkt-key"><span data-vi="">${esc(s.vi)}</span><span data-en="">${esc(s.en)}</span></div></div>`).join('');
 }
 
 function renderDonutRows(scores) {
@@ -555,6 +563,11 @@ function patch(html, prop) {
   if (prop.priceBands && prop.priceBands.length) {
     $(`[data-notion-list="price_bands"]`).html(renderPriceBands(prop.priceBands, prop.currency));
     $(`[data-notion-when="price_bands"]`).removeAttr('hidden');
+  }
+  // Per-city market-context stat cards. Only replaces the default cards when the
+  // listing supplies `📊 Market Stats JSON`; otherwise the template default stands.
+  if (prop.marketStats && prop.marketStats.length) {
+    $('.nac-mkt').first().html(renderMarketStats(prop.marketStats));
   }
 
   // ROI sim data attributes (on the section root)
