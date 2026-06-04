@@ -1,2 +1,2 @@
 dry-run
-2026-06-04 — verify slug-matching for the AU financials de-band (49 listings) before the real write.
+2026-06-04 #2 — verify slug-matching for the AU financials de-band (49 listings) before the real write.
