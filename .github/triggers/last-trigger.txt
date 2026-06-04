@@ -1,16 +1,4 @@
-2026-06-03T22:55:00Z chat: re-run AU personalisation — Excerpts + Willow fallback (audit 50/50)
-2026-06-03T23:05:00Z chat: Hyatt images to Cloudflare — sync-images:only:hyatt-regency-ho-tram
-2026-06-03T23:15:00Z chat: re-hero'd Marmara Pearl + Elite Complex — propagate TR heroes
-2026-06-03T23:25:00Z chat: old Bağcılar Garden (NAC-60) set Live + bands/handover/folder
-2026-06-03T23:45:00Z chat: backfill SEO/GEO/LLM structured data across all live PDPs
-2026-06-03T23:55:00Z chat: re-render price-band split-table rows into TR PDPs
-2026-06-04T00:05:00Z chat: push filled split-table band rows to WP (sync-notion already re-rendered repo HTML) — sync-wp
-2026-06-04T10:05:00Z chat: generate Greece Oikos listings as Draft — generate-gr:draft
-2026-06-04T10:20:00Z chat: web-source images for Greece Oikos drafts — sync-images:only:thiseos-kallithea-athens,the-one-glyfada-athens,opus-residence-kallithea,boulevard-residence-kallithea,meridia-piraeus-athens,kifisia-suites-park-18,riviera-suites-palaio-faliro,levante-villas-galaxidi,izi-lux-kallithea-athens
-2026-06-04T10:35:00Z chat: upload official Oikos renders to CF for 7 GR drafts — sync-images:only:the-one-glyfada-athens,boulevard-residence-kallithea,opus-residence-kallithea,meridia-piraeus-athens,kifisia-suites-park-18,izi-lux-kallithea-athens,levante-villas-galaxidi sync-images:trust
-2026-06-04T10:45:00Z chat: 7 Greece Oikos listings flipped Live — scaffold PDP + create WP page (The One, Boulevard, Opus, Meridia, Kifisia Suites, Izi Lux, Levante)
-2026-06-04T14:40:00Z chat: per-city market-stat cards populated on 7 GR listings — sync-notion re-render + sync-wp push
-2026-06-04T19:25:00Z chat: push re-rendered per-city market cards to WP (HTML already on main) — sync-wp
 2026-06-04T19:55:00Z chat: roll out per-metro market stats hub-wide — set-market-stats:write
 2026-06-04T20:10:00Z chat: re-render per-metro market cards into HTML (Notion now populated) — sync-notion
 2026-06-04T20:20:00Z chat: push per-metro market cards to WP hub-wide (HTML re-rendered on main) — sync-wp
+2026-06-04T21:03:00Z chat: re-render AU bespoke financials into HTML (Notion patched for 48) + rebuild LLP dashboard — sync-notion
