@@ -1,0 +1,42 @@
+name: Apply LLP financials → Notion
+
+# One-shot, idempotent writer for the bespoke per-building financials authored in
+# LLP-GENERATION.md (parsed into scripts/au-financials.json). Matches Notion rows
+# by 🔗 Slug and patches numeric fields only. Safe to re-run — unchanged rows are
+# skipped. The next sync-notion tick propagates the numbers into the HTML, which
+# de-bands the dashboard's fin/nac cells.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Log the diff without writing to Notion"
+        type: boolean
+        default: false
+      only:
+        description: "Comma-separated slugs to restrict to (blank = all)"
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+      - name: Apply financials
+        working-directory: scripts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9' }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+          ONLY: ${{ inputs.only }}
+        run: node apply-llp-financials.mjs
