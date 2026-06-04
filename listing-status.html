@@ -26,12 +26,18 @@
   table{border-collapse:separate;border-spacing:0;width:100%;min-width:880px;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
   th,td{padding:6px 7px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
   thead th{position:sticky;top:64px;background:#fbf9f4;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:#5b6478;z-index:3}
-  td.name,th.name{text-align:left;white-space:normal;min-width:200px;position:sticky;left:0;background:#fff;z-index:2}
+  td.name,th.name{text-align:left;white-space:normal;min-width:248px;position:sticky;left:0;background:#fff;z-index:2}
   thead th.name{background:#fbf9f4;z-index:4}
   tr.group td{background:var(--navy);color:#fff;text-align:left;font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:600;position:sticky;left:0}
+  td.name .nm{display:flex;align-items:center;gap:9px}
+  td.name .txt{min-width:0}
   td.name a{color:var(--navy);text-decoration:none;font-weight:600}
   td.name a:hover{color:var(--orange)}
   td.name .slug{display:block;font-size:10.5px;color:#8a92a3;font-weight:400}
+  a.thumb{flex:0 0 auto;display:block;width:48px;height:34px;border-radius:6px;overflow:hidden;
+       border:1px solid var(--line);background:#e9e4d9 center/cover no-repeat;text-decoration:none}
+  a.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  a.thumb.ph{display:flex;align-items:center;justify-content:center;font-size:14px;color:#9aa1b1}
   td.pct{font-variant-numeric:tabular-nums;font-weight:700;color:var(--navy)}
   .cell{display:inline-block;width:20px;height:20px;border-radius:5px;cursor:pointer;line-height:20px;font-size:11px;color:#fff;font-weight:700}
   .s-done{background:var(--done)} .s-draft{background:var(--draft)} .s-band{background:var(--band)}
@@ -114,6 +120,8 @@
 {
   "reviewed": "2026-06-04",
   "dims": ["id","fin","nac","edit","json","cine","img","geo","qa"],
+  "imgHash": "qse3Pw84PrZ2S0PQOTtixw",
+  "thumbs": {"alba-zetland":"alba-zetland-hero","downtown-zetland":"downtown-zetland-hero","luna-zetland":"luna-zetland-hero","the-avenues-zetland":"the-avenues-zetland-hero","danks-st-district-waterloo":"danks-st-district-waterloo-hero","tb-w-waterloo":"tb-w-waterloo-4","lillian-residence-erskineville":"lillian-residence-erskineville-hero","macquarie-rise-macquarie-rise":"macquarie-rise-macquarie-rise-hero","natura-macquarie-park":"natura-macquarie-park-hero","parkside-mq-macquarie-park":"parkside-mq-macquarie-park-hero","the-macquarie-collection-macquarie-park":"the-macquarie-collection-macquarie-park-hero","trilogy-macquarie-park":"trilogy-macquarie-park-hero","88-livie-carlingford":"88-livie-carlingford-2","luxton-carlingford":"luxton-carlingford-hero","the-carling-carlingford":"the-carling-carlingford-hero","homeland-residences-carlingford":"homeland-residences-carlingford-hero","aura-north-sydney":"aura-north-sydney-hero","serendipity-north-sydney":"serendipity-north-sydney-hero","180-george-parramatta":"180-george-parramatta-hero","cosmopolitan-parramatta":"cosmopolitan-parramatta-hero","one-city-square-parramatta":"one-city-square-parramatta-hero","paramount-on-parkes-parramatta":"paramount-on-parkes-parramatta-hero","the-signature-collection-pagewood-rivera":"the-signature-collection-pagewood-rivera-hero","17-george-st-burwood":"17-george-st-burwood-hero","genesis-burwood":"genesis-burwood-2","victoria-place-burwood":"victoria-place-burwood-hero","stage-2-auburn-auburn-square":"stage-2-auburn-auburn-square-hero","spring-square-bankstown":"spring-square-bankstown-hero","the-luminar-residences-lakemba":"the-luminar-residences-lakemba-hero","2nd-avenue-blacktown":"2nd-avenue-blacktown-hero","arncliffe-central-arncliffe":"arncliffe-central-arncliffe-hero","duncan-house-arncliffe":"duncan-house-arncliffe-1","ashbury-apartment-ashbury":"ashbury-apartment-ashbury-hero","ashbury-terrace-ashbury-terrace":"ashbury-terrace-ashbury-terrace-hero","caringbah-greens-caringbah":"caringbah-greens-caringbah-hero","live-caringbah":"live-caringbah-hero","beyond-hurstville":"beyond-hurstville-hero","sanctuary-willow":"sanctuary-willow-hero","640-melbourne-cbd":"640-melbourne-cbd-1","west-side-place-melbourne-cbd":"west-side-place-melbourne-cbd-hero","aura-melbourne-square-stage-3-southbank":"aura-melbourne-square-stage-3-southbank-hero","park-modern-south-melbourne":"park-modern-south-melbourne-hero","r-evolution-south-melbourne":"r-evolution-south-melbourne-hero","yarra-park-alphington":"yarra-park-alphington-hero","14-asquith-street-box-hill-south":"14-asquith-street-box-hill-south-4","325-station-st-box-hill-south":"325-station-st-box-hill-south-hero","34-birdwood-st-box-hill-south":"34-birdwood-st-box-hill-south-hero","668-670-elgar-rd-box-hill-north":"668-670-elgar-rd-box-hill-north-hero","380-middleborough-road-blackburn":"380-middleborough-road-blackburn-4"},
   "groups": [
     {"metro":"SYDNEY — Inner South","suburb":"Zetland", "rows":[
       ["Alba","alba-zetland"],["Downtown","downtown-zetland"],["Luna","luna-zetland"],["The Avenues","the-avenues-zetland"]]},
@@ -198,8 +206,15 @@
         const tr=document.createElement('tr'); const note=noteFor(slug);
         if(DATA.override[slug] && (DATA.override[slug].qa==='block'||DATA.override[slug].geo==='block')) tr.className='flag';
         const nm=document.createElement('td'); nm.className='name';
-        nm.innerHTML=`<a href="properties/${slug}.html" target="_blank">${name}</a><span class="slug">${slug}</span>`+
-                     (note?`<span class="note">⚠ ${note}</span>`:'');
+        const id=DATA.thumbs[slug];
+        const thumb = id
+          ? `<a class="thumb" href="properties/${slug}.html" target="_blank" title="Open ${name}">`+
+            `<img loading="lazy" src="https://imagedelivery.net/${DATA.imgHash}/${id}/public" alt="${name}"`+
+            ` onerror="this.parentNode.classList.add('ph');this.parentNode.textContent='🏙';"></a>`
+          : `<a class="thumb ph" href="properties/${slug}.html" target="_blank" title="Open ${name}">🏙</a>`;
+        nm.innerHTML=`<div class="nm">${thumb}<div class="txt">`+
+                     `<a href="properties/${slug}.html" target="_blank">${name}</a><span class="slug">${slug}</span>`+
+                     (note?`<span class="note">⚠ ${note}</span>`:'')+`</div></div>`;
         tr.appendChild(nm);
         let rdone=0;
         DIMS.forEach(d=>{ const s=statusFor(slug,d); dimCount[d][s]++; if(s!=='na'){tot++; if(s==='done'){done++; rdone++;}}
