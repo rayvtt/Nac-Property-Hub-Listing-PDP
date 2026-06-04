@@ -13,7 +13,11 @@
 import { execSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 
-const DAYS = parseInt(process.env.CHANGELOG_DAYS || '30', 10);
+// Permanent ledger: by default scans the ENTIRE git history (deterministic, so
+// re-runs reproduce the full log and nothing is ever dropped). CHANGELOG_DAYS
+// can still scope to a rolling window if ever needed.
+const DAYS = parseInt(process.env.CHANGELOG_DAYS || '3650', 10);
+const LEDGER = DAYS >= 3650;
 const SINCE = `${DAYS} days ago`;
 const sh = (cmd) => execSync(cmd, { maxBuffer: 1 << 28, encoding: 'utf8' });
 const shQuiet = (cmd) => { try { return sh(cmd); } catch { return ''; } };
@@ -116,7 +120,7 @@ for (const { h, iso } of commits) {
 }
 
 entries.sort((x, y) => (x.ts < y.ts ? 1 : x.ts > y.ts ? -1 : 0)); // newest first
-const out = { generated: new Date().toISOString(), windowDays: DAYS, count: entries.length, flags: FLAG, entries };
+const out = { generated: new Date().toISOString(), ledger: LEDGER, windowDays: DAYS, count: entries.length, flags: FLAG, entries };
 writeFileSync('listing-changelog.json', JSON.stringify(out, null, 1));
 console.log(`build-changelog: ${entries.length} change events over ${DAYS}d across ${new Set(entries.map(e => e.slug)).size} listings`);
 const byField = {}; for (const e of entries) byField[e.label] = (byField[e.label] || 0) + 1;
