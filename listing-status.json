@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-04T21:55:35Z",
+  "generated": "2026-06-04T21:57:53Z",
   "reviewed": "2026-06-04",
-  "fingerprint": "b07c21baa7e0b8f1",
+  "fingerprint": "0544d27b9104f8c1",
   "dims": [
     "id",
     "fin",
@@ -2108,7 +2108,7 @@
         {
           "name": "Pearl Park — Aristo Developers, Paphos (Cyprus RBI)",
           "slug": "pearl-park-beachfront-condo-paphos",
-          "thumb": "@https://zentima-img.zentima.com/properties/1751455623-hero_2x.webp",
+          "thumb": "pearl-park-beachfront-condo-paphos-hero",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2116,7 +2116,7 @@
             "edit": "done",
             "json": "done",
             "cine": "done",
-            "img": "block",
+            "img": "band",
             "geo": "done",
             "qa": "done"
           },
