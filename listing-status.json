@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-04T21:02:36Z",
+  "generated": "2026-06-04T21:04:56Z",
   "reviewed": "2026-06-04",
-  "fingerprint": "e78040286592157f",
+  "fingerprint": "9ea3dd0b7dd6665c",
   "dims": [
     "id",
     "fin",
@@ -328,7 +328,7 @@
           "thumb": "14-asquith-street-box-hill-south-4",
           "st": {
             "id": "done",
-            "fin": "band",
+            "fin": "done",
             "nac": "done",
             "edit": "done",
             "json": "done",
@@ -654,7 +654,7 @@
           "thumb": "beyond-hurstville-hero",
           "st": {
             "id": "done",
-            "fin": "band",
+            "fin": "done",
             "nac": "done",
             "edit": "done",
             "json": "done",
@@ -663,7 +663,7 @@
             "geo": "done",
             "qa": "band"
           },
-          "note": "project unconfirmed — research worker returned no project block; financials estimated. Verify before publishing",
+          "note": "project unconfirmed — financials now bespoke but estimated; verify the building facts before publishing",
           "dup": {}
         }
       ]
@@ -1104,8 +1104,8 @@
           "thumb": "danks-st-district-waterloo-hero",
           "st": {
             "id": "done",
-            "fin": "done",
-            "nac": "done",
+            "fin": "band",
+            "nac": "band",
             "edit": "done",
             "json": "done",
             "cine": "band",
@@ -1113,7 +1113,7 @@
             "geo": "done",
             "qa": "done"
           },
-          "note": "",
+          "note": "Notion row not Live (archived/missing) — bespoke financials in au-financials.json could not sync; restore the Live row or retire the orphan PDP",
           "dup": {
             "cine": 2
           }
@@ -2185,14 +2185,17 @@
       "note": "district/geo wrong (Carlingford placeholder) → fix to Wentworth Point NSW 2127 before SEO regen"
     },
     "beyond-hurstville": {
-      "fin": "band",
       "qa": "band",
-      "note": "project unconfirmed — research worker returned no project block; financials estimated. Verify before publishing"
+      "note": "project unconfirmed — financials now bespoke but estimated; verify the building facts before publishing"
     },
     "14-asquith-street-box-hill-south": {
-      "fin": "band",
       "qa": "block",
       "note": "no real project at the address — do NOT flip Live; retire or hold"
+    },
+    "danks-st-district-waterloo": {
+      "fin": "band",
+      "nac": "band",
+      "note": "Notion row not Live (archived/missing) — bespoke financials in au-financials.json could not sync; restore the Live row or retire the orphan PDP"
     }
   }
 }
