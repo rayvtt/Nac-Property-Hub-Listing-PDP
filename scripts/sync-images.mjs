@@ -656,14 +656,16 @@ const richText = (p) => {
 };
 const readUrl = (p) => (p && p.url ? p.url : null);
 
-async function fetchLiveProperties() {
+async function fetchLiveProperties(includeNonLive = false) {
   const notion = getNotion();
   let results = [];
   let cursor;
   do {
     const res = await notion.databases.query({
       database_id: NOTION_DATABASE_ID,
-      filter: { property: 'Hub Status', select: { equals: 'Live' } },
+      // When targeting a single slug we allow Draft rows through so images can
+      // be sourced & verified *before* the listing is flipped Live.
+      filter: includeNonLive ? undefined : { property: 'Hub Status', select: { equals: 'Live' } },
       start_cursor: cursor,
     });
     results = results.concat(res.results);
@@ -983,10 +985,13 @@ async function main() {
   if (ONLY_SLUG && DRY_RUN && (LOCAL_PDF || BERKELEY_PAGE_ARG || BERKELEY_URLS_FILE)) {
     properties = [{ slug: ONLY_SLUG, imageUrl: null, gsSourceFolder: null, berkeleyPage: null, imageUrlsJson: null, pageId: null, propertyName: ONLY_SLUG }];
   } else if (ONLY_SLUG) {
-    const all = await fetchLiveProperties();
-    properties = all.filter(p => p.slug === ONLY_SLUG);
+    // Include Draft rows for single-slug runs so images can be sourced &
+    // verified before the listing goes Live. Accepts a comma-separated list.
+    const wanted = new Set(ONLY_SLUG.split(',').map(s => s.trim()).filter(Boolean));
+    const all = await fetchLiveProperties(true);
+    properties = all.filter(p => wanted.has(p.slug));
     if (!properties.length) {
-      console.error(`No Live property with slug "${ONLY_SLUG}"`);
+      console.error(`No property matching slug(s) "${ONLY_SLUG}"`);
       process.exit(1);
     }
   } else {
