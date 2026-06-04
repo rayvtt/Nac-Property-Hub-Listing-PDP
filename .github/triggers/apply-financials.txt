@@ -1,2 +1,2 @@
-dry-run
-2026-06-04 #2 — verify slug-matching for the AU financials de-band (49 listings) before the real write.
+apply
+2026-06-04 — real write: apply bespoke per-building financials + NAC scores to the 49 AU Notion rows (de-band the cluster).
