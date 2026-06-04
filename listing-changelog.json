@@ -1,8 +1,8 @@
 {
- "generated": "2026-06-04T21:55:29.480Z",
+ "generated": "2026-06-04T21:57:44.098Z",
  "ledger": true,
  "windowDays": 3650,
- "count": 808,
+ "count": 809,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -30,6 +30,17 @@
    "kind": "event",
    "from": "Live",
    "to": "removed"
+  },
+  {
+   "ts": "2026-06-04T21:55:35Z",
+   "country": "cyprus",
+   "slug": "pearl-park-beachfront-condo-paphos",
+   "name": "Pearl Park",
+   "field": "price",
+   "label": "Entry Price",
+   "kind": "money",
+   "from": "$230K",
+   "to": "€230K"
   },
   {
    "ts": "2026-06-04T21:02:37Z",
