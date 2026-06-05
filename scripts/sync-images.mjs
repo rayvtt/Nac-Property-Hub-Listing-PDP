@@ -9,7 +9,7 @@
 //           from a Berkeley Group development page, bump to 1920x1080, download
 //        b. Notion `📷 Image URLs JSON` (or --berkeley-urls) — explicit URL list
 //        c. Notion `GS Source Folder` (or --pdf) — Drive brochure PDFs,
-//           extracted via pdfimages -j
+//           extracted via pdfimages -png (CMYK-safe: avoids colour inversion)
 //   3. Filter candidates (landscape, ≥1500px wide, ≥150KB, ≥0.05 bytes/pixel —
 //      the bytes/pixel rule drops brochure design graphics like coloured waves)
 //   4. Dedupe by SHA-256, sort by pixel area DESC, take top 5
@@ -89,13 +89,21 @@ const MAP_RX = /(\bmap\b|location[\s_-]*map|locality|context[\s_-]*plan|connecti
 // (content can't be told from any landscape); visual review catches the rest.
 const LANDLOT_RX = /(\blot[\s_-]*\d|\bland[\s_-]*(lot|parcel|size)|vacant|allotment|cleared[\s_-]*site|empty[\s_-]*site|raw[\s_-]*land)/i;
 
-// A floor plan, map, or land-lot image is NEVER an acceptable listing image —
-// not as a hero/cover and not in the gallery (user rule). Drop on filename.
+// Spec / material / furniture-package boards — flat catalogue layouts (swatch
+// grids, finish samples, furniture line-ups on white) that brochures include
+// next to the renders. Not a photo of the property; reads as a wow shot to the
+// size/orientation filter but looks like a product datasheet on the page.
+const SPEC_RX = /(furniture[\s_-]*(package|pack|set|layout|selection)|material[\s_-]*(board|palette|selection)|finishe?s[\s_-]*(board|schedule|selection)|mood[\s_-]*board|spec(ification)?[\s_-]*(board|sheet|schedule)|swatch|sample[\s_-]*board|colou?r[\s_-]*(board|palette|scheme)|fixture[\s_-]*(list|schedule)|fit[\s_-]*out[\s_-]*(spec|schedule))/i;
+
+// A floor plan, map, land-lot, or spec board is NEVER an acceptable listing
+// image — not as a hero/cover and not in the gallery (user rule). Drop on
+// filename.
 function isUnusableRef(srcRef) {
   const lc = String(srcRef || '').toLowerCase();
   if (FLOORPLAN_RX.test(lc)) return 'floor/site plan (filename)';
   if (MAP_RX.test(lc)) return 'map/location diagram (filename)';
   if (LANDLOT_RX.test(lc)) return 'bare land/lot (filename)';
+  if (SPEC_RX.test(lc)) return 'spec/material/furniture board (filename)';
   return null;
 }
 
@@ -115,6 +123,99 @@ function looksLikePlan(filePath) {
     return whiteFrac >= 0.25 && meanSat <= 0.12;
   } catch {
     return false;
+  }
+}
+
+// Content-based flat-graphic detection. Abstract design graphics (wave
+// gradients, solid colour blocks, brand title cards) are dominated by one flat
+// colour and carry almost no saturation variance — unlike a photo, where light
+// and texture spread pixels across many buckets. We posterise to 16 levels and
+// measure the largest single-colour share; a render/photo never lets one bucket
+// own ≥40% of the frame while also sitting near-greyscale. Pairs with the
+// bytes/pixel heuristic (which the -png→jpg re-encode can occasionally clear for
+// a large flat fill). Fails safe (false) on any error so the pipeline never
+// breaks.
+function looksLikeFlatGraphic(filePath) {
+  try {
+    const meanSat = Number(sh(`convert "${filePath}" -resize 160x160! -colorspace HSL -channel G -separate +channel -format "%[fx:mean]" info:`).trim());
+    const stdDev = Number(sh(`convert "${filePath}" -resize 160x160! -colorspace Gray -format "%[fx:standard_deviation]" info:`).trim());
+    if (!Number.isFinite(meanSat) || !Number.isFinite(stdDev)) return false;
+    // Flat graphic: very low tonal spread AND near-greyscale. Real photos and
+    // renders have stdDev well above 0.10 (light/shadow/texture). A solid colour
+    // block or smooth gradient sits below ~0.08 with minimal saturation.
+    return stdDev <= 0.08 && meanSat <= 0.14;
+  } catch {
+    return false;
+  }
+}
+
+// Crop flat caption / spec / branding bands off the top and bottom of a
+// flattened brochure page. Premium brochures composite a render with a cream
+// text strip (project name, blurb, page number) baked into the same raster, so
+// the band can't be filtered out as a separate image — it has to be cut off the
+// kept photo. We build a per-row "activity" profile (each scanline's grayscale
+// standard deviation) and trim contiguous low-detail rows inward from each edge.
+// Guards keep it conservative: only trim a band that is ≥4% and ≤45% of height,
+// always keep ≥600px tall, and never flip the image to portrait. Fails safe
+// (leaves the file untouched) on any error.
+function cropTextBands(filePath) {
+  try {
+    const dims = imageDims(filePath);
+    if (!dims.width || !dims.height) return;
+    const H = dims.height, W = dims.width;
+    // Sample 200 evenly-spaced rows; per-row grayscale std-dev. A photo row is
+    // busy (std-dev high); a flat text/colour band row is calm (std-dev low).
+    const SAMPLES = Math.min(200, H);
+    const raw = sh(`convert "${filePath}" -resize ${Math.min(W,400)}x${SAMPLES}! -colorspace Gray -depth 8 txt:- 2>/dev/null`);
+    // Parse the txt: lines like "x,y: (g,g,g) #...". Aggregate std-dev per y.
+    const rows = new Map(); // y -> { sum, sumSq, n }
+    for (const line of raw.split('\n')) {
+      const m = line.match(/^\s*\d+,(\d+):\s*\(([\d.]+)/);
+      if (!m) continue;
+      const y = Number(m[1]);
+      let g = Number(m[2]);
+      if (g > 1) g /= 255; // normalise 0..255 → 0..1
+      const r = rows.get(y) || { sum: 0, sumSq: 0, n: 0 };
+      r.sum += g; r.sumSq += g * g; r.n += 1;
+      rows.set(y, r);
+    }
+    if (rows.size < 10) return;
+    const ys = [...rows.keys()].sort((a, b) => a - b);
+    const activity = ys.map(y => {
+      const r = rows.get(y);
+      const mean = r.sum / r.n;
+      const variance = Math.max(0, r.sumSq / r.n - mean * mean);
+      return Math.sqrt(variance);
+    });
+    // Threshold: rows below 35% of the median activity are "flat band" rows.
+    const sorted = [...activity].sort((a, b) => a - b);
+    const median = sorted[Math.floor(sorted.length / 2)] || 0;
+    if (median <= 0) return;
+    const thresh = median * 0.35;
+    // Count contiguous flat rows from the top and from the bottom.
+    let topFlat = 0;
+    for (let i = 0; i < activity.length; i++) { if (activity[i] < thresh) topFlat++; else break; }
+    let botFlat = 0;
+    for (let i = activity.length - 1; i >= 0; i--) { if (activity[i] < thresh) botFlat++; else break; }
+    // Convert sampled-row counts back to source pixels.
+    const rowToPx = H / activity.length;
+    let cutTop = Math.round(topFlat * rowToPx);
+    let cutBot = Math.round(botFlat * rowToPx);
+    // Guards: each band must be a meaningful but not dominant slice.
+    const minBand = Math.round(H * 0.04);
+    const maxBand = Math.round(H * 0.45);
+    if (cutTop < minBand) cutTop = 0;
+    if (cutBot < minBand) cutBot = 0;
+    if (cutTop > maxBand) cutTop = maxBand;
+    if (cutBot > maxBand) cutBot = maxBand;
+    const newH = H - cutTop - cutBot;
+    if (cutTop === 0 && cutBot === 0) return;        // nothing to do
+    if (newH < 600) return;                          // would gut the image
+    if (newH < W * 0.5) return;                      // never go ultra-letterbox
+    sh(`convert "${filePath}" -crop ${W}x${newH}+0+${cutTop} +repage "${filePath}"`);
+    console.log(`     ✂ cropped text band(s) ${cutTop ? `top -${cutTop}px ` : ''}${cutBot ? `bottom -${cutBot}px` : ''} → ${W}x${newH}`);
+  } catch {
+    /* leave file untouched on any failure */
   }
 }
 
@@ -307,14 +408,40 @@ async function uploadToCloudflareImages(filePath, customId) {
 async function extractImagesFromPdf(pdfPath, workDir) {
   const outPrefix = path.join(workDir, `img-${Date.now()}-`);
   try {
-    sh(`pdfimages -j "${pdfPath}" "${outPrefix}"`);
+    // Extract as PNG, not -j. Premium developer brochures embed Adobe
+    // CMYK/YCCK JPEGs; `pdfimages -j` dumps that raw stream and the result
+    // comes out colour-INVERTED — renders look like photo negatives (olive
+    // skies, magenta marble, purple foliage). `-png` makes poppler decode the
+    // image and convert CMYK→RGB applying the PDF Decode array, so colours are
+    // correct. (Diagnosed on The Conlay KLCC brochure renders.)
+    sh(`pdfimages -png "${pdfPath}" "${outPrefix}"`);
   } catch (err) {
     console.warn(`  pdfimages warning on ${pdfPath}: ${err.message}`);
   }
   const dir = await fs.readdir(workDir);
-  return dir
-    .filter(f => f.startsWith(path.basename(outPrefix)) && f.endsWith('.jpg'))
+  const pngs = dir
+    .filter(f => f.startsWith(path.basename(outPrefix)) && f.endsWith('.png'))
     .map(f => path.join(workDir, f));
+  // Re-encode each correctly-decoded PNG to JPEG so (a) the downstream
+  // bytes/pixel heuristic — calibrated on JPEG compression — still drops flat
+  // abstract graphics, and (b) Cloudflare uploads stay well under the size cap.
+  // Colour is already correct from the -png decode above.
+  const out = [];
+  for (const png of pngs) {
+    const jpg = png.replace(/\.png$/, '.jpg');
+    try {
+      sh(`convert "${png}" -background white -flatten -quality 92 "${jpg}"`);
+      // Flattened brochure pages bake a render + a cream caption/spec band into
+      // one raster. Trim those flat bands off the top/bottom so the hero/gallery
+      // shows the photo edge-to-edge, not the project blurb. No-op for clean
+      // full-bleed renders (no flat band to cut).
+      cropTextBands(jpg);
+      out.push(jpg);
+    } catch {
+      out.push(png); // fall back to the PNG if ImageMagick convert fails
+    }
+  }
+  return out;
 }
 
 // Classify an image by URL/path keywords. Used to assign images to slots:
@@ -388,6 +515,9 @@ async function filterAndRank(candidates) {
     if (megapixels(img) > MAX_MEGAPIXELS) return `${megapixels(img).toFixed(0)}MP > ${MAX_MEGAPIXELS}MP (stitched plan/panorama — CF limit)`;
     if (img.size > MAX_FILE_BYTES) return `${(img.size / 1e6).toFixed(0)}MB > CF limit`;
     if (looksLikePlan(img.path)) return 'floor/site plan (content: white line-art)';
+    // Skip the flat-graphic content check for curated/trusted URL lists — big
+    // smooth architectural renders can read as low-tonal-spread but are real.
+    if (!TRUST_URLS && looksLikeFlatGraphic(img.path)) return 'abstract design graphic (content: flat fill)';
     return null;
   };
   const unique = [];
