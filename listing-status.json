@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-04T21:57:53Z",
-  "reviewed": "2026-06-04",
-  "fingerprint": "0544d27b9104f8c1",
+  "generated": "2026-06-05T11:56:26Z",
+  "reviewed": "2026-06-05",
+  "fingerprint": "eed20ad20e83f88f",
   "dims": [
     "id",
     "fin",
@@ -14,7 +14,7 @@
     "qa"
   ],
   "imgHash": "qse3Pw84PrZ2S0PQOTtixw",
-  "total": 86,
+  "total": 94,
   "countries": [
     {
       "code": "AU",
@@ -57,6 +57,12 @@
       "name": "Panama",
       "flag": "🇵🇦",
       "count": 2
+    },
+    {
+      "code": "TH",
+      "name": "Thailand",
+      "flag": "🇹🇭",
+      "count": 8
     }
   ],
   "groups": [
@@ -2161,6 +2167,206 @@
           "name": "Santa Maria Luxury Apartments — Panama City",
           "slug": "santa-maria-panama",
           "thumb": "santa-maria-panama-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "flag": "🇹🇭",
+      "region": "Cherngtalay",
+      "rows": [
+        {
+          "name": "Botanica Foresta II — Phuket",
+          "slug": "botanica-foresta-ii",
+          "thumb": "botanica-foresta-ii-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        },
+        {
+          "name": "Hythe by Botanica — Phuket",
+          "slug": "hythe-by-botanica",
+          "thumb": "hythe-by-botanica-1",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "flag": "🇹🇭",
+      "region": "Choeng Thale",
+      "rows": [
+        {
+          "name": "Botanica Louvre — Phuket",
+          "slug": "botanica-louvre",
+          "thumb": "botanica-louvre-1",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "flag": "🇹🇭",
+      "region": "Kamala",
+      "rows": [
+        {
+          "name": "Botanica MontAzure — Phuket",
+          "slug": "botanica-montazure",
+          "thumb": "botanica-montazure-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "flag": "🇹🇭",
+      "region": "Kathu",
+      "rows": [
+        {
+          "name": "The Origin Kathu-Patong — Phuket",
+          "slug": "origin-kathu-patong",
+          "thumb": "origin-kathu-patong-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "flag": "🇹🇭",
+      "region": "Khlong Toei",
+      "rows": [
+        {
+          "name": "Coco Parc — Bangkok",
+          "slug": "coco-parc",
+          "thumb": "coco-parc-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "flag": "🇹🇭",
+      "region": "Ratchathewi",
+      "rows": [
+        {
+          "name": "The Address Siam-Ratchathewi — Bangkok",
+          "slug": "the-address-siam-ratchathewi",
+          "thumb": "the-address-siam-ratchathewi-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "flag": "🇹🇭",
+      "region": "Sakhu",
+      "rows": [
+        {
+          "name": "Botanica Four Seasons — Phuket",
+          "slug": "botanica-four-seasons",
+          "thumb": "botanica-four-seasons-hero",
           "st": {
             "id": "done",
             "fin": "done",
