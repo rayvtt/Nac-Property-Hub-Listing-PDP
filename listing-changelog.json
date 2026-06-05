@@ -1,8 +1,8 @@
 {
- "generated": "2026-06-05T13:52:56.259Z",
+ "generated": "2026-06-05T14:13:44.551Z",
  "ledger": true,
  "windowDays": 3650,
- "count": 818,
+ "count": 823,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -20,6 +20,61 @@
   "dubai": "🇦🇪"
  },
  "entries": [
+  {
+   "ts": "2026-06-05T14:13:35Z",
+   "country": "uae",
+   "slug": "binghatti-mercedes-benz-city",
+   "name": "🌟 Mercedes-Benz Places · Binghatti City",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-05T14:13:35Z",
+   "country": "uae",
+   "slug": "binghatti-mercedes-benz-places",
+   "name": "⭐ Mercedes-Benz Places by Binghatti",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-05T14:13:35Z",
+   "country": "uae",
+   "slug": "damac-golf-greens",
+   "name": "⛳ DAMAC Golf Greens",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-05T14:13:35Z",
+   "country": "uae",
+   "slug": "damac-towers-paramount",
+   "name": "🎬 DAMAC Towers by Paramount",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-05T14:13:35Z",
+   "country": "uae",
+   "slug": "sobha-estates-hartland-2",
+   "name": "🌳 Sobha Estates",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
   {
    "ts": "2026-06-05T12:11:29Z",
    "country": "malaysia",
