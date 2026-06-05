@@ -1,6 +1,6 @@
 {
-  "max_tasks": 40,
+  "max_tasks": 100,
   "scope": "pdp,brochure,hub,tool,blog,sitewide",
   "dry_run": "false",
-  "_comment": "Re-fire with wp-lookup fix (drop status=publish + URL rich_text fallback)."
+  "_comment": "Apply newly-approved SEO tasks — manual fire 2026-06-05."
 }
