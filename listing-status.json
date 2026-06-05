@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-05T11:56:26Z",
+  "generated": "2026-06-05T12:11:28Z",
   "reviewed": "2026-06-05",
-  "fingerprint": "eed20ad20e83f88f",
+  "fingerprint": "89c7e030800b4c1a",
   "dims": [
     "id",
     "fin",
@@ -14,7 +14,7 @@
     "qa"
   ],
   "imgHash": "qse3Pw84PrZ2S0PQOTtixw",
-  "total": 94,
+  "total": 95,
   "countries": [
     {
       "code": "AU",
@@ -63,6 +63,12 @@
       "name": "Thailand",
       "flag": "🇹🇭",
       "count": 8
+    },
+    {
+      "code": "MY",
+      "name": "Malaysia",
+      "flag": "🇲🇾",
+      "count": 1
     }
   ],
   "groups": [
@@ -2367,6 +2373,32 @@
           "name": "Botanica Four Seasons — Phuket",
           "slug": "botanica-four-seasons",
           "thumb": "botanica-four-seasons-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Malaysia",
+      "code": "MY",
+      "flag": "🇲🇾",
+      "region": "Jalan Conlay",
+      "rows": [
+        {
+          "name": "The Conlay Signature Suites — Kuala Lumpur (MM2H)",
+          "slug": "conlay-signature-suites-klcc",
+          "thumb": "conlay-signature-suites-klcc-hero",
           "st": {
             "id": "done",
             "fin": "done",
