@@ -85,6 +85,7 @@
   thead th{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.95);backdrop-filter:saturate(180%) blur(12px);
     font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;padding:13px 5px;
     border-bottom:1px solid var(--line);box-shadow:0 1px 0 var(--line)}
+  thead th .hint{display:block;margin-top:3px;font-size:8.5px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--faint);white-space:nowrap}
   thead th:first-child{border-top-left-radius:var(--r)} thead th:last-child{border-top-right-radius:var(--r)}
   td.name,th.name{text-align:left;white-space:normal;min-width:210px;width:34%;position:sticky;left:0;background:var(--paper);z-index:2;padding-left:20px}
   thead th.name{z-index:6;background:rgba(255,255,255,.97)}
@@ -217,16 +218,16 @@
   <table id="grid">
     <thead><tr>
       <th class="name">Listing</th>
-      <th title="Identity &amp; taxonomy (country, district)">ID</th>
-      <th title="Financials — price/yield/IRR/CoC. Banded = shares the tuple with siblings">Fin</th>
-      <th title="NAC score + sub-scores. Banded = shared score profile">NAC</th>
-      <th title="Editorial (tagline/desc) bilingual. Banded = duplicated copy">Edit</th>
-      <th title="Pros / Cons / Features lists populated">JSON</th>
-      <th title="Cine titles (§04/07/10 captions). Banded = empty or duplicated">Cine</th>
-      <th title="Hero + gallery images real">Img</th>
-      <th title="Geo lat/lng + clean JSON-LD (no {tokens})">Geo</th>
-      <th title="Viability + pre-Live QA (human call)">QA</th>
-      <th>%</th>
+      <th title="Identity &amp; taxonomy (country, district)">ID<span class="hint">name &amp; place</span></th>
+      <th title="Financials — price/yield/IRR/CoC. Banded = shares the tuple with siblings">Fin<span class="hint">the money</span></th>
+      <th title="NAC score + sub-scores. Banded = shared score profile">NAC<span class="hint">our score</span></th>
+      <th title="Editorial (tagline/desc) bilingual. Banded = duplicated copy">Edit<span class="hint">the words</span></th>
+      <th title="Pros / Cons / Features lists populated">JSON<span class="hint">pros &amp; cons</span></th>
+      <th title="Cine titles (§04/07/10 captions). Banded = empty or duplicated">Cine<span class="hint">photo lines</span></th>
+      <th title="Hero + gallery images real">Img<span class="hint">the photos</span></th>
+      <th title="Geo lat/lng + clean JSON-LD (no {tokens})">Geo<span class="hint">map pin</span></th>
+      <th title="Viability + pre-Live QA (human call)">QA<span class="hint">ship-ready?</span></th>
+      <th>%<span class="hint">complete</span></th>
     </tr></thead>
     <tbody id="body"></tbody>
   </table>
