@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-05T14:08:14Z",
+  "generated": "2026-06-05T14:13:35Z",
   "reviewed": "2026-06-05",
-  "fingerprint": "6ca24528cf8e4a0a",
+  "fingerprint": "50a7113595de95d6",
   "dims": [
     "id",
     "fin",
@@ -14,7 +14,7 @@
     "qa"
   ],
   "imgHash": "qse3Pw84PrZ2S0PQOTtixw",
-  "total": 95,
+  "total": 100,
   "countries": [
     {
       "code": "AU",
@@ -69,6 +69,12 @@
       "name": "Malaysia",
       "flag": "🇲🇾",
       "count": 1
+    },
+    {
+      "code": "AE",
+      "name": "UAE",
+      "flag": "🇦🇪",
+      "count": 5
     }
   ],
   "groups": [
@@ -2407,6 +2413,136 @@
             "json": "done",
             "cine": "done",
             "img": "done",
+            "geo": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "UAE",
+      "code": "AE",
+      "flag": "🇦🇪",
+      "region": "Business Bay",
+      "rows": [
+        {
+          "name": "🎬 DAMAC Towers by Paramount — Business Bay, Dubai (Golden Visa)",
+          "slug": "damac-towers-paramount",
+          "thumb": "",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "block",
+            "geo": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "UAE",
+      "code": "AE",
+      "flag": "🇦🇪",
+      "region": "DAMAC Hills",
+      "rows": [
+        {
+          "name": "⛳ DAMAC Golf Greens — DAMAC Hills, Dubai (Golden Visa)",
+          "slug": "damac-golf-greens",
+          "thumb": "",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "block",
+            "geo": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "UAE",
+      "code": "AE",
+      "flag": "🇦🇪",
+      "region": "Downtown Dubai",
+      "rows": [
+        {
+          "name": "⭐ Mercedes-Benz Places by Binghatti — Downtown Dubai (Golden Visa)",
+          "slug": "binghatti-mercedes-benz-places",
+          "thumb": "",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "block",
+            "geo": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "UAE",
+      "code": "AE",
+      "flag": "🇦🇪",
+      "region": "Nad Al Sheba (Meydan)",
+      "rows": [
+        {
+          "name": "🌟 Mercedes-Benz Places · Binghatti City — Nad Al Sheba, Dubai (Golden Visa)",
+          "slug": "binghatti-mercedes-benz-city",
+          "thumb": "",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "block",
+            "geo": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "UAE",
+      "code": "AE",
+      "flag": "🇦🇪",
+      "region": "Sobha Hartland II",
+      "rows": [
+        {
+          "name": "🌳 Sobha Estates — Hartland II, Dubai (Golden Visa)",
+          "slug": "sobha-estates-hartland-2",
+          "thumb": "",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "block",
             "geo": "done",
             "qa": "done"
           },
