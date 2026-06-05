@@ -160,6 +160,34 @@ async function markSkipped(task, reason) {
   });
 }
 
+// The page already satisfies the task (idempotent "already correct / present").
+// Mark Applied so it leaves the Approved queue instead of re-cycling every run.
+async function markResolved(task, reason) {
+  if (DRY) { console.log(`    [dry] mark resolved: ${task.taskId} — ${reason}`); return; }
+  await notion.pages.update({
+    page_id: task.pageId,
+    properties: {
+      Status: { select: { name: 'Applied' } },
+      'Applied At': { date: { start: new Date().toISOString().slice(0, 10) } },
+      Notes: { rich_text: [{ text: { content: `Already satisfied on page: ${reason}` } }] },
+    },
+  });
+}
+
+// Task can't be applied by this mechanism (e.g. blog/consult page whose meta &
+// schema are managed by Rank Math, not the raw_html_code ACF field). Snooze it
+// out of the Approved queue with an explanatory note.
+async function markSnoozed(task, reason) {
+  if (DRY) { console.log(`    [dry] mark snoozed: ${task.taskId} — ${reason}`); return; }
+  await notion.pages.update({
+    page_id: task.pageId,
+    properties: {
+      Status: { select: { name: 'Snoozed' } },
+      Notes: { rich_text: [{ text: { content: `Out of scope for seo-apply: ${reason}` } }] },
+    },
+  });
+}
+
 // ─── Drafting (fallback when Proposed Fix is empty) ─────────────────────────
 
 const SYSTEM_PROMPT = `You are an SEO/GEO copy expert for Nomad Asset Collective — luxury international real-estate and visa/residency programs, bilingual VI/EN. Match the page's brand and language; never invent facts. Output STRICT JSON only.`;
@@ -519,7 +547,7 @@ async function main() {
     byTarget.get(key).push(e);
   }
 
-  const stats = { applied: 0, skipped: 0, errored: 0 };
+  const stats = { applied: 0, resolved: 0, snoozed: 0, skipped: 0, errored: 0 };
   const pdpFilesEdited = new Set();
 
   for (const [key, group] of byTarget) {
@@ -554,7 +582,12 @@ async function main() {
       workingHtml = await fs.readFile(surfaceTarget.path, 'utf8');
     } else {
       workingHtml = surfaceTarget.page.acf?.[ACF_HTML_FIELD] || '';
-      if (!workingHtml) { console.log(`    ⚠ WP page has no raw_html_code — skipping group`); for (const e of group) stats.skipped++; continue; }
+      if (!workingHtml) {
+        const reason = 'WP page has no raw_html_code field (blog/consult surface — meta & schema are managed by Rank Math, not this applier)';
+        console.log(`    ⚠ ${reason} — snoozing group`);
+        for (const e of group) { await markSnoozed(e.task, reason); stats.snoozed++; }
+        continue;
+      }
     }
 
     let pageDirty = false;
@@ -595,9 +628,18 @@ async function main() {
         else if (taskType === 'og_image') result = injectOgImage($, fixValue);
 
         if (!result.changed) {
-          console.log(`    ⌀ skip ${task.taskId}: ${result.reason}`);
-          await markSkipped(task, result.reason);
-          stats.skipped++;
+          // "Already correct / already present" means the page already meets the
+          // task's goal → resolve it (mark Applied) so it drains from the queue
+          // instead of being re-skipped on every run. Anything else is a real skip.
+          if (/already (correct|present)/i.test(result.reason)) {
+            console.log(`    ✓ ${task.taskId}: ${result.reason} → marking Applied`);
+            await markResolved(task, result.reason);
+            stats.resolved++;
+          } else {
+            console.log(`    ⌀ skip ${task.taskId}: ${result.reason}`);
+            await markSkipped(task, result.reason);
+            stats.skipped++;
+          }
           continue;
         }
 
@@ -654,7 +696,7 @@ async function main() {
     }
   }
 
-  console.log(`\nDone. applied=${stats.applied}  skipped=${stats.skipped}  errored=${stats.errored}`);
+  console.log(`\nDone. applied=${stats.applied}  resolved=${stats.resolved}  snoozed=${stats.snoozed}  skipped=${stats.skipped}  errored=${stats.errored}`);
 }
 
 main().catch((err) => { console.error(err); process.exit(1); });
