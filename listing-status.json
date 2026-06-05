@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-05T12:11:28Z",
+  "generated": "2026-06-05T13:25:47Z",
   "reviewed": "2026-06-05",
-  "fingerprint": "89c7e030800b4c1a",
+  "fingerprint": "e743a7bab851dbd1",
   "dims": [
     "id",
     "fin",
@@ -2242,7 +2242,7 @@
         {
           "name": "Botanica Louvre — Phuket",
           "slug": "botanica-louvre",
-          "thumb": "botanica-louvre-1",
+          "thumb": "botanica-louvre-hero",
           "st": {
             "id": "done",
             "fin": "done",
