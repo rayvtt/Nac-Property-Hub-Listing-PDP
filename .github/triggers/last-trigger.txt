@@ -4,3 +4,4 @@
 2026-06-04T21:03:00Z chat: re-render AU bespoke financials into HTML (Notion patched for 48) + rebuild LLP dashboard — sync-notion
 2026-06-04T21:10:00Z chat: Cyprus pass — migrate Pearl Park imagery to Cloudflare + re-render cine/brand fixes — sync-images:only:pearl-park-beachfront-condo-paphos
 2026-06-04T21:57:00Z chat: propagate Pearl Park Cloudflare images into HTML + rebuild LLP dashboard — sync-notion
+2026-06-05T08:05:00Z chat: capture hero/gallery/cover images for 19 new TH/MY listings → Cloudflare + Notion — sync-images:only:conlay-signature-suites-klcc,origin-kathu-patong,so-origin-bangtao-beach,culture-thonglor,ideo-sukhumvit-rama-4,botanica-foresta-ii,botanica-four-seasons,hythe-by-botanica,the-standard-residences-bangtao,layan-verde,layan-green-park,ayana-luxury-villas,anchan-villas,balco-villas,the-residence-prime,laguna-banyan-tree-residences,botanica-montazure,botanica-grand-avenue,botanica-louvre
