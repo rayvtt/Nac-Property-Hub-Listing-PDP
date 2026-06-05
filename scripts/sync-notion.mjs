@@ -160,7 +160,7 @@ const countryFlag = (c) => (c && COUNTRY_FLAGS[c]) || null;
 // Currency symbol lookup. Falls back to USD '$' if Currency field is empty/unknown.
 const CURRENCY_SYMBOLS = {
   USD: '$',  EUR: '€',  GBP: '£',  AED: 'AED ',  CAD: 'C$',  AUD: 'A$',
-  JPY: '¥',  CHF: 'CHF ', CNY: '¥', SGD: 'S$',
+  JPY: '¥',  CHF: 'CHF ', CNY: '¥', SGD: 'S$', MYR: 'RM ', THB: '฿',
 };
 const currencySymbol = (code) => CURRENCY_SYMBOLS[code] || '$';
 
