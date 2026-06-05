@@ -1,8 +1,8 @@
 {
- "generated": "2026-06-05T11:34:37.057Z",
+ "generated": "2026-06-05T12:11:13.355Z",
  "ledger": true,
  "windowDays": 3650,
- "count": 809,
+ "count": 817,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -20,6 +20,94 @@
   "dubai": "🇦🇪"
  },
  "entries": [
+  {
+   "ts": "2026-06-05T11:35:08Z",
+   "country": "thailand",
+   "slug": "botanica-foresta-ii",
+   "name": "Botanica Foresta II",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-05T11:35:08Z",
+   "country": "thailand",
+   "slug": "botanica-four-seasons",
+   "name": "Botanica Four Seasons",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-05T11:35:08Z",
+   "country": "thailand",
+   "slug": "botanica-louvre",
+   "name": "Botanica Louvre",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-05T11:35:08Z",
+   "country": "thailand",
+   "slug": "botanica-montazure",
+   "name": "Botanica MontAzure",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-05T11:35:08Z",
+   "country": "thailand",
+   "slug": "coco-parc",
+   "name": "Coco Parc",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-05T11:35:08Z",
+   "country": "thailand",
+   "slug": "hythe-by-botanica",
+   "name": "Hythe by Botanica",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-05T11:35:08Z",
+   "country": "thailand",
+   "slug": "origin-kathu-patong",
+   "name": "The Origin Kathu-Patong",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-05T11:35:08Z",
+   "country": "thailand",
+   "slug": "the-address-siam-ratchathewi",
+   "name": "The Address Siam-Ratchathewi",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
   {
    "ts": "2026-06-04T22:08:24+02:00",
    "country": null,
