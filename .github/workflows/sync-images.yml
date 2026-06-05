@@ -22,7 +22,10 @@ on:
     types: [notion-update, new-listing]
 
 concurrency:
-  group: sync-images
+  # Per-run group so one hung run can't freeze the whole image-sync queue
+  # (a 2h-stuck run previously blocked everything). Runs target distinct slugs
+  # and distinct Cloudflare IDs, so concurrent runs don't conflict.
+  group: sync-images-${{ github.run_id }}
   cancel-in-progress: false
 
 permissions:
