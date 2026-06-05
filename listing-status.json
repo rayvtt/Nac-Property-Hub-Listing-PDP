@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-05T13:25:47Z",
+  "generated": "2026-06-05T14:08:14Z",
   "reviewed": "2026-06-05",
-  "fingerprint": "e743a7bab851dbd1",
+  "fingerprint": "6ca24528cf8e4a0a",
   "dims": [
     "id",
     "fin",
@@ -2216,7 +2216,7 @@
         {
           "name": "Hythe by Botanica — Phuket",
           "slug": "hythe-by-botanica",
-          "thumb": "hythe-by-botanica-1",
+          "thumb": "hythe-by-botanica-hero",
           "st": {
             "id": "done",
             "fin": "done",
