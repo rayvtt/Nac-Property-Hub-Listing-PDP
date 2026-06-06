@@ -33,13 +33,16 @@ const GSC_OAUTH_CLIENT_SECRET = process.env.GSC_OAUTH_CLIENT_SECRET;
 const GSC_OAUTH_REFRESH_TOKEN = process.env.GSC_OAUTH_REFRESH_TOKEN;
 const HAS_OAUTH = !!(GSC_OAUTH_CLIENT_ID && GSC_OAUTH_CLIENT_SECRET && GSC_OAUTH_REFRESH_TOKEN);
 
-function getDrive() {
-  // OAuth first: the partner brochure folders are shared with the user account,
-  // so user-delegated creds see them; the service account often cannot.
+// Returns the available Drive clients in preference order. OAuth first (the
+// partner brochure folders are shared with the *user*, so user-delegated creds
+// see them; the service account usually cannot). If the OAuth refresh token is
+// dead (invalid_grant) the caller falls back to the next candidate.
+function getDriveCandidates() {
+  const out = [];
   if (HAS_OAUTH) {
     const auth = new google.auth.OAuth2(GSC_OAUTH_CLIENT_ID, GSC_OAUTH_CLIENT_SECRET);
     auth.setCredentials({ refresh_token: GSC_OAUTH_REFRESH_TOKEN });
-    return { drive: google.drive({ version: 'v3', auth }), via: 'oauth' };
+    out.push({ drive: google.drive({ version: 'v3', auth }), via: 'oauth' });
   }
   if (GOOGLE_SERVICE_ACCOUNT_JSON) {
     const credentials = JSON.parse(GOOGLE_SERVICE_ACCOUNT_JSON);
@@ -47,9 +50,10 @@ function getDrive() {
       credentials,
       scopes: ['https://www.googleapis.com/auth/drive.readonly'],
     });
-    return { drive: google.drive({ version: 'v3', auth }), via: 'service-account' };
+    out.push({ drive: google.drive({ version: 'v3', auth }), via: 'service-account' });
   }
-  throw new Error('No Drive auth (need GSC_OAUTH_* or GOOGLE_SERVICE_ACCOUNT_JSON)');
+  if (!out.length) throw new Error('No Drive auth (need GSC_OAUTH_* or GOOGLE_SERVICE_ACCOUNT_JSON)');
+  return out;
 }
 
 const folderId = (s) => {
@@ -109,19 +113,30 @@ async function main() {
   const id = folderId(raw);
   if (!id) { console.error('Usage: drive-tree.mjs <folderUrlOrId>'); process.exit(1); }
 
-  const { drive, via } = getDrive();
-  console.log(`🔎 Enumerating Drive folder ${id} (auth: ${via})\n`);
+  const candidates = getDriveCandidates();
   const flat = [], lines = [];
-  let root;
-  try {
-    const meta = await drive.files.get({ fileId: id, fields: 'id,name', supportsAllDrives: true }).catch(() => null);
-    const rootName = meta?.data?.name || '(root)';
-    lines.push(`📁 ${rootName}/`);
-    root = await walk(drive, id, rootName, rootName, 1, flat, lines);
-  } catch (err) {
-    console.error(`Drive enumeration failed: ${err.message}`);
+  let root, via, lastErr;
+  for (const cand of candidates) {
+    flat.length = 0; lines.length = 0;
+    console.log(`🔎 Enumerating Drive folder ${id} (auth: ${cand.via})`);
+    try {
+      const meta = await cand.drive.files.get({ fileId: id, fields: 'id,name', supportsAllDrives: true });
+      const rootName = meta?.data?.name || '(root)';
+      lines.push(`📁 ${rootName}/`);
+      root = await walk(cand.drive, id, rootName, rootName, 1, flat, lines);
+      via = cand.via;
+      break; // this credential could read the folder — done
+    } catch (err) {
+      lastErr = err;
+      console.warn(`  ${cand.via} could not read folder: ${err.message} — trying next credential…`);
+    }
+  }
+  if (!root) {
+    console.error(`Drive enumeration failed for all credentials. Last error: ${lastErr?.message}`);
+    console.error('If the error is "invalid_grant", regenerate GSC_OAUTH_REFRESH_TOKEN; if the folder is shared-with-user only, the service account cannot see it.');
     process.exit(2);
   }
+  console.log('');
 
   const result = {
     folderId: id,
