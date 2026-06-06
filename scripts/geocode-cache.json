@@ -328,5 +328,74 @@
   "Glyfada, Glyfada, Athens, Greece": {
     "lat": 37.8725475,
     "lng": 23.7401865
+  },
+  "Coco Parc — Bangkok, Rama 4, Bangkok, Thailand": {
+    "lat": 13.721861,
+    "lng": 100.5534215
+  },
+  "The Address Siam-Ratchathewi — Bangkok, Ratchathewi, Bangkok, Thailand": {
+    "lat": 13.7524807,
+    "lng": 100.5302777
+  },
+  "Botanica Louvre — Phuket, Cherngtalay, Phuket, Thailand": null,
+  "Choeng Thale, Thalang, Phuket, Cherngtalay, Phuket, Thailand": null,
+  "Cherngtalay, Phuket, Thailand": {
+    "lat": 7.992005,
+    "lng": 98.303354
+  },
+  "Botanica MontAzure — Phuket, Kamala, Phuket, Thailand": null,
+  "Kamala, Kathu, Phuket, Kamala, Phuket, Thailand": {
+    "lat": 7.9515,
+    "lng": 98.2848
+  },
+  "Hythe by Botanica — Phuket, Layan, Phuket, Thailand": null,
+  "Cherngtalay, Thalang, Phuket, Layan, Phuket, Thailand": null,
+  "Layan, Phuket, Thailand": {
+    "lat": 8.0346279,
+    "lng": 98.2843289
+  },
+  "Botanica Four Seasons — Phuket, Naithon, Phuket, Thailand": null,
+  "Sakhu, Thalang, Phuket, Naithon, Phuket, Thailand": null,
+  "Naithon, Phuket, Thailand": {
+    "lat": 8.0570493,
+    "lng": 98.2790529
+  },
+  "Botanica Foresta II — Phuket, Layan, Phuket, Thailand": null,
+  "The Origin Kathu-Patong — Phuket, Kathu, Phuket, Thailand": null,
+  "Kathu, Phuket, Kathu, Phuket, Thailand": {
+    "lat": 7.9107004,
+    "lng": 98.3337592
+  },
+  "The Conlay Signature Suites — Kuala Lumpur (MM2H), KLCC, Kuala Lumpur, Malaysia": null,
+  "Jalan Conlay, KLCC, KLCC, Kuala Lumpur, Malaysia": null,
+  "KLCC, Kuala Lumpur, Malaysia": {
+    "lat": 3.1592469,
+    "lng": 101.7133662
+  },
+  "🌟 Mercedes-Benz Places · Binghatti City — Nad Al Sheba, Dubai (Golden Visa), Nad Al Sheba, Dubai, Dubai": null,
+  "Nad Al Sheba (Meydan), Dubai, Nad Al Sheba, Dubai, Dubai": {
+    "lat": 25.1713754,
+    "lng": 55.323564
+  },
+  "🎬 DAMAC Towers by Paramount — Business Bay, Dubai (Golden Visa), Business Bay, Dubai, Dubai": null,
+  "Business Bay, Dubai, Business Bay, Dubai, Dubai": {
+    "lat": 25.1912836,
+    "lng": 55.2604063
+  },
+  "⛳ DAMAC Golf Greens — DAMAC Hills, Dubai (Golden Visa), DAMAC Hills, Dubai, Dubai": null,
+  "DAMAC Hills, Dubai, DAMAC Hills, Dubai, Dubai": {
+    "lat": 25.0361644,
+    "lng": 55.2516555
+  },
+  "⭐ Mercedes-Benz Places by Binghatti — Downtown Dubai (Golden Visa), Downtown Dubai, Dubai": null,
+  "Downtown Dubai, Downtown Dubai, Dubai": {
+    "lat": 25.1970336,
+    "lng": 55.2741329
+  },
+  "🌳 Sobha Estates — Hartland II, Dubai (Golden Visa), Nad Al Sheba, Dubai, Dubai": null,
+  "Sobha Hartland II, Nad Al Sheba, Nad Al Sheba, Dubai, Dubai": null,
+  "Nad Al Sheba, Dubai, Dubai": {
+    "lat": 25.1456302,
+    "lng": 55.364275
   }
 }

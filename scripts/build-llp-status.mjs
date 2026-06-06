@@ -41,24 +41,42 @@ const IMG_HASH = 'qse3Pw84PrZ2S0PQOTtixw';
 const DIMS = ['id', 'fin', 'nac', 'edit', 'json', 'cine', 'img', 'geo', 'ovw', 'qa'];
 
 // ---- country normalisation -------------------------------------------------
+// Maps both ISO-2 codes and full names (as stored in the Notion Country select)
+// to a canonical {code,name,flag}. Add new countries here as the portfolio grows.
 const COUNTRY = {
   AU: { name: 'Australia', flag: '🇦🇺' }, AUSTRALIA: 'AU',
   GR: { name: 'Greece', flag: '🇬🇷' }, GREECE: 'GR',
   TR: { name: 'Türkiye', flag: '🇹🇷' }, TURKEY: 'TR', TURKIYE: 'TR',
   GB: { name: 'United Kingdom', flag: '🇬🇧' }, UK: 'GB', 'UNITED KINGDOM': 'GB',
-  VN: { name: 'Vietnam', flag: '🇻🇳' }, VIETNAM: 'VN',
+  VN: { name: 'Vietnam', flag: '🇻🇳' }, VIETNAM: 'VN', 'VIỆT NAM': 'VN',
   CY: { name: 'Cyprus', flag: '🇨🇾' }, CYPRUS: 'CY',
   PA: { name: 'Panama', flag: '🇵🇦' }, PANAMA: 'PA',
+  TH: { name: 'Thailand', flag: '🇹🇭' }, THAILAND: 'TH',
+  MY: { name: 'Malaysia', flag: '🇲🇾' }, MALAYSIA: 'MY',
+  ID: { name: 'Indonesia', flag: '🇮🇩' }, INDONESIA: 'ID',
+  SG: { name: 'Singapore', flag: '🇸🇬' }, SINGAPORE: 'SG',
+  PH: { name: 'Philippines', flag: '🇵🇭' }, PHILIPPINES: 'PH',
+  JP: { name: 'Japan', flag: '🇯🇵' }, JAPAN: 'JP',
+  PT: { name: 'Portugal', flag: '🇵🇹' }, PORTUGAL: 'PT',
+  ES: { name: 'Spain', flag: '🇪🇸' }, SPAIN: 'ES',
+  IT: { name: 'Italy', flag: '🇮🇹' }, ITALY: 'IT',
+  FR: { name: 'France', flag: '🇫🇷' }, FRANCE: 'FR',
+  MT: { name: 'Malta', flag: '🇲🇹' }, MALTA: 'MT',
+  AE: { name: 'UAE', flag: '🇦🇪' }, UAE: 'AE', DUBAI: 'AE', 'ABU DHABI': 'AE',
+  US: { name: 'United States', flag: '🇺🇸' }, USA: 'US', 'UNITED STATES': 'US',
 };
 function normCountry(raw) {
   if (!raw || raw.includes('{')) return { code: 'XX', name: 'Unknown', flag: '🏳️' };
   let key = raw.trim().toUpperCase();
   if (typeof COUNTRY[key] === 'string') key = COUNTRY[key];
   const c = COUNTRY[key];
-  return c && c.name ? { code: key, ...c } : { code: 'XX', name: raw.trim(), flag: '🏳️' };
+  if (c && c.name) return { code: key, ...c };
+  // Unmapped country: keep it as its own distinct group (don't collapse into XX),
+  // so a newly-scaffolded country still appears with its real name on the board.
+  return { code: key.slice(0, 3).replace(/[^A-Z]/g, '') || 'XX', name: raw.trim(), flag: '🏳️' };
 }
 // listing order: biggest portfolios first
-const COUNTRY_ORDER = ['AU', 'GR', 'TR', 'GB', 'VN', 'CY', 'PA', 'XX'];
+const COUNTRY_ORDER = ['AU', 'GR', 'TR', 'GB', 'VN', 'CY', 'PA', 'TH', 'MY', 'ID', 'SG', 'PH', 'JP', 'PT', 'ES', 'IT', 'FR', 'MT', 'AE', 'US', 'XX'];
 
 // ---- extraction helpers ----------------------------------------------------
 const decode = (s) => (s || '')
@@ -206,20 +224,25 @@ function main() {
       note: ov.note || '', dup: dupOut };
   });
 
-  // group: country -> region
-  rows.sort((a, b) => (COUNTRY_ORDER.indexOf(a.code) - COUNTRY_ORDER.indexOf(b.code))
-    || a.region.localeCompare(b.region) || a.name.localeCompare(b.name));
-  const groups = [];
+  // group: country -> region. Known countries follow COUNTRY_ORDER; any other
+  // country (newly scaffolded) sorts after, by descending listing count, so it
+  // always appears rather than being dropped.
   const counts = {};
-  for (const r of rows) {
+  rows.forEach((r) => {
     counts[r.code] = counts[r.code] || { code: r.code, name: r.country, flag: r.flag, count: 0 };
     counts[r.code].count++;
+  });
+  const rank = (code) => { const i = COUNTRY_ORDER.indexOf(code); return i === -1 ? 100 - (counts[code]?.count || 0) : i; };
+  rows.sort((a, b) => (rank(a.code) - rank(b.code))
+    || a.country.localeCompare(b.country) || a.region.localeCompare(b.region) || a.name.localeCompare(b.name));
+  const groups = [];
+  for (const r of rows) {
     let grp = groups[groups.length - 1];
     if (!grp || grp.code !== r.code || grp.region !== r.region)
       groups.push((grp = { country: r.country, code: r.code, flag: r.flag, region: r.region, rows: [] }));
     grp.rows.push({ name: r.name, slug: r.slug, thumb: r.thumb, st: r.st, note: r.note, dup: r.dup });
   }
-  const countries = COUNTRY_ORDER.filter((c) => counts[c]).map((c) => counts[c]);
+  const countries = Object.values(counts).sort((a, b) => rank(a.code) - rank(b.code));
 
   const data = {
     generated: '', reviewed: '', fingerprint: '',

@@ -34,6 +34,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history — build-changelog diffs committed snapshots
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -76,12 +78,36 @@ jobs:
             git rm -f "properties/$slug.html" 2>/dev/null && echo "removed properties/$slug.html" || echo "no file properties/$slug.html"
           done
           node scripts/update-index.mjs
+          node scripts/build-llp-status.mjs   # drop the retired listing from the LSD atomically
           git config user.name "nac-notion-bot"
           git config user.email "nac-notion-bot@users.noreply.github.com"
-          git add properties/ index.html
+          git add properties/ index.html listing-status.html listing-status.json
           if git diff --cached --quiet; then
             echo "Nothing to commit."
           else
-            git commit -m "retire listings: ${{ steps.resolve.outputs.slugs }} (remove HTML + rebuild index)"
+            git commit -m "retire listings: ${{ steps.resolve.outputs.slugs }} (remove HTML + rebuild index + LSD)"
             git push
           fi
+
+      - name: Log removal in changelog (after retire commit)
+        # build-changelog reads committed git history, so it runs AFTER the
+        # removal commit above — it emits a "Live → removed" event for each
+        # retired slug. GITHUB_TOKEN-pushed commits don't trigger build-changelog.yml,
+        # so do it here to keep the activity log current on every retirement.
+        if: steps.resolve.outputs.slugs != ''
+        run: |
+          node scripts/build-changelog.mjs
+          if git diff --quiet -- listing-changelog.json; then
+            echo "changelog unchanged"; exit 0
+          fi
+          git config user.name "nac-notion-bot"
+          git config user.email "nac-notion-bot@users.noreply.github.com"
+          git add listing-changelog.json
+          git commit -m "chore(changelog): log retirement of ${{ steps.resolve.outputs.slugs }}"
+          for attempt in 1 2 3 4 5; do
+            if git push origin main; then echo "pushed"; exit 0; fi
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort; exit 1; }
+            sleep $((attempt * 2))
+          done
+          exit 1

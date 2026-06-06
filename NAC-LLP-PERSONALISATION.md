@@ -82,16 +82,18 @@ Before flipping `Hub Status → Live`, and after any batch generation:
 
 ## City coverage for `📊 Market Stats JSON` (rollout status)
 
+All 11 mapped metros are **✅ done** (76 listings written via `set-market-stats:write`,
+live on WP). New markets (e.g. **Thailand / Malaysia**, Bangkok / KL / Koh Samui, etc.)
+are **pending** — add them to `CITY_STATS` + `METRO_RULES` in `scripts/set-market-stats.mjs`
+with real, sourced figures, then re-run `set-market-stats:write`.
+
 | City (metro) | Listings | Status |
 |---|---|---|
-| Athens | 6 | ✅ done |
-| Galaxidi | 1 | ✅ done |
-| Sydney | 38 | rollout |
-| İstanbul | 11 | rollout |
-| Melbourne | 11 | rollout |
-| London | 5 | rollout |
-| Limassol (Cyprus) | 3 | rollout |
-| Panama City | 2 | rollout |
-| Da Nang | 2 | rollout |
-| Ho Chi Minh City | 1 | rollout |
-| Hồ Tràm | 1 | rollout |
+| Athens · Galaxidi | 6 · 1 | ✅ done |
+| Sydney · Melbourne | 38 · 11 | ✅ done |
+| İstanbul | 11 | ✅ done |
+| London | 5 | ✅ done |
+| Limassol (Cyprus) | 3 | ✅ done |
+| Panama City | 2 | ✅ done |
+| Da Nang · HCMC · Hồ Tràm | 2 · 1 · 1 | ✅ done |
+| Bangkok · Kuala Lumpur · Koh Samui · … | — | ⏳ pending (add to CITY_STATS) |

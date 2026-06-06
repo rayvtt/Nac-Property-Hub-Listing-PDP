@@ -76,11 +76,17 @@ jobs:
           NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9' }}
         run: node update-index.mjs
 
+      - name: Rebuild LLP completeness dashboard
+        # New listings must appear on listing-status.html immediately on scaffold
+        # — don't wait for the next sync-notion cron tick. Content-stable output.
+        working-directory: scripts
+        run: node build-llp-status.mjs
+
       - name: Commit and push (with rebase retry)
         run: |
           git config user.name "nac-notion-bot"
           git config user.email "nac-notion-bot@users.noreply.github.com"
-          git add properties/ index.html llms.txt scripts/geocode-cache.json
+          git add properties/ index.html llms.txt scripts/geocode-cache.json listing-status.html listing-status.json
           if git diff --cached --quiet; then
             echo "No new PDP files or index changes to commit."
             exit 0
@@ -102,6 +108,28 @@ jobs:
             sleep $((attempt * 2))
           done
           echo "Push failed after 5 attempts"
+          exit 1
+
+      - name: Refresh listing changelog (after scaffold commit)
+        # build-changelog reads committed git history, so it must run AFTER the
+        # scaffold commit above (full history is available — checkout is depth 0).
+        # GITHUB_TOKEN-pushed scaffold commits don't trigger build-changelog.yml,
+        # so do it here to keep the changelog current on every scaffold.
+        run: |
+          node scripts/build-changelog.mjs
+          if git diff --quiet -- listing-changelog.json; then
+            echo "changelog unchanged"; exit 0
+          fi
+          git config user.name "nac-notion-bot"
+          git config user.email "nac-notion-bot@users.noreply.github.com"
+          git add listing-changelog.json
+          git commit -m "chore(changelog): refresh after scaffold"
+          for attempt in 1 2 3 4 5; do
+            if git push origin main; then echo "pushed"; exit 0; fi
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort; exit 1; }
+            sleep $((attempt * 2))
+          done
           exit 1
 
       - name: Trigger image sync for newly-scaffolded listings

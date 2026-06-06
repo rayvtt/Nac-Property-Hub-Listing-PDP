@@ -49,6 +49,12 @@ const WP_USER = process.env.WP_USER || 'admin_web';
 const WP_PASS = process.env.WP_APP_PASSWORD;
 const ACF_HTML_FIELD = process.env.WP_ACF_FIELD || 'raw_html_code';
 
+// Default social-share card — the site-wide brand cover (same image the WP
+// homepage serves as og:image). Used to satisfy "Missing og:image" tasks when
+// the row has no per-page Proposed Fix. Override per-run with DEFAULT_OG_IMAGE.
+const DEFAULT_OG_IMAGE = process.env.DEFAULT_OG_IMAGE
+  || 'https://nomadassetcollective.com/wp-content/uploads/2026/05/nac-cover.png';
+
 // ─── Locked pages — never modified by the SEO automation ───
 // Protects hand-maintained pages (e.g. the NAC Residence Index tool) from being
 // re-serialized/rewritten via WP REST. Add a slug or path fragment here, or via
@@ -150,6 +156,34 @@ async function markSkipped(task, reason) {
     page_id: task.pageId,
     properties: {
       Notes: { rich_text: [{ text: { content: `Apply skipped: ${reason}` } }] },
+    },
+  });
+}
+
+// The page already satisfies the task (idempotent "already correct / present").
+// Mark Applied so it leaves the Approved queue instead of re-cycling every run.
+async function markResolved(task, reason) {
+  if (DRY) { console.log(`    [dry] mark resolved: ${task.taskId} — ${reason}`); return; }
+  await notion.pages.update({
+    page_id: task.pageId,
+    properties: {
+      Status: { select: { name: 'Applied' } },
+      'Applied At': { date: { start: new Date().toISOString().slice(0, 10) } },
+      Notes: { rich_text: [{ text: { content: `Already satisfied on page: ${reason}` } }] },
+    },
+  });
+}
+
+// Task can't be applied by this mechanism (e.g. blog/consult page whose meta &
+// schema are managed by Rank Math, not the raw_html_code ACF field). Snooze it
+// out of the Approved queue with an explanatory note.
+async function markSnoozed(task, reason) {
+  if (DRY) { console.log(`    [dry] mark snoozed: ${task.taskId} — ${reason}`); return; }
+  await notion.pages.update({
+    page_id: task.pageId,
+    properties: {
+      Status: { select: { name: 'Snoozed' } },
+      Notes: { rich_text: [{ text: { content: `Out of scope for seo-apply: ${reason}` } }] },
     },
   });
 }
@@ -318,6 +352,29 @@ function injectSchemaBlock($, jsonLd) {
   // Check if any schema already exists; don't dedupe by content for now
   $('head').append('\n' + jsonLd);
   return { changed: true, reason: 'inserted schema JSON-LD' };
+}
+
+function injectOgImage($, url) {
+  const img = (url || DEFAULT_OG_IMAGE).trim();
+  if (!img) return { changed: false, reason: 'no og:image url' };
+  // Pair og:image with twitter:image so the card is complete on both networks.
+  let changed = false;
+  const setMeta = (selector, tag) => {
+    const el = $(selector);
+    if (el.length) {
+      if ((el.attr('content') || '').trim()) return; // already has a value — leave it
+      el.attr('content', img);
+      changed = true;
+    } else {
+      $('head').append(`\n${tag}`);
+      changed = true;
+    }
+  };
+  setMeta('meta[property="og:image"]', `<meta property="og:image" content="${img}">`);
+  setMeta('meta[name="twitter:image"]', `<meta name="twitter:image" content="${img}">`);
+  return changed
+    ? { changed: true, reason: `set og:image/twitter:image → default card` }
+    : { changed: false, reason: 'og:image already present' };
 }
 
 // ─── Routing: PDP file vs WP REST ───────────────────────────────────────────
@@ -490,7 +547,7 @@ async function main() {
     byTarget.get(key).push(e);
   }
 
-  const stats = { applied: 0, skipped: 0, errored: 0 };
+  const stats = { applied: 0, resolved: 0, snoozed: 0, skipped: 0, errored: 0 };
   const pdpFilesEdited = new Set();
 
   for (const [key, group] of byTarget) {
@@ -525,7 +582,12 @@ async function main() {
       workingHtml = await fs.readFile(surfaceTarget.path, 'utf8');
     } else {
       workingHtml = surfaceTarget.page.acf?.[ACF_HTML_FIELD] || '';
-      if (!workingHtml) { console.log(`    ⚠ WP page has no raw_html_code — skipping group`); for (const e of group) stats.skipped++; continue; }
+      if (!workingHtml) {
+        const reason = 'WP page has no raw_html_code field (blog/consult surface — meta & schema are managed by Rank Math, not this applier)';
+        console.log(`    ⚠ ${reason} — snoozing group`);
+        for (const e of group) { await markSnoozed(e.task, reason); stats.snoozed++; }
+        continue;
+      }
     }
 
     let pageDirty = false;
@@ -546,6 +608,9 @@ async function main() {
           } else if (taskType === 'schema') {
             console.log(`    generating schema JSON-LD on-the-fly for ${task.taskId}…`);
             fixValue = generateSchemaJsonLd(workingHtml, surfaceTarget.url, task.surface, task.slug);
+          } else if (taskType === 'og_image') {
+            // No per-page Proposed Fix → fall back to the wired brand default card.
+            fixValue = DEFAULT_OG_IMAGE;
           } else {
             console.log(`    ⌀ skip ${task.taskId}: no usable Proposed Fix`);
             await markSkipped(task, 'No usable Proposed Fix');
@@ -560,12 +625,21 @@ async function main() {
         else if (taskType === 'title') result = injectTitle($, fixValue);
         else if (taskType === 'canonical') result = injectCanonical($, surfaceTarget.url);
         else if (taskType === 'schema') result = injectSchemaBlock($, fixValue);
-        else if (taskType === 'og_image') result = { changed: false, reason: 'og:image needs manual hero URL' };
+        else if (taskType === 'og_image') result = injectOgImage($, fixValue);
 
         if (!result.changed) {
-          console.log(`    ⌀ skip ${task.taskId}: ${result.reason}`);
-          await markSkipped(task, result.reason);
-          stats.skipped++;
+          // "Already correct / already present" means the page already meets the
+          // task's goal → resolve it (mark Applied) so it drains from the queue
+          // instead of being re-skipped on every run. Anything else is a real skip.
+          if (/already (correct|present)/i.test(result.reason)) {
+            console.log(`    ✓ ${task.taskId}: ${result.reason} → marking Applied`);
+            await markResolved(task, result.reason);
+            stats.resolved++;
+          } else {
+            console.log(`    ⌀ skip ${task.taskId}: ${result.reason}`);
+            await markSkipped(task, result.reason);
+            stats.skipped++;
+          }
           continue;
         }
 
@@ -622,7 +696,7 @@ async function main() {
     }
   }
 
-  console.log(`\nDone. applied=${stats.applied}  skipped=${stats.skipped}  errored=${stats.errored}`);
+  console.log(`\nDone. applied=${stats.applied}  resolved=${stats.resolved}  snoozed=${stats.snoozed}  skipped=${stats.skipped}  errored=${stats.errored}`);
 }
 
 main().catch((err) => { console.error(err); process.exit(1); });

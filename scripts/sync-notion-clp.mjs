@@ -546,17 +546,21 @@ function applyModel(html, model) {
   }
 
   // ── atlas (pins + pin-list) ───────────────────────────────────────
+  // Always rebuild — leaving the template default leaks placeholder
+  // (Vietnam) cities onto countries that haven't received any Live
+  // listings yet (MY/TH/SG/AE etc.).
+  $('.cl-pin-group').remove();
   if (usedCities.length) {
-    // pin-list
     $('.cl-atlas-pinlist').html(
       usedCities.map(c => renderPinlistItem(c, counts.get(c.slug))).join('\n'));
-    // SVG pins: drop existing groups, append fresh ones after the faint-city group
-    $('.cl-pin-group').remove();
     const pinSvg = usedCities.map(c => renderPin(c)).join('\n');
     // insert before the compass rose if present, else append to svg
     const compass = $('.cl-map-compass');
     if (compass.length) compass.first().before(pinSvg + '\n');
     else $('.cl-atlas-map svg').append(pinSvg);
+  } else {
+    $('.cl-atlas-pinlist').html(
+      `        <div class="cl-atlas-pinlist-empty"><span data-vi="Dự án đầu tiên sắp ra mắt — bản đồ thành phố sẽ kích hoạt khi có dự án Live.">Dự án đầu tiên sắp ra mắt — bản đồ thành phố sẽ kích hoạt khi có dự án Live.</span><span data-en="First listings coming soon — city pins activate once a Live listing lands.">First listings coming soon — city pins activate once a Live listing lands.</span></div>`);
   }
 
   // ── filter pills ──────────────────────────────────────────────────
