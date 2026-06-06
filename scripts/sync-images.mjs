@@ -343,7 +343,11 @@ async function scrapeBerkeleyPage(pageUrl, depth = 0) {
 // Bound every download end-to-end (header + body read under one abort signal),
 // and bound each listing so a single bad source fails over to the next.
 const DOWNLOAD_TIMEOUT_MS = Number(process.env.DOWNLOAD_TIMEOUT_MS || 45_000);
-const PER_LISTING_TIMEOUT_MS = Number(process.env.PER_LISTING_TIMEOUT_MS || 8 * 60_000);
+// Backstop only — the 45s download timeout already kills the stalled-fetch that
+// caused the original infinite hangs, so this can be generous. 8 min was too
+// tight: it killed botanica-grand-avenue mid-extraction (3 brochures, 300+
+// JPEGs) AFTER --replace had deleted its old hero, leaving it image-less.
+const PER_LISTING_TIMEOUT_MS = Number(process.env.PER_LISTING_TIMEOUT_MS || 20 * 60_000);
 
 class TimeoutError extends Error {}
 
