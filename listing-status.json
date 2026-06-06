@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-06T11:05:49Z",
+  "generated": "2026-06-06T20:54:52Z",
   "reviewed": "2026-06-06",
-  "fingerprint": "51a6aab6cb50bb92",
+  "fingerprint": "dfa362bd09833b82",
   "dims": [
     "id",
     "fin",
@@ -2607,7 +2607,7 @@
         {
           "name": "🌟 Mercedes-Benz Places · Binghatti City — Nad Al Sheba, Dubai (Golden Visa)",
           "slug": "binghatti-mercedes-benz-city",
-          "thumb": "",
+          "thumb": "binghatti-mercedes-benz-city-hero",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2615,7 +2615,7 @@
             "edit": "done",
             "json": "done",
             "cine": "done",
-            "img": "block",
+            "img": "done",
             "geo": "done",
             "ovw": "block",
             "qa": "done"
