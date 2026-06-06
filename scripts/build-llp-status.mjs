@@ -38,7 +38,7 @@ const JSON_OUT = path.join(ROOT, 'listing-status.json');
 const OVERRIDES = path.join(__dirname, 'llp-status-overrides.json');
 
 const IMG_HASH = 'qse3Pw84PrZ2S0PQOTtixw';
-const DIMS = ['id', 'fin', 'nac', 'edit', 'json', 'cine', 'img', 'geo', 'qa'];
+const DIMS = ['id', 'fin', 'nac', 'edit', 'json', 'cine', 'img', 'geo', 'ovw', 'qa'];
 
 // ---- country normalisation -------------------------------------------------
 // Maps both ISO-2 codes and full names (as stored in the Notion Country select)
@@ -132,6 +132,16 @@ function extract(html, slug) {
     f.thumb = m ? m[1] : '@' + f.hero;
   } else f.thumb = f.hero ? '@' + f.hero : '';
 
+  // §01 overview facts (Location / Ownership / Residency / Completion) — these
+  // bind to region_city, ownership_en, residency, handover_en. Track how many
+  // of the four render non-empty.
+  f.ovwFacts = [
+    g(/data-notion="region_city"[^>]*>([^<]*)/),
+    g(/data-notion="ownership_en"[^>]*>([^<]*)/),
+    g(/data-notion="residency"[^>]*>([^<]*)/),
+    g(/data-notion="handover_en"[^>]*>([^<]*)/),
+  ].filter((v) => v && !String(v).includes('{')).length;
+
   // geo / structured data
   f.lat = g(/"latitude":\s*"?([^",}]+)/);
   const ldBlocks = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g) || [];
@@ -184,6 +194,9 @@ function derive(f, dup) {
   st.img = !f.heroReal ? 'block' : (f.galReal >= 2 ? 'done' : 'band');
 
   st.geo = (has(f.lat) && f.ldTokens === 0) ? 'done' : 'block';
+
+  // §01 overview facts: 4/4 filled → done, 0 → block, partial → band
+  st.ovw = f.ovwFacts >= 4 ? 'done' : f.ovwFacts === 0 ? 'block' : 'band';
 
   st.qa = 'done'; // viability is a human call; refined via overrides
 
