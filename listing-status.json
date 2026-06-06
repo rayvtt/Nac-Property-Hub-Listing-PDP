@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-06T20:54:52Z",
+  "generated": "2026-06-06T21:06:23Z",
   "reviewed": "2026-06-06",
-  "fingerprint": "dfa362bd09833b82",
+  "fingerprint": "0a0bfe33f305fc7c",
   "dims": [
     "id",
     "fin",
@@ -2526,7 +2526,7 @@
         {
           "name": "🎬 DAMAC Towers by Paramount — Business Bay, Dubai (Golden Visa)",
           "slug": "damac-towers-paramount",
-          "thumb": "",
+          "thumb": "damac-towers-paramount-hero",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2534,7 +2534,7 @@
             "edit": "done",
             "json": "done",
             "cine": "done",
-            "img": "block",
+            "img": "done",
             "geo": "done",
             "ovw": "block",
             "qa": "done"
@@ -2553,7 +2553,7 @@
         {
           "name": "⛳ DAMAC Golf Greens — DAMAC Hills, Dubai (Golden Visa)",
           "slug": "damac-golf-greens",
-          "thumb": "",
+          "thumb": "damac-golf-greens-hero",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2561,7 +2561,7 @@
             "edit": "done",
             "json": "done",
             "cine": "done",
-            "img": "block",
+            "img": "done",
             "geo": "done",
             "ovw": "block",
             "qa": "done"
