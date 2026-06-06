@@ -451,6 +451,14 @@ function patch(html, prop) {
     coc_pct_unit: prop.cocPct != null ? fmt1(prop.cocPct) + '%' : null,
     handover_en: prop.handoverEn,
     handover_vi: prop.handoverVi,
+    // §01 overview facts: ownership (from Freehold checkbox) + residency
+    // (from Investment Program, else Immigration Type). Location reuses
+    // region_city and completion reuses handover_vi/en above.
+    ownership_vi: prop.freehold ? 'Sở hữu vĩnh viễn' : 'Sở hữu có thời hạn',
+    ownership_en: prop.freehold ? 'Freehold' : 'Leasehold',
+    residency: (prop.investmentProgram && prop.investmentProgram !== 'None')
+      ? prop.investmentProgram
+      : ((prop.immigrationType && prop.immigrationType !== 'None') ? prop.immigrationType : '—'),
   };
   for (const [key, value] of Object.entries(textMap)) {
     if (value == null || value === '') continue;
