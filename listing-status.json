@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-04T21:04:56Z",
-  "reviewed": "2026-06-04",
-  "fingerprint": "9ea3dd0b7dd6665c",
+  "generated": "2026-06-06T11:03:04Z",
+  "reviewed": "2026-06-06",
+  "fingerprint": "8ddbad11b2f1be89",
   "dims": [
     "id",
     "fin",
@@ -11,6 +11,7 @@
     "cine",
     "img",
     "geo",
+    "ovw",
     "qa"
   ],
   "imgHash": "qse3Pw84PrZ2S0PQOTtixw",
@@ -79,6 +80,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -105,6 +107,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -125,6 +128,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -153,6 +157,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -179,6 +184,7 @@
             "cine": "done",
             "img": "done",
             "geo": "block",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -205,6 +211,7 @@
             "cine": "done",
             "img": "done",
             "geo": "block",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -231,6 +238,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -257,6 +265,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -283,6 +292,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -309,6 +319,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -335,6 +346,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "block"
           },
           "note": "no real project at the address — do NOT flip Live; retire or hold",
@@ -355,6 +367,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -375,6 +388,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -403,6 +417,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -423,6 +438,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -443,6 +459,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -471,6 +488,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -491,6 +509,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -519,6 +538,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -540,6 +560,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -560,6 +581,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -581,6 +603,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -609,6 +632,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -635,6 +659,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -661,6 +686,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "band"
           },
           "note": "project unconfirmed — financials now bespoke but estimated; verify the building facts before publishing",
@@ -687,6 +713,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -713,6 +740,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -731,6 +759,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -751,6 +780,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -771,6 +801,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -799,6 +830,7 @@
             "cine": "done",
             "img": "done",
             "geo": "block",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -825,6 +857,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -845,6 +878,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -873,6 +907,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -893,6 +928,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -921,6 +957,7 @@
             "cine": "done",
             "img": "done",
             "geo": "block",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -947,6 +984,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -967,6 +1005,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -988,6 +1027,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1009,6 +1049,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1037,6 +1078,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1057,6 +1099,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1085,6 +1128,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1111,6 +1155,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "Notion row not Live (archived/missing) — bespoke financials in au-financials.json could not sync; restore the Live row or retire the orphan PDP",
@@ -1131,6 +1176,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1159,6 +1205,7 @@
             "cine": "done",
             "img": "done",
             "geo": "block",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "district/geo wrong (Carlingford placeholder) → fix to Wentworth Point NSW 2127 before SEO regen",
@@ -1185,6 +1232,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1205,6 +1253,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1225,6 +1274,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1253,6 +1303,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1279,6 +1330,7 @@
             "cine": "done",
             "img": "done",
             "geo": "block",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1305,6 +1357,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1334,6 +1387,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1355,6 +1409,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1376,6 +1431,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1405,6 +1461,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1435,6 +1492,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1465,6 +1523,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1483,6 +1542,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1509,6 +1569,7 @@
             "cine": "block",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1527,6 +1588,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1556,6 +1618,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1582,6 +1645,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1608,6 +1672,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1629,6 +1694,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1650,6 +1716,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1679,6 +1746,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1707,6 +1775,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1733,6 +1802,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1759,6 +1829,7 @@
             "cine": "band",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1788,6 +1859,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1814,6 +1886,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1840,6 +1913,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1866,6 +1940,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1892,6 +1967,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1918,6 +1994,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1944,6 +2021,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1970,6 +2048,7 @@
             "cine": "done",
             "img": "band",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -1996,6 +2075,7 @@
             "cine": "done",
             "img": "done",
             "geo": "block",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -2022,6 +2102,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -2048,6 +2129,7 @@
             "cine": "done",
             "img": "done",
             "geo": "block",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -2074,6 +2156,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -2092,6 +2175,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -2118,6 +2202,7 @@
             "cine": "band",
             "img": "block",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -2144,6 +2229,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
@@ -2170,6 +2256,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "block",
             "qa": "done"
           },
           "note": "",
