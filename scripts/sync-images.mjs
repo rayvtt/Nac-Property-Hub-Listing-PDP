@@ -379,8 +379,8 @@ async function fetchBufferWithTimeout(url, opts = {}, ms = DOWNLOAD_TIMEOUT_MS) 
   }
 }
 
-async function downloadUrl(url, destPath) {
-  let { res, buf } = await fetchBufferWithTimeout(url, { redirect: 'follow' });
+async function downloadUrl(url, destPath, timeoutMs = DOWNLOAD_TIMEOUT_MS) {
+  let { res, buf } = await fetchBufferWithTimeout(url, { redirect: 'follow' }, timeoutMs);
   // Some CDNs (Kiler GYO, Hyatt newsroom, etc.) hot-link-protect via Referer.
   // Retry with a same-origin Referer + browser UA when blocked.
   if (!res.ok && (res.status === 401 || res.status === 403)) {
@@ -392,7 +392,7 @@ async function downloadUrl(url, destPath) {
         'User-Agent': 'Mozilla/5.0 (compatible; NAC-Listings-Sync/1.0)',
         'Accept': 'image/avif,image/webp,image/png,image/jpeg,*/*',
       },
-    }));
+    }, timeoutMs));
   }
   if (!res.ok) throw new Error(`download ${url} → HTTP ${res.status}`);
   await fs.writeFile(destPath, buf);
@@ -1042,14 +1042,32 @@ async function processProperty(prop) {
       }
     }
     if (urlList.length) {
-      console.log(`  🔗 downloading ${urlList.length} explicit URL(s)`);
-      for (let i = 0; i < urlList.length; i++) {
-        const bumped = bumpBerkeleyUrl(urlList[i]);
-        const dest = path.join(workDir, `web-list-${i + 1}.jpg`);
+      // A curated URL can be a brochure PDF, not just an image. Marketing sites
+      // serve web-optimised renders (often <1500px → filtered out), whereas the
+      // official e-brochure carries the same renders at full 4MP. So a `.pdf`
+      // URL is downloaded and run through the SAME extractor as the Drive route.
+      const pdfUrls = urlList.filter(u => /\.pdf(\?|#|$)/i.test(u));
+      const imgUrls = urlList.filter(u => !/\.pdf(\?|#|$)/i.test(u));
+      if (imgUrls.length) {
+        console.log(`  🔗 downloading ${imgUrls.length} explicit image URL(s)`);
+        for (let i = 0; i < imgUrls.length; i++) {
+          const bumped = bumpBerkeleyUrl(imgUrls[i]);
+          const dest = path.join(workDir, `web-list-${i + 1}.jpg`);
+          try {
+            await downloadUrl(bumped, dest);
+            candidates.push({ path: dest, src: 'web-list', srcRef: imgUrls[i] });
+          } catch (e) { /* skip individual URL failures */ }
+        }
+      }
+      for (let i = 0; i < pdfUrls.length; i++) {
+        const dest = path.join(workDir, `web-brochure-${i + 1}.pdf`);
         try {
-          await downloadUrl(bumped, dest);
-          candidates.push({ path: dest, src: 'web-list', srcRef: urlList[i] });
-        } catch (e) { /* skip individual URL failures */ }
+          console.log(`  📄 brochure PDF from URL: ${pdfUrls[i]}`);
+          await downloadUrl(pdfUrls[i], dest, 180_000); // brochures are large
+          const imgs = await extractImagesFromPdf(dest, workDir);
+          console.log(`     ${imgs.length} JPEG(s) extracted from brochure URL`);
+          candidates.push(...imgs.map(p => ({ path: p, src: 'web-pdf', srcRef: pdfUrls[i] })));
+        } catch (e) { console.warn(`     brochure URL failed: ${e.message}`); }
       }
     }
 
