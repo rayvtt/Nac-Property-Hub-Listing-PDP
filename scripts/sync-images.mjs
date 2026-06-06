@@ -766,6 +766,17 @@ function parseFolderIdFromUrl(url) {
   return m ? m[1] : null;
 }
 
+// Parse a Drive *file* ID from a share URL (/file/d/<id>/view, /d/<id>,
+// ?id=<id>) or accept a bare ID. Used by the GS Source File route, which
+// targets ONE specific PDF inside a folder (e.g. several project brochures
+// loose in one shared folder, where a folder-wide scan would cross-contaminate).
+function parseFileIdFromUrl(url) {
+  if (!url) return null;
+  const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (m) return m[1];
+  return /^[a-zA-Z0-9_-]{20,}$/.test(url.trim()) ? url.trim() : null;
+}
+
 // Files we never want to extract images from — these PDFs are present in
 // many partner Drive folders and only contain text/forms/legal screenshots,
 // never project renders. Matching is case-insensitive, accent-insensitive,
@@ -904,6 +915,7 @@ async function fetchLiveProperties(includeNonLive = false) {
     regionCity: richText(page.properties['Region/City']),
     imageUrl: readUrl(page.properties['Image URL']),
     gsSourceFolder: readUrl(page.properties['GS Source Folder']),
+    gsSourceFile: readUrl(page.properties['GS Source File']),
     // Optional new fields for the Berkeley web route. Either one is enough.
     berkeleyPage: readUrl(page.properties['🌐 Berkeley Page URL']),
     imageUrlsJson: richText(page.properties['📷 Image URLs JSON']),
@@ -1106,6 +1118,20 @@ async function processProperty(prop) {
     const pdfs = [];
     if (LOCAL_PDF) {
       pdfs.push({ path: LOCAL_PDF, name: path.basename(LOCAL_PDF) });
+    } else if (prop.gsSourceFile && (HAS_DRIVE_OAUTH || GOOGLE_SERVICE_ACCOUNT_JSON)) {
+      // Single-file route: extract from ONE specific PDF (avoids cross-
+      // contamination when several brochures live loose in one shared folder).
+      const fileId = parseFileIdFromUrl(prop.gsSourceFile);
+      if (fileId) {
+        console.log(`  📄 Drive file (GS Source File): ${fileId}`);
+        const dest = path.join(workDir, `source-${fileId}.pdf`);
+        try {
+          await downloadDrivePdf(fileId, dest);
+          pdfs.push({ path: dest, name: path.basename(dest) });
+        } catch (e) { console.warn(`     GS Source File download failed: ${e.message}`); }
+      } else {
+        console.warn(`     GS Source File set but no file ID parsed: ${prop.gsSourceFile}`);
+      }
     } else if (prop.gsSourceFolder && (HAS_DRIVE_OAUTH || GOOGLE_SERVICE_ACCOUNT_JSON)) {
       const folderId = parseFolderIdFromUrl(prop.gsSourceFolder);
       if (folderId) {
