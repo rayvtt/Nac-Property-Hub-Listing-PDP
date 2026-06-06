@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-05T14:13:35Z",
-  "reviewed": "2026-06-05",
-  "fingerprint": "50a7113595de95d6",
+  "generated": "2026-06-06T10:19:27Z",
+  "reviewed": "2026-06-06",
+  "fingerprint": "3512495ed214b8a2",
   "dims": [
     "id",
     "fin",
@@ -2534,7 +2534,7 @@
         {
           "name": "🌳 Sobha Estates — Hartland II, Dubai (Golden Visa)",
           "slug": "sobha-estates-hartland-2",
-          "thumb": "",
+          "thumb": "sobha-estates-hartland-2-hero",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2542,7 +2542,7 @@
             "edit": "done",
             "json": "done",
             "cine": "done",
-            "img": "block",
+            "img": "done",
             "geo": "done",
             "qa": "done"
           },
