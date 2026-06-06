@@ -692,26 +692,43 @@ function pickFinalFive(ranked) {
 // OAuth (user delegation) preferred — folders shared with a human Google
 // account "Just Work" without per-folder service-account adds. Falls back
 // to the service account JSON when OAuth isn't configured.
-function getDriveClient() {
-  // Service account first when its key is present: SA keys never expire, so the
-  // automation needs no periodic re-auth. User-delegated OAuth (GSC_OAUTH_*) is
-  // the fallback — its refresh token CAN expire/revoke (→ invalid_grant), so
-  // it's not used as the primary path. The GSC_OAUTH_* secrets stay in place
-  // (still consumed by seo-audit); they're just not preferred for Drive here.
+let _driveClientCache;
+async function getDriveClient() {
+  if (_driveClientCache) return _driveClientCache;
+  // PROBE each credential with a tiny call and use the first that
+  // authenticates. OAuth FIRST: user-delegated creds can read folders shared
+  // with the user (partner brochure folders) — the service account usually
+  // can't see "shared-with-me" content. If the OAuth refresh token is dead
+  // (invalid_grant) the probe fails and we transparently fall back to the SA,
+  // preserving prior behaviour. Cached for the run (auth doesn't change mid-run).
+  const candidates = [];
+  if (HAS_DRIVE_OAUTH) {
+    const auth = new google.auth.OAuth2(GSC_OAUTH_CLIENT_ID, GSC_OAUTH_CLIENT_SECRET);
+    auth.setCredentials({ refresh_token: GSC_OAUTH_REFRESH_TOKEN });
+    candidates.push({ drive: google.drive({ version: 'v3', auth }), via: 'oauth' });
+  }
   if (GOOGLE_SERVICE_ACCOUNT_JSON) {
     const credentials = JSON.parse(GOOGLE_SERVICE_ACCOUNT_JSON);
     const auth = new google.auth.GoogleAuth({
       credentials,
       scopes: ['https://www.googleapis.com/auth/drive.readonly'],
     });
-    return google.drive({ version: 'v3', auth });
+    candidates.push({ drive: google.drive({ version: 'v3', auth }), via: 'service-account' });
   }
-  if (HAS_DRIVE_OAUTH) {
-    const auth = new google.auth.OAuth2(GSC_OAUTH_CLIENT_ID, GSC_OAUTH_CLIENT_SECRET);
-    auth.setCredentials({ refresh_token: GSC_OAUTH_REFRESH_TOKEN });
-    return google.drive({ version: 'v3', auth });
+  if (!candidates.length) throw new Error('No Drive auth configured (need GOOGLE_SERVICE_ACCOUNT_JSON or GSC_OAUTH_*)');
+  let lastErr;
+  for (const c of candidates) {
+    try {
+      await c.drive.files.list({ pageSize: 1, fields: 'files(id)', supportsAllDrives: true, includeItemsFromAllDrives: true });
+      console.log(`  Drive auth: ${c.via}`);
+      _driveClientCache = c.drive;
+      return c.drive;
+    } catch (e) {
+      lastErr = e;
+      console.warn(`  Drive auth ${c.via} failed (${e.message?.split('\n')[0]}); trying next…`);
+    }
   }
-  throw new Error('No Drive auth configured (need GOOGLE_SERVICE_ACCOUNT_JSON or GSC_OAUTH_*)');
+  throw new Error(`No working Drive auth (last: ${lastErr?.message})`);
 }
 
 function parseFolderIdFromUrl(url) {
@@ -747,7 +764,7 @@ function isBrochurePdf({ name, size }) {
 }
 
 async function listPdfsInDriveFolder(folderId) {
-  const drive = getDriveClient();
+  const drive = await getDriveClient();
   // List subfolders + PDFs recursively (1 level deep is enough for the NAC setup)
   const top = await drive.files.list({
     q: `'${folderId}' in parents and (mimeType = 'application/pdf' or mimeType = 'application/vnd.google-apps.folder')`,
@@ -786,7 +803,7 @@ async function listPdfsInDriveFolder(folderId) {
 // only sees top-level PDFs and misses these. BFS with a scan cap so a huge
 // shared drive can't blow up. Returns [{ id, name, size }].
 async function listImagesInDriveFolder(folderId, maxDepth = 4) {
-  const drive = getDriveClient();
+  const drive = await getDriveClient();
   const images = [];
   let frontier = [{ id: folderId, depth: 0 }];
   let scanned = 0;
@@ -815,7 +832,7 @@ async function listImagesInDriveFolder(folderId, maxDepth = 4) {
 }
 
 async function downloadDrivePdf(fileId, destPath) {
-  const drive = getDriveClient();
+  const drive = await getDriveClient();
   const res = await drive.files.get({ fileId, alt: 'media' }, { responseType: 'arraybuffer' });
   await fs.writeFile(destPath, Buffer.from(res.data));
   return destPath;
