@@ -379,19 +379,25 @@ async function fetchBufferWithTimeout(url, opts = {}, ms = DOWNLOAD_TIMEOUT_MS) 
   }
 }
 
+// A realistic desktop-browser UA. Many marketing CDNs (Sansiri, Banyan,
+// ayana-luxury-villas, etc.) block non-browser clients outright — returning
+// 406/429/503 — so we send this on the FIRST attempt, not just on retry.
+const BROWSER_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+
 async function downloadUrl(url, destPath, timeoutMs = DOWNLOAD_TIMEOUT_MS) {
-  let { res, buf } = await fetchBufferWithTimeout(url, { redirect: 'follow' }, timeoutMs);
-  // Some CDNs (Kiler GYO, Hyatt newsroom, etc.) hot-link-protect via Referer.
-  // Retry with a same-origin Referer + browser UA when blocked.
-  if (!res.ok && (res.status === 401 || res.status === 403)) {
+  const baseHeaders = {
+    'User-Agent': BROWSER_UA,
+    'Accept': 'image/avif,image/webp,image/png,image/jpeg,*/*',
+  };
+  let { res, buf } = await fetchBufferWithTimeout(url, { redirect: 'follow', headers: baseHeaders }, timeoutMs);
+  // Some CDNs additionally hot-link-protect via Referer (Kiler GYO, Hyatt
+  // newsroom, etc.) or rate-limit/block (406/429/503). Retry once with a
+  // same-origin Referer added to the browser headers.
+  if (!res.ok && [401, 403, 406, 429, 503].includes(res.status)) {
     const origin = new URL(url).origin;
     ({ res, buf } = await fetchBufferWithTimeout(url, {
       redirect: 'follow',
-      headers: {
-        'Referer': origin + '/',
-        'User-Agent': 'Mozilla/5.0 (compatible; NAC-Listings-Sync/1.0)',
-        'Accept': 'image/avif,image/webp,image/png,image/jpeg,*/*',
-      },
+      headers: { ...baseHeaders, 'Referer': origin + '/' },
     }, timeoutMs));
   }
   if (!res.ok) throw new Error(`download ${url} → HTTP ${res.status}`);
