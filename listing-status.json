@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-06T21:12:55Z",
+  "generated": "2026-06-06T22:18:25Z",
   "reviewed": "2026-06-06",
-  "fingerprint": "0b29762de0020fc4",
+  "fingerprint": "b4b7b5228b32836c",
   "dims": [
     "id",
     "fin",
@@ -2524,7 +2524,7 @@
       "region": "Business Bay",
       "rows": [
         {
-          "name": "🎬 DAMAC Towers by Paramount — Business Bay, Dubai (Golden Visa)",
+          "name": "DAMAC Towers by Paramount — Business Bay, Dubai (Golden Visa)",
           "slug": "damac-towers-paramount",
           "thumb": "damac-towers-paramount-hero",
           "st": {
@@ -2551,7 +2551,7 @@
       "region": "DAMAC Hills",
       "rows": [
         {
-          "name": "⛳ DAMAC Golf Greens — DAMAC Hills, Dubai (Golden Visa)",
+          "name": "DAMAC Golf Greens — DAMAC Hills, Dubai (Golden Visa)",
           "slug": "damac-golf-greens",
           "thumb": "damac-golf-greens-hero",
           "st": {
@@ -2578,7 +2578,7 @@
       "region": "Downtown Dubai",
       "rows": [
         {
-          "name": "⭐ Mercedes-Benz Places by Binghatti — Downtown Dubai (Golden Visa)",
+          "name": "Mercedes-Benz Places by Binghatti — Downtown Dubai (Golden Visa)",
           "slug": "binghatti-mercedes-benz-places",
           "thumb": "binghatti-mercedes-benz-places-hero",
           "st": {
@@ -2605,7 +2605,7 @@
       "region": "Nad Al Sheba (Meydan)",
       "rows": [
         {
-          "name": "🌟 Mercedes-Benz Places · Binghatti City — Nad Al Sheba, Dubai (Golden Visa)",
+          "name": "Mercedes-Benz Places · Binghatti City — Nad Al Sheba, Dubai (Golden Visa)",
           "slug": "binghatti-mercedes-benz-city",
           "thumb": "binghatti-mercedes-benz-city-hero",
           "st": {
@@ -2632,7 +2632,7 @@
       "region": "Sobha Hartland II",
       "rows": [
         {
-          "name": "🌳 Sobha Estates — Hartland II, Dubai (Golden Visa)",
+          "name": "Sobha Estates — Hartland II, Dubai (Golden Visa)",
           "slug": "sobha-estates-hartland-2",
           "thumb": "sobha-estates-hartland-2-hero",
           "st": {
