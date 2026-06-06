@@ -336,23 +336,61 @@ async function scrapeBerkeleyPage(pageUrl, depth = 0) {
   return [...urls];
 }
 
+// ─── Stall guards ─────────────────────────────────────────────────────────
+// Node's fetch() has NO default timeout, so a CDN that accepts the connection
+// but never sends a body (or trickles it forever) hangs the whole serial batch
+// indefinitely — this froze two prior 24-listing runs at ~step 6 with no logs.
+// Bound every download end-to-end (header + body read under one abort signal),
+// and bound each listing so a single bad source fails over to the next.
+const DOWNLOAD_TIMEOUT_MS = Number(process.env.DOWNLOAD_TIMEOUT_MS || 45_000);
+const PER_LISTING_TIMEOUT_MS = Number(process.env.PER_LISTING_TIMEOUT_MS || 8 * 60_000);
+
+class TimeoutError extends Error {}
+
+// Race a promise against a wall-clock deadline. NB: the loser keeps running
+// (JS can't cancel an arbitrary promise) — callers that time out a whole
+// listing rely on the per-fetch AbortControllers below to free network work,
+// and on process.exit(0) at the end of main() to drop any orphaned timers.
+function withTimeout(promise, ms, label) {
+  let timer;
+  const guard = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new TimeoutError(`${label} timed out after ${ms}ms`)), ms);
+  });
+  return Promise.race([promise, guard]).finally(() => clearTimeout(timer));
+}
+
+// Fetch + fully read the body under a single abort signal, so a stalled body
+// stream is aborted too (not just a slow header phase). Returns { res, buf };
+// buf is null when res.ok is false so the caller can branch on status.
+async function fetchBufferWithTimeout(url, opts = {}, ms = DOWNLOAD_TIMEOUT_MS) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), ms);
+  try {
+    const res = await fetch(url, { ...opts, signal: ctrl.signal });
+    if (!res.ok) return { res, buf: null };
+    const buf = Buffer.from(await res.arrayBuffer());
+    return { res, buf };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function downloadUrl(url, destPath) {
-  let res = await fetch(url, { redirect: 'follow' });
+  let { res, buf } = await fetchBufferWithTimeout(url, { redirect: 'follow' });
   // Some CDNs (Kiler GYO, Hyatt newsroom, etc.) hot-link-protect via Referer.
   // Retry with a same-origin Referer + browser UA when blocked.
   if (!res.ok && (res.status === 401 || res.status === 403)) {
     const origin = new URL(url).origin;
-    res = await fetch(url, {
+    ({ res, buf } = await fetchBufferWithTimeout(url, {
       redirect: 'follow',
       headers: {
         'Referer': origin + '/',
         'User-Agent': 'Mozilla/5.0 (compatible; NAC-Listings-Sync/1.0)',
         'Accept': 'image/avif,image/webp,image/png,image/jpeg,*/*',
       },
-    });
+    }));
   }
   if (!res.ok) throw new Error(`download ${url} → HTTP ${res.status}`);
-  const buf = Buffer.from(await res.arrayBuffer());
   await fs.writeFile(destPath, buf);
   return destPath;
 }
@@ -1150,12 +1188,17 @@ async function main() {
   console.log(`Processing ${properties.length} propert${properties.length === 1 ? 'y' : 'ies'}…`);
   for (const prop of properties) {
     try {
-      await processProperty(prop);
+      // Per-listing watchdog: if any source stalls past the deadline, abandon
+      // this listing and move on rather than freezing the entire batch.
+      await withTimeout(processProperty(prop), PER_LISTING_TIMEOUT_MS, `listing ${prop.slug}`);
     } catch (err) {
       console.error(`  ✗ ${prop.slug}: ${err.message}`);
     }
   }
   console.log('\nDone.');
+  // A timed-out listing leaves orphaned async work (Promise.race can't cancel
+  // it) that could keep the event loop alive; exit explicitly so the job ends.
+  process.exit(0);
 }
 
 main().catch(err => { console.error(err); process.exit(1); });
