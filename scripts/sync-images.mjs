@@ -600,13 +600,25 @@ async function filterAndRank(candidates) {
     && img.bytesPerPixel >= minBpxRelaxed;
 
   const strict = unique.filter(passStrict);
+  const strictHashes = new Set(strict.map(i => i.hash));
   let filtered = strict;
-  if (strict.length < 5) {
-    const strictHashes = new Set(strict.map(i => i.hash));
+  // Curated explicit-URL images (web-list) are admitted at the relaxed bar even
+  // when strict already has ≥5 candidates. Official marketing renders are often
+  // 1280px-wide — below the 1500px brochure floor — but they are real, intended
+  // shots a human supplied on purpose, so the strict Drive/PDF candidates must
+  // not crowd them out (and the first one becomes the manual hero below).
+  const curatedRelaxed = unique.filter(
+    i => i.src === 'web-list' && passRelaxed(i) && !strictHashes.has(i.hash)
+  );
+  if (curatedRelaxed.length) {
+    filtered = [...filtered, ...curatedRelaxed];
+    for (const h of curatedRelaxed) strictHashes.add(h.hash);
+  }
+  if (filtered.length < 5) {
     const relaxedExtras = unique
       .filter(passRelaxed)
       .filter(i => !strictHashes.has(i.hash));
-    filtered = [...strict, ...relaxedExtras];
+    filtered = [...filtered, ...relaxedExtras];
     console.log(`     ⚠ strict filter yielded ${strict.length}/5 — added ${relaxedExtras.length} relaxed candidate(s)`);
   }
   // Sort by pixel area DESC — bigger image wins within each classification bucket
@@ -679,7 +691,18 @@ function pickFinalFive(ranked) {
     return null;
   };
 
-  const hero = pickFrom(['aspirational', 'unclassified', 'overview', 'interior']);                   // 0
+  // Manual hero: an explicitly-curated image (web-list, from '📷 Image URLs JSON')
+  // always wins the hero slot, in listed order — lets a human set the headline
+  // shot directly when the auto-pick would be wrong (e.g. a brochure whose
+  // largest image is an aerial/masterplan, not a building render). No curated
+  // URLs → falls through to the normal class-priority pick, so Drive/Berkeley
+  // runs are unaffected.
+  const curatedHero = ranked
+    .filter(i => i.src === 'web-list' && typeof i.listIdx === 'number' && !used.has(i.hash))
+    .sort((a, b) => a.listIdx - b.listIdx)[0] || null;
+  let hero;
+  if (curatedHero) { used.add(curatedHero.hash); hero = curatedHero; }
+  else hero = pickFrom(['aspirational', 'unclassified', 'overview', 'interior']);     // 0
   const g1   = pickFrom(['aspirational', 'unclassified', 'overview', 'interior']);                   // 1 §05
   const g2   = pickFrom(['interior', 'unclassified', 'overview', 'aspirational']);                   // 2 §08
   const g3   = pickDiverse(['overview', 'unclassified', 'interior', 'aspirational'], hero);          // 3 §11 (diverse from hero)
@@ -1055,7 +1078,9 @@ async function processProperty(prop) {
           const dest = path.join(workDir, `web-list-${i + 1}.jpg`);
           try {
             await downloadUrl(bumped, dest);
-            candidates.push({ path: dest, src: 'web-list', srcRef: imgUrls[i] });
+            // listIdx preserves the curated order so pickFinalFive can use the
+            // first listed image as the (manually-chosen) hero.
+            candidates.push({ path: dest, src: 'web-list', srcRef: imgUrls[i], listIdx: i });
           } catch (e) { /* skip individual URL failures */ }
         }
       }
