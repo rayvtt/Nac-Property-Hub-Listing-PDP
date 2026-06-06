@@ -583,6 +583,24 @@ function applyModel(html, model) {
   const tbody = $('#cl-tbl tbody').length ? $('#cl-tbl tbody') : $('#cl-tbl').find('tbody');
   if (tbody.length) tbody.html(ordered.map(renderCompareRow).join('\n'));
 
+  // Heading mirrors the row count — "Bốn dự án" / "Four listings" was the
+  // hardcoded template default and stayed wrong for any country with ≠4
+  // listings. Spell out 1–10 in both langs, fall back to digits beyond.
+  const n = ordered.length;
+  const VI_NUMS = ['Không','Một','Hai','Ba','Bốn','Năm','Sáu','Bảy','Tám','Chín','Mười'];
+  const EN_NUMS = ['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten'];
+  const viWord = n >= 0 && n <= 10 ? VI_NUMS[n] : String(n);
+  const enWord = n >= 0 && n <= 10 ? EN_NUMS[n] : String(n);
+  const enUnit = n === 1 ? 'listing' : 'listings';
+  const viTitle = `${viWord} dự án. Một <em>cái nhìn</em>.`;
+  const enTitle = `${enWord} ${enUnit}. One <em>side-by-side</em>.`;
+  $('.cl-compare-title [data-vi]').attr('data-vi', viTitle).html(viTitle);
+  $('.cl-compare-title [data-en]').attr('data-en', enTitle).html(enTitle);
+  // 0-listing CLPs: hide the entire compare section so the framing stays
+  // honest (no "Zero listings. One side-by-side." heading on its own).
+  if (n === 0) $('.cl-compare').attr('hidden', 'hidden');
+  else $('.cl-compare').removeAttr('hidden');
+
   return $.html();
 }
 
