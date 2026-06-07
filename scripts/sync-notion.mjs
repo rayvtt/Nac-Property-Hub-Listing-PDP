@@ -124,6 +124,7 @@ function extractProperty(page) {
     cine3Vi: richText(p['🎬 Cine 3 VI']),
     cine3En: richText(p['🎬 Cine 3 EN']),
     heroImg: readUrl(p['Image URL']),
+    shareImg: readUrl(p['Share Image URL']),
     heroImgMobile: readUrl(p['Mobile Image URL']),
     galleryImg1: readUrl(p['🖼️ Image 1']),
     galleryImg2: readUrl(p['🖼️ Image 2']),
@@ -559,8 +560,10 @@ function patch(html, prop) {
     // Head SEO image URLs — og:image, twitter:image, schema.org JSON-LD `image`.
     // Selector-based (no markup change needed). When sync-images writes a new CF
     // URL to Notion, the next cron tick propagates it everywhere automatically.
-    $('meta[property="og:image"]').attr('content', prop.heroImg);
-    $('meta[name="twitter:image"]').attr('content', prop.heroImg);
+    // og/twitter image = the 5-photo share collage when built, else the hero.
+    const socialImg = prop.shareImg || prop.heroImg;
+    $('meta[property="og:image"]').attr('content', socialImg);
+    $('meta[name="twitter:image"]').attr('content', socialImg);
     $('script[type="application/ld+json"]').each((_, el) => {
       const $el = $(el);
       const txt = $el.text().trim();
