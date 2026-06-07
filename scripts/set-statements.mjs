@@ -129,11 +129,16 @@ function cityEditorial(p) {
 }
 
 function shortBrand(p) {
-  const brand = rt(p['✦ Brand']).trim();
-  if (brand) return brand;
-  // Fallback: first segment of the property name before a dash / "by" / comma.
-  const name = rt(p['Property Name']).replace(/^[^\p{L}\p{N}]+/u, '').trim();
-  return name.split(/\s+—\s+|\s+by\s+|,\s*/i)[0].trim();
+  // Some rows store a verbose brand ("Pullman by Accor (France · 1963 · …)",
+  // "Nobu Hospitality (…)") — reduce to the short brand the statement wants.
+  let b = rt(p['✦ Brand']).trim()
+    || rt(p['Property Name']).replace(/^[^\p{L}\p{N}]+/u, '').trim();
+  b = b.replace(/\s*\([^)]*\)/g, ' ')                 // drop "(…)" credentials
+       .split(/\s+by\s+/i)[0]                          // "Pullman by Accor" → "Pullman"
+       .split(/\s*[—·,|/]\s*/)[0]                       // cut at — · , | /
+       .replace(/\s+(Hospitality|Realty|Properties|Developments?|Holdings|Group)\b.*$/i, '')
+       .trim();
+  return b;
 }
 
 function buildStatement(p, slug) {
