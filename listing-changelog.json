@@ -1,8 +1,8 @@
 {
- "generated": "2026-06-07T09:48:52.732Z",
+ "generated": "2026-06-07T09:49:15.202Z",
  "ledger": true,
  "windowDays": 3650,
- "count": 830,
+ "count": 832,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -20,6 +20,28 @@
   "dubai": "🇦🇪"
  },
  "entries": [
+  {
+   "ts": "2026-06-07T09:49:04Z",
+   "country": "thailand",
+   "slug": "so-origin-bangtao-beach",
+   "name": "So Origin Bangtao Beach",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T09:49:04Z",
+   "country": "thailand",
+   "slug": "the-residence-prime",
+   "name": "The Residence Prime",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
   {
    "ts": "2026-06-07T09:34:32Z",
    "country": "thailand",
