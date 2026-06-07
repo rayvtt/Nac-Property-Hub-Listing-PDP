@@ -94,8 +94,12 @@ function extract(html, slug) {
   f.region = (district.split(',')[0] || '').trim() || f.country.name;
   f.district = district;
 
-  // financials
-  f.price = g(/data-notion-roi[^>]*data-price="([^"]*)"/) || g(/data-notion="price_short"[^>]*>([^<]*)/);
+  // financials — fingerprint off the stable LOCAL price (data-local-price) when
+  // present, so live-FX USD moves never churn the de-band; fall back to the
+  // displayed price for listings not yet re-synced with the local stamp.
+  f.price = g(/data-notion-roi[^>]*data-local-price="([^"]*)"/)
+    || g(/data-notion-roi[^>]*data-price="([^"]*)"/)
+    || g(/data-notion="price_short"[^>]*>([^<]*)/);
   f.yield = g(/data-notion="yield_pct">([^<]*)/) || g(/data-notion-roi[^>]*data-yield="([^"]*)"/);
   f.irr = g(/data-notion="irr_pct">([^<]*)/);
   f.coc = g(/data-notion="coc_pct">([^<]*)/);

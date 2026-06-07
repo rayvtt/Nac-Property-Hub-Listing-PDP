@@ -174,11 +174,12 @@ function completeRealEstate(json, prop) {
     delete json.geo;
   }
 
-  // offers — real price + the listing's actual currency
+  // offers — USD display price (live FX; falls back to local if unconvertible)
   if (json.offers) {
-    if (prop.purchasePrice != null) json.offers.price = String(round(prop.purchasePrice));
+    const offerPrice = prop._dispPrice != null ? prop._dispPrice : prop.purchasePrice;
+    if (offerPrice != null) json.offers.price = String(round(offerPrice));
     else if (isToken(json.offers.price)) delete json.offers.price;
-    json.offers.priceCurrency = prop.currency || 'USD';
+    json.offers.priceCurrency = prop._dispCur || prop.currency || 'USD';
     if (!json.offers.availability) json.offers.availability = 'https://schema.org/InStock';
   }
 
@@ -216,7 +217,7 @@ function gradeOf(score) {
 function buildFaq(prop) {
   const name = prop.propertyNameEn || prop.propertyNameVi || 'this residence';
   const loc = locationText(prop);
-  const price = money(prop.purchasePrice, prop.currency);
+  const price = money(prop._dispPrice != null ? prop._dispPrice : prop.purchasePrice, prop._dispCur || prop.currency);
   const unit = (prop.hubType || 'residence').toLowerCase();
   const qa = [];
 

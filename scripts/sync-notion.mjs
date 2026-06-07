@@ -12,6 +12,11 @@ import { fileURLToPath } from 'node:url';
 import {
   completeStructuredData, resolveGeo, buildLlmsTxt, loadCache, saveCache,
 } from './seo-geo-llm.mjs';
+import { loadRates, toUSD, roundUSD } from './fx.mjs';
+
+// Live FX rates (USD→X), loaded once per run in main(). Money is displayed in
+// USD (converted live) while Notion keeps the brochure-local amounts as source.
+let FX = { rates: null };
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -85,6 +90,8 @@ function extractProperty(page) {
     hubType: readSelect(p['🏨 Hub Type']),
     currency: readSelect(p['Currency']),
     purchasePrice: readNumber(p['Purchase Price']),
+    localCurrency: readSelect(p['Local Currency']),
+    localPrice: readNumber(p['Local Price']),
     yieldPct: pct(readNumber(p['Yield %'])),
     irrPct: pct(readNumber(p['IRR %'])),
     cocPct: pct(readNumber(p['Cash-on-Cash %'])),
@@ -263,11 +270,16 @@ function renderPriceBands(bands, currency) {
     const m = s.match(/(\d+)\s*bed/) || s.match(/\b(\d)\s*\+\s*1\b/);
     return m ? parseInt(m[1], 10) : 50;
   };
-  return [...bands].sort((a, b) => rank(a) - rank(b)).map(b => `
+  const rows = [...bands].sort((a, b) => rank(a) - rank(b)).map(b => `
             <tr>
               <td class="nac-band-type"><span data-vi>${esc(b.vi)}</span><span data-en>${esc(b.en)}</span></td>
               <td class="nac-band-price"><span class="nac-band-lead"><span data-vi>từ</span><span data-en>from</span></span>${fmtMoneyFull(b.from, currency)}</td>
             </tr>`).join('\n          ');
+  // Disclaimer: headline figures are shown in USD (live FX); this per-unit table
+  // carries the developer's price list in the listing's local currency.
+  const note = `
+            <tr class="nac-band-note"><td colspan="2"><span data-vi="">** Bảng giá chủ đầu tư theo ${esc(currency)} · giá nổi bật quy đổi USD theo tỷ giá thời điểm</span><span data-en="">** Developer price list in ${esc(currency)} · headline figures converted to USD at the live rate</span></td></tr>`;
+  return rows + note;
 }
 
 // Market-context stat cards (§04 Market). Per-listing/per-city via Notion
@@ -339,7 +351,7 @@ function patchHeadSeo($, prop) {
   const cSlug = countrySlugFromName(prop.country);
   const canonical = `https://nomadassetcollective.com/property-hub-bat-dong-san/${cSlug}/${prop.slug}/`;
 
-  const price = fmtMoneyShort(prop.purchasePrice, prop.currency);
+  const price = fmtMoneyShort(prop._dispPrice != null ? prop._dispPrice : prop.purchasePrice, prop._dispCur || prop.currency);
   const yieldStr = prop.yieldPct != null ? `${fmt1(prop.yieldPct)}%` : '';
 
   // Build the canonical title: "Name — Tagline · Location · NAC-ID"
@@ -406,6 +418,27 @@ function patchHeadSeo($, prop) {
 function patch(html, prop) {
   const $ = cheerio.load(html, { decodeEntities: false });
 
+  // ─── Live-FX money display ────────────────────────────────────────────────
+  // The hub shows every figure in USD (converted live); Notion keeps the
+  // brochure-local amounts as source. Source = Local Price/Currency when set,
+  // else the legacy Purchase Price/Currency. If a rate is missing, fall back to
+  // the local figure + local symbol (never emit a wrong USD number). The local
+  // price is also stamped onto the ROI block (data-local-*) so the dashboard's
+  // de-band fingerprint stays stable against daily rate wobble, and the Price
+  // Bands table is rendered in local currency as the disclaimer.
+  const srcCur = prop.localCurrency || prop.currency || 'USD';
+  const localPrice = prop.localPrice != null ? prop.localPrice : prop.purchasePrice;
+  const _up = toUSD(localPrice, srcCur, FX);
+  const _ur = toUSD(prop.monthlyRent, srcCur, FX);
+  prop._srcCur = srcCur;
+  prop._localPrice = localPrice;
+  prop._usdPrice = _up != null ? roundUSD(_up) : null;
+  prop._usdRent = _ur != null ? Math.round(_ur / 10) * 10 : null;
+  prop._dispPrice = prop._usdPrice != null ? prop._usdPrice : localPrice;
+  prop._dispRent = prop._usdRent != null ? prop._usdRent : prop.monthlyRent;
+  prop._dispCur = prop._usdPrice != null ? 'USD' : srcCur;
+  prop._dispRentCur = prop._usdRent != null ? 'USD' : srcCur;
+
   // Simple text fields — find every element with data-notion="key", set first
   // text node (preserves child elements like unit spans). Also updates
   // data-count-to when present.
@@ -438,14 +471,14 @@ function patch(html, prop) {
     property_yoy_en: prop.propertyYoyEn,
     property_yoy_vi: prop.propertyYoyVi,
     nac_score: fmt0(prop.nacScore),
-    currency: prop.currency,
-    price_short: fmtMoneyShort(prop.purchasePrice, prop.currency),
-    price_full: fmtMoneyFull(prop.purchasePrice, prop.currency),
+    currency: prop._dispCur,
+    price_short: fmtMoneyShort(prop._dispPrice, prop._dispCur),
+    price_full: fmtMoneyFull(prop._dispPrice, prop._dispCur),
     yield_pct: fmt1(prop.yieldPct),
     irr_pct: fmt1(prop.irrPct),
     coc_pct: fmt1(prop.cocPct),
     payback: fmt1(prop.payback),
-    monthly_rent: fmtMoneyFull(prop.monthlyRent, prop.currency),
+    monthly_rent: fmtMoneyFull(prop._dispRent, prop._dispRentCur),
     yield_pct_unit: prop.yieldPct != null ? fmt1(prop.yieldPct) + '%' : null,
     irr_pct_unit: prop.irrPct != null ? fmt1(prop.irrPct) + '%' : null,
     coc_pct_unit: prop.cocPct != null ? fmt1(prop.cocPct) + '%' : null,
@@ -569,7 +602,7 @@ function patch(html, prop) {
   // Residence Mix & Indicative Pricing — only revealed when the listing has
   // band data (TR inventory). Stays hidden on every other listing.
   if (prop.priceBands && prop.priceBands.length) {
-    $(`[data-notion-list="price_bands"]`).html(renderPriceBands(prop.priceBands, prop.currency));
+    $(`[data-notion-list="price_bands"]`).html(renderPriceBands(prop.priceBands, prop._srcCur));
     $(`[data-notion-when="price_bands"]`).removeAttr('hidden');
   }
   // Per-city market-context stat cards. Only replaces the default cards when the
@@ -581,10 +614,13 @@ function patch(html, prop) {
   // ROI sim data attributes (on the section root)
   const roi = $('[data-notion-roi]');
   if (roi.length) {
-    if (prop.purchasePrice != null) roi.attr('data-price', String(Math.round(prop.purchasePrice)));
+    if (prop._dispPrice != null) roi.attr('data-price', String(Math.round(prop._dispPrice)));
     if (prop.yieldPct != null) roi.attr('data-yield', fmt1(prop.yieldPct));
     if (prop.irrPct != null) roi.attr('data-irr', fmt1(prop.irrPct));
-    if (prop.monthlyRent != null) roi.attr('data-rent', String(Math.round(prop.monthlyRent)));
+    if (prop._dispRent != null) roi.attr('data-rent', String(Math.round(prop._dispRent)));
+    // local source (stable across FX moves) — for the de-band fingerprint + audit
+    if (prop._localPrice != null) roi.attr('data-local-price', String(Math.round(prop._localPrice)));
+    roi.attr('data-local-cur', prop._srcCur);
   }
 
   // ─── SEO / GEO / LLM structured data ────────────────────────────────────
@@ -619,6 +655,10 @@ async function main() {
   console.log('Fetching Live properties from Notion …');
   const properties = await fetchLiveProperties();
   console.log(`  ${properties.length} Live properties found`);
+
+  // Live USD FX rates (daily-cached). Money renders in USD; Notion stays local.
+  FX = await loadRates();
+  console.log(`  FX rates ${FX.rates ? 'loaded (' + FX.date + ')' : 'unavailable — money will show local currency'}`);
 
   // Geocode cache (City+District+Country → lat/lng). Loaded once, persisted at
   // the end so the next run is a pure cache hit (no Nominatim calls).
