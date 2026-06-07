@@ -175,6 +175,34 @@ const currencySymbol = (code) => CURRENCY_SYMBOLS[code] || '$';
 // Currencies shown in their own denomination (familiar to a global audience).
 // Everything else (AED, THB, MYR, VND, CAD, JPY, …) is converted to USD.
 const KEEP_NATIVE = new Set(['USD', 'GBP', 'EUR', 'AUD']);
+const PROSE_SYMBOLS = { ...CURRENCY_SYMBOLS, VND: '₫' };
+const _SUF_MULT = { 'm': 1e6, 'k': 1e3, 'triệu': 1e6, 'tỷ': 1e9, 'nghìn': 1e3, 'nghin': 1e3, million: 1e6, billion: 1e9 };
+
+// Convert every amount written in the listing's own (non-major) currency inside a
+// prose string to USD — so Desc/NAC Note/Market read in USD like the cards do.
+// `lang` ('vi'|'en') disambiguates the thousands/decimal separator (VI: 12.100.000
+// / 12,1 triệu; EN: 12,100,000 / 12.1M). Currency CODES ("…/yr THB") and amounts in
+// any other currency are left untouched; matches only the source symbol so it's
+// idempotent ($ output never re-matches).
+function convertProseMoney(text, cur, fx, lang) {
+  if (!text || KEEP_NATIVE.has((cur || '').toUpperCase())) return text;
+  const sym = (PROSE_SYMBOLS[cur] || '').trim();
+  if (!sym || toUSD(1, cur, fx) == null) return text;
+  const symEsc = sym.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const N = '[\\d][\\d.,]*';
+  const SUF = '(?:\\s?(?:triệu|tỷ|nghìn|nghin|million|billion|M|K)(?![\\p{L}]))?';
+  const PERM2 = '(?:\\s?\\/\\s?m²|\\s?\\/\\s?m2|\\s?per\\s?m²|\\s?\\/\\s?sqm)?';
+  const re = new RegExp(`${symEsc}\\s?(${N})(${SUF})(?:\\s?[–-]\\s?(${N})(${SUF}))?(${PERM2})`, 'giu');
+  const parse = (s) => { s = s.trim(); s = lang === 'vi' ? s.replace(/\./g, '').replace(',', '.') : s.replace(/,/g, ''); return parseFloat(s); };
+  const mult = (s) => s ? (_SUF_MULT[s.toLowerCase().trim()] || 1) : 1;
+  const m2round = (n) => Math.round(n / 100) * 100;  // coarse → no daily-FX churn
+  return text.replace(re, (mm, n1, s1, n2, s2, perm2) => {
+    const perM2 = !!perm2, unit = perM2 ? '/m²' : '', fmt = perM2 ? (n => '$' + m2round(n).toLocaleString('en-US')) : (n => fmtMoneyShort(roundUSD(n), 'USD'));
+    const u1 = toUSD(parse(n1) * mult(s1 || s2), cur, fx); if (u1 == null) return mm;
+    if (n2) { const u2 = toUSD(parse(n2) * mult(s2 || s1), cur, fx); if (u2 != null) return `${fmt(u1)}–${fmt(u2)}${unit}`; }
+    return fmt(u1) + unit;
+  });
+}
 
 function fmtMoneyShort(n, currency) {
   if (n == null) return '';
@@ -503,8 +531,14 @@ function patch(html, prop) {
       ? prop.investmentProgram
       : ((prop.immigrationType && prop.immigrationType !== 'None') ? prop.immigrationType : '—'),
   };
-  for (const [key, value] of Object.entries(textMap)) {
-    if (value == null || value === '') continue;
+  for (const [key, rawValue] of Object.entries(textMap)) {
+    if (rawValue == null || rawValue === '') continue;
+    // Convert in-prose amounts (Desc/NAC Note/Market/…) from the listing's own
+    // non-major currency to USD, using the field's language for number parsing.
+    const _lm = /_(vi|en)$/.exec(key);
+    const value = (_lm && typeof rawValue === 'string')
+      ? convertProseMoney(rawValue, prop._srcCur, FX, _lm[1])
+      : rawValue;
     $(`[data-notion="${key}"]`).each((_, el) => {
       const $el = $(el);
       setSmartText($el, value);
