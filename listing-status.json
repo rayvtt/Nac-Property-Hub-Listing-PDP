@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-07T14:32:43Z",
+  "generated": "2026-06-07T14:36:19Z",
   "reviewed": "2026-06-07",
-  "fingerprint": "822e0acd0ccb674e",
+  "fingerprint": "be5955a3a1cad4a6",
   "dims": [
     "id",
     "fin",
@@ -2056,7 +2056,7 @@
         {
           "name": "One Central Saigon — The Ritz-Carlton Residences",
           "slug": "one-central-saigon",
-          "thumb": "",
+          "thumb": "one-central-saigon-hero",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2064,7 +2064,7 @@
             "edit": "done",
             "json": "done",
             "cine": "done",
-            "img": "block",
+            "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
