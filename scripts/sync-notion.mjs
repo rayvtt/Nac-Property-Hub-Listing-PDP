@@ -172,6 +172,10 @@ const CURRENCY_SYMBOLS = {
 };
 const currencySymbol = (code) => CURRENCY_SYMBOLS[code] || '$';
 
+// Currencies shown in their own denomination (familiar to a global audience).
+// Everything else (AED, THB, MYR, VND, CAD, JPY, …) is converted to USD.
+const KEEP_NATIVE = new Set(['USD', 'GBP', 'EUR', 'AUD']);
+
 function fmtMoneyShort(n, currency) {
   if (n == null) return '';
   const sym = currencySymbol(currency);
@@ -262,7 +266,7 @@ function fmtUsd(n) { return '$' + Math.round(Number(n)).toLocaleString('en-US');
 // Residence Mix & Indicative Pricing — one card per unit-type band.
 // Band shape: { en, vi, from (USD number), units (int) }. Shows the entry
 // ("from") price; "from" is net of the 3-yr/4% sublease per the source sheet.
-function renderPriceBands(bands, currency) {
+function renderPriceBands(bands, currency, converted) {
   // Order bands smallest → largest: studio · 1BR · 2BR · 3BR · 4BR · penthouse.
   const rank = (b) => {
     const s = (b.en || '').toLowerCase();
@@ -276,10 +280,11 @@ function renderPriceBands(bands, currency) {
               <td class="nac-band-type"><span data-vi>${esc(b.vi)}</span><span data-en>${esc(b.en)}</span></td>
               <td class="nac-band-price"><span class="nac-band-lead"><span data-vi>từ</span><span data-en>from</span></span>${fmtMoneyFull(b.from, currency)}</td>
             </tr>`).join('\n          ');
-  // Disclaimer: headline figures are shown in USD (live FX); this per-unit table
-  // carries the developer's price list in the listing's local currency.
-  const note = `
-            <tr class="nac-band-note"><td colspan="2"><span data-vi="">** Bảng giá chủ đầu tư theo ${esc(currency)} · giá nổi bật quy đổi USD theo tỷ giá thời điểm</span><span data-en="">** Developer price list in ${esc(currency)} · headline figures converted to USD at the live rate</span></td></tr>`;
+  // Disclaimer only when the headline was converted (minor currency → USD): the
+  // table stays in the developer's local currency. For kept-native listings
+  // (USD/GBP/EUR/AUD) headline and table share one currency, so no note.
+  const note = converted ? `
+            <tr class="nac-band-note"><td colspan="2"><span data-vi="">** Bảng giá chủ đầu tư theo ${esc(currency)} · giá nổi bật quy đổi USD theo tỷ giá thời điểm</span><span data-en="">** Developer price list in ${esc(currency)} · headline figures converted to USD at the live rate</span></td></tr>` : '';
   return rows + note;
 }
 
@@ -429,8 +434,12 @@ function patch(html, prop) {
   // Bands table is rendered in local currency as the disclaimer.
   const srcCur = prop.localCurrency || prop.currency || 'USD';
   const localPrice = prop.localPrice != null ? prop.localPrice : prop.purchasePrice;
-  const _up = toUSD(localPrice, srcCur, FX);
-  const _ur = toUSD(prop.monthlyRent, srcCur, FX);
+  // Display policy: keep the familiar majors (USD/GBP/EUR/AUD) in their own
+  // currency; convert everything else (AED/THB/MYR/VND/…) to USD for a global
+  // audience. Only attempt FX when the source currency isn't kept-native.
+  const _convert = !KEEP_NATIVE.has((srcCur || 'USD').toUpperCase());
+  const _up = _convert ? toUSD(localPrice, srcCur, FX) : null;
+  const _ur = _convert ? toUSD(prop.monthlyRent, srcCur, FX) : null;
   prop._srcCur = srcCur;
   prop._localPrice = localPrice;
   prop._usdPrice = _up != null ? roundUSD(_up) : null;
@@ -605,7 +614,7 @@ function patch(html, prop) {
   // Residence Mix & Indicative Pricing — only revealed when the listing has
   // band data (TR inventory). Stays hidden on every other listing.
   if (prop.priceBands && prop.priceBands.length) {
-    $(`[data-notion-list="price_bands"]`).html(renderPriceBands(prop.priceBands, prop._srcCur));
+    $(`[data-notion-list="price_bands"]`).html(renderPriceBands(prop.priceBands, prop._srcCur, prop._dispCur === 'USD'));
     $(`[data-notion-when="price_bands"]`).removeAttr('hidden');
   }
   // Per-city market-context stat cards. Only replaces the default cards when the

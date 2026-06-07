@@ -16,6 +16,18 @@
 //      ONLY_SLUG=<slug> (limit to one listing — handy for sampling).
 
 import { Client } from '@notionhq/client';
+import { loadRates, toUSD, roundUSD } from './fx.mjs';
+
+// Money policy (matches sync-notion): keep USD/GBP/EUR/AUD native; convert the
+// rest (AED/THB/MYR/VND/…) to USD so the entry price reads globally.
+const KEEP_NATIVE = new Set(['USD', 'GBP', 'EUR', 'AUD']);
+let FX = { rates: null };
+function priceFor(amount, currency) {
+  const cur = (currency || 'USD').toUpperCase();
+  if (KEEP_NATIVE.has(cur)) return fmtMoneyShort(amount, cur);
+  const usd = toUSD(amount, cur, FX);
+  return usd != null ? fmtMoneyShort(roundUSD(usd), 'USD') : fmtMoneyShort(amount, cur);
+}
 
 const NOTION_TOKEN = process.env.NOTION_TOKEN;
 const DB = process.env.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9';
@@ -146,7 +158,7 @@ function buildStatement(p, slug) {
   const T = TYPES[hub] || DEFAULT_TYPE;
   const b = shortBrand(p);
   const c = (rt(p['City']) || rt(p['Region/City']).split(',')[0]).trim();
-  const price = fmtMoneyShort(num(p['Purchase Price']), sel(p['Currency']) || rt(p['Currency']));
+  const price = priceFor(num(p['Purchase Price']), sel(p['Currency']) || rt(p['Currency']));
   if (!b || !c || !price) return null; // never emit a half-filled line
   const i = hash(slug) % T.viT.length;
   const art = enArticle(b);
@@ -170,6 +182,8 @@ async function fetchLive() {
 
 (async () => {
   console.log(`set-statements${DRY_RUN ? ' [DRY RUN]' : ''}${ONLY_SLUG ? ` [slug=${ONLY_SLUG}]` : ''}`);
+  FX = await loadRates();
+  console.log(`  FX rates ${FX.rates ? 'loaded (' + FX.date + ')' : 'unavailable — non-major prices stay local'}`);
   const rows = await fetchLive();
   let wrote = 0, skip = 0, nodata = 0;
   for (const pg of rows) {
