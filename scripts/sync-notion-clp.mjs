@@ -238,7 +238,7 @@ function renderCard(l) {
           <div class="cl-card-stats">
             <div class="cl-card-stat">
               <span class="cl-card-stat-num">$${num}<small>${unit}</small></span>
-              <span class="cl-card-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></span>
+              <span class="cl-card-stat-lbl"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry">Entry</span></span>
             </div>
             <div class="cl-card-stat">
               <span class="cl-card-stat-num">${y ?? '—'}<small>%</small></span>
