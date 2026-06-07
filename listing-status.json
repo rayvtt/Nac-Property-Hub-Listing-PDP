@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-07T14:17:32Z",
+  "generated": "2026-06-07T14:32:43Z",
   "reviewed": "2026-06-07",
-  "fingerprint": "cdd5c7db69e1eb1b",
+  "fingerprint": "822e0acd0ccb674e",
   "dims": [
     "id",
     "fin",
@@ -15,7 +15,7 @@
     "qa"
   ],
   "imgHash": "qse3Pw84PrZ2S0PQOTtixw",
-  "total": 115,
+  "total": 122,
   "countries": [
     {
       "code": "AU",
@@ -45,7 +45,7 @@
       "code": "VN",
       "name": "Vietnam",
       "flag": "🇻🇳",
-      "count": 6
+      "count": 7
     },
     {
       "code": "CY",
@@ -69,13 +69,13 @@
       "code": "MY",
       "name": "Malaysia",
       "flag": "🇲🇾",
-      "count": 1
+      "count": 6
     },
     {
       "code": "AE",
       "name": "UAE",
       "flag": "🇦🇪",
-      "count": 5
+      "count": 6
     }
   ],
   "groups": [
@@ -2051,6 +2051,33 @@
       "country": "Vietnam",
       "code": "VN",
       "flag": "🇻🇳",
+      "region": "Bến Thành · District 1",
+      "rows": [
+        {
+          "name": "One Central Saigon — The Ritz-Carlton Residences",
+          "slug": "one-central-saigon",
+          "thumb": "",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "block",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Vietnam",
+      "code": "VN",
+      "flag": "🇻🇳",
       "region": "Mỹ Khê Beach",
       "rows": [
         {
@@ -2827,6 +2854,114 @@
       "country": "Malaysia",
       "code": "MY",
       "flag": "🇲🇾",
+      "region": "Bukit Bintang",
+      "rows": [
+        {
+          "name": "Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H)",
+          "slug": "pavilion-square-klcc",
+          "thumb": "pavilion-square-klcc-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Malaysia",
+      "code": "MY",
+      "flag": "🇲🇾",
+      "region": "Dang Wangi",
+      "rows": [
+        {
+          "name": "Centrix The Station KLCC — Kuala Lumpur (MM2H)",
+          "slug": "centrix-the-station-klcc",
+          "thumb": "74eef13c-1ff3-417a-f1cf-b5b0d727c700",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Malaysia",
+      "code": "MY",
+      "flag": "🇲🇾",
+      "region": "Jalan Ampang",
+      "rows": [
+        {
+          "name": "Oxley Towers KLCC — Kuala Lumpur (MM2H)",
+          "slug": "oxley-towers-klcc",
+          "thumb": "oxley-towers-klcc-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Malaysia",
+      "code": "MY",
+      "flag": "🇲🇾",
+      "region": "Jalan Ampang (KLCC fringe)",
+      "rows": [
+        {
+          "name": "Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H)",
+          "slug": "golden-crown-residence-klcc",
+          "thumb": "golden-crown-residence-klcc-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Malaysia",
+      "code": "MY",
+      "flag": "🇲🇾",
       "region": "Jalan Conlay",
       "rows": [
         {
@@ -2843,6 +2978,33 @@
             "img": "done",
             "geo": "done",
             "ovw": "block",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Malaysia",
+      "code": "MY",
+      "flag": "🇲🇾",
+      "region": "Setapak",
+      "rows": [
+        {
+          "name": "Curvo Residences — Setapak, Kuala Lumpur (MM2H)",
+          "slug": "curvo-residences-setapak",
+          "thumb": "372f3f54-86f0-41d6-f172-856c4f1d3000",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
@@ -2951,6 +3113,33 @@
             "img": "done",
             "geo": "done",
             "ovw": "block",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "UAE",
+      "code": "AE",
+      "flag": "🇦🇪",
+      "region": "Sheikh Zayed Road",
+      "rows": [
+        {
+          "name": "DAMAC Safa Gate — Sheikh Zayed Road, Dubai (Golden Visa)",
+          "slug": "damac-safa-gate",
+          "thumb": "8f7f9483-695b-4425-bda9-5e5cb585ab00",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",

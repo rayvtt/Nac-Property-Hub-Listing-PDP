@@ -477,5 +477,38 @@
   "Nad Al Sheba, Dubai, UAE": {
     "lat": 25.1456302,
     "lng": 55.364275
+  },
+  "One Central Saigon — The Ritz-Carlton Residences, District 1, Ho Chi Minh City, Vietnam": null,
+  "Bến Thành · District 1, District 1, Ho Chi Minh City, Vietnam": {
+    "lat": 10.7747697,
+    "lng": 106.7007331
+  },
+  "Oxley Towers KLCC — Kuala Lumpur (MM2H), KLCC, Kuala Lumpur, Malaysia": null,
+  "Jalan Ampang, KLCC, KLCC, Kuala Lumpur, Malaysia": null,
+  "Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H), Jalan Ampang, Kuala Lumpur, Malaysia": null,
+  "Jalan Ampang (KLCC fringe), Jalan Ampang, Kuala Lumpur, Malaysia": null,
+  "Jalan Ampang, Kuala Lumpur, Malaysia": {
+    "lat": 3.1564895,
+    "lng": 101.7047155
+  },
+  "Centrix The Station KLCC — Kuala Lumpur (MM2H), Jalan Ampang, Kuala Lumpur, Malaysia": null,
+  "Dang Wangi, Jalan Ampang, Jalan Ampang, Kuala Lumpur, Malaysia": {
+    "lat": 3.1562363,
+    "lng": 101.7029801
+  },
+  "Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H), Bukit Bintang, Kuala Lumpur, Malaysia": null,
+  "Bukit Bintang, Bukit Bintang, Kuala Lumpur, Malaysia": {
+    "lat": 3.1460953,
+    "lng": 101.7114762
+  },
+  "Curvo Residences — Setapak, Kuala Lumpur (MM2H), Setapak, Kuala Lumpur, Malaysia": null,
+  "Setapak, Setapak, Kuala Lumpur, Malaysia": {
+    "lat": 3.1856775,
+    "lng": 101.7144441
+  },
+  "DAMAC Safa Gate — Sheikh Zayed Road, Dubai (Golden Visa), Al Safa, Dubai, UAE": null,
+  "Sheikh Zayed Road, Al Safa, Al Safa, Dubai, UAE": {
+    "lat": 25.1677493,
+    "lng": 55.2371923
   }
 }
