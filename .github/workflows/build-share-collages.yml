@@ -1,0 +1,61 @@
+name: Build share collages → Cloudflare
+
+# Montages hero + up to 4 gallery images into a 1200×630 social share image per
+# Live listing, uploads to Cloudflare as <slug>-share, and writes Share Image URL
+# to Notion. sync-notion then points og:image/twitter:image at it. Idempotent
+# (skips listings that already have a Share Image URL unless replace/ONLY).
+#
+# Fire via the Actions tab, or a push to .github/triggers/share-collages.txt:
+#   a "replace" marker regenerates all; "only: slug,slug" scopes it.
+
+on:
+  workflow_dispatch:
+    inputs:
+      replace:
+        description: "Regenerate even if Share Image URL is already set"
+        type: boolean
+        default: false
+      only:
+        description: "Comma-separated slugs (blank = all Live without a collage)"
+        type: string
+        default: ""
+  push:
+    branches: [main]
+    paths:
+      - ".github/triggers/share-collages.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ImageMagick
+        run: sudo apt-get update && sudo apt-get install -y imagemagick
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+      - name: Resolve replace / only
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            FILE=.github/triggers/share-collages.txt
+            if grep -qi 'replace' "$FILE" 2>/dev/null; then echo "REPLACE=1" >> "$GITHUB_ENV"; fi
+            ONLY_LINE=$(grep -i '^only:' "$FILE" 2>/dev/null | tail -1 | sed 's/^only:[[:space:]]*//I' || true)
+            if [ -n "$ONLY_LINE" ]; then echo "ONLY=$ONLY_LINE" >> "$GITHUB_ENV"; fi
+          else
+            if [ "${{ inputs.replace }}" = "true" ]; then echo "REPLACE=1" >> "$GITHUB_ENV"; fi
+            echo "ONLY=${{ inputs.only }}" >> "$GITHUB_ENV"
+          fi
+      - name: Build collages
+        working-directory: scripts
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID || '2adeb401a00c6f459573f25eabb790da' }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9' }}
+        run: node build-share-collages.mjs

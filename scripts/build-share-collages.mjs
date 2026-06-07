@@ -1,0 +1,147 @@
+#!/usr/bin/env node
+/**
+ * build-share-collages.mjs — generate a 5-photo social share image per listing.
+ *
+ * For each Live listing it montages the hero + up to 4 gallery images into a
+ * 1200×630 collage (hero left, 2×2 gallery right), uploads it to Cloudflare
+ * Images as `<slug>-share`, and writes the URL to the Notion `Share Image URL`
+ * field. sync-notion then points og:image / twitter:image at it, so shared
+ * links unfurl with the photo collage (the short blurb is og:description).
+ *
+ * Idempotent: skips listings that already have a Share Image URL unless REPLACE.
+ * Requires ImageMagick (convert/montage or magick) — installed in CI alongside
+ * sync-images. Env: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, NOTION_TOKEN.
+ *
+ *   node build-share-collages.mjs              # all Live listings, skip done
+ *   ONLY=slug-a,slug-b node build-share-collages.mjs   # pilot a few
+ *   REPLACE=1 node build-share-collages.mjs    # regenerate all
+ */
+import { Client } from '@notionhq/client';
+import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+
+const TOKEN = process.env.NOTION_TOKEN;
+const DATABASE_ID = process.env.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9';
+const CF_TOKEN = process.env.CLOUDFLARE_API_TOKEN;
+const CF_ACCOUNT = process.env.CLOUDFLARE_ACCOUNT_ID || '2adeb401a00c6f459573f25eabb790da';
+const REPLACE = /^(1|true|yes)$/i.test(process.env.REPLACE || '');
+const ONLY = (process.env.ONLY || '').split(',').map((s) => s.trim()).filter(Boolean);
+if (!TOKEN) { console.error('NOTION_TOKEN required'); process.exit(1); }
+if (!CF_TOKEN) { console.error('CLOUDFLARE_API_TOKEN required'); process.exit(1); }
+
+const notion = new Client({ auth: TOKEN });
+const url = (p) => (p?.url || (p?.rich_text || []).map((t) => t.plain_text).join('')) || '';
+const rt = (p) => (p?.rich_text || p?.title || []).map((t) => t.plain_text).join('').trim();
+
+// ImageMagick: prefer IM7 `magick`, fall back to IM6 `convert`/`montage`.
+let IM7 = false;
+try { execFileSync('magick', ['-version'], { stdio: 'ignore' }); IM7 = true; } catch { /* IM6 */ }
+const convert = (args) => execFileSync(IM7 ? 'magick' : 'convert', IM7 ? args : args, { stdio: 'pipe' });
+const montage = (args) => execFileSync(IM7 ? 'magick' : 'montage', IM7 ? ['montage', ...args] : args, { stdio: 'pipe' });
+
+const NAVY = '#0F1A36';
+
+async function dl(u, dest) {
+  const res = await fetch(u, { headers: { 'User-Agent': 'Mozilla/5.0 NAC-collage' }, redirect: 'follow' });
+  if (!res.ok) throw new Error(`download ${u} → ${res.status}`);
+  fs.writeFileSync(dest, Buffer.from(await res.arrayBuffer()));
+  return dest;
+}
+
+async function uploadCF(filePath, id) {
+  if (REPLACE) {
+    await fetch(`https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/images/v1/${encodeURIComponent(id)}`,
+      { method: 'DELETE', headers: { Authorization: `Bearer ${CF_TOKEN}` } }).catch(() => {});
+  }
+  const fd = new FormData();
+  fd.append('file', new Blob([fs.readFileSync(filePath)]), path.basename(filePath));
+  fd.append('id', id);
+  fd.append('requireSignedURLs', 'false');
+  const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/images/v1`,
+    { method: 'POST', headers: { Authorization: `Bearer ${CF_TOKEN}` }, body: fd });
+  const data = await res.json();
+  if (!data.success) {
+    const code = data.errors?.[0]?.code;
+    if (code === 5409 || code === 5410) { // exists — fetch its URL
+      const g = await (await fetch(`https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/images/v1/${encodeURIComponent(id)}`,
+        { headers: { Authorization: `Bearer ${CF_TOKEN}` } })).json();
+      if (g.success) return (g.result.variants.find((v) => v.endsWith('/public')) || g.result.variants[0]);
+    }
+    throw new Error('CF upload failed: ' + JSON.stringify(data.errors));
+  }
+  return data.result.variants.find((v) => v.endsWith('/public')) || data.result.variants[0];
+}
+
+// Build a 1200×630 collage: hero left (600×630) + 2×2 of the next images right.
+function buildCollage(images, work) {
+  const hero = images[0];
+  const gallery = images.slice(1);
+  const left = path.join(work, 'left.jpg');
+  const out = path.join(work, 'collage.jpg');
+  convert([hero, '-resize', '600x630^', '-gravity', 'center', '-extent', '600x630', '-strip', left]);
+
+  if (gallery.length === 0) {
+    // only a hero — full-bleed 1200×630
+    convert([hero, '-resize', '1200x630^', '-gravity', 'center', '-extent', '1200x630', '-strip', '-quality', '86', out]);
+    return out;
+  }
+  // four tiles (cycle through what's available to fill the 2×2)
+  const tiles = [];
+  for (let i = 0; i < 4; i++) {
+    const src = gallery[i % gallery.length];
+    const t = path.join(work, `tile${i}.jpg`);
+    convert([src, '-resize', '300x315^', '-gravity', 'center', '-extent', '300x315', '-strip', t]);
+    tiles.push(t);
+  }
+  const right = path.join(work, 'right.jpg');
+  montage([...tiles, '-tile', '2x2', '-geometry', '+0+0', '-background', NAVY, right]);
+  convert([left, right, '+append', '-strip', '-quality', '86', out]);
+  return out;
+}
+
+async function fetchLive() {
+  let out = [], cursor;
+  do {
+    const res = await notion.databases.query({ database_id: DATABASE_ID,
+      filter: { property: 'Hub Status', select: { equals: 'Live' } }, start_cursor: cursor });
+    out = out.concat(res.results); cursor = res.has_more ? res.next_cursor : undefined;
+  } while (cursor);
+  return out;
+}
+
+async function main() {
+  const pages = await fetchLive();
+  let done = 0, skip = 0, fail = 0;
+  for (const pg of pages) {
+    const p = pg.properties;
+    const slug = rt(p['🔗 Slug']);
+    if (!slug) { continue; }
+    if (ONLY.length && !ONLY.includes(slug)) continue;
+    if (!REPLACE && url(p['Share Image URL'])) { skip++; continue; }
+    const hero = url(p['Image URL']);
+    const gal = ['🖼️ Image 1', '🖼️ Image 2', '🖼️ Image 3', '🖼️ Image 4'].map((k) => url(p[k])).filter(Boolean);
+    const imgs = [hero, ...gal].filter((u) => u && !u.includes('{'));
+    if (!imgs.length) { console.log(`  ⤳ ${slug}: no images — skipped`); skip++; continue; }
+
+    const work = fs.mkdtempSync(path.join(os.tmpdir(), 'collage-'));
+    try {
+      const local = [];
+      for (let i = 0; i < imgs.length; i++) local.push(await dl(imgs[i], path.join(work, `src${i}.img`)));
+      const collage = buildCollage(local, work);
+      const cfUrl = await uploadCF(collage, `${slug}-share`);
+      await notion.pages.update({ page_id: pg.id, properties: { 'Share Image URL': { url: cfUrl } } });
+      console.log(`  ✓ ${slug}: ${imgs.length} photos → ${cfUrl}`);
+      done++;
+    } catch (e) {
+      console.log(`  ✖ ${slug}: ${e.message}`);
+      fail++;
+    } finally {
+      fs.rmSync(work, { recursive: true, force: true });
+    }
+  }
+  console.log(`\nshare collages — built ${done} · skipped ${skip} · failed ${fail}${IM7 ? '' : ' (IM6)'}`);
+}
+
+main().catch((e) => { console.error(e); process.exit(1); });
