@@ -55,6 +55,10 @@ jobs:
         working-directory: scripts
         run: node fix-hist-glyph.mjs
 
+      - name: Ensure share section on all PDPs
+        working-directory: scripts
+        run: node ensure-share-section.mjs
+
       - name: Rebuild index.html from Notion
         working-directory: scripts
         env:
@@ -73,7 +77,7 @@ jobs:
         run: |
           git config user.name "nac-notion-bot"
           git config user.email "nac-notion-bot@users.noreply.github.com"
-          PATHS="properties/ index.html llms.txt scripts/geocode-cache.json listing-status.html listing-status.json"
+          PATHS="properties/ index.html llms.txt scripts/geocode-cache.json scripts/fx-cache.json listing-status.html listing-status.json"
           if git diff --quiet -- $PATHS; then
             echo "No HTML changes."
             exit 0
