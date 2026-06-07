@@ -627,6 +627,21 @@ function patch(html, prop) {
     $(`[data-notion-bg="gallery_${i + 1}"]`).attr('style', `background-image:url('${url}')`);
   });
 
+  // Convert in-prose money inside the JSON-driven list items too (Features /
+  // Pros / Cons / Process), per field-language. No-op for major currencies.
+  // (Price Bands stay in local currency by design; per-metro Market Stats are
+  // sourced figures in their own currency, left untouched.)
+  const _convItems = (arr, viKeys, enKeys) => arr.map((o) => {
+    const n = { ...o };
+    for (const k of viKeys) if (typeof n[k] === 'string') n[k] = convertProseMoney(n[k], prop._srcCur, FX, 'vi');
+    for (const k of enKeys) if (typeof n[k] === 'string') n[k] = convertProseMoney(n[k], prop._srcCur, FX, 'en');
+    return n;
+  });
+  prop.features = _convItems(prop.features, ['vi'], ['en']);
+  prop.pros = _convItems(prop.pros, ['vi'], ['en']);
+  prop.cons = _convItems(prop.cons, ['vi'], ['en']);
+  prop.process = _convItems(prop.process, ['dur_vi', 'title_vi', 'body_vi'], ['dur_en', 'title_en', 'body_en']);
+
   // JSON-driven list containers
   if (prop.features.length) {
     $(`[data-notion-list="features"]`).html(renderFeatures(prop.features));
