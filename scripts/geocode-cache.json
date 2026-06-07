@@ -402,5 +402,24 @@
   "DAMAC Towers by Paramount — Business Bay, Dubai (Golden Visa), Business Bay, Dubai, Dubai": null,
   "DAMAC Golf Greens — DAMAC Hills, Dubai (Golden Visa), DAMAC Hills, Dubai, Dubai": null,
   "Mercedes-Benz Places by Binghatti — Downtown Dubai (Golden Visa), Downtown Dubai, Dubai": null,
-  "Sobha Estates — Hartland II, Dubai (Golden Visa), Nad Al Sheba, Dubai, Dubai": null
+  "Sobha Estates — Hartland II, Dubai (Golden Visa), Nad Al Sheba, Dubai, Dubai": null,
+  "Laguna Phuket — Banyan Tree & Angsana Residences, Laguna, Phuket, Thailand": null,
+  "Choeng Thale, Thalang, Phuket, Laguna, Phuket, Thailand": null,
+  "Laguna, Phuket, Thailand": {
+    "lat": 8.008192,
+    "lng": 98.3028486
+  },
+  "Balco Villas by Origin — Phuket, Bangtao, Phuket, Thailand": null,
+  "Choeng Thale, Thalang, Phuket, Bangtao, Phuket, Thailand": null,
+  "Bangtao, Phuket, Thailand": {
+    "lat": 7.9939487,
+    "lng": 98.2926089
+  },
+  "Ayana Luxury Villas — Phuket, Bangtao, Phuket, Thailand": null,
+  "Si Sunthon, Thalang, Phuket, Bangtao, Phuket, Thailand": null,
+  "Anchan Villas — Phuket, Layan, Phuket, Thailand": null,
+  "Choeng Thale, Thalang, Phuket, Layan, Phuket, Thailand": null,
+  "Layan Green Park — Phuket, Layan, Phuket, Thailand": null,
+  "Layan Verde — Phuket, Layan, Phuket, Thailand": null,
+  "The Standard Residences Bangtao — Phuket, Bangtao, Phuket, Thailand": null
 }

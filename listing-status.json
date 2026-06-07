@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-06T22:18:25Z",
-  "reviewed": "2026-06-06",
-  "fingerprint": "b4b7b5228b32836c",
+  "generated": "2026-06-07T09:34:32Z",
+  "reviewed": "2026-06-07",
+  "fingerprint": "4735f0e468d72145",
   "dims": [
     "id",
     "fin",
@@ -15,7 +15,7 @@
     "qa"
   ],
   "imgHash": "qse3Pw84PrZ2S0PQOTtixw",
-  "total": 100,
+  "total": 107,
   "countries": [
     {
       "code": "AU",
@@ -63,7 +63,7 @@
       "code": "TH",
       "name": "Thailand",
       "flag": "🇹🇭",
-      "count": 8
+      "count": 15
     },
     {
       "code": "MY",
@@ -2002,7 +2002,7 @@
         {
           "name": "Hyatt Regency Hồ Tràm",
           "slug": "hyatt-regency-ho-tram",
-          "thumb": "hyatt-regency-ho-tram-hero",
+          "thumb": "302f5470-b7fc-4b20-aecb-4c4ba03dd700",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2335,9 +2335,9 @@
       "region": "Choeng Thale",
       "rows": [
         {
-          "name": "Botanica Louvre — Phuket",
-          "slug": "botanica-louvre",
-          "thumb": "botanica-louvre-hero",
+          "name": "Anchan Villas — Phuket",
+          "slug": "anchan-villas",
+          "thumb": "anchan-villas-hero",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2347,7 +2347,125 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        },
+        {
+          "name": "Balco Villas by Origin — Phuket",
+          "slug": "balco-villas",
+          "thumb": "balco-villas-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "band",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {
+            "nac": 2
+          }
+        },
+        {
+          "name": "Botanica Louvre — Phuket",
+          "slug": "botanica-louvre",
+          "thumb": "c19f50d2-fca6-419a-a6ad-862c77da4900",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "band",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
             "ovw": "block",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {
+            "nac": 2
+          }
+        },
+        {
+          "name": "Laguna Phuket — Banyan Tree & Angsana Residences",
+          "slug": "laguna-banyan-tree-residences",
+          "thumb": "laguna-banyan-tree-residences-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        },
+        {
+          "name": "Layan Green Park — Phuket",
+          "slug": "layan-green-park",
+          "thumb": "layan-green-park-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        },
+        {
+          "name": "Layan Verde — Phuket",
+          "slug": "layan-verde",
+          "thumb": "layan-verde-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        },
+        {
+          "name": "The Standard Residences Bangtao — Phuket",
+          "slug": "the-standard-residences-bangtao",
+          "thumb": "the-standard-residences-bangtao-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
@@ -2483,6 +2601,33 @@
             "img": "done",
             "geo": "done",
             "ovw": "block",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "flag": "🇹🇭",
+      "region": "Si Sunthon",
+      "rows": [
+        {
+          "name": "Ayana Luxury Villas — Phuket",
+          "slug": "ayana-luxury-villas",
+          "thumb": "ayana-luxury-villas-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
