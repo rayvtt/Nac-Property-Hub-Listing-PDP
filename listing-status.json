@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-07T09:49:03Z",
+  "generated": "2026-06-07T10:07:52Z",
   "reviewed": "2026-06-07",
-  "fingerprint": "afb19b935032ced5",
+  "fingerprint": "b7b5c9cf0c16dd27",
   "dims": [
     "id",
     "fin",
@@ -15,7 +15,7 @@
     "qa"
   ],
   "imgHash": "qse3Pw84PrZ2S0PQOTtixw",
-  "total": 109,
+  "total": 113,
   "countries": [
     {
       "code": "AU",
@@ -63,7 +63,7 @@
       "code": "TH",
       "name": "Thailand",
       "flag": "🇹🇭",
-      "count": 17
+      "count": 21
     },
     {
       "code": "MY",
@@ -2375,6 +2375,25 @@
           }
         },
         {
+          "name": "Botanica Grand Avenue — Phuket",
+          "slug": "botanica-grand-avenue",
+          "thumb": "botanica-grand-avenue-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        },
+        {
           "name": "Botanica Louvre — Phuket",
           "slug": "botanica-louvre",
           "thumb": "c19f50d2-fca6-419a-a6ad-862c77da4900",
@@ -2550,6 +2569,33 @@
       "country": "Thailand",
       "code": "TH",
       "flag": "🇹🇭",
+      "region": "Khlong Tan Nuea",
+      "rows": [
+        {
+          "name": "Culture Thonglor — Bangkok",
+          "slug": "culture-thonglor",
+          "thumb": "7f69062e-16dc-46d9-babc-de64ba8d3100",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "flag": "🇹🇭",
       "region": "Khlong Toei",
       "rows": [
         {
@@ -2566,6 +2612,52 @@
             "img": "done",
             "geo": "done",
             "ovw": "block",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "flag": "🇹🇭",
+      "region": "Phra Khanong",
+      "rows": [
+        {
+          "name": "Ideo Sukhumvit-Rama 4 — Bangkok",
+          "slug": "ideo-sukhumvit-rama-4",
+          "thumb": "11a5c0c0-575e-4a38-7ec4-0e33432b5700",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        },
+        {
+          "name": "Origin Residences Sukhumvit 48 — Bangkok",
+          "slug": "origin-residences-sukhumvit-48",
+          "thumb": "3385e5cd-8d5e-4f9b-9e26-d56b710f5200",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",

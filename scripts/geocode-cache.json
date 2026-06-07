@@ -424,5 +424,22 @@
   "The Standard Residences Bangtao — Phuket, Bangtao, Phuket, Thailand": null,
   "The Residence Prime — Phuket, Bangtao, Phuket, Thailand": null,
   "Thep Krasattri, Thalang, Phuket, Bangtao, Phuket, Thailand": null,
-  "So Origin Bangtao Beach — Phuket, Bangtao, Phuket, Thailand": null
+  "So Origin Bangtao Beach — Phuket, Bangtao, Phuket, Thailand": null,
+  "Origin Residences Sukhumvit 48 — Bangkok, Sukhumvit 48, Bangkok, Thailand": null,
+  "Phra Khanong, Khlong Toei, Bangkok, Sukhumvit 48, Bangkok, Thailand": {
+    "lat": 13.7104684,
+    "lng": 100.5978792
+  },
+  "Botanica Grand Avenue — Phuket, Laguna, Phuket, Thailand": null,
+  "Ideo Sukhumvit-Rama 4 — Bangkok, Phra Khanong, Bangkok, Thailand": null,
+  "Phra Khanong, Khlong Toei, Bangkok, Phra Khanong, Bangkok, Thailand": {
+    "lat": 13.7151693,
+    "lng": 100.5912365
+  },
+  "Culture Thonglor — Bangkok, Thonglor, Bangkok, Thailand": null,
+  "Khlong Tan Nuea, Watthana, Bangkok, Thonglor, Bangkok, Thailand": null,
+  "Thonglor, Bangkok, Thailand": {
+    "lat": 13.7405686,
+    "lng": 100.5848775
+  }
 }
