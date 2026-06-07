@@ -441,5 +441,15 @@
   "Thonglor, Bangkok, Thailand": {
     "lat": 13.7405686,
     "lng": 100.5848775
+  },
+  "Culture Chula — Bangkok, Sam Yan, Bangkok, Thailand": null,
+  "Bang Rak, Bangkok, Sam Yan, Bangkok, Thailand": null,
+  "Sam Yan, Bangkok, Thailand": {
+    "lat": 13.7320608,
+    "lng": 100.5301206
+  },
+  "XT Phayathai — Bangkok, Phaya Thai, Bangkok, Thailand": {
+    "lat": 13.7576135,
+    "lng": 100.5391164
   }
 }

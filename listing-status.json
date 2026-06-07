@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-07T10:07:52Z",
+  "generated": "2026-06-07T10:17:37Z",
   "reviewed": "2026-06-07",
-  "fingerprint": "b7b5c9cf0c16dd27",
+  "fingerprint": "863c2a628ec3c2d0",
   "dims": [
     "id",
     "fin",
@@ -15,7 +15,7 @@
     "qa"
   ],
   "imgHash": "qse3Pw84PrZ2S0PQOTtixw",
-  "total": 113,
+  "total": 115,
   "countries": [
     {
       "code": "AU",
@@ -63,7 +63,7 @@
       "code": "TH",
       "name": "Thailand",
       "flag": "🇹🇭",
-      "count": 21
+      "count": 23
     },
     {
       "code": "MY",
@@ -2286,6 +2286,33 @@
       "country": "Thailand",
       "code": "TH",
       "flag": "🇹🇭",
+      "region": "Bang Rak",
+      "rows": [
+        {
+          "name": "Culture Chula — Bangkok",
+          "slug": "culture-chula",
+          "thumb": "66869eda-dc10-44f7-7486-071d3d5ea200",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "flag": "🇹🇭",
       "region": "Cherngtalay",
       "rows": [
         {
@@ -2685,6 +2712,25 @@
             "img": "done",
             "geo": "done",
             "ovw": "block",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        },
+        {
+          "name": "XT Phayathai — Bangkok",
+          "slug": "xt-phayathai",
+          "thumb": "51a20b15-e49f-491d-1877-0cc038d22000",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
