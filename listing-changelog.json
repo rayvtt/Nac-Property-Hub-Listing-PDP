@@ -1,8 +1,8 @@
 {
- "generated": "2026-06-07T08:34:13.786Z",
+ "generated": "2026-06-07T09:34:42.371Z",
  "ledger": true,
  "windowDays": 3650,
- "count": 823,
+ "count": 830,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -20,6 +20,83 @@
   "dubai": "🇦🇪"
  },
  "entries": [
+  {
+   "ts": "2026-06-07T09:34:32Z",
+   "country": "thailand",
+   "slug": "anchan-villas",
+   "name": "Anchan Villas",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T09:34:32Z",
+   "country": "thailand",
+   "slug": "ayana-luxury-villas",
+   "name": "Ayana Luxury Villas",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T09:34:32Z",
+   "country": "thailand",
+   "slug": "balco-villas",
+   "name": "Balco Villas by Origin",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T09:34:32Z",
+   "country": "thailand",
+   "slug": "laguna-banyan-tree-residences",
+   "name": "Laguna Phuket",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T09:34:32Z",
+   "country": "thailand",
+   "slug": "layan-green-park",
+   "name": "Layan Green Park",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T09:34:32Z",
+   "country": "thailand",
+   "slug": "layan-verde",
+   "name": "Layan Verde",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T09:34:32Z",
+   "country": "thailand",
+   "slug": "the-standard-residences-bangtao",
+   "name": "The Standard Residences Bangtao",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
   {
    "ts": "2026-06-05T14:13:35Z",
    "country": "uae",
