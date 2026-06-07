@@ -451,5 +451,31 @@
   "XT Phayathai — Bangkok, Phaya Thai, Bangkok, Thailand": {
     "lat": 13.7576135,
     "lng": 100.5391164
+  },
+  "Mercedes-Benz Places · Binghatti City — Nad Al Sheba, Dubai (Golden Visa), Nad Al Sheba, Dubai, UAE": null,
+  "Nad Al Sheba (Meydan), Dubai, Nad Al Sheba, Dubai, UAE": {
+    "lat": 25.1475574,
+    "lng": 55.2863658
+  },
+  "DAMAC Towers by Paramount — Business Bay, Dubai (Golden Visa), Business Bay, Dubai, UAE": null,
+  "Business Bay, Dubai, Business Bay, Dubai, UAE": {
+    "lat": 25.1912836,
+    "lng": 55.2604063
+  },
+  "DAMAC Golf Greens — DAMAC Hills, Dubai (Golden Visa), DAMAC Hills, Dubai, UAE": null,
+  "DAMAC Hills, Dubai, DAMAC Hills, Dubai, UAE": {
+    "lat": 25.0131537,
+    "lng": 55.2551349
+  },
+  "Mercedes-Benz Places by Binghatti — Downtown Dubai (Golden Visa), Downtown Dubai, UAE": null,
+  "Downtown Dubai, Downtown Dubai, UAE": {
+    "lat": 25.1812198,
+    "lng": 55.2622481
+  },
+  "Sobha Estates — Hartland II, Dubai (Golden Visa), Nad Al Sheba, Dubai, UAE": null,
+  "Sobha Hartland II, Nad Al Sheba, Nad Al Sheba, Dubai, UAE": null,
+  "Nad Al Sheba, Dubai, UAE": {
+    "lat": 25.1456302,
+    "lng": 55.364275
   }
 }
