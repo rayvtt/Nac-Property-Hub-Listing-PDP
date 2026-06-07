@@ -81,6 +81,20 @@ const COUNTRY_LOOKUP = {
   'Vanuatu':         { slug: 'vu',  code: 'VU', nameVi: 'Vanuatu',          wpSlug: 'vanuatu',         region: 'pac',    flag: '🇻🇺' },
   'United States':   { slug: 'us',  code: 'US', nameVi: 'Hoa Kỳ',           wpSlug: 'usa',             region: 'us',     flag: '🇺🇸' },
   'USA':             { slug: 'us',  code: 'US', nameVi: 'Hoa Kỳ',           wpSlug: 'usa',             region: 'us',     flag: '🇺🇸' },
+  'Australia':       { slug: 'au',  code: 'AU', nameVi: 'Úc',               wpSlug: 'australia',       region: 'pac',    flag: '🇦🇺' },
+  'New Zealand':     { slug: 'nz',  code: 'NZ', nameVi: 'New Zealand',      wpSlug: 'new-zealand',     region: 'pac',    flag: '🇳🇿' },
+};
+
+// NAC region code → continent label (drives the §10 track-record ribbon count).
+// UK and EU both roll into Europe for a single continent bucket.
+const REGION_CONTINENT = {
+  asia:   'Asia',
+  eu:     'Europe',
+  uk:     'Europe',
+  me:     'Middle East',
+  caribe: 'Central America',
+  us:     'North America',
+  pac:    'Oceania',
 };
 
 // ─── small utils ──────────────────────────────────────────────────────────
@@ -440,7 +454,7 @@ function stripManagedSeoHead($) {
 
 // ─── the patcher: model → patched HTML string ───────────────────────────────
 
-function applyModel(html, model) {
+function applyModel(html, model, { globalStats } = {}) {
   const $ = cheerio.load(html, { decodeEntities: false });
   const { country, body, listings } = model;
 
@@ -600,6 +614,18 @@ function applyModel(html, model) {
   // honest (no "Zero listings. One side-by-side." heading on its own).
   if (n === 0) $('.cl-compare').attr('hidden', 'hidden');
   else $('.cl-compare').removeAttr('hidden');
+
+  // ── §10 track-record ribbon (NAC-wide brag) ───────────────────────
+  // Only present on the newer CLP layout (AE/AU/MY/SG/TH/VN). Older
+  // CLPs (CY/GR/PA/TR/UK) skipped this section — silently no-op there.
+  if (globalStats) {
+    const trackNums = $('.cl-track .cl-track-num');
+    if (trackNums.length >= 3) {
+      $(trackNums[0]).html(`${globalStats.listingsFloor}<span class="cl-track-plus">+</span>`);
+      $(trackNums[1]).text(String(globalStats.countriesCount));
+      $(trackNums[2]).text(String(globalStats.continentsCount));
+    }
+  }
 
   return $.html();
 }
@@ -842,6 +868,43 @@ async function scaffoldMissingCountries(notion) {
   return { created, skipped };
 }
 
+// NAC-wide brag stats for the §10 track-record ribbon. Counts Live + Draft
+// so the "100+" suffix stays honest as drafts flip to Live (no churn per
+// status change). Continents derived from COUNTRY_LOOKUP[c].region via
+// REGION_CONTINENT — unknown countries are simply skipped from the count.
+async function fetchGlobalStats(notion) {
+  const countries = new Set();
+  let total = 0;
+  for (const status of ['Live', 'Draft']) {
+    let cursor;
+    do {
+      const res = await notion.databases.query({
+        database_id: LLP_DB_ID,
+        filter: { property: 'Hub Status', select: { equals: status } },
+        start_cursor: cursor,
+        page_size: 100,
+      });
+      total += res.results.length;
+      for (const p of res.results) {
+        const c = p.properties.Country?.select?.name;
+        if (c) countries.add(c);
+      }
+      cursor = res.has_more ? res.next_cursor : undefined;
+    } while (cursor);
+  }
+  const continents = new Set();
+  for (const c of countries) {
+    const region = COUNTRY_LOOKUP[c]?.region;
+    const continent = region && REGION_CONTINENT[region];
+    if (continent) continents.add(continent);
+  }
+  return {
+    listingsFloor: Math.floor(total / 10) * 10,
+    countriesCount: countries.size,
+    continentsCount: continents.size,
+  };
+}
+
 async function fetchCountryListings(notion, countryNameEn) {
   let results = [];
   let cursor;
@@ -931,12 +994,12 @@ async function getTemplateScriptBody() {
   return _templateScriptBody;
 }
 
-async function syncCountry(model, { outOverride } = {}) {
+async function syncCountry(model, { outOverride, globalStats } = {}) {
   const slug = model.country.slug;
   if (!slug) return { slug: '(missing)', skipped: 'no Slug' };
   const { file, created } = await ensureFile(slug);
   const html = await fs.readFile(file, 'utf-8');
-  let patched = applyModel(html, model);
+  let patched = applyModel(html, model, { globalStats });
 
   // Overwrite the country file's <script> with the template's. Skips the
   // template itself (which is the source we just read from).
@@ -1005,11 +1068,21 @@ async function runLive() {
   }
   console.log(`Country DB: ${rows.length} Live, ${live.length} to process.`);
 
+  // NAC-wide stats for the §10 track-record ribbon — fetched once, reused
+  // for every country so all CLPs render identical brag numbers.
+  let globalStats = null;
+  try {
+    globalStats = await fetchGlobalStats(notion);
+    console.log(`Global stats: ${globalStats.listingsFloor}+ listings · ${globalStats.countriesCount} countries · ${globalStats.continentsCount} continents`);
+  } catch (err) {
+    console.warn(`fetchGlobalStats failed: ${err.message} — track-record ribbon will keep stale numbers`);
+  }
+
   let ok = 0, fail = 0;
   for (const row of live) {
     try {
       const model = await buildModelFromNotion(notion, row);
-      const r = await syncCountry(model);
+      const r = await syncCountry(model, { globalStats });
       console.log(`  ✓ ${r.slug} → ${path.relative(ROOT, r.file)} (${r.listings} listings)${r.created ? ' [scaffolded]' : ''}`);
       // write back Last Synced + Listings Count
       await notion.pages.update({
