@@ -1,8 +1,8 @@
 {
- "generated": "2026-06-07T19:15:39.431Z",
+ "generated": "2026-06-07T20:16:18.462Z",
  "ledger": true,
  "windowDays": 3650,
- "count": 938,
+ "count": 941,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -20,6 +20,39 @@
   "dubai": "🇦🇪"
  },
  "entries": [
+  {
+   "ts": "2026-06-07T20:16:04Z",
+   "country": "uae",
+   "slug": "binghatti-mercedes-benz-places",
+   "name": "Mercedes-Benz Places by Binghatti",
+   "field": "hero",
+   "label": "Hero image",
+   "kind": "set",
+   "from": "imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/binghatti-m…",
+   "to": "imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/binghatti-m…"
+  },
+  {
+   "ts": "2026-06-07T20:16:04Z",
+   "country": "uae",
+   "slug": "binghatti-mercedes-benz-places",
+   "name": "Mercedes-Benz Places by Binghatti",
+   "field": "gallery",
+   "label": "Gallery",
+   "kind": "set",
+   "from": "binghatti-mercedes-benz-places-1,binghatti-mercedes-…",
+   "to": "binghatti-mercedes-benz-places-1,binghatti-mercedes-…"
+  },
+  {
+   "ts": "2026-06-07T19:17:38Z",
+   "country": "vietnam",
+   "slug": "one-central-saigon",
+   "name": "One Central Saigon",
+   "field": "gallery",
+   "label": "Gallery",
+   "kind": "set",
+   "from": "one-central-saigon-1,one-central-saigon-2,one-centra…",
+   "to": "one-central-saigon-1,one-central-saigon-2"
+  },
   {
    "ts": "2026-06-07T14:32:43Z",
    "country": "malaysia",
