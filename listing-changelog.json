@@ -1,8 +1,8 @@
 {
- "generated": "2026-06-07T14:17:12.083Z",
+ "generated": "2026-06-07T14:33:00.581Z",
  "ledger": true,
  "windowDays": 3650,
- "count": 929,
+ "count": 938,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -20,6 +20,105 @@
   "dubai": "🇦🇪"
  },
  "entries": [
+  {
+   "ts": "2026-06-07T14:32:43Z",
+   "country": "malaysia",
+   "slug": "centrix-the-station-klcc",
+   "name": "Centrix The Station KLCC",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T14:32:43Z",
+   "country": "malaysia",
+   "slug": "curvo-residences-setapak",
+   "name": "Curvo Residences",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T14:32:43Z",
+   "country": "uae",
+   "slug": "damac-safa-gate",
+   "name": "DAMAC Safa Gate",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T14:32:43Z",
+   "country": "malaysia",
+   "slug": "golden-crown-residence-klcc",
+   "name": "Golden Crown Residence",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T14:32:43Z",
+   "country": "vietnam",
+   "slug": "one-central-saigon",
+   "name": "One Central Saigon",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T14:32:43Z",
+   "country": "malaysia",
+   "slug": "oxley-towers-klcc",
+   "name": "Oxley Towers KLCC",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T14:32:43Z",
+   "country": "malaysia",
+   "slug": "pavilion-square-klcc",
+   "name": "Pavilion Square",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T14:17:33Z",
+   "country": "uae",
+   "slug": "binghatti-mercedes-benz-places",
+   "name": "Mercedes-Benz Places by Binghatti",
+   "field": "price",
+   "label": "Entry Price",
+   "kind": "money",
+   "from": "AED 8.9M",
+   "to": "$2.4M"
+  },
+  {
+   "ts": "2026-06-07T14:17:33Z",
+   "country": "malaysia",
+   "slug": "conlay-signature-suites-klcc",
+   "name": "The Conlay Signature Suites",
+   "field": "gallery",
+   "label": "Gallery",
+   "kind": "set",
+   "from": "conlay-signature-suites-klcc-1,conlay-signature-suit…",
+   "to": "conlay-signature-suites-klcc-1"
+  },
   {
    "ts": "2026-06-07T13:28:40Z",
    "country": "australia",
