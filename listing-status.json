@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-07T09:34:32Z",
+  "generated": "2026-06-07T09:49:03Z",
   "reviewed": "2026-06-07",
-  "fingerprint": "4735f0e468d72145",
+  "fingerprint": "afb19b935032ced5",
   "dims": [
     "id",
     "fin",
@@ -15,7 +15,7 @@
     "qa"
   ],
   "imgHash": "qse3Pw84PrZ2S0PQOTtixw",
-  "total": 107,
+  "total": 109,
   "countries": [
     {
       "code": "AU",
@@ -63,7 +63,7 @@
       "code": "TH",
       "name": "Thailand",
       "flag": "🇹🇭",
-      "count": 15
+      "count": 17
     },
     {
       "code": "MY",
@@ -2453,6 +2453,25 @@
           "dup": {}
         },
         {
+          "name": "So Origin Bangtao Beach — Phuket",
+          "slug": "so-origin-bangtao-beach",
+          "thumb": "caf271b6-134b-478b-4131-5129988d1c00",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        },
+        {
           "name": "The Standard Residences Bangtao — Phuket",
           "slug": "the-standard-residences-bangtao",
           "thumb": "the-standard-residences-bangtao-hero",
@@ -2594,7 +2613,7 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "done",
+            "nac": "band",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -2604,7 +2623,9 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {}
+          "dup": {
+            "nac": 2
+          }
         }
       ]
     },
@@ -2632,6 +2653,35 @@
           },
           "note": "",
           "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "flag": "🇹🇭",
+      "region": "Thep Krasattri",
+      "rows": [
+        {
+          "name": "The Residence Prime — Phuket",
+          "slug": "the-residence-prime",
+          "thumb": "33c5940e-2f8e-4fa3-6ae4-1b4e70e84400",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "band",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {
+            "nac": 2
+          }
         }
       ]
     },
