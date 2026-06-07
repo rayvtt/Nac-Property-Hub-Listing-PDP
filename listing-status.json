@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-07T14:36:19Z",
+  "generated": "2026-06-07T20:16:04Z",
   "reviewed": "2026-06-07",
-  "fingerprint": "be5955a3a1cad4a6",
+  "fingerprint": "a06df889f74048e5",
   "dims": [
     "id",
     "fin",
@@ -3075,7 +3075,7 @@
         {
           "name": "Mercedes-Benz Places by Binghatti — Downtown Dubai (Golden Visa)",
           "slug": "binghatti-mercedes-benz-places",
-          "thumb": "binghatti-mercedes-benz-places-hero",
+          "thumb": "binghatti-mercedes-benz-city-hero",
           "st": {
             "id": "done",
             "fin": "done",
