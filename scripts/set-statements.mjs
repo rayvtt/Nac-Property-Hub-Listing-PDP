@@ -81,6 +81,53 @@ const enArticle = (b) => {
 // Stable hash → variant index (so a listing always renders the same line).
 const hash = (s) => { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; };
 
+// ── Per-city editorial tail — the city's best-known economic/financial trait ──
+// Appended as a second sentence. Unmapped city → no tail (ownership line stands).
+const CITY_EDITORIAL = {
+  Phuket:        { vi: 'Hòn đảo nghỉ dưỡng hàng đầu châu Á, sống nhờ du lịch quốc tế quanh năm.', en: "Asia's premier resort island, powered by year-round international tourism." },
+  Dubai:         { vi: 'Trung tâm tài chính và thương mại miễn thuế của Trung Đông.', en: "The Middle East's tax-free financial and trade hub." },
+  'Da Nang':     { vi: 'Đầu tàu kinh tế biển và cửa ngõ du lịch của miền Trung Việt Nam.', en: "Central Vietnam's coastal-economy engine and tourism gateway." },
+  'Ho Chi Minh City': { vi: 'Đô thị lớn nhất và đầu tàu tài chính của Việt Nam.', en: "Vietnam's largest city and financial powerhouse." },
+  'Ho Tram':     { vi: 'Dải bờ biển nghỉ dưỡng tích hợp mới nổi, cách TP.HCM hai giờ.', en: "Vietnam's emerging integrated-resort coast, two hours from Ho Chi Minh City." },
+  'Panama City': { vi: 'Trung tâm ngân hàng của Trung Mỹ, nền kinh tế USD hóa hoàn toàn.', en: "Central America's banking hub, built on a fully USD-denominated economy." },
+  Sydney:        { vi: 'Thủ phủ tài chính và nền kinh tế lớn nhất nước Úc.', en: "Australia's financial capital and largest economy." },
+  Melbourne:     { vi: 'Thủ đô văn hóa và nền kinh tế lớn thứ hai của Úc.', en: "Australia's cultural capital and second-largest economy." },
+  Istanbul:      { vi: 'Đầu tàu kinh tế của Thổ Nhĩ Kỳ, nối liền châu Âu và châu Á.', en: "Turkey's economic engine, straddling Europe and Asia." },
+  London:        { vi: 'Một trong những trung tâm tài chính toàn cầu hàng đầu thế giới.', en: "One of the world's foremost global financial centres." },
+  Limassol:      { vi: 'Thủ phủ kinh doanh và hàng hải của Síp bên Địa Trung Hải.', en: "Cyprus's business and shipping capital on the Mediterranean." },
+  Paphos:        { vi: 'Thành phố nghỉ dưỡng Địa Trung Hải được UNESCO công nhận của Síp.', en: "A UNESCO-listed Mediterranean resort city on the Cyprus Riviera." },
+  Athens:        { vi: 'Thủ đô và trung tâm kinh tế của Hy Lạp, cái nôi văn minh phương Tây.', en: "Greece's capital and economic centre, the cradle of Western civilisation." },
+  Galaxidi:      { vi: 'Thị trấn hàng hải lịch sử của Hy Lạp bên vịnh Corinth.', en: "A historic Greek seafaring town on the Corinthian Gulf." },
+  'Kuala Lumpur':{ vi: 'Thủ đô và trái tim tài chính của Malaysia, biểu tượng tháp đôi Petronas.', en: "Malaysia's capital and financial heart, crowned by the Petronas Towers." },
+  Bangkok:       { vi: 'Thủ đô và đầu tàu kinh tế của Thái Lan, một trong những thành phố được ghé thăm nhiều nhất thế giới.', en: "Thailand's capital and economic powerhouse, among the world's most-visited cities." },
+  'Johor Bahru': { vi: 'Cửa ngõ kinh tế phía Nam Malaysia, ngay sát Singapore.', en: "Malaysia's southern economic gateway, on Singapore's doorstep." },
+};
+// Ordered keyword → city key. First hit on (City + Region/City + District + Country) wins.
+const EDITORIAL_RULES = [
+  [/phuket|bangtao|bang tao|choeng thale|cherngtalay|layan|si sunthon|thalang/i, 'Phuket'],
+  [/dubai|nad al sheba|business bay|downtown dubai|damac hills|meydan|hartland/i, 'Dubai'],
+  [/da nang|đà nẵng|danang/i, 'Da Nang'],
+  [/ho chi minh|hồ chí minh|hcmc|saigon|sài gòn|thu duc|thủ đức|phu nhuan|phú nhuận/i, 'Ho Chi Minh City'],
+  [/ho tram|hồ tràm/i, 'Ho Tram'],
+  [/panama/i, 'Panama City'],
+  [/galaxidi/i, 'Galaxidi'],
+  [/athens|kallithea|glyfada|piraeus|kifisia|faliro/i, 'Athens'],
+  [/istanbul|İstanbul|beylikd|bağcılar|bagcilar|sarıyer|sariyer|topkap/i, 'Istanbul'],
+  [/sydney|parramatta|burwood|carlingford|zetland|macquarie|hurstville|arncliffe|caringbah|blacktown|ashbury|erskineville|north sydney|auburn|lakemba|bankstown/i, 'Sydney'],
+  [/melbourne|box hill|blackburn|southbank|south melbourne|alphington|pagewood/i, 'Melbourne'],
+  [/london/i, 'London'],
+  [/limassol/i, 'Limassol'],
+  [/paphos|pafos/i, 'Paphos'],
+  [/johor|jbcc|jb /i, 'Johor Bahru'],
+  [/kuala lumpur|klcc|\bkl\b|setapak|bukit bintang/i, 'Kuala Lumpur'],
+  [/bangkok|sukhumvit|thonglor|thong lo|phayathai|phaya thai|ratchathewi|rama 4|chula|silom|sathorn|sathon/i, 'Bangkok'],
+];
+function cityEditorial(p) {
+  const hay = [rt(p['City']), rt(p['Region/City']), rt(p['📍 District']), sel(p['Country'])].join(' | ');
+  for (const [re, key] of EDITORIAL_RULES) if (re.test(hay)) return CITY_EDITORIAL[key];
+  return null;
+}
+
 function shortBrand(p) {
   const brand = rt(p['✦ Brand']).trim();
   if (brand) return brand;
@@ -101,7 +148,10 @@ function buildStatement(p, slug) {
   const fill = (tpl) => tpl
     .replace('{a}', art).replace('{A}', art[0].toUpperCase() + art.slice(1))
     .replaceAll('{b}', b).replace('{c}', c).replace('{p}', price);
-  return { vi: fill(T.viT[i]), en: fill(T.enT[i]) };
+  // Append the per-city editorial tail (economy / financial strength) if known.
+  const ed = cityEditorial(p);
+  const join = (line, tail) => tail ? `${line} ${tail}` : line;
+  return { vi: join(fill(T.viT[i]), ed?.vi), en: join(fill(T.enT[i]), ed?.en) };
 }
 
 async function fetchLive() {
