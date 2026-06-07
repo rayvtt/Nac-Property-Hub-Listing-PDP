@@ -1,1 +1,2 @@
 2026-06-07 chat: deploy live-FX USD pricing + share-section — convert all listing money to USD (live FX) and inject share blocks hub-wide — sync-notion
+2026-06-07T14:20:00Z chat: UAE consolidation — set all 6 UAE listings' Country = "UAE" (was "Dubai") and Listing URL → /uae/<slug> to match the WordPress /uae/ nesting; renamed the ae Country DB row's Country Name EN "Dubai" → "UAE" so the CLP groups them under UAE. Regenerate the UAE CLP (country/ae.html) + push to WP — sync-notion-clp
