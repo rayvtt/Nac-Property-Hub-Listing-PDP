@@ -1,8 +1,8 @@
 {
- "generated": "2026-06-07T10:07:32.283Z",
+ "generated": "2026-06-07T10:08:08.789Z",
  "ledger": true,
  "windowDays": 3650,
- "count": 832,
+ "count": 836,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -20,6 +20,50 @@
   "dubai": "🇦🇪"
  },
  "entries": [
+  {
+   "ts": "2026-06-07T10:07:55Z",
+   "country": "thailand",
+   "slug": "botanica-grand-avenue",
+   "name": "Botanica Grand Avenue",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T10:07:55Z",
+   "country": "thailand",
+   "slug": "culture-thonglor",
+   "name": "Culture Thonglor",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T10:07:55Z",
+   "country": "thailand",
+   "slug": "ideo-sukhumvit-rama-4",
+   "name": "Ideo Sukhumvit-Rama 4",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T10:07:55Z",
+   "country": "thailand",
+   "slug": "origin-residences-sukhumvit-48",
+   "name": "Origin Residences Sukhumvit 48",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
   {
    "ts": "2026-06-07T09:49:04Z",
    "country": "thailand",
