@@ -1,8 +1,8 @@
 {
- "generated": "2026-06-07T10:17:20.584Z",
+ "generated": "2026-06-07T10:17:49.436Z",
  "ledger": true,
  "windowDays": 3650,
- "count": 836,
+ "count": 838,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -20,6 +20,28 @@
   "dubai": "🇦🇪"
  },
  "entries": [
+  {
+   "ts": "2026-06-07T10:17:38Z",
+   "country": "thailand",
+   "slug": "culture-chula",
+   "name": "Culture Chula",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-07T10:17:38Z",
+   "country": "thailand",
+   "slug": "xt-phayathai",
+   "name": "XT Phayathai",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
   {
    "ts": "2026-06-07T10:07:55Z",
    "country": "thailand",
