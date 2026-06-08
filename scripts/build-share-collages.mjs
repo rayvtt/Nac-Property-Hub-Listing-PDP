@@ -117,7 +117,9 @@ function addTaglineBand(src, tagline, work) {
   const txt = path.join(work, 'txt.png');
   const bt = path.join(work, 'bandtext.jpg');
   const out = path.join(work, 'final.jpg');
-  const text = tagline.replace(/\s+/g, ' ').trim() + ' ▌';   // ▌ = typewriter cursor
+  // Normalise to NFC (precomposed) so Vietnamese diacritics — e.g. "Bến" — render
+  // in the mono font instead of dropping their combining marks.
+  const text = tagline.replace(/\s+/g, ' ').trim().normalize('NFC') + ' ▌';   // ▌ = typewriter cursor
   // frosted highlight: blur the whole collage, crop the centre band, darken a touch
   convert([src, '-blur', '0x16', blur]);
   convert([blur, '-crop', `${W}x${BAND_H}+0+${Y}`, '+repage', '-brightness-contrast', '-22x6', band]);
