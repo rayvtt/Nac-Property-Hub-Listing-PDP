@@ -37,10 +37,17 @@ const COUNTRY_DIR = path.join(ROOT, 'country');
 const OUT_DIR = path.join(ROOT, 'og-images');
 
 const W = 1200, H = 630;
-const GOLD = '#d4af37';
-const GOLD_SOFT = '#b8941f';
-const CREAM = '#ede8dc';
-const BG = '#0a0a0a';
+// NAC brand palette (matches country/_template-clp.html CSS variables)
+const GOLD = '#C4922C';      // --gold
+const GOLD_SOFT = '#E8BF72'; // lighter gold accent
+const GOLD_GLOW = '#F4E4BF'; // --gold-soft
+const CREAM = '#FAFAF7';
+const NAVY = '#0F1A36';      // primary background
+const NAVY_DEEP = '#0A0D1C'; // deeper navy for the gradient
+
+// NAC wordmark / logo on the dark theme — fetched once, embedded into every SVG.
+const NAC_LOGO_URL = 'https://nomadassetcollective.com/wp-content/uploads/2026/05/OTG-Passport-Icons-4.png';
+let NAC_LOGO_DATAURI = null;
 
 const COUNTRY_CODE_FROM_SLUG = {
   ae: 'AE', au: 'AU', cy: 'CY', gr: 'GR', my: 'MY', pa: 'PA',
@@ -148,17 +155,17 @@ async function fetchAsDataUri(url) {
 const COMMON_DEFS = `
   <defs>
     <linearGradient id="bgFade" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0d0d0d"/>
-      <stop offset="100%" stop-color="#050505"/>
+      <stop offset="0%" stop-color="${NAVY}"/>
+      <stop offset="100%" stop-color="${NAVY_DEEP}"/>
     </linearGradient>
     <pattern id="grain" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
-      <rect width="3" height="3" fill="${BG}"/>
-      <circle cx="1" cy="1" r="0.4" fill="#ffffff" opacity="0.025"/>
+      <rect width="3" height="3" fill="${NAVY}"/>
+      <circle cx="1" cy="1" r="0.4" fill="#ffffff" opacity="0.03"/>
     </pattern>
     <linearGradient id="cardVeil" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#000" stop-opacity="0"/>
       <stop offset="65%" stop-color="#000" stop-opacity="0"/>
-      <stop offset="100%" stop-color="#000" stop-opacity="0.78"/>
+      <stop offset="100%" stop-color="${NAVY_DEEP}" stop-opacity="0.82"/>
     </linearGradient>
     <radialGradient id="goldGlow" cx="50%" cy="50%" r="50%">
       <stop offset="0%" stop-color="${GOLD}" stop-opacity="0.32"/>
@@ -169,6 +176,10 @@ const COMMON_DEFS = `
       <stop offset="0%" stop-color="${GOLD}" stop-opacity="0.65"/>
       <stop offset="100%" stop-color="${GOLD}" stop-opacity="0"/>
     </radialGradient>
+    <!-- Soft gaussian blur used by the watermark atlas behind the right panel -->
+    <filter id="atlasBlur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
   </defs>`;
 
 // ──────────────────────────────────────────────────────────────────────────
@@ -183,26 +194,24 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   const statLine = statParts.join('  ·  ');
 
   const showVi = m.nameVi && m.nameVi.toLowerCase() !== m.nameEn.toLowerCase();
-  const taglineStartY = showVi ? 348 : 320;
+  // Without a wordmark line, push the country name down so it sits roughly
+  // in the visual centre of the right panel.
+  const nameY = 210;
+  const viY = nameY + 44;
+  const taglineStartY = showVi ? viY + 60 : nameY + 64;
 
   return `
-  <!-- NAC wordmark -->
-  <text x="${rightX}" y="100" font-family="ui-monospace, 'SF Mono', Menlo, monospace"
-        font-size="12" letter-spacing="5" fill="#9b958a">
-    NAC · NOMAD ASSET COLLECTIVE
-  </text>
-
   <!-- Country name (EN — display) -->
-  <text x="${rightX}" y="232" font-family="Georgia, 'Times New Roman', serif"
+  <text x="${rightX}" y="${nameY}" font-family="Georgia, 'Times New Roman', serif"
         font-size="74" font-style="italic" font-weight="500" fill="${GOLD}"
         letter-spacing="-1">
     ${esc(m.nameEn)}
   </text>
 
   ${showVi ? `
-  <text x="${rightX}" y="278" font-family="Georgia, serif"
-        font-size="20" font-style="italic" fill="#9b958a"
-        letter-spacing="0.4">
+  <text x="${rightX}" y="${viY}" font-family="Georgia, serif"
+        font-size="20" font-style="italic" fill="${GOLD_SOFT}"
+        letter-spacing="0.4" opacity="0.78">
     ${esc(m.nameVi)}
   </text>` : ''}
 
@@ -222,9 +231,41 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   </text>` : ''}
 
   <text x="${rightX}" y="${H - 64}" font-family="ui-monospace, monospace"
-        font-size="11" letter-spacing="3.5" fill="#7a756a">
+        font-size="11" letter-spacing="3.5" fill="${GOLD_SOFT}" opacity="0.55">
     ${esc(panelTitle)} · ${esc(m.code)} · 2026
   </text>`;
+}
+
+// Blurred country silhouette sitting BEHIND the right text panel. Sized to
+// fit within the right 40% of the canvas, low opacity, gold tint. No-op when
+// the CLP has no atlas path (cleanly degrades).
+function rightPanelAtlasBackdrop(m) {
+  if (!m.coastPath || !m.viewBox) return '';
+  const [vbx, vby, vbw, vbh] = m.viewBox.split(/\s+/).map(Number);
+  // Right panel spans x=720 to x=1200. Fit a 380×380 box centred at x=960.
+  const BOX = 380;
+  const scale = Math.min(BOX / vbw, BOX / vbh);
+  const innerW = vbw * scale;
+  const innerH = vbh * scale;
+  const x = 960 - innerW / 2;
+  const y = H / 2 - innerH / 2;
+  return `
+  <g filter="url(#atlasBlur)" opacity="0.16">
+    <g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${scale.toFixed(4)})">
+      <path d="${esc(m.coastPath)}" fill="${GOLD}"/>
+    </g>
+  </g>`;
+}
+
+// Top-left NAC logo, embedded as a data URI so resvg renders it without a
+// network round-trip. Empty string if the logo wasn't reachable.
+function topLeftLogo() {
+  if (!NAC_LOGO_DATAURI) return '';
+  const SIZE = 56;
+  const X = 36, Y = 30;
+  return `
+  <image href="${NAC_LOGO_DATAURI}" x="${X}" y="${Y}" width="${SIZE}" height="${SIZE}"
+         preserveAspectRatio="xMidYMid meet"/>`;
 }
 
 function commonChrome() {
@@ -234,14 +275,14 @@ function commonChrome() {
 
   <!-- Bottom hairline + canonical URL -->
   <line x1="40" y1="${H - 34}" x2="${W - 40}" y2="${H - 34}"
-        stroke="${GOLD}" stroke-width="0.5" opacity="0.28"/>
+        stroke="${GOLD}" stroke-width="0.5" opacity="0.3"/>
   <text x="40" y="${H - 14}" font-family="ui-monospace, monospace"
-        font-size="10" letter-spacing="2.5" fill="#6a655a">
+        font-size="10" letter-spacing="2.5" fill="${GOLD_SOFT}" opacity="0.55">
     NOMADASSETCOLLECTIVE.COM
   </text>
   <text x="${W - 40}" y="${H - 14}" text-anchor="end"
         font-family="ui-monospace, monospace"
-        font-size="10" letter-spacing="2.5" fill="#6a655a">
+        font-size="10" letter-spacing="2.5" fill="${GOLD_SOFT}" opacity="0.55">
     PROPERTY HUB
   </text>`;
 }
@@ -305,8 +346,14 @@ function buildHeroesSvg(m, heroDataUris) {
   <line x1="720" y1="60" x2="720" y2="${H - 60}"
         stroke="${GOLD}" stroke-width="0.5" opacity="0.32"/>
 
+  <!-- Blurred atlas backdrop underneath the right text panel -->
+  ${rightPanelAtlasBackdrop(m)}
+
   <!-- RIGHT PANEL — text (40%) -->
   ${rightTextPanel(m, 752)}
+
+  <!-- NAC logo (top-left of canvas, sits over the leftmost hero) -->
+  ${topLeftLogo()}
 </svg>`;
 }
 
@@ -348,7 +395,13 @@ function buildAtlasSvg(m) {
   <line x1="720" y1="60" x2="720" y2="${H - 60}"
         stroke="${GOLD}" stroke-width="0.5" opacity="0.32"/>
 
+  <!-- Blurred atlas backdrop underneath the right text panel -->
+  ${rightPanelAtlasBackdrop(m)}
+
   ${rightTextPanel(m, 752)}
+
+  <!-- NAC logo (top-left of canvas) -->
+  ${topLeftLogo()}
 </svg>`;
 }
 
@@ -395,6 +448,11 @@ async function buildOne(slug) {
 }
 
 async function main() {
+  // Fetch the NAC wordmark/logo once and embed into every card. Falls back
+  // silently if the WP CDN is unreachable so the rest of the batch still ships.
+  NAC_LOGO_DATAURI = await fetchAsDataUri(NAC_LOGO_URL);
+  if (!NAC_LOGO_DATAURI) console.warn(`  ⚠ NAC logo fetch failed (${NAC_LOGO_URL}) — cards will render without it`);
+
   const only = process.argv[2];
   const slugs = only
     ? [only.replace(/\.html$/, '')]
