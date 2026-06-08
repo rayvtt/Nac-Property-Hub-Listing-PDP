@@ -911,23 +911,34 @@ async function fetchGlobalStats(notion) {
   };
 }
 
-async function fetchCountryListings(notion, countryNameEn) {
-  let results = [];
+// Cache the full Live-listings set per run so we don't make 11 round-trips
+// (one per country). Also dodges a Notion data-source-API quirk where
+// compound `and: [Hub Status, Country]` filters silently return 0 even
+// with the API version pinned — single-property filters work, compound
+// ones don't. Filter client-side instead.
+let _liveListingsCache = null;
+async function fetchAllLiveListings(notion) {
+  if (_liveListingsCache) return _liveListingsCache;
+  const results = [];
   let cursor;
   do {
     const res = await notion.databases.query({
       database_id: LLP_DB_ID,
-      filter: {
-        and: [
-          { property: 'Hub Status', select: { equals: 'Live' } },
-          { property: 'Country', select: { equals: countryNameEn } },
-        ],
-      },
+      filter: { property: 'Hub Status', select: { equals: 'Live' } },
       start_cursor: cursor,
+      page_size: 100,
     });
-    results = results.concat(res.results);
+    results.push(...res.results);
     cursor = res.has_more ? res.next_cursor : undefined;
   } while (cursor);
+  _liveListingsCache = results;
+  console.log(`fetchAllLiveListings: ${results.length} Live row(s) cached for the run`);
+  return results;
+}
+
+async function fetchCountryListings(notion, countryNameEn) {
+  const all = await fetchAllLiveListings(notion);
+  const results = all.filter(p => p.properties.Country?.select?.name === countryNameEn);
 
   const rt = (prop) => {
     if (!prop) return '';
