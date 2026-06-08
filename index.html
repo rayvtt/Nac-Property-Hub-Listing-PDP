@@ -26,17 +26,19 @@
     .sub { font-family:var(--ff-mono); font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-top:.5rem; }
 
     /* Instagram grid */
-    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; }
-    @media(max-width:600px) { .grid { grid-template-columns:repeat(2,1fr); } }
+    .grid { display:grid; grid-template-columns:repeat(5,1fr); gap:3px; }
+    @media(max-width:1280px) { .grid { grid-template-columns:repeat(4,1fr); } }
+    @media(max-width:980px)  { .grid { grid-template-columns:repeat(3,1fr); } }
+    @media(max-width:600px)  { .grid { grid-template-columns:repeat(2,1fr); } }
 
     .tile { position:relative; aspect-ratio:1; overflow:hidden; background:var(--display); cursor:pointer; }
     .tile-img { position:absolute; inset:0; background-size:cover; background-position:center; transition:transform .5s ease; }
     .tile:hover .tile-img { transform:scale(1.06); }
     .tile::after { content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(5,8,20,.88) 0%, rgba(5,8,20,.35) 55%, rgba(5,8,20,.05) 100%); pointer-events:none; }
 
-    .tile-info { position:absolute; bottom:3.2rem; left:1rem; right:1rem; z-index:1; }
-    .tile-country { display:block; font-family:var(--ff-mono); font-size:.58rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:.35rem; }
-    .tile-name { display:block; font-family:var(--ff-display); font-size:1.15rem; font-weight:500; color:#fff; line-height:1.2; }
+    .tile-info { position:absolute; bottom:3rem; left:.85rem; right:.85rem; z-index:1; }
+    .tile-country { display:block; font-family:var(--ff-mono); font-size:.55rem; letter-spacing:.13em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:.3rem; }
+    .tile-name { display:block; font-family:var(--ff-display); font-size:1.02rem; font-weight:500; color:#fff; line-height:1.18; }
     .tile-stats { display:block; font-family:var(--ff-mono); font-size:.5rem; color:rgba(255,255,255,.38); margin-top:.45rem; letter-spacing:.08em; min-height:.65rem; }
 
     .tile-btns { position:absolute; bottom:.75rem; left:1rem; right:1rem; z-index:1; display:flex; gap:.4rem; }
