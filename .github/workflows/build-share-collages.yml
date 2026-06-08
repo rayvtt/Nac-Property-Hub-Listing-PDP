@@ -36,8 +36,10 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y imagemagick fonts-noto-mono fonts-dejavu-core
       - name: Fetch Property Hub display font (Cormorant Garamond Italic)
         run: |
-          curl -sSL -o /tmp/CormorantGaramond-Italic.ttf \
-            https://raw.githubusercontent.com/google/fonts/main/ofl/cormorantgaramond/CormorantGaramond-Italic.ttf
+          # Google Fonts ships Cormorant Garamond as a variable font now.
+          curl -fSL -o /tmp/CormorantGaramond-Italic.ttf \
+            'https://raw.githubusercontent.com/google/fonts/main/ofl/cormorantgaramond/CormorantGaramond-Italic%5Bwght%5D.ttf'
+          ls -l /tmp/CormorantGaramond-Italic.ttf
           echo "DISPLAY_FONT=/tmp/CormorantGaramond-Italic.ttf" >> "$GITHUB_ENV"
       - uses: actions/setup-node@v4
         with:

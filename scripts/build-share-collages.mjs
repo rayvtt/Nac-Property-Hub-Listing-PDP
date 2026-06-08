@@ -45,7 +45,9 @@ const convert = (args) => execFileSync(IM7 ? 'magick' : 'convert', IM7 ? args : 
 const montage = (args) => execFileSync(IM7 ? 'magick' : 'montage', IM7 ? ['montage', ...args] : args, { stdio: 'pipe' });
 
 const NAVY = '#0F1A36';
-const firstFont = (cands, fallback) => cands.find((f) => f && fs.existsSync(f)) || fallback;
+// Accept a font only if it's a real file (a 404 page saved by curl is tiny).
+const validFont = (f) => { try { return f && fs.statSync(f).size > 5000; } catch { return false; } };
+const firstFont = (cands, fallback) => cands.find(validFont) || fallback;
 // Tagline = the Property Hub display face, Cormorant Garamond Italic (downloaded
 // in CI; covers Vietnamese). Falls back to Noto/DejaVu serif if unavailable.
 const DISPLAY = firstFont([
