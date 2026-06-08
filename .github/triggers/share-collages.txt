@@ -1,2 +1,2 @@
-replace
-2026-06-08 — sweep: write content-hash ?v= cache-bust into Share Image URL so social previews refresh.
+only: one-central-saigon
+2026-06-08 — demo: render Notion 📣 Share Title VI/EN on the collage band.
