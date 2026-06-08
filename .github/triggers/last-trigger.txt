@@ -1,1 +1,2 @@
 2026-06-08 chat: upgrade share buttons to footer-style icons (v3) hub-wide + propagate to WP — sync-notion
+2026-06-08 chat: per-city §04 market cards (PR #314) — populate 📊 Market Stats JSON for Phuket/Dubai/Kuala Lumpur/Bangkok/Paphos/Johor Bahru listings (were showing the generic 33M+/23%/80–95% default); sync-notion then renders the per-city cards — set-market-stats:write
