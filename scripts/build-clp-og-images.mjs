@@ -93,6 +93,7 @@ function extractModel(html, slug) {
     || ($('title').text().split('·')[0] || '').trim();
 
   const taglineEn = stripInline($('.cl-hero-tag [data-en]').first().html() || '');
+  const taglineVi = stripInline($('.cl-hero-tag [data-vi]').first().html() || '');
 
   // Top-N listings — collection cards are emitted by sync-notion-clp in
   // price-descending order, so just grab the first three.
@@ -126,7 +127,7 @@ function extractModel(html, slug) {
     .map((_, el) => $(el).text().trim()).get();
 
   return {
-    slug, code, nameVi, nameEn, taglineEn,
+    slug, code, nameVi, nameEn, taglineEn, taglineVi,
     heroes,
     viewBox, coastPath, pins, cityNames,
     listings: plaqueVals[0] || '',
@@ -186,40 +187,58 @@ const COMMON_DEFS = `
 // Layout helpers — text panel on the right (shared by both variants)
 // ──────────────────────────────────────────────────────────────────────────
 function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
-  const taglineLines = wrapText(m.taglineEn || '', 28).slice(0, 3);
+  // Bilingual taglines — one row per language. Caps each at 2 wrapped lines
+  // so the right panel doesn't run out of vertical room.
+  const viLines = wrapText(m.taglineVi || '', 32).slice(0, 2);
+  const enLines = wrapText(m.taglineEn || '', 32).slice(0, 2);
+
   const statParts = [];
   if (m.listings) statParts.push(`${m.listings} ${m.listings === '1' ? 'listing' : 'listings'}`);
   if (m.cities)   statParts.push(`${m.cities} ${m.cities === '1' ? 'city' : 'cities'}`);
   if (m.entry)    statParts.push(`from ${m.entry.replace(/\s+/g, '')}`);
   const statLine = statParts.join('  ·  ');
 
-  const showVi = m.nameVi && m.nameVi.toLowerCase() !== m.nameEn.toLowerCase();
-  // Without a wordmark line, push the country name down so it sits roughly
-  // in the visual centre of the right panel.
-  const nameY = 210;
-  const viY = nameY + 44;
-  const taglineStartY = showVi ? viY + 60 : nameY + 64;
+  // VI as primary display name (Georgia italic, NAC gold, 74pt). EN subtitle
+  // below for global readability. Show the EN subtitle only when it differs
+  // from the VI name (e.g. "Singapore" / "Singapore" → suppress).
+  const showEnSub = m.nameEn && m.nameEn.toLowerCase() !== (m.nameVi || '').toLowerCase();
+  const primaryName = m.nameVi || m.nameEn;
+  const nameY = 200;
+  const subY = nameY + 36;
+
+  // Tagline blocks: VI first (matches the big VI country name), EN below.
+  const viY = (showEnSub ? subY : nameY) + 48;
+  const lineH = 30;
+  const viBlockH = viLines.length * lineH;
+  const enY = viY + viBlockH + 22;
 
   return `
-  <!-- Country name (EN — display) -->
+  <!-- Country name — VI is primary -->
   <text x="${rightX}" y="${nameY}" font-family="Georgia, 'Times New Roman', serif"
         font-size="74" font-style="italic" font-weight="500" fill="${GOLD}"
         letter-spacing="-1">
-    ${esc(m.nameEn)}
+    ${esc(primaryName)}
   </text>
 
-  ${showVi ? `
-  <text x="${rightX}" y="${viY}" font-family="Georgia, serif"
-        font-size="20" font-style="italic" fill="${GOLD_SOFT}"
-        letter-spacing="0.4" opacity="0.78">
-    ${esc(m.nameVi)}
+  ${showEnSub ? `
+  <text x="${rightX}" y="${subY}" font-family="ui-monospace, 'SF Mono', Menlo, monospace"
+        font-size="11" letter-spacing="4" fill="${GOLD_SOFT}" opacity="0.7">
+    ${esc(m.nameEn.toUpperCase())}
   </text>` : ''}
 
-  <!-- Tagline -->
-  ${taglineLines.map((line, i) => `
-  <text x="${rightX}" y="${taglineStartY + i * 32}" font-family="Georgia, serif"
-        font-size="22" font-style="italic" fill="${CREAM}"
+  <!-- VI tagline -->
+  ${viLines.map((line, i) => `
+  <text x="${rightX}" y="${viY + i * lineH}" font-family="Georgia, serif"
+        font-size="20" font-style="italic" fill="${CREAM}"
         letter-spacing="0.2">
+    ${esc(line)}
+  </text>`).join('')}
+
+  <!-- EN tagline (muted, sits below VI) -->
+  ${enLines.map((line, i) => `
+  <text x="${rightX}" y="${enY + i * lineH}" font-family="Georgia, serif"
+        font-size="20" font-style="italic" fill="${GOLD_SOFT}"
+        letter-spacing="0.2" opacity="0.78">
     ${esc(line)}
   </text>`).join('')}
 
