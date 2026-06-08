@@ -18,6 +18,7 @@
  */
 import { Client } from '@notionhq/client';
 import { execFileSync } from 'node:child_process';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -239,9 +240,16 @@ async function main() {
       const stats = readStats(slug);
       const collage = buildCollage(local, work, tagline, stats);
       const cfUrl = await uploadCF(collage, `${slug}-share`);
-      await notion.pages.update({ page_id: pg.id, properties: { 'Share Image URL': { url: cfUrl } } });
+      // Cache-bust: append a content hash of the collage as ?v=. CF ignores the
+      // query (serves the same image), but Facebook/LinkedIn cache OG previews by
+      // URL — a new hash = a URL they've never seen = fresh unfurl. The hash is
+      // deterministic from the bytes, so an unchanged collage keeps the same URL
+      // (no needless churn); a redesign yields a new one automatically.
+      const ver = crypto.createHash('md5').update(fs.readFileSync(collage)).digest('hex').slice(0, 8);
+      const verUrl = cfUrl + (cfUrl.includes('?') ? '&' : '?') + 'v=' + ver;
+      await notion.pages.update({ page_id: pg.id, properties: { 'Share Image URL': { url: verUrl } } });
       const hasTag = tagline.vi || tagline.en;
-      console.log(`  ✓ ${slug}: ${imgs.length} photos${hasTag ? ' + tagline' : ''} → ${cfUrl}`);
+      console.log(`  ✓ ${slug}: ${imgs.length} photos${hasTag ? ' + tagline' : ''} → ${verUrl}`);
       done++;
     } catch (e) {
       console.log(`  ✖ ${slug}: ${e.message}`);
