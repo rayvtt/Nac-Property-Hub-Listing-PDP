@@ -244,22 +244,22 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
 
   ${showEnSub ? `
   <text x="${rightX}" y="${subY}" font-family="${FF_MONO}"
-        font-size="11" letter-spacing="4" fill="${GOLD_SOFT}" opacity="0.7">
+        font-size="12" letter-spacing="4" fill="${CREAM}" opacity="0.78">
     ${esc(m.nameEn.toUpperCase())}
   </text>` : ''}
 
   <!-- VI tagline -->
   ${viLines.map((line, i) => `
   <text x="${rightX}" y="${viY + i * lineH}" font-family="${FF_DISPLAY}"
-        font-size="20" font-style="italic" fill="${CREAM}"
-        letter-spacing="0.2">
+        font-size="22" font-style="italic" fill="${CREAM}"
+        letter-spacing="0.2" font-weight="500">
     ${esc(line)}
   </text>`).join('')}
 
-  <!-- EN tagline (muted, sits below VI) -->
+  <!-- EN tagline (sits below VI, slightly muted but still high-contrast) -->
   ${enLines.map((line, i) => `
   <text x="${rightX}" y="${enY + i * lineH}" font-family="${FF_DISPLAY}"
-        font-size="20" font-style="italic" fill="${GOLD_SOFT}"
+        font-size="22" font-style="italic" fill="${CREAM}"
         letter-spacing="0.2" opacity="0.78">
     ${esc(line)}
   </text>`).join('')}
@@ -267,12 +267,12 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   <!-- Stat line + property-hub badge (bottom of right panel) -->
   ${statLine ? `
   <text x="${rightX}" y="${H - 96}" font-family="${FF_MONO}"
-        font-size="13" letter-spacing="2.4" fill="${GOLD_SOFT}">
+        font-size="13" letter-spacing="2.4" fill="${CREAM}" opacity="0.88">
     ${esc(statLine)}
   </text>` : ''}
 
   <text x="${rightX}" y="${H - 64}" font-family="${FF_MONO}"
-        font-size="11" letter-spacing="3.5" fill="${GOLD_SOFT}" opacity="0.55">
+        font-size="11" letter-spacing="3.5" fill="${GOLD_SOFT}" opacity="0.85">
     ${esc(panelTitle)} · ${esc(m.code)} · 2026
   </text>`;
 }
@@ -315,14 +315,14 @@ function commonChrome() {
 
   <!-- Bottom hairline + canonical URL -->
   <line x1="40" y1="${H - 34}" x2="${W - 40}" y2="${H - 34}"
-        stroke="${GOLD}" stroke-width="0.5" opacity="0.3"/>
+        stroke="${GOLD}" stroke-width="0.5" opacity="0.5"/>
   <text x="40" y="${H - 14}" font-family="${FF_MONO}"
-        font-size="10" letter-spacing="2.5" fill="${GOLD_SOFT}" opacity="0.55">
+        font-size="11" letter-spacing="2.5" fill="${CREAM}" opacity="0.75">
     NOMADASSETCOLLECTIVE.COM
   </text>
   <text x="${W - 40}" y="${H - 14}" text-anchor="end"
         font-family="${FF_MONO}"
-        font-size="10" letter-spacing="2.5" fill="${GOLD_SOFT}" opacity="0.55">
+        font-size="11" letter-spacing="2.5" fill="${CREAM}" opacity="0.75">
     PROPERTY HUB
   </text>`;
 }
@@ -389,6 +389,11 @@ function buildHeroesSvg(m, heroDataUris) {
   <!-- Blurred atlas backdrop underneath the right text panel -->
   ${rightPanelAtlasBackdrop(m)}
 
+  <!-- Subtle contrast veil under the right panel so text stays legible
+       even where the atlas backdrop sits behind it -->
+  <rect x="720" y="0" width="${W - 720}" height="${H}"
+        fill="${NAVY_DEEP}" opacity="0.32"/>
+
   <!-- RIGHT PANEL — text (logo + name + tagline + stats) -->
   ${rightTextPanel(m, 752)}
 </svg>`;
@@ -434,6 +439,10 @@ function buildAtlasSvg(m) {
 
   <!-- Blurred atlas backdrop underneath the right text panel -->
   ${rightPanelAtlasBackdrop(m)}
+
+  <!-- Subtle contrast veil under the right panel -->
+  <rect x="720" y="0" width="${W - 720}" height="${H}"
+        fill="${NAVY_DEEP}" opacity="0.32"/>
 
   ${rightTextPanel(m, 752)}
 </svg>`;
