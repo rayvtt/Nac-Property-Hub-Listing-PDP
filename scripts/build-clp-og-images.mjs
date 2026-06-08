@@ -68,6 +68,17 @@ const stripInline = (s) => String(s ?? '')
   .replace(/<\/?(?:strong|em|b|i)\b[^>]*>/gi, '')
   .replace(/\s+/g, ' ').trim();
 
+// CLP taglines wrap a tight headline phrase in <strong>…</strong> followed by
+// an em-dash and supporting copy ("<strong>Asia's golden coast</strong> —
+// branded residences from JW Marriott…"). On the OG card we only want the
+// punchy headline — the rest is too long for the right panel anyway. Fall
+// back to the full text if no <strong> wrapper is found.
+function extractHeadline(html) {
+  if (!html) return '';
+  const m = String(html).match(/<strong[^>]*>([\s\S]*?)<\/strong>/i);
+  return stripInline(m ? m[1] : html);
+}
+
 function wrapText(text, maxChars) {
   const words = text.split(' ');
   const lines = [];
@@ -98,8 +109,8 @@ function extractModel(html, slug) {
     || $('.cl-hero-name [data-en]').first().text().trim()
     || ($('title').text().split('·')[0] || '').trim();
 
-  const taglineEn = stripInline($('.cl-hero-tag [data-en]').first().html() || '');
-  const taglineVi = stripInline($('.cl-hero-tag [data-vi]').first().html() || '');
+  const taglineEn = extractHeadline($('.cl-hero-tag [data-en]').first().html() || '');
+  const taglineVi = extractHeadline($('.cl-hero-tag [data-vi]').first().html() || '');
 
   // Pool of candidate listings (top-N by price, the order sync-notion-clp emits
   // collection cards). Grab up to 8 so buildOne can fall back to the next
