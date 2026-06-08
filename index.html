@@ -264,6 +264,24 @@
       <h2>Listing Pages</h2>
       <span class="count" id="listing-count">12 listings</span>
     </div>
+    <!-- LISTING FILTER (self-contained; outside the INDEX_CARDS markers so rebuilds keep it) -->
+    <style>
+      .lp-filter{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 20px}
+      .lp-search{flex:0 0 auto;min-width:250px;font:inherit;font-size:14px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text)}
+      .lp-search:focus{outline:none;border-color:var(--orange)}
+      .lp-countries{display:flex;flex-wrap:wrap;gap:6px}
+      .lp-chip{font:inherit;font-size:12.5px;padding:6px 12px;border:1px solid var(--line);border-radius:20px;background:var(--surface);color:var(--display);cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+      .lp-chip:hover{border-color:var(--orange)}
+      .lp-chip.on{background:var(--display);color:#fff;border-color:var(--display)}
+      .lp-chip .n{opacity:.55;margin-left:5px;font-variant-numeric:tabular-nums}
+      .lp-empty{display:none;padding:34px 10px;text-align:center;color:var(--muted);font-size:14px}
+      .lp-empty.show{display:block}
+    </style>
+    <div class="lp-filter" id="lp-filter">
+      <input class="lp-search" id="lp-search" type="search" placeholder="🔍 Search a listing by name…" autocomplete="off" aria-label="Search listings">
+      <div class="lp-countries" id="lp-countries"></div>
+    </div>
+    <p class="lp-empty" id="lp-empty">No listings match — try another name or country.</p>
     <div class="grid">
       <!-- INDEX_CARDS_START — rebuilt by scripts/update-index.mjs from Notion Live rows -->
       <div class="tile" data-slug="one-central-saigon">
@@ -1743,5 +1761,46 @@
 </div>
 <script>document.addEventListener('keydown',function(e){if(e.key==='Escape'){var o=document.getElementById('nac-ps-ov');if(o)o.classList.remove('open');}});</script>
 <!-- ===== /NAC personalisation-status pop-up ===== -->
+<!-- ===== Listing filter (country + name search) ===== -->
+<script>
+  (function(){
+    var grid=document.querySelector('.grid'); if(!grid) return;
+    var tiles=[].slice.call(grid.querySelectorAll('.tile'));
+    var search=document.getElementById('lp-search');
+    var chipsBox=document.getElementById('lp-countries');
+    var countEl=document.getElementById('listing-count');
+    var emptyEl=document.getElementById('lp-empty');
+    if(!tiles.length||!search||!chipsBox) return;
+    var counts={}; var order=[];
+    tiles.forEach(function(t){
+      var c=((t.querySelector('.tile-country')||{}).textContent||'').trim();
+      t._c=c;
+      t._n=(((t.querySelector('.tile-name')||{}).textContent||'')+' '+(t.getAttribute('data-slug')||'')).toLowerCase();
+      if(c){ if(!(c in counts)){counts[c]=0;order.push(c);} counts[c]++; }
+    });
+    order.sort();
+    var active='all';
+    function mkChip(label,val,n){
+      var b=document.createElement('button'); b.className='lp-chip'; b.dataset.val=val;
+      b.innerHTML=label+'<span class="n">'+n+'</span>';
+      b.onclick=function(){active=val;render();};
+      return b;
+    }
+    chipsBox.appendChild(mkChip('All','all',tiles.length));
+    order.forEach(function(c){ chipsBox.appendChild(mkChip(c,c,counts[c])); });
+    function render(){
+      var q=(search.value||'').toLowerCase().trim(), shown=0;
+      tiles.forEach(function(t){
+        var ok=(active==='all'||t._c===active)&&(!q||t._n.indexOf(q)>-1);
+        t.style.display=ok?'':'none'; if(ok)shown++;
+      });
+      [].forEach.call(chipsBox.children,function(b){ b.classList.toggle('on',b.dataset.val===active); });
+      if(countEl) countEl.textContent=shown+(shown===1?' listing':' listings');
+      if(emptyEl) emptyEl.classList.toggle('show',shown===0);
+    }
+    search.addEventListener('input',render);
+    render();
+  })();
+</script>
 </body>
 </html>
