@@ -1,2 +1,3 @@
 replace
-2026-06-08 — cover backfill (after Notion API-version pin fix).
+only: damac-safa-gate
+2026-06-08 chat: repaint Safa Gate share collage with updated 📣 Share Title EN/VI
