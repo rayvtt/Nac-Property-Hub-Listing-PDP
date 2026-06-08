@@ -92,6 +92,19 @@ function wrapText(text, maxChars) {
   return lines;
 }
 
+// Pick the largest font size at which a single-line tagline fits inside a
+// width budget. Estimates char width as `size * factor`; Cormorant Garamond
+// italic averages ~0.48em per glyph. Capped at `baseSize`, floored at `minSize`
+// so very long taglines stay legible (no 6pt micro-print).
+function fitSingleLineFontSize(text, maxWidth, baseSize = 28, minSize = 18, charFactor = 0.48) {
+  if (!text) return baseSize;
+  const chars = text.length;
+  const wAtBase = chars * baseSize * charFactor;
+  if (wAtBase <= maxWidth) return baseSize;
+  const fitted = Math.floor(maxWidth / (chars * charFactor));
+  return Math.max(minSize, fitted);
+}
+
 // Pull a background-image URL out of a `style="background-image:url('…')"` blob.
 function extractBgUrl(styleAttr) {
   if (!styleAttr) return '';
@@ -234,10 +247,12 @@ const COMMON_DEFS = `
 // Layout helpers — text panel on the right (shared by both variants)
 // ──────────────────────────────────────────────────────────────────────────
 function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
-  // Bilingual taglines — one row per language. Caps each at 2 wrapped lines
-  // so the right panel doesn't run out of vertical room.
-  const viLines = wrapText(m.taglineVi || '', 24).slice(0, 2);
-  const enLines = wrapText(m.taglineEn || '', 24).slice(0, 2);
+  // Bilingual taglines — strictly one row per language. Auto-shrink the font
+  // size if a headline is too long for the right panel width (~412px usable).
+  // No wrapping, never a hanging word.
+  const TAGLINE_W = W - rightX - 36;
+  const viSize = fitSingleLineFontSize(m.taglineVi || '', TAGLINE_W);
+  const enSize = fitSingleLineFontSize(m.taglineEn || '', TAGLINE_W);
 
   const statParts = [];
   if (m.listings) statParts.push(`${m.listings} ${m.listings === '1' ? 'listing' : 'listings'}`);
@@ -258,11 +273,10 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   const nameY = logoY + LOGO_SIZE + 64;
   const subY = nameY + 36;
 
-  // Tagline blocks: VI first (matches the big VI country name), EN below.
-  const viY = (showEnSub ? subY : nameY) + 56;
-  const lineH = 38;
-  const viBlockH = viLines.length * lineH;
-  const enY = viY + viBlockH + 24;
+  // Tagline rows: VI first (matches the big VI country name), EN below.
+  const viY = (showEnSub ? subY : nameY) + 64;
+  const gapVE = Math.max(viSize, enSize) + 18;
+  const enY = viY + gapVE;
 
   return `
   <!-- NAC logo (above country name, whitened via #whiten filter) -->
@@ -281,21 +295,21 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
     ${esc(m.nameEn.toUpperCase())}
   </text>` : ''}
 
-  <!-- VI tagline -->
-  ${viLines.map((line, i) => `
-  <text x="${rightX}" y="${viY + i * lineH}" font-family="${FF_DISPLAY}"
-        font-size="28" font-style="italic" fill="${CREAM}"
+  <!-- VI tagline — single line, auto-sized to fit -->
+  ${m.taglineVi ? `
+  <text x="${rightX}" y="${viY}" font-family="${FF_DISPLAY}"
+        font-size="${viSize}" font-style="italic" fill="${CREAM}"
         letter-spacing="0.2" font-weight="500">
-    ${esc(line)}
-  </text>`).join('')}
+    ${esc(m.taglineVi)}
+  </text>` : ''}
 
-  <!-- EN tagline (sits below VI, slightly muted but still high-contrast) -->
-  ${enLines.map((line, i) => `
-  <text x="${rightX}" y="${enY + i * lineH}" font-family="${FF_DISPLAY}"
-        font-size="28" font-style="italic" fill="${CREAM}"
+  <!-- EN tagline — single line, auto-sized to fit -->
+  ${m.taglineEn ? `
+  <text x="${rightX}" y="${enY}" font-family="${FF_DISPLAY}"
+        font-size="${enSize}" font-style="italic" fill="${CREAM}"
         letter-spacing="0.2" opacity="0.82">
-    ${esc(line)}
-  </text>`).join('')}
+    ${esc(m.taglineEn)}
+  </text>` : ''}
 
   <!-- Stat line + property-hub badge (bottom of right panel) -->
   ${statLine ? `
