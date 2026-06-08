@@ -1,2 +1,2 @@
 replace
-2026-06-08 — sweep: backfill Notion page covers with the share collage on every listing.
+2026-06-08 — re-fire: backfill Notion page covers (prior run got an empty Notion query).
