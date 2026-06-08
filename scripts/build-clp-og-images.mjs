@@ -203,8 +203,8 @@ const COMMON_DEFS = `
 function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   // Bilingual taglines — one row per language. Caps each at 2 wrapped lines
   // so the right panel doesn't run out of vertical room.
-  const viLines = wrapText(m.taglineVi || '', 32).slice(0, 2);
-  const enLines = wrapText(m.taglineEn || '', 32).slice(0, 2);
+  const viLines = wrapText(m.taglineVi || '', 24).slice(0, 2);
+  const enLines = wrapText(m.taglineEn || '', 24).slice(0, 2);
 
   const statParts = [];
   if (m.listings) statParts.push(`${m.listings} ${m.listings === '1' ? 'listing' : 'listings'}`);
@@ -226,10 +226,10 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   const subY = nameY + 36;
 
   // Tagline blocks: VI first (matches the big VI country name), EN below.
-  const viY = (showEnSub ? subY : nameY) + 48;
-  const lineH = 30;
+  const viY = (showEnSub ? subY : nameY) + 56;
+  const lineH = 38;
   const viBlockH = viLines.length * lineH;
-  const enY = viY + viBlockH + 22;
+  const enY = viY + viBlockH + 24;
 
   return `
   <!-- NAC logo (above country name, whitened via #whiten filter) -->
@@ -244,14 +244,14 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
 
   ${showEnSub ? `
   <text x="${rightX}" y="${subY}" font-family="${FF_MONO}"
-        font-size="12" letter-spacing="4" fill="${CREAM}" opacity="0.78">
+        font-size="14" letter-spacing="4" fill="${CREAM}" opacity="0.82">
     ${esc(m.nameEn.toUpperCase())}
   </text>` : ''}
 
   <!-- VI tagline -->
   ${viLines.map((line, i) => `
   <text x="${rightX}" y="${viY + i * lineH}" font-family="${FF_DISPLAY}"
-        font-size="22" font-style="italic" fill="${CREAM}"
+        font-size="28" font-style="italic" fill="${CREAM}"
         letter-spacing="0.2" font-weight="500">
     ${esc(line)}
   </text>`).join('')}
@@ -259,20 +259,20 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   <!-- EN tagline (sits below VI, slightly muted but still high-contrast) -->
   ${enLines.map((line, i) => `
   <text x="${rightX}" y="${enY + i * lineH}" font-family="${FF_DISPLAY}"
-        font-size="22" font-style="italic" fill="${CREAM}"
-        letter-spacing="0.2" opacity="0.78">
+        font-size="28" font-style="italic" fill="${CREAM}"
+        letter-spacing="0.2" opacity="0.82">
     ${esc(line)}
   </text>`).join('')}
 
   <!-- Stat line + property-hub badge (bottom of right panel) -->
   ${statLine ? `
   <text x="${rightX}" y="${H - 96}" font-family="${FF_MONO}"
-        font-size="13" letter-spacing="2.4" fill="${CREAM}" opacity="0.88">
+        font-size="16" letter-spacing="2.4" fill="${CREAM}" opacity="0.9">
     ${esc(statLine)}
   </text>` : ''}
 
   <text x="${rightX}" y="${H - 64}" font-family="${FF_MONO}"
-        font-size="11" letter-spacing="3.5" fill="${GOLD_SOFT}" opacity="0.85">
+        font-size="13" letter-spacing="3.5" fill="${GOLD_SOFT}" opacity="0.88">
     ${esc(panelTitle)} · ${esc(m.code)} · 2026
   </text>`;
 }
