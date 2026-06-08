@@ -1,2 +1,2 @@
 replace
-2026-06-08 — full sweep: regenerate all collages with stripped first-clause VI+EN tagline, compact band, smaller chips.
+2026-06-08 — sweep: write content-hash ?v= cache-bust into Share Image URL so social previews refresh.
