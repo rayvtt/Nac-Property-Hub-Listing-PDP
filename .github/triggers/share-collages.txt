@@ -1,3 +1,3 @@
 replace
 only: one-central-saigon
-2026-06-08 c2 — pilot serif font + Giá vào/IRR/Live chips.
+2026-06-08 d — pilot serif + chips (Cormorant variable font fixed).
