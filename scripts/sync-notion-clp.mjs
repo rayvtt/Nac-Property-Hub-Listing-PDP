@@ -638,16 +638,8 @@ function applyModel(html, model, { globalStats } = {}) {
 
 // ─── Notion → model ─────────────────────────────────────────────────────────
 
-let _dumpedCountryRow = false;
 async function buildModelFromNotion(notion, countryRow) {
   const p = countryRow.properties;
-  if (!_dumpedCountryRow) {
-    _dumpedCountryRow = true;
-    console.log(`  Country DB row property keys: ${Object.keys(p).join(' · ')}`);
-    for (const key of ['Slug', 'Country Name EN', 'Country Name VI', 'Country Code']) {
-      console.log(`  Country DB[${JSON.stringify(key)}]: ${JSON.stringify(p[key])?.slice(0, 200)}`);
-    }
-  }
   const rt = (prop) => {
     if (!prop) return '';
     if (prop.title) return prop.title.map(t => t.plain_text).join('');
@@ -941,31 +933,12 @@ async function fetchAllLiveListings(notion) {
   } while (cursor);
   _liveListingsCache = results;
   console.log(`fetchAllLiveListings: ${results.length} Live row(s) cached for the run`);
-  // Diagnostic: dump the shape of the first row's Country property so we can
-  // see if Notion is returning a different schema than .select.name now.
-  if (results[0]) {
-    const sample = results[0].properties.Country;
-    console.log(`  sample Country property keys: ${Object.keys(sample || {}).join(', ')}`);
-    console.log(`  sample Country JSON: ${JSON.stringify(sample)?.slice(0, 200)}`);
-    const allCountries = new Set();
-    for (const p of results) {
-      const c = p.properties.Country;
-      const name = c?.select?.name || c?.status?.name || c?.rich_text?.[0]?.plain_text || c?.name;
-      if (name) allCountries.add(name);
-    }
-    console.log(`  distinct Country values in cache: ${[...allCountries].join(' · ') || '(none extracted)'}`);
-  }
   return results;
 }
 
 async function fetchCountryListings(notion, countryNameEn) {
   const all = await fetchAllLiveListings(notion);
-  console.log(`  fetchCountryListings(<${typeof countryNameEn}> "${countryNameEn}") against ${all.length} rows`);
-  const results = all.filter(p => {
-    const c = p.properties.Country;
-    const name = c?.select?.name || c?.status?.name || c?.rich_text?.[0]?.plain_text || c?.name;
-    return name === countryNameEn;
-  });
+  const results = all.filter(p => p.properties.Country?.select?.name === countryNameEn);
 
   const rt = (prop) => {
     if (!prop) return '';
@@ -979,26 +952,13 @@ async function fetchCountryListings(notion, countryNameEn) {
   const sel = (prop) => (prop && prop.select ? prop.select.name : null);
   const json = (prop) => { const t = rt(prop).trim(); if (!t) return []; try { return JSON.parse(t); } catch { return []; } };
 
-  console.log(`    Country match: ${results.length} row(s) before .slug filter`);
-  if (results.length && results[0]) {
-    const sampleProps = results[0].properties;
-    const allKeys = Object.keys(sampleProps);
-    console.log(`    sample LLP row property count: ${allKeys.length}`);
-    // Find ANY key whose lowercased name contains "slug" — Notion may have
-    // renamed/moved the slug field from "🔗 Slug" to something else.
-    const slugKeys = allKeys.filter(k => /slug/i.test(k));
-    console.log(`    keys matching /slug/i: ${slugKeys.map(k => JSON.stringify(k)).join(', ') || '(none)'}`);
-    for (const k of slugKeys) {
-      console.log(`    sample[${JSON.stringify(k)}] = ${JSON.stringify(sampleProps[k])?.slice(0, 200)}`);
-    }
-    // Also dump every key sorted, with char codes for any suspicious whitespace
-    console.log(`    full key list: ${allKeys.map(k => JSON.stringify(k)).join(' | ')}`);
-  }
-
   const mapped = results.map(page => {
     const p = page.properties;
     return {
-      slug: rt(p['🔗 Slug']),
+      // The Notion property was renamed/truncated from "🔗 Slug" to "🔗 Sl"
+      // upstream. Look up both keys so we cope with either name (and the
+      // fix survives if someone renames it back).
+      slug: rt(p['🔗 Slug']) || rt(p['🔗 Sl']),
       nameVi: rt(p['Name VI']) || rt(p['Property Name']),
       nameEn: rt(p['Property Name']),
       taglineVi: rt(p['🏷️ Tagline VI']),
@@ -1020,11 +980,7 @@ async function fetchCountryListings(notion, countryNameEn) {
       tags: ms(p['Tags']),
     };
   });
-  const final = mapped.filter(l => l.slug);
-  if (mapped.length && !final.length) {
-    console.log(`    .slug filter dropped all ${mapped.length} mapped rows — slugs read: ${mapped.slice(0,3).map(l => `"${l.slug}"`).join(' · ')}`);
-  }
-  return final;
+  return mapped.filter(l => l.slug);
 }
 
 // ─── per-country processing ─────────────────────────────────────────────────
