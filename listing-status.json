@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-08T09:51:23Z",
+  "generated": "2026-06-08T16:11:22Z",
   "reviewed": "2026-06-08",
-  "fingerprint": "5660a6d6688097c5",
+  "fingerprint": "3a1036c8abdcc4a8",
   "dims": [
     "id",
     "fin",
@@ -2345,7 +2345,7 @@
         {
           "name": "Botanica Foresta II — Phuket",
           "slug": "botanica-foresta-ii",
-          "thumb": "botanica-foresta-ii-hero",
+          "thumb": "9872f1b7-401d-45f1-0b93-7bc221254800",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2364,7 +2364,7 @@
         {
           "name": "Hythe by Botanica — Phuket",
           "slug": "hythe-by-botanica",
-          "thumb": "hythe-by-botanica-hero",
+          "thumb": "1f79b085-eca4-475f-0865-4478721b3100",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2574,7 +2574,7 @@
         {
           "name": "Botanica MontAzure — Phuket",
           "slug": "botanica-montazure",
-          "thumb": "botanica-montazure-hero",
+          "thumb": "a6a97b90-67de-474d-e652-e037b2610500",
           "st": {
             "id": "done",
             "fin": "done",
