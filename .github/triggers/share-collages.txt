@@ -1,2 +1,2 @@
 replace
-2026-06-08 — re-fire: backfill Notion page covers (prior run got an empty Notion query).
+2026-06-08 — cover backfill (after Notion API-version pin fix).
