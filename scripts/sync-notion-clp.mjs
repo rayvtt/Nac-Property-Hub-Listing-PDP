@@ -1039,7 +1039,7 @@ async function runLive() {
   const { Client } = await import('@notionhq/client');
   const TOKEN = process.env.NOTION_TOKEN;
   if (!TOKEN) { console.error('NOTION_TOKEN env var is required'); process.exit(1); }
-  const notion = new Client({ auth: TOKEN });
+  const notion = new Client({ auth: TOKEN, notionVersion: '2022-06-28' });
 
   // Auto-scaffold step: for any country with a Live LLP listing but no Country DB
   // row, create a Draft row with auto-fields + a structured body template.
