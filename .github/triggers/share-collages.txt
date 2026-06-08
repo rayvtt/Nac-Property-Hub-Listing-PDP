@@ -1,3 +1,2 @@
 replace
-only: damac-safa-gate
-2026-06-08 chat: repaint Safa Gate after restoring 🔗 Slug field name (was truncated to 🔗 Sl, which broke the slug lookup)
+2026-06-08 chat: full incremental collage sweep across all Live after 🔗 Slug field restored — repaints any listing stranded during the broken window (title edited but never repainted) and builds any missing collage
