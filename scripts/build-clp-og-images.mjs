@@ -249,10 +249,11 @@ const COMMON_DEFS = `
 function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   // Bilingual taglines — strictly one row per language. Auto-shrink the font
   // size if a headline is too long for the right panel width (~412px usable).
-  // No wrapping, never a hanging word.
+  // No wrapping, never a hanging word. Base bumped to 38pt with a 22pt floor
+  // so short headlines pop big on mobile previews (cards render ~300px wide).
   const TAGLINE_W = W - rightX - 36;
-  const viSize = fitSingleLineFontSize(m.taglineVi || '', TAGLINE_W);
-  const enSize = fitSingleLineFontSize(m.taglineEn || '', TAGLINE_W);
+  const viSize = fitSingleLineFontSize(m.taglineVi || '', TAGLINE_W, 38, 22);
+  const enSize = fitSingleLineFontSize(m.taglineEn || '', TAGLINE_W, 38, 22);
 
   const statParts = [];
   if (m.listings) statParts.push(`${m.listings} ${m.listings === '1' ? 'listing' : 'listings'}`);
@@ -270,12 +271,12 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   // the whole composition.
   const LOGO_SIZE = 56;
   const logoY = 32;
-  const nameY = logoY + LOGO_SIZE + 64;
-  const subY = nameY + 36;
+  const nameY = logoY + LOGO_SIZE + 76;
+  const subY = nameY + 40;
 
   // Tagline rows: VI first (matches the big VI country name), EN below.
-  const viY = (showEnSub ? subY : nameY) + 64;
-  const gapVE = Math.max(viSize, enSize) + 18;
+  const viY = (showEnSub ? subY : nameY) + 80;
+  const gapVE = Math.max(viSize, enSize) + 22;
   const enY = viY + gapVE;
 
   return `
@@ -284,14 +285,14 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
 
   <!-- Country name — VI is primary -->
   <text x="${rightX}" y="${nameY}" font-family="${FF_DISPLAY}"
-        font-size="74" font-style="italic" font-weight="500" fill="${GOLD}"
+        font-size="86" font-style="italic" font-weight="500" fill="${GOLD}"
         letter-spacing="-1">
     ${esc(primaryName)}
   </text>
 
   ${showEnSub ? `
   <text x="${rightX}" y="${subY}" font-family="${FF_MONO}"
-        font-size="14" letter-spacing="4" fill="${CREAM}" opacity="0.82">
+        font-size="17" letter-spacing="4" fill="${CREAM}" opacity="0.85">
     ${esc(m.nameEn.toUpperCase())}
   </text>` : ''}
 
@@ -313,13 +314,13 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
 
   <!-- Stat line + property-hub badge (bottom of right panel) -->
   ${statLine ? `
-  <text x="${rightX}" y="${H - 96}" font-family="${FF_MONO}"
-        font-size="16" letter-spacing="2.4" fill="${CREAM}" opacity="0.9">
+  <text x="${rightX}" y="${H - 100}" font-family="${FF_MONO}"
+        font-size="20" letter-spacing="2.4" fill="${CREAM}" opacity="0.92">
     ${esc(statLine)}
   </text>` : ''}
 
-  <text x="${rightX}" y="${H - 64}" font-family="${FF_MONO}"
-        font-size="13" letter-spacing="3.5" fill="${GOLD_SOFT}" opacity="0.88">
+  <text x="${rightX}" y="${H - 66}" font-family="${FF_MONO}"
+        font-size="16" letter-spacing="3.5" fill="${GOLD_SOFT}" opacity="0.9">
     ${esc(panelTitle)} · ${esc(m.code)} · 2026
   </text>`;
 }
@@ -340,15 +341,15 @@ function commonChrome() {
   <rect width="${W}" height="${H}" fill="url(#grain)" opacity="0.5"/>
 
   <!-- Bottom hairline + canonical URL -->
-  <line x1="40" y1="${H - 34}" x2="${W - 40}" y2="${H - 34}"
+  <line x1="40" y1="${H - 38}" x2="${W - 40}" y2="${H - 38}"
         stroke="${GOLD}" stroke-width="0.5" opacity="0.5"/>
   <text x="40" y="${H - 14}" font-family="${FF_MONO}"
-        font-size="11" letter-spacing="2.5" fill="${CREAM}" opacity="0.75">
+        font-size="14" letter-spacing="2.5" fill="${CREAM}" opacity="0.8">
     NOMADASSETCOLLECTIVE.COM
   </text>
   <text x="${W - 40}" y="${H - 14}" text-anchor="end"
         font-family="${FF_MONO}"
-        font-size="11" letter-spacing="2.5" fill="${CREAM}" opacity="0.75">
+        font-size="14" letter-spacing="2.5" fill="${CREAM}" opacity="0.8">
     PROPERTY HUB
   </text>`;
 }
