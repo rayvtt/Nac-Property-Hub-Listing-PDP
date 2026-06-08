@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-07T21:54:00Z",
-  "reviewed": "2026-06-07",
-  "fingerprint": "53c2d45c36eb5993",
+  "generated": "2026-06-08T09:07:54Z",
+  "reviewed": "2026-06-08",
+  "fingerprint": "5033e166949813cc",
   "dims": [
     "id",
     "fin",
@@ -2886,7 +2886,7 @@
         {
           "name": "Centrix The Station KLCC — Kuala Lumpur (MM2H)",
           "slug": "centrix-the-station-klcc",
-          "thumb": "74eef13c-1ff3-417a-f1cf-b5b0d727c700",
+          "thumb": "e43ab661-5cbf-487c-d513-0823541d9d00",
           "st": {
             "id": "done",
             "fin": "done",
