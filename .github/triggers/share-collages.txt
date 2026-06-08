@@ -1,2 +1,2 @@
-only: one-central-saigon
-2026-06-08 — verify 📣 Share Title renders + CF replace overwrites the image.
+replace
+2026-06-08 — sweep: backfill Notion page covers with the share collage on every listing.
