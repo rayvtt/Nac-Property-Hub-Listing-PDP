@@ -1,3 +1,2 @@
 replace
-only: one-central-saigon
-2026-06-08 b — regenerate with Noto Sans Mono so "Bến Thành" renders.
+2026-06-08 — full sweep: regenerate every listing's share collage with the tagline band (typewriter mono + blurred highlight, Noto for Vietnamese).
