@@ -6,3 +6,4 @@
 2026-06-08T15:11:50Z — URGENT: force WP push (PDP + CLP) after the slug-key fix repopulated all listings
 2026-06-08T15:43:36Z — urgent WP push after OG card final pass (single-line auto-fit taglines)
 2026-06-08T16:05:08Z — refresh GH Pages index after slug-key + OG-bg fix
+2026-06-08T19:47Z — heal sweep after restoring 🔗 Slug field (was truncated to 🔗 Sl, breaking the slug lookup): fire create-pdp + sync-notion to scaffold any stranded PDP and patch any unsynced content
