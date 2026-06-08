@@ -9,7 +9,7 @@ import { Client } from '@notionhq/client';
 const NOTION_TOKEN = process.env.NOTION_TOKEN;
 const DB = process.env.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9';
 if (!NOTION_TOKEN) { console.error('NOTION_TOKEN required'); process.exit(1); }
-const notion = new Client({ auth: NOTION_TOKEN });
+const notion = new Client({ auth: NOTION_TOKEN, notionVersion: '2022-06-28' });
 
 const rt = (p) => { if (!p) return ''; if (p.title) return p.title.map(t => t.plain_text).join(''); if (p.rich_text) return p.rich_text.map(t => t.plain_text).join(''); return ''; };
 const json = (p) => { try { return JSON.parse(rt(p) || '[]'); } catch { return []; } };

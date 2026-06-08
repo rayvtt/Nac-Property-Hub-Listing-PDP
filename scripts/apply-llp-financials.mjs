@@ -33,7 +33,7 @@ const ONLY = (process.env.ONLY || '').split(',').map((s) => s.trim()).filter(Boo
 
 if (!TOKEN) { console.error('NOTION_TOKEN env var is required'); process.exit(1); }
 
-const notion = new Client({ auth: TOKEN });
+const notion = new Client({ auth: TOKEN, notionVersion: '2022-06-28' });
 const DATA = JSON.parse(fs.readFileSync(path.join(__dirname, 'au-financials.json'), 'utf8'));
 const richText = (p) => (p?.rich_text || p?.title || []).map((t) => t.plain_text).join('').trim();
 

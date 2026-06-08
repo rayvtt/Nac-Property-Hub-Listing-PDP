@@ -17,7 +17,7 @@ import { Client } from '@notionhq/client';
 const TOKEN = process.env.NOTION_TOKEN;
 const DATABASE_ID = process.env.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9';
 if (!TOKEN) { console.error('NOTION_TOKEN env var is required'); process.exit(1); }
-const notion = new Client({ auth: TOKEN });
+const notion = new Client({ auth: TOKEN, notionVersion: '2022-06-28' });
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // Leading run of emoji (pictographic / flags), each optionally followed by a

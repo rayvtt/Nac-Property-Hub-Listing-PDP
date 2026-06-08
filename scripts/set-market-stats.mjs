@@ -17,7 +17,7 @@ const NOTION_TOKEN = process.env.NOTION_TOKEN;
 const DB = process.env.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9';
 const DRY_RUN = /^(1|true|yes)$/i.test(process.env.DRY_RUN || '');
 if (!NOTION_TOKEN) { console.error('NOTION_TOKEN env var required'); process.exit(1); }
-const notion = new Client({ auth: NOTION_TOKEN });
+const notion = new Client({ auth: NOTION_TOKEN, notionVersion: '2022-06-28' });
 
 // ── Per-metro stat sets (4 × { val, vi, en }) — real, sourced 2024 figures ───
 const CITY_STATS = {

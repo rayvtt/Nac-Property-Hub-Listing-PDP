@@ -31,7 +31,7 @@ if (!TOKEN) {
   process.exit(1);
 }
 
-const notion = new Client({ auth: TOKEN });
+const notion = new Client({ auth: TOKEN, notionVersion: '2022-06-28' });
 
 // ─── Notion → JS extraction ─────────────────────────────────────────────────
 

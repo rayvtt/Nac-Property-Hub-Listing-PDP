@@ -28,7 +28,7 @@ const NOTION_COUNTRY_DATABASE_ID = process.env.NOTION_COUNTRY_DATABASE_ID || 'a0
 
 if (!NOTION_TOKEN) { console.error('NOTION_TOKEN env var is required'); process.exit(1); }
 
-const notion = new Client({ auth: NOTION_TOKEN });
+const notion = new Client({ auth: NOTION_TOKEN, notionVersion: '2022-06-28' });
 
 const COUNTRY_FLAGS = {
   'Vietnam': '🇻🇳', 'Panama': '🇵🇦', 'Japan': '🇯🇵',

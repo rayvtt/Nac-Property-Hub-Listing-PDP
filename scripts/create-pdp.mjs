@@ -23,7 +23,7 @@ const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID || '35848ec25e86803283
 
 if (!NOTION_TOKEN) { console.error('NOTION_TOKEN env var is required'); process.exit(1); }
 
-const notion = new Client({ auth: NOTION_TOKEN });
+const notion = new Client({ auth: NOTION_TOKEN, notionVersion: '2022-06-28' });
 
 function richText(prop) {
   if (!prop) return '';
