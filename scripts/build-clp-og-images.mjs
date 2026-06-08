@@ -51,11 +51,13 @@ const GOLD_GLOW = '#F4E4BF'; // --gold-soft
 const CREAM = '#FAFAF7';
 const NAVY = '#1800ad';      // NAC blue (--nav)
 const NAVY_DEEP = '#0c0066'; // deeper variant for the gradient
+const INK = '#1a1a2e';       // body text on white — navy-tinted charcoal
 
 // NAC wordmark / logo on the dark theme — fetched once, embedded into every SVG.
-// Light-theme logo (for the navy left frame, recoloured via #whiten filter)
-// and dark-theme logo (sits on the white right panel as-is).
-const NAC_LOGO_URL = 'https://nomadassetcollective.com/wp-content/uploads/2026/04/OTG-Passport-Icons-1.png';
+// Logo lives on whichever side we put it on. We fetch the light-tone source
+// (gold gradient) and recolour it to NAC navy via a color-matrix filter so
+// it reads as a single solid brand mark on the white panel.
+const NAC_LOGO_URL = 'https://nomadassetcollective.com/wp-content/uploads/2026/05/OTG-Passport-Icons-4.png';
 let NAC_LOGO_DATAURI = null;
 
 const COUNTRY_CODE_FROM_SLUG = {
@@ -236,12 +238,13 @@ const COMMON_DEFS = `
       <stop offset="0%" stop-color="${GOLD}" stop-opacity="0.65"/>
       <stop offset="100%" stop-color="${GOLD}" stop-opacity="0"/>
     </radialGradient>
-    <!-- Force every opaque pixel of the logo to pure white while keeping its alpha
-         intact — works regardless of which source PNG variant we load. -->
-    <filter id="whiten" color-interpolation-filters="sRGB">
-      <feColorMatrix type="matrix" values="0 0 0 0 1
-                                           0 0 0 0 1
-                                           0 0 0 0 1
+    <!-- Drive every opaque pixel of the logo to NAC navy (#1800ad) while
+         keeping its alpha intact — recolours the gold-gradient source into
+         a single solid brand mark that reads cleanly on the white panel. -->
+    <filter id="navify" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="0 0 0 0 0.094
+                                           0 0 0 0 0
+                                           0 0 0 0 0.678
                                            0 0 0 1 0"/>
     </filter>
   </defs>`;
@@ -284,74 +287,74 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   const statY = priceY + 38;
 
   return `
-  <!-- NAC logo (dark variant — sits over the white right panel) -->
+  <!-- NAC logo, recoloured to NAC navy via #navify -->
   ${nacLogo(rightX, logoY, LOGO_SIZE)}
 
-  <!-- EN code caps (small mono header) -->
+  <!-- EN code caps — muted gold, sits above the country name -->
   ${showEnSub ? `
   <text x="${rightX}" y="${subY}" font-family="${FF_MONO}"
-        font-size="18" letter-spacing="6" fill="${NAVY}" opacity="0.55">
+        font-size="18" letter-spacing="6" fill="${GOLD}" opacity="0.7">
     ${esc(m.nameEn.toUpperCase())}
   </text>` : ''}
 
-  <!-- Country name (VI, big italic display) -->
+  <!-- Country name (VI, big italic display) — NAC GOLD, the brand mark -->
   <text x="${rightX}" y="${nameY}" font-family="${FF_DISPLAY}"
-        font-size="86" font-style="italic" font-weight="500" fill="${NAVY}"
+        font-size="86" font-style="italic" font-weight="500" fill="${GOLD}"
         letter-spacing="-1">
     ${esc(primaryName)}
   </text>
 
-  <!-- VI tagline — single line, auto-sized to fit -->
+  <!-- VI tagline — single line, ink charcoal, italic display -->
   ${m.taglineVi ? `
   <text x="${rightX}" y="${viY}" font-family="${FF_DISPLAY}"
-        font-size="${viSize}" font-style="italic" fill="${NAVY}"
-        letter-spacing="0.2" font-weight="500" opacity="0.88">
+        font-size="${viSize}" font-style="italic" fill="${INK}"
+        letter-spacing="0.2" font-weight="500" opacity="0.92">
     ${esc(m.taglineVi)}
   </text>` : ''}
 
-  <!-- EN tagline — single line, auto-sized to fit -->
+  <!-- EN tagline — single line, ink charcoal, lighter -->
   ${m.taglineEn ? `
   <text x="${rightX}" y="${enY}" font-family="${FF_DISPLAY}"
-        font-size="${enSize}" font-style="italic" fill="${NAVY}"
-        letter-spacing="0.2" opacity="0.7">
+        font-size="${enSize}" font-style="italic" fill="${INK}"
+        letter-spacing="0.2" opacity="0.62">
     ${esc(m.taglineEn)}
   </text>` : ''}
 
-  <!-- Decorative gold hairline, short — divider before the price block -->
+  <!-- Short decorative gold hairline — divider before the price block -->
   <line x1="${rightX}" y1="${ruleY}" x2="${rightX + 60}" y2="${ruleY}"
         stroke="${GOLD}" stroke-width="2"/>
 
-  <!-- "FROM" label — mono caps above the giant price -->
+  <!-- "FROM" label — mono caps above the price, ink @ low opacity -->
   ${m.entry ? `
   <text x="${rightX}" y="${fromLblY}" font-family="${FF_MONO}"
-        font-size="16" letter-spacing="6" fill="${NAVY}" opacity="0.6">
+        font-size="16" letter-spacing="6" fill="${INK}" opacity="0.55">
     FROM
   </text>` : ''}
 
-  <!-- THE BILLBOARD: huge italic entry price in NAC gold on white -->
+  <!-- THE BILLBOARD: huge italic entry price in NAC NAVY — the stat block -->
   ${m.entry ? `
   <text x="${rightX}" y="${priceY}" font-family="${FF_DISPLAY}"
-        font-size="106" font-style="italic" font-weight="500" fill="${GOLD}"
+        font-size="106" font-style="italic" font-weight="500" fill="${NAVY}"
         letter-spacing="-2">
     ${esc(m.entry.replace(/\s+/g, ''))}
   </text>` : ''}
 
-  <!-- Stat row — listings · cities -->
+  <!-- Stat row — listings · cities, ink @ low opacity -->
   ${statLine ? `
   <text x="${rightX}" y="${statY}" font-family="${FF_MONO}"
-        font-size="15" letter-spacing="3.5" fill="${NAVY}" opacity="0.65">
+        font-size="15" letter-spacing="3.5" fill="${INK}" opacity="0.55">
     ${esc(statLine)}
   </text>` : ''}`;
 }
 
-// NAC logo, embedded as a data URI so resvg renders it offline. With the
-// split background, the right panel is white — use the dark-theme logo
-// source (no whiten filter needed). Left-anchored at (x, y).
+// NAC logo, embedded as a data URI so resvg renders it offline. Recoloured
+// to NAC navy (#1800ad) via the #navify filter so it reads as a solid brand
+// mark on the white right panel. Left-anchored at (x, y).
 function nacLogo(x, y, size = 52) {
   if (!NAC_LOGO_DATAURI) return '';
   return `
   <image href="${NAC_LOGO_DATAURI}" x="${x}" y="${y}" width="${size}" height="${size}"
-         preserveAspectRatio="xMidYMid meet"/>`;
+         preserveAspectRatio="xMidYMid meet" filter="url(#navify)"/>`;
 }
 
 function commonChrome() {
@@ -363,24 +366,9 @@ function commonChrome() {
   <!-- Right 40% — clean white panel for the text/price billboard -->
   <rect x="${SPLIT_X}" y="0" width="${W - SPLIT_X}" height="${H}" fill="${CREAM}"/>
 
-  <!-- Hairline gold seam between the two panels -->
+  <!-- Thin gold seam between the two panels — the only chrome on the white side -->
   <line x1="${SPLIT_X}" y1="0" x2="${SPLIT_X}" y2="${H}"
-        stroke="${GOLD}" stroke-width="1.5" opacity="0.9"/>
-
-  <!-- Bottom URL strip — left (cream on navy), right (navy on white) -->
-  <line x1="40" y1="${H - 38}" x2="${SPLIT_X - 16}" y2="${H - 38}"
-        stroke="${GOLD}" stroke-width="0.5" opacity="0.5"/>
-  <line x1="${SPLIT_X + 16}" y1="${H - 38}" x2="${W - 40}" y2="${H - 38}"
-        stroke="${NAVY}" stroke-width="0.5" opacity="0.45"/>
-  <text x="40" y="${H - 14}" font-family="${FF_MONO}"
-        font-size="14" letter-spacing="2.5" fill="${CREAM}" opacity="0.8">
-    NOMADASSETCOLLECTIVE.COM
-  </text>
-  <text x="${W - 40}" y="${H - 14}" text-anchor="end"
-        font-family="${FF_MONO}"
-        font-size="14" letter-spacing="2.5" fill="${NAVY}" opacity="0.85">
-    PROPERTY HUB
-  </text>`;
+        stroke="${GOLD}" stroke-width="1.5" opacity="0.9"/>`;
 }
 
 // ──────────────────────────────────────────────────────────────────────────
