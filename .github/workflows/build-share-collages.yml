@@ -23,6 +23,11 @@ on:
     branches: [main]
     paths:
       - ".github/triggers/share-collages.txt"
+  # Incremental auto-refresh: rebuilds only listings whose inputs changed (via the
+  # 🔁 Share Hash fingerprint), so editing 📣 Share Title VI/EN in Notion repaints
+  # that listing's share preview within ~10 min without any manual trigger.
+  schedule:
+    - cron: "*/10 * * * *"
 
 permissions:
   contents: read

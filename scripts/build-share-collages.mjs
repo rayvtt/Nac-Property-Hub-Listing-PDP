@@ -46,6 +46,10 @@ const convert = (args) => execFileSync(IM7 ? 'magick' : 'convert', IM7 ? args : 
 const montage = (args) => execFileSync(IM7 ? 'magick' : 'montage', IM7 ? ['montage', ...args] : args, { stdio: 'pipe' });
 
 const NAVY = '#0F1A36';
+// Bump when the collage *design* changes (band layout, fonts, chips). It's folded
+// into the input fingerprint so a redesign forces a hub-wide repaint on the next
+// scheduled run, even when no Notion field changed.
+const DESIGN_VERSION = 'band-v2';
 // Accept a font only if it's a real file (a 404 page saved by curl is tiny).
 const validFont = (f) => { try { return f && fs.statSync(f).size > 5000; } catch { return false; } };
 const firstFont = (cands, fallback) => cands.find(validFont) || fallback;
@@ -224,20 +228,35 @@ async function main() {
     const slug = rt(p['🔗 Slug']);
     if (!slug) { continue; }
     if (ONLY.length && !ONLY.includes(slug)) continue;
-    if (!REPLACE && url(p['Share Image URL'])) { skip++; continue; }
     const hero = url(p['Image URL']);
     const gal = ['🖼️ Image 1', '🖼️ Image 2', '🖼️ Image 3', '🖼️ Image 4'].map((k) => url(p[k])).filter(Boolean);
     const imgs = [hero, ...gal].filter((u) => u && !u.includes('{'));
     if (!imgs.length) { console.log(`  ⤳ ${slug}: no images — skipped`); skip++; continue; }
 
+    // Preview title — editor-controlled in Notion (📣 Share Title VI/EN, shown
+    // verbatim) and only falls back to the on-page tagline's first clause when
+    // blank. One VI line, one EN line.
+    const strip = (s) => (s || '').replace(/\s+/g, ' ').split(/[,.·\n]/)[0].trim();
+    const tagline = {
+      vi: rt(p['📣 Share Title VI']) || strip(rt(p['🏷️ Tagline VI'])),
+      en: rt(p['📣 Share Title EN']) || strip(rt(p['🏷️ Tagline EN'])),
+    };
+    const stats = readStats(slug);
+
+    // Input fingerprint → rebuild only when a source actually changed, so the
+    // scheduled run is incremental: edit a 📣 Share Title in Notion and the next
+    // tick repaints just that listing (≈10 min, no manual trigger). REPLACE or an
+    // explicit ONLY list force a rebuild regardless.
+    const fp = crypto.createHash('md5')
+      .update(JSON.stringify({ v: DESIGN_VERSION, imgs, tagline, stats }))
+      .digest('hex').slice(0, 12);
+    const force = REPLACE || ONLY.length > 0;
+    if (!force && url(p['Share Image URL']) && rt(p['🔁 Share Hash']) === fp) { skip++; continue; }
+
     const work = fs.mkdtempSync(path.join(os.tmpdir(), 'collage-'));
     try {
       const local = [];
       for (let i = 0; i < imgs.length; i++) local.push(await dl(imgs[i], path.join(work, `src${i}.img`)));
-      // First clause only (before any , . · or newline) — one VI line, one EN line.
-      const strip = (s) => (s || '').replace(/\s+/g, ' ').split(/[,.·\n]/)[0].trim();
-      const tagline = { vi: strip(rt(p['🏷️ Tagline VI'])), en: strip(rt(p['🏷️ Tagline EN'])) };
-      const stats = readStats(slug);
       const collage = buildCollage(local, work, tagline, stats);
       const cfUrl = await uploadCF(collage, `${slug}-share`);
       // Cache-bust: append a content hash of the collage as ?v=. CF ignores the
@@ -247,9 +266,12 @@ async function main() {
       // (no needless churn); a redesign yields a new one automatically.
       const ver = crypto.createHash('md5').update(fs.readFileSync(collage)).digest('hex').slice(0, 8);
       const verUrl = cfUrl + (cfUrl.includes('?') ? '&' : '?') + 'v=' + ver;
-      await notion.pages.update({ page_id: pg.id, properties: { 'Share Image URL': { url: verUrl } } });
+      await notion.pages.update({ page_id: pg.id, properties: {
+        'Share Image URL': { url: verUrl },
+        '🔁 Share Hash': { rich_text: [{ text: { content: fp } }] },
+      } });
       const hasTag = tagline.vi || tagline.en;
-      console.log(`  ✓ ${slug}: ${imgs.length} photos${hasTag ? ' + tagline' : ''} → ${verUrl}`);
+      console.log(`  ✓ ${slug}: ${imgs.length} photos${hasTag ? ' + title' : ''} → ${verUrl}`);
       done++;
     } catch (e) {
       console.log(`  ✖ ${slug}: ${e.message}`);
