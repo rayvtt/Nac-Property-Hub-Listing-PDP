@@ -75,6 +75,7 @@ Templates and references:
 - [`NAC-FOOTER.md`](./NAC-FOOTER.md) — bilingual gold title, wave underline, 5-icon social row, 3-col nav.
 - [`NAC-BACKLINKS.md`](./NAC-BACKLINKS.md) — canonical URLs for every NAC button across all PDPs.
 - [`NAC-CERTIFICATION-BOX.md`](./NAC-CERTIFICATION-BOX.md) — closing sign-off block: NAC × IMC seal (vertical on desktop, horizontal on mobile), IMC compliance prose, meta tag row, 3-line reviewer card (Ray Vũ).
+- [`NAC-CLP-OG-CARD.md`](./NAC-CLP-OG-CARD.md) — per-country social-share preview card (1200×630 PNG, "Three Heroes" + "Constellation Atlas" variants, auto-fit single-line bilingual taglines, resilient hero fetch, NAC blue + Cormorant Garamond). Wired into CLP `og:image` / `twitter:image` via GH Pages.
 - [`NAC-LLP-PERSONALISATION.md`](./NAC-LLP-PERSONALISATION.md) — canonical per-listing + per-city personalisation checklist (the "is it bespoke or showing template defaults?" reference): editorial fields and their templated-smell tells, `📊 Market Stats JSON` per-city requirement, Plan-B journey rule, audit cadence, city rollout tracker.
 
 ## Notion sync
