@@ -111,7 +111,11 @@ async function fetchLiveProperties() {
     const p = page.properties;
     const idNum = readNumber(p['Property ID']);
     return {
-      slug: richText(p['🔗 Slug']),
+      // Two-key lookup — the Notion property was renamed/truncated from
+      // "🔗 Slug" to "🔗 Sl" upstream (see PR #344 on sync-notion-clp).
+      // Without the fallback, every Live row is dropped at the slug filter,
+      // leaving the index with no hero images and "0 listings" everywhere.
+      slug: richText(p['🔗 Slug']) || richText(p['🔗 Sl']),
       propertyId: idNum != null ? `NAC-${idNum}` : null,
       propertyIdNum: idNum,
       propertyName: richText(p['Property Name']),
@@ -130,7 +134,13 @@ async function fetchLiveProperties() {
 
 function renderCountryCard(c, heroImg, listingsCount) {
   const flag = COUNTRY_FLAGS[c.countryNameEn] || '🌍';
-  const bgStyle = heroImg ? ` style="background-image:url('${esc(heroImg)}')"` : '';
+  // Prefer the bespoke per-country OG card (atlas + 3 heroes + tagline)
+  // over a random listing's hero image — it's branded, representative,
+  // and we already build one for each Live CLP. Falls back to the
+  // first-listing-hero approach if the OG card isn't on disk yet.
+  const ogCard = c.slug ? `og-images/clp-${c.slug}.png` : null;
+  const bgSrc = ogCard || heroImg;
+  const bgStyle = bgSrc ? ` style="background-image:url('${esc(bgSrc)}')"` : '';
   const count = listingsCount ?? c.listingsCount ?? 0;
   const liveBtn = c.countryUrl
     ? `<a href="${esc(c.countryUrl)}" class="country-card-btn country-card-btn-live" target="_blank" rel="noreferrer">Live ↗</a>`
