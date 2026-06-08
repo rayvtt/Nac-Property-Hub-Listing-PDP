@@ -332,16 +332,22 @@ function commonChrome() {
 // Variant A: Three Heroes — top-3 listing images, left 60% / text right 40%
 // ──────────────────────────────────────────────────────────────────────────
 function buildHeroesSvg(m, heroDataUris) {
-  // Left panel (60% width) — 3 vertical cards.
+  // Left panel (60% width) — N vertical cards where N is the number of
+  // resolved heroes (1, 2, or 3). The card width stays constant at the
+  // 3-column size so the visual rhythm matches across all variants — when
+  // there are fewer cards, the group gets centred in the panel instead.
   const PAD = 32, GUTTER = 14;
   const PANEL_X = 0, PANEL_W = 720;
   const COL_W = (PANEL_W - 2 * PAD - 2 * GUTTER) / 3;
   const COL_Y = PAD;
   const COL_H = H - 2 * PAD;
   const RADIUS = 14;
+  const N = heroDataUris.length;
+  const totalCardsW = N * COL_W + Math.max(0, N - 1) * GUTTER;
+  const startX = PANEL_X + (PANEL_W - totalCardsW) / 2;
 
   const cards = heroDataUris.map((dataUri, i) => {
-    const x = PANEL_X + PAD + i * (COL_W + GUTTER);
+    const x = startX + i * (COL_W + GUTTER);
     const hero = m.heroes[i] || {};
     const city = (hero.cityName || '').toUpperCase();
 
@@ -445,23 +451,16 @@ async function buildOne(slug) {
   // Pick a render path based on what data we actually have.
   let svg, variant;
   if (model.heroes.length > 0) {
-    // Walk the candidate pool (up to 8 from extractModel) until we have 3
-    // successfully-fetched images. Falls forward through listings instead of
-    // leaving null slots — that intermittent CDN miss was tanking 1-2 tiles.
-    const resolved = await fetchHeroDataUris(model.heroes, 3);
-    if (resolved.length >= 3) {
-      // Hand the resolved heroes (with their city names) back to the SVG
-      // builder so labels match the actual image rendered.
+    // Walk the candidate pool (up to 8 from extractModel), keeping every
+    // successful fetch up to a cap. Cap is min(3, listings count) — countries
+    // with 1 or 2 Live listings get 1 or 2 cards instead of dark placeholder
+    // tiles. The buildHeroesSvg layout centres whatever it's handed.
+    const target = Math.min(3, model.heroes.length);
+    const resolved = await fetchHeroDataUris(model.heroes, target);
+    if (resolved.length > 0) {
       const heroModel = { ...model, heroes: resolved };
       svg = buildHeroesSvg(heroModel, resolved.map(r => r.dataUri));
-      variant = `heroes (3/3 from ${model.heroes.length} candidates)`;
-    } else if (resolved.length > 0) {
-      // Less than 3 candidates available — pad with nulls so layout holds.
-      const heroModel = { ...model, heroes: resolved };
-      const uris = resolved.map(r => r.dataUri);
-      while (uris.length < 3) uris.push(null);
-      svg = buildHeroesSvg(heroModel, uris);
-      variant = `heroes (${resolved.length}/3 — short pool)`;
+      variant = `heroes (${resolved.length}/${target}, ${model.heroes.length} candidates)`;
     } else {
       svg = buildAtlasSvg(model);
       variant = `atlas (all ${model.heroes.length} candidates failed)`;
