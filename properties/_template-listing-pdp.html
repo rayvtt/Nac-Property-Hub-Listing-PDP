@@ -724,8 +724,9 @@
         </script>
       </div>
 
-            <!-- SHARE THIS LISTING (self-contained: scoped styles + inline script) -->
-      <section id="nac-share" class="nac-share" aria-label="Share this listing">
+
+      <!-- SHARE THIS LISTING (self-contained: scoped styles + inline script) -->
+      <section id="nac-share" class="nac-share" data-share-v="2" aria-label="Share this listing">
         <span class="nac-share-lbl"><span data-vi="">Chia sẻ căn hộ này</span><span data-en="">Share this listing</span></span>
         <div class="nac-share-row">
           <button type="button" class="nac-share-btn" data-net="facebook" aria-label="Share on Facebook" title="Facebook"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M14 9h3l.4-3H14V4.3c0-.9.3-1.5 1.6-1.5H17V.1C16.7.1 15.7 0 14.6 0 12.2 0 10.6 1.4 10.6 4v2H8v3h2.6v8H14V9z"/></svg></button>
@@ -740,13 +741,29 @@
           .nac-share-lbl{display:block;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:#8a8576;margin-bottom:14px}
           .nac-share-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
           .nac-share-btn{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;
-            border:1px solid rgba(15,26,54,.15);background:#fff;color:#0F1A36;transition:all .18s ease;padding:0}
-          .nac-share-btn:hover{background:#0F1A36;color:#fff;border-color:#0F1A36;transform:translateY(-2px)}
+            border:1px solid rgba(15,26,54,.12);background:#fff;transition:transform .18s ease,background .18s ease,border-color .18s ease,box-shadow .18s ease;padding:0}
+          .nac-share-btn svg path{transition:fill .18s ease}
+          .nac-share-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(15,26,54,.13)}
           .nac-share-btn:active{transform:translateY(0)}
+          /* brand colours at rest; the circle fills with the brand colour on hover */
+          .nac-share-btn[data-net="facebook"] svg path{fill:#1877F2}
+          .nac-share-btn[data-net="facebook"]:hover{background:#1877F2;border-color:#1877F2}
+          .nac-share-btn[data-net="facebook"]:hover svg path{fill:#fff}
+          .nac-share-btn[data-net="linkedin"] svg path{fill:#0A66C2}
+          .nac-share-btn[data-net="linkedin"]:hover{background:#0A66C2;border-color:#0A66C2}
+          .nac-share-btn[data-net="linkedin"]:hover svg path{fill:#fff}
+          .nac-share-btn[data-net="threads"] svg path{fill:#000000}
+          .nac-share-btn[data-net="threads"]:hover{background:#000000;border-color:#000000}
+          .nac-share-btn[data-net="threads"]:hover svg path{fill:#fff}
+          .nac-share-btn[data-net="instagram"] svg path{fill:#E1306C}
+          .nac-share-btn[data-net="instagram"]:hover{background:linear-gradient(45deg,#F58529 0%,#DD2A7B 55%,#8134AF 100%);border-color:transparent}
+          .nac-share-btn[data-net="instagram"]:hover svg path{fill:#fff}
+          .nac-share-btn[data-net="copy"] svg path{fill:#5b6478}
+          .nac-share-btn[data-net="copy"]:hover{background:#0F1A36;border-color:#0F1A36}
+          .nac-share-btn[data-net="copy"]:hover svg path{fill:#fff}
           .nac-share-toast{display:inline-block;margin-top:12px;min-height:1.1em;font-size:.8rem;color:#E8743B;transition:opacity .2s}
           @media (prefers-color-scheme: dark){
-            .nac-share-btn{background:rgba(255,255,255,.06);color:#ede8dc;border-color:rgba(255,255,255,.18)}
-            .nac-share-btn:hover{background:#E8743B;color:#fff;border-color:#E8743B}
+            .nac-share-btn{background:rgba(255,255,255,.95);border-color:rgba(255,255,255,.25)}
           }
         </style>
         <script>
