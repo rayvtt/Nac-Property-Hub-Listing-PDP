@@ -1,3 +1,2 @@
 replace
-only: one-central-saigon
-2026-06-08 d — pilot serif + chips (Cormorant variable font fixed).
+2026-06-08 — full sweep: regenerate all collages with serif tagline + Giá vào/IRR/Live chips.
