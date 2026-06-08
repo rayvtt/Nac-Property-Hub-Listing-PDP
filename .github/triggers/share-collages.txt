@@ -1,3 +1,3 @@
 replace
 only: one-central-saigon
-2026-06-07 — pilot the tagline band (typewriter mono + blurred highlight) on One Central Saigon.
+2026-06-08 — regenerate with NFC fix so "Bến Thành" renders correctly.
