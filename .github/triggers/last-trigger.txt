@@ -4,3 +4,4 @@
 2026-06-08 chat: collage cache-bust (PR #322) — sweep wrote content-hash ?v= into Share Image URL; sync-notion now patches og:image/twitter:image with the versioned URL so social previews refresh without manual re-scrape, then sync-wp pushes to WP — sync-notion
 2026-06-08T14:43:56Z — fire sync-notion-clp after PR #329 Notion API pin landed (cron has been silent since 13:14Z, despite push triggers configured)
 2026-06-08T15:11:50Z — URGENT: force WP push (PDP + CLP) after the slug-key fix repopulated all listings
+2026-06-08T15:43:36Z — urgent WP push after OG card final pass (single-line auto-fit taglines)
