@@ -979,7 +979,18 @@ async function fetchCountryListings(notion, countryNameEn) {
   const sel = (prop) => (prop && prop.select ? prop.select.name : null);
   const json = (prop) => { const t = rt(prop).trim(); if (!t) return []; try { return JSON.parse(t); } catch { return []; } };
 
-  return results.map(page => {
+  console.log(`    Country match: ${results.length} row(s) before .slug filter`);
+  if (results.length && results[0]) {
+    const sampleProps = results[0].properties;
+    console.log(`    sample LLP row property keys: ${Object.keys(sampleProps).slice(0, 20).join(' · ')}`);
+    for (const k of ['🔗 Slug', 'Property Name', 'Image URL', 'Purchase Price']) {
+      const v = sampleProps[k];
+      const repr = v ? JSON.stringify(v).slice(0, 150) : '(missing key)';
+      console.log(`    sample[${JSON.stringify(k)}] = ${repr}`);
+    }
+  }
+
+  const mapped = results.map(page => {
     const p = page.properties;
     return {
       slug: rt(p['🔗 Slug']),
@@ -1003,7 +1014,12 @@ async function fetchCountryListings(notion, countryNameEn) {
       district: rt(p['📍 District']),
       tags: ms(p['Tags']),
     };
-  }).filter(l => l.slug);
+  });
+  const final = mapped.filter(l => l.slug);
+  if (mapped.length && !final.length) {
+    console.log(`    .slug filter dropped all ${mapped.length} mapped rows — slugs read: ${mapped.slice(0,3).map(l => `"${l.slug}"`).join(' · ')}`);
+  }
+  return final;
 }
 
 // ─── per-country processing ─────────────────────────────────────────────────
