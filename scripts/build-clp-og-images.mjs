@@ -217,10 +217,12 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   // from the VI name (e.g. "Singapore" / "Singapore" → suppress).
   const showEnSub = m.nameEn && m.nameEn.toLowerCase() !== (m.nameVi || '').toLowerCase();
   const primaryName = m.nameVi || m.nameEn;
-  // Logo sits above the country name, left-anchored to the same column.
-  const LOGO_SIZE = 52;
-  const logoY = 100;
-  const nameY = logoY + LOGO_SIZE + 52;
+  // Logo top-aligned with where the hero images start (y=32 PAD on the
+  // heroes variant) — gives the lockup a clean horizontal baseline across
+  // the whole composition.
+  const LOGO_SIZE = 56;
+  const logoY = 32;
+  const nameY = logoY + LOGO_SIZE + 64;
   const subY = nameY + 36;
 
   // Tagline blocks: VI first (matches the big VI country name), EN below.
