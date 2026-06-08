@@ -982,12 +982,17 @@ async function fetchCountryListings(notion, countryNameEn) {
   console.log(`    Country match: ${results.length} row(s) before .slug filter`);
   if (results.length && results[0]) {
     const sampleProps = results[0].properties;
-    console.log(`    sample LLP row property keys: ${Object.keys(sampleProps).slice(0, 20).join(' · ')}`);
-    for (const k of ['🔗 Slug', 'Property Name', 'Image URL', 'Purchase Price']) {
-      const v = sampleProps[k];
-      const repr = v ? JSON.stringify(v).slice(0, 150) : '(missing key)';
-      console.log(`    sample[${JSON.stringify(k)}] = ${repr}`);
+    const allKeys = Object.keys(sampleProps);
+    console.log(`    sample LLP row property count: ${allKeys.length}`);
+    // Find ANY key whose lowercased name contains "slug" — Notion may have
+    // renamed/moved the slug field from "🔗 Slug" to something else.
+    const slugKeys = allKeys.filter(k => /slug/i.test(k));
+    console.log(`    keys matching /slug/i: ${slugKeys.map(k => JSON.stringify(k)).join(', ') || '(none)'}`);
+    for (const k of slugKeys) {
+      console.log(`    sample[${JSON.stringify(k)}] = ${JSON.stringify(sampleProps[k])?.slice(0, 200)}`);
     }
+    // Also dump every key sorted, with char codes for any suspicious whitespace
+    console.log(`    full key list: ${allKeys.map(k => JSON.stringify(k)).join(' | ')}`);
   }
 
   const mapped = results.map(page => {
