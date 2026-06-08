@@ -88,6 +88,42 @@ const CITY_STATS = {
     { val: '30 min', vi: 'Tới Delphi — Di sản UNESCO', en: 'To Delphi — UNESCO site' },
     { val: '€250k+', vi: 'Ngưỡng Golden Visa', en: 'Golden Visa minimum' },
   ],
+  Phuket: [
+    { val: '~13M', vi: 'Khách qua sân bay Phuket 2024', en: 'Phuket airport passengers 2024' },
+    { val: '+15%', vi: 'Tăng trưởng du lịch YoY', en: 'Tourism growth YoY' },
+    { val: '6–7%', vi: 'Lợi suất cho thuê gộp', en: 'Gross rental yield' },
+    { val: '80–90%', vi: 'Công suất cao điểm', en: 'Peak occupancy rate' },
+  ],
+  Dubai: [
+    { val: '+19%', vi: 'Tăng giá BĐS Dubai 2024', en: 'Dubai property-price growth 2024' },
+    { val: '~18.7M', vi: 'Khách quốc tế Dubai 2024', en: "Dubai int'l visitors 2024" },
+    { val: '5–7%', vi: 'Lợi suất cho thuê gộp', en: 'Gross rental yield' },
+    { val: '0%', vi: 'Thuế thu nhập & lãi vốn', en: 'Income & capital-gains tax' },
+  ],
+  'Kuala Lumpur': [
+    { val: '+3–5%', vi: 'Tăng giá nhà KL 2024', en: 'KL house-price growth 2024' },
+    { val: '4–5%', vi: 'Lợi suất cho thuê gộp', en: 'Gross rental yield' },
+    { val: '~26M', vi: 'Khách quốc tế Malaysia 2024', en: "Malaysia int'l visitors 2024" },
+    { val: 'MM2H', vi: 'Chương trình cư trú dài hạn', en: 'Long-stay residence visa' },
+  ],
+  Bangkok: [
+    { val: '~32M', vi: 'Khách quốc tế Thái Lan 2024', en: "Thailand int'l visitors 2024" },
+    { val: '+4–6%', vi: 'Tăng giá căn hộ Bangkok 2024', en: 'Bangkok condo-price growth 2024' },
+    { val: '4–5%', vi: 'Lợi suất cho thuê gộp', en: 'Gross rental yield' },
+    { val: '11M', vi: 'Dân số vùng Bangkok', en: 'Greater Bangkok population' },
+  ],
+  Paphos: [
+    { val: '+8–10%', vi: 'Tăng giá nhà Síp 2024', en: 'Cyprus house-price growth 2024' },
+    { val: '5–6%', vi: 'Lợi suất cho thuê gộp', en: 'Gross rental yield' },
+    { val: '~4M', vi: 'Khách quốc tế Síp 2024', en: "Cyprus int'l visitors 2024" },
+    { val: '€300k+', vi: 'Ngưỡng PR Síp', en: 'Cyprus PR threshold' },
+  ],
+  'Johor Bahru': [
+    { val: 'JS-SEZ', vi: 'Đặc khu kinh tế Johor–Singapore', en: 'Johor–Singapore Special Economic Zone' },
+    { val: '~5 min', vi: 'Tới Singapore (RTS Link 2026)', en: 'To Singapore (RTS Link, 2026)' },
+    { val: '4–6%', vi: 'Lợi suất cho thuê gộp', en: 'Gross rental yield' },
+    { val: '+5%', vi: 'Tăng giá nhà Johor 2024', en: 'Johor house-price growth 2024' },
+  ],
 };
 
 // Ordered keyword → metro. First hit on (City + Region/City + Country) wins.
@@ -98,11 +134,17 @@ const METRO_RULES = [
   [/sydney|parramatta|burwood|carlingford|zetland|macquarie|hurstville|arncliffe|caringbah|blacktown|ashbury|erskineville|north sydney|auburn|lakemba|bankstown/i, 'Sydney'],
   [/melbourne|box hill|blackburn|southbank|south melbourne|alphington|pagewood/i, 'Melbourne'],
   [/london/i, 'London'],
-  [/limassol|paphos|larnaca|cyprus|nicosia/i, 'Limassol'],
+  [/paphos|pafos/i, 'Paphos'],
+  [/limassol|larnaca|cyprus|nicosia/i, 'Limassol'],
   [/panama/i, 'Panama City'],
   [/ho tram|hồ tràm|ho-tram/i, 'Ho Tram'],
   [/da nang|đà nẵng|danang/i, 'Da Nang'],
-  [/ho chi minh|hồ chí minh|hcmc|saigon|sài gòn/i, 'Ho Chi Minh City'],
+  [/ho chi minh|hồ chí minh|hcmc|saigon|sài gòn|phu nhuan|phú nhuận|thu duc|thủ đức/i, 'Ho Chi Minh City'],
+  [/phuket|bangtao|bang tao|choeng thale|cherngtalay|layan|si sunthon|thalang|kathu|patong|kamala|nai ?thon|surin/i, 'Phuket'],
+  [/dubai|\buae\b|nad al sheba|business bay|downtown dubai|damac hills|meydan|hartland|jvc|dubai hills/i, 'Dubai'],
+  [/johor|jbcc|causewayz|iskandar/i, 'Johor Bahru'],
+  [/kuala lumpur|klcc|setapak|bukit bintang|\bkl\b|pavilion|conlay|oxley|curvo|golden crown|centrix/i, 'Kuala Lumpur'],
+  [/bangkok|sukhumvit|thonglor|thong ?lor|phayathai|phaya ?thai|ratchathewi|rama ?4|chula|silom|sathorn|sathon|ekkamai|phra khanong|ideo|culture|coco parc|the address siam/i, 'Bangkok'],
 ];
 
 const rt = (p) => { if (!p) return ''; if (p.title) return p.title.map(t => t.plain_text).join(''); if (p.rich_text) return p.rich_text.map(t => t.plain_text).join(''); return ''; };
