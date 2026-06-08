@@ -101,11 +101,13 @@ function extractModel(html, slug) {
   const taglineEn = stripInline($('.cl-hero-tag [data-en]').first().html() || '');
   const taglineVi = stripInline($('.cl-hero-tag [data-vi]').first().html() || '');
 
-  // Top-N listings — collection cards are emitted by sync-notion-clp in
-  // price-descending order, so just grab the first three.
+  // Pool of candidate listings (top-N by price, the order sync-notion-clp emits
+  // collection cards). Grab up to 8 so buildOne can fall back to the next
+  // listing if any of the first three image fetches fail — guarantees all
+  // three slots populate even when 1-2 CDN images 404 or time out.
   const heroes = [];
   $('#cl-collection-track .cl-card').each((_, el) => {
-    if (heroes.length >= 3) return false;
+    if (heroes.length >= 8) return false;
     const $card = $(el);
     const imgUrl = extractBgUrl($card.find('.cl-card-img').attr('style'))
       || extractBgUrl($card.find('.cl-card-img-wrap').attr('style'));
@@ -142,21 +144,45 @@ function extractModel(html, slug) {
   };
 }
 
-// Fetch a remote image and return a `data:image/...;base64,…` URI.
-// Returns null on failure (network / 404 / non-image) so the caller can fall
-// back gracefully without aborting the whole batch.
-async function fetchAsDataUri(url) {
+// Fetch a remote image and return a `data:image/...;base64,…` URI. Retries
+// transient errors with simple backoff (250ms, 750ms) before giving up, since
+// the CDN occasionally 502s or times out under load — that intermittent
+// failure was leaving empty hero slots on the OG card.
+async function fetchAsDataUri(url, attempt = 1) {
   try {
-    const res = await fetch(url, { redirect: 'follow' });
-    if (!res.ok) return null;
+    const res = await fetch(url, { redirect: 'follow', signal: AbortSignal.timeout(8000) });
+    if (!res.ok) {
+      // 5xx is worth a retry; 404 isn't.
+      if (res.status >= 500 && attempt < 3) {
+        await new Promise(r => setTimeout(r, attempt * 500));
+        return fetchAsDataUri(url, attempt + 1);
+      }
+      return null;
+    }
     const buf = Buffer.from(await res.arrayBuffer());
     if (!buf.length) return null;
     const ct = (res.headers.get('content-type') || '').split(';')[0].trim()
       || (url.endsWith('.png') ? 'image/png' : 'image/jpeg');
     return `data:${ct};base64,${buf.toString('base64')}`;
   } catch {
+    if (attempt < 3) {
+      await new Promise(r => setTimeout(r, attempt * 500));
+      return fetchAsDataUri(url, attempt + 1);
+    }
     return null;
   }
+}
+
+// Walk the candidate pool, fetching each until we have N successful images.
+// Skips over failed candidates instead of leaving null slots in the output.
+async function fetchHeroDataUris(candidates, n) {
+  const out = [];
+  for (const c of candidates) {
+    if (out.length >= n) break;
+    const uri = await fetchAsDataUri(c.imgUrl);
+    if (uri) out.push({ ...c, dataUri: uri });
+  }
+  return out;
 }
 
 const COMMON_DEFS = `
@@ -183,10 +209,6 @@ const COMMON_DEFS = `
       <stop offset="0%" stop-color="${GOLD}" stop-opacity="0.65"/>
       <stop offset="100%" stop-color="${GOLD}" stop-opacity="0"/>
     </radialGradient>
-    <!-- Soft gaussian blur used by the watermark atlas behind the right panel -->
-    <filter id="atlasBlur" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="7"/>
-    </filter>
     <!-- Force every opaque pixel of the logo to pure white while keeping its alpha
          intact — works regardless of which source PNG variant we load. -->
     <filter id="whiten" color-interpolation-filters="sRGB">
@@ -277,27 +299,6 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   </text>`;
 }
 
-// Blurred country silhouette sitting BEHIND the right text panel. Sized to
-// fit within the right 40% of the canvas, low opacity, gold tint. No-op when
-// the CLP has no atlas path (cleanly degrades).
-function rightPanelAtlasBackdrop(m) {
-  if (!m.coastPath || !m.viewBox) return '';
-  const [vbx, vby, vbw, vbh] = m.viewBox.split(/\s+/).map(Number);
-  // Right panel spans x=720 to x=1200. Fit a 380×380 box centred at x=960.
-  const BOX = 380;
-  const scale = Math.min(BOX / vbw, BOX / vbh);
-  const innerW = vbw * scale;
-  const innerH = vbh * scale;
-  const x = 960 - innerW / 2;
-  const y = H / 2 - innerH / 2;
-  return `
-  <g filter="url(#atlasBlur)" opacity="0.16">
-    <g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${scale.toFixed(4)})">
-      <path d="${esc(m.coastPath)}" fill="${GOLD}"/>
-    </g>
-  </g>`;
-}
-
 // NAC logo, embedded as a data URI so resvg renders it offline. Recoloured
 // to pure white via the #whiten filter so it reads cleanly over the blue bg.
 // Positioned at (x, y) — left-anchored, sized 52×52 by default.
@@ -386,14 +387,6 @@ function buildHeroesSvg(m, heroDataUris) {
   <line x1="720" y1="60" x2="720" y2="${H - 60}"
         stroke="${GOLD}" stroke-width="0.5" opacity="0.32"/>
 
-  <!-- Blurred atlas backdrop underneath the right text panel -->
-  ${rightPanelAtlasBackdrop(m)}
-
-  <!-- Subtle contrast veil under the right panel so text stays legible
-       even where the atlas backdrop sits behind it -->
-  <rect x="720" y="0" width="${W - 720}" height="${H}"
-        fill="${NAVY_DEEP}" opacity="0.32"/>
-
   <!-- RIGHT PANEL — text (logo + name + tagline + stats) -->
   ${rightTextPanel(m, 752)}
 </svg>`;
@@ -437,13 +430,6 @@ function buildAtlasSvg(m) {
   <line x1="720" y1="60" x2="720" y2="${H - 60}"
         stroke="${GOLD}" stroke-width="0.5" opacity="0.32"/>
 
-  <!-- Blurred atlas backdrop underneath the right text panel -->
-  ${rightPanelAtlasBackdrop(m)}
-
-  <!-- Subtle contrast veil under the right panel -->
-  <rect x="720" y="0" width="${W - 720}" height="${H}"
-        fill="${NAVY_DEEP}" opacity="0.32"/>
-
   ${rightTextPanel(m, 752)}
 </svg>`;
 }
@@ -459,16 +445,26 @@ async function buildOne(slug) {
   // Pick a render path based on what data we actually have.
   let svg, variant;
   if (model.heroes.length > 0) {
-    const dataUris = await Promise.all(model.heroes.map(h => fetchAsDataUri(h.imgUrl)));
-    const ok = dataUris.filter(Boolean).length;
-    if (ok > 0) {
-      // Pad to 3 (with nulls) so layout is consistent if a fetch failed.
-      while (dataUris.length < 3) dataUris.push(null);
-      svg = buildHeroesSvg(model, dataUris);
-      variant = `heroes (${ok}/${model.heroes.length})`;
+    // Walk the candidate pool (up to 8 from extractModel) until we have 3
+    // successfully-fetched images. Falls forward through listings instead of
+    // leaving null slots — that intermittent CDN miss was tanking 1-2 tiles.
+    const resolved = await fetchHeroDataUris(model.heroes, 3);
+    if (resolved.length >= 3) {
+      // Hand the resolved heroes (with their city names) back to the SVG
+      // builder so labels match the actual image rendered.
+      const heroModel = { ...model, heroes: resolved };
+      svg = buildHeroesSvg(heroModel, resolved.map(r => r.dataUri));
+      variant = `heroes (3/3 from ${model.heroes.length} candidates)`;
+    } else if (resolved.length > 0) {
+      // Less than 3 candidates available — pad with nulls so layout holds.
+      const heroModel = { ...model, heroes: resolved };
+      const uris = resolved.map(r => r.dataUri);
+      while (uris.length < 3) uris.push(null);
+      svg = buildHeroesSvg(heroModel, uris);
+      variant = `heroes (${resolved.length}/3 — short pool)`;
     } else {
       svg = buildAtlasSvg(model);
-      variant = 'atlas (all fetches failed)';
+      variant = `atlas (all ${model.heroes.length} candidates failed)`;
     }
   } else if (model.coastPath) {
     svg = buildAtlasSvg(model);
