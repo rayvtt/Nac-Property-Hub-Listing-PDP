@@ -187,6 +187,14 @@ const COMMON_DEFS = `
     <filter id="atlasBlur" x="-30%" y="-30%" width="160%" height="160%">
       <feGaussianBlur stdDeviation="7"/>
     </filter>
+    <!-- Force every opaque pixel of the logo to pure white while keeping its alpha
+         intact — works regardless of which source PNG variant we load. -->
+    <filter id="whiten" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="0 0 0 0 1
+                                           0 0 0 0 1
+                                           0 0 0 0 1
+                                           0 0 0 1 0"/>
+    </filter>
   </defs>`;
 
 // ──────────────────────────────────────────────────────────────────────────
@@ -209,7 +217,10 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   // from the VI name (e.g. "Singapore" / "Singapore" → suppress).
   const showEnSub = m.nameEn && m.nameEn.toLowerCase() !== (m.nameVi || '').toLowerCase();
   const primaryName = m.nameVi || m.nameEn;
-  const nameY = 200;
+  // Logo sits above the country name, left-anchored to the same column.
+  const LOGO_SIZE = 52;
+  const logoY = 100;
+  const nameY = logoY + LOGO_SIZE + 52;
   const subY = nameY + 36;
 
   // Tagline blocks: VI first (matches the big VI country name), EN below.
@@ -219,6 +230,9 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   const enY = viY + viBlockH + 22;
 
   return `
+  <!-- NAC logo (above country name, whitened via #whiten filter) -->
+  ${nacLogo(rightX, logoY, LOGO_SIZE)}
+
   <!-- Country name — VI is primary -->
   <text x="${rightX}" y="${nameY}" font-family="${FF_DISPLAY}"
         font-size="74" font-style="italic" font-weight="500" fill="${GOLD}"
@@ -282,15 +296,14 @@ function rightPanelAtlasBackdrop(m) {
   </g>`;
 }
 
-// Top-left NAC logo, embedded as a data URI so resvg renders it without a
-// network round-trip. Empty string if the logo wasn't reachable.
-function topLeftLogo() {
+// NAC logo, embedded as a data URI so resvg renders it offline. Recoloured
+// to pure white via the #whiten filter so it reads cleanly over the blue bg.
+// Positioned at (x, y) — left-anchored, sized 52×52 by default.
+function nacLogo(x, y, size = 52) {
   if (!NAC_LOGO_DATAURI) return '';
-  const SIZE = 56;
-  const X = 36, Y = 30;
   return `
-  <image href="${NAC_LOGO_DATAURI}" x="${X}" y="${Y}" width="${SIZE}" height="${SIZE}"
-         preserveAspectRatio="xMidYMid meet"/>`;
+  <image href="${NAC_LOGO_DATAURI}" x="${x}" y="${y}" width="${size}" height="${size}"
+         preserveAspectRatio="xMidYMid meet" filter="url(#whiten)"/>`;
 }
 
 function commonChrome() {
@@ -374,11 +387,8 @@ function buildHeroesSvg(m, heroDataUris) {
   <!-- Blurred atlas backdrop underneath the right text panel -->
   ${rightPanelAtlasBackdrop(m)}
 
-  <!-- RIGHT PANEL — text (40%) -->
+  <!-- RIGHT PANEL — text (logo + name + tagline + stats) -->
   ${rightTextPanel(m, 752)}
-
-  <!-- NAC logo (top-left of canvas, sits over the leftmost hero) -->
-  ${topLeftLogo()}
 </svg>`;
 }
 
@@ -424,9 +434,6 @@ function buildAtlasSvg(m) {
   ${rightPanelAtlasBackdrop(m)}
 
   ${rightTextPanel(m, 752)}
-
-  <!-- NAC logo (top-left of canvas) -->
-  ${topLeftLogo()}
 </svg>`;
 }
 
