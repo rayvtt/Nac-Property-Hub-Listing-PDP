@@ -274,6 +274,9 @@
       .lp-chip:hover{border-color:var(--orange)}
       .lp-chip.on{background:var(--display);color:#fff;border-color:var(--display)}
       .lp-chip .n{opacity:.55;margin-left:5px;font-variant-numeric:tabular-nums}
+      /* real flag images — emoji flags fall back to bare country codes on Windows */
+      .flag-img{display:inline-block;width:19px;height:13px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px;box-shadow:0 0 0 1px rgba(0,0,0,.07)}
+      .tile-country .flag-img{vertical-align:0;margin-right:5px}
       .lp-empty{display:none;padding:34px 10px;text-align:center;color:var(--muted);font-size:14px}
       .lp-empty.show{display:block}
     </style>
@@ -1771,11 +1774,16 @@
     var countEl=document.getElementById('listing-count');
     var emptyEl=document.getElementById('lp-empty');
     if(!tiles.length||!search||!chipsBox) return;
+    // Country name → ISO2 for flagcdn images (emoji flags render as bare codes on Windows).
+    var ISO={'Vietnam':'vn','Malaysia':'my','UAE':'ae','United Arab Emirates':'ae','Thailand':'th','Australia':'au','United Kingdom':'gb','Cyprus':'cy','Greece':'gr','Panama':'pa','Singapore':'sg','Turkey':'tr','Türkiye':'tr','Indonesia':'id','Philippines':'ph','Japan':'jp','Portugal':'pt','Spain':'es','Italy':'it','France':'fr','Malta':'mt','United States':'us','USA':'us'};
+    var cleanName=function(s){ return s.replace(/^[^A-Za-zÀ-ÿ]+/,'').trim(); };
+    var flag=function(name){ var i=ISO[name]; return i?'<img class="flag-img" src="https://flagcdn.com/w40/'+i+'.png" srcset="https://flagcdn.com/w80/'+i+'.png 2x" alt="" loading="lazy">':''; };
     var counts={}; var order=[];
     tiles.forEach(function(t){
-      var c=((t.querySelector('.tile-country')||{}).textContent||'').trim();
+      var c=cleanName(((t.querySelector('.tile-country')||{}).textContent||'').trim());
       t._c=c;
       t._n=(((t.querySelector('.tile-name')||{}).textContent||'')+' '+(t.getAttribute('data-slug')||'')).toLowerCase();
+      var ce=t.querySelector('.tile-country'); if(ce) ce.innerHTML=flag(c)+c;   // swap emoji → real flag in the tile too
       if(c){ if(!(c in counts)){counts[c]=0;order.push(c);} counts[c]++; }
     });
     order.sort();
@@ -1787,7 +1795,7 @@
       return b;
     }
     chipsBox.appendChild(mkChip('All','all',tiles.length));
-    order.forEach(function(c){ chipsBox.appendChild(mkChip(c,c,counts[c])); });
+    order.forEach(function(c){ chipsBox.appendChild(mkChip(flag(c)+c,c,counts[c])); });
     function render(){
       var q=(search.value||'').toLowerCase().trim(), shown=0;
       tiles.forEach(function(t){
