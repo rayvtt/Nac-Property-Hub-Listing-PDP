@@ -43,7 +43,12 @@ const montage = (args) => execFileSync(IM7 ? 'magick' : 'montage', IM7 ? ['monta
 
 const NAVY = '#0F1A36';
 // Monospace / typewriter face for the tagline band (fonts-dejavu-core, in CI).
-const MONO = process.env.MONO_FONT || '/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf';
+// Noto Sans Mono first — it covers Vietnamese (Bến, Đà Nẵng…) which DejaVu Sans
+// Mono lacks; DejaVu is the fallback. Override with MONO_FONT if needed.
+const MONO = process.env.MONO_FONT || [
+  '/usr/share/fonts/truetype/noto/NotoSansMono-Regular.ttf',
+  '/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf',
+].find((f) => fs.existsSync(f)) || '/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf';
 
 async function dl(u, dest) {
   const res = await fetch(u, { headers: { 'User-Agent': 'Mozilla/5.0 NAC-collage' }, redirect: 'follow' });
