@@ -35,6 +35,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const COUNTRY_DIR = path.join(ROOT, 'country');
 const OUT_DIR = path.join(ROOT, 'og-images');
+const FONT_DIR = path.join(__dirname, 'fonts');
+
+// CLP typography (matches country/_template-clp.html CSS vars). Vendored TTFs
+// in scripts/fonts/ so resvg can render them in CI without network access.
+const FF_DISPLAY = "'Cormorant Garamond', Georgia, 'Times New Roman', serif";
+const FF_MONO = "'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace";
 
 const W = 1200, H = 630;
 // NAC brand palette (matches country/_template-clp.html CSS variables)
@@ -42,8 +48,8 @@ const GOLD = '#C4922C';      // --gold
 const GOLD_SOFT = '#E8BF72'; // lighter gold accent
 const GOLD_GLOW = '#F4E4BF'; // --gold-soft
 const CREAM = '#FAFAF7';
-const NAVY = '#0F1A36';      // primary background
-const NAVY_DEEP = '#0A0D1C'; // deeper navy for the gradient
+const NAVY = '#1800ad';      // NAC blue (--nav)
+const NAVY_DEEP = '#0c0066'; // deeper variant for the gradient
 
 // NAC wordmark / logo on the dark theme — fetched once, embedded into every SVG.
 const NAC_LOGO_URL = 'https://nomadassetcollective.com/wp-content/uploads/2026/05/OTG-Passport-Icons-4.png';
@@ -214,21 +220,21 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
 
   return `
   <!-- Country name — VI is primary -->
-  <text x="${rightX}" y="${nameY}" font-family="Georgia, 'Times New Roman', serif"
+  <text x="${rightX}" y="${nameY}" font-family="${FF_DISPLAY}"
         font-size="74" font-style="italic" font-weight="500" fill="${GOLD}"
         letter-spacing="-1">
     ${esc(primaryName)}
   </text>
 
   ${showEnSub ? `
-  <text x="${rightX}" y="${subY}" font-family="ui-monospace, 'SF Mono', Menlo, monospace"
+  <text x="${rightX}" y="${subY}" font-family="${FF_MONO}"
         font-size="11" letter-spacing="4" fill="${GOLD_SOFT}" opacity="0.7">
     ${esc(m.nameEn.toUpperCase())}
   </text>` : ''}
 
   <!-- VI tagline -->
   ${viLines.map((line, i) => `
-  <text x="${rightX}" y="${viY + i * lineH}" font-family="Georgia, serif"
+  <text x="${rightX}" y="${viY + i * lineH}" font-family="${FF_DISPLAY}"
         font-size="20" font-style="italic" fill="${CREAM}"
         letter-spacing="0.2">
     ${esc(line)}
@@ -236,7 +242,7 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
 
   <!-- EN tagline (muted, sits below VI) -->
   ${enLines.map((line, i) => `
-  <text x="${rightX}" y="${enY + i * lineH}" font-family="Georgia, serif"
+  <text x="${rightX}" y="${enY + i * lineH}" font-family="${FF_DISPLAY}"
         font-size="20" font-style="italic" fill="${GOLD_SOFT}"
         letter-spacing="0.2" opacity="0.78">
     ${esc(line)}
@@ -244,12 +250,12 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
 
   <!-- Stat line + property-hub badge (bottom of right panel) -->
   ${statLine ? `
-  <text x="${rightX}" y="${H - 96}" font-family="ui-monospace, monospace"
+  <text x="${rightX}" y="${H - 96}" font-family="${FF_MONO}"
         font-size="13" letter-spacing="2.4" fill="${GOLD_SOFT}">
     ${esc(statLine)}
   </text>` : ''}
 
-  <text x="${rightX}" y="${H - 64}" font-family="ui-monospace, monospace"
+  <text x="${rightX}" y="${H - 64}" font-family="${FF_MONO}"
         font-size="11" letter-spacing="3.5" fill="${GOLD_SOFT}" opacity="0.55">
     ${esc(panelTitle)} · ${esc(m.code)} · 2026
   </text>`;
@@ -295,12 +301,12 @@ function commonChrome() {
   <!-- Bottom hairline + canonical URL -->
   <line x1="40" y1="${H - 34}" x2="${W - 40}" y2="${H - 34}"
         stroke="${GOLD}" stroke-width="0.5" opacity="0.3"/>
-  <text x="40" y="${H - 14}" font-family="ui-monospace, monospace"
+  <text x="40" y="${H - 14}" font-family="${FF_MONO}"
         font-size="10" letter-spacing="2.5" fill="${GOLD_SOFT}" opacity="0.55">
     NOMADASSETCOLLECTIVE.COM
   </text>
   <text x="${W - 40}" y="${H - 14}" text-anchor="end"
-        font-family="ui-monospace, monospace"
+        font-family="${FF_MONO}"
         font-size="10" letter-spacing="2.5" fill="${GOLD_SOFT}" opacity="0.55">
     PROPERTY HUB
   </text>`;
@@ -342,13 +348,13 @@ function buildHeroesSvg(m, heroDataUris) {
     ${city ? `
     <text x="${(x + COL_W / 2).toFixed(1)}" y="${COL_Y + COL_H - 28}"
           text-anchor="middle"
-          font-family="ui-monospace, monospace" font-size="13"
+          font-family="${FF_MONO}" font-size="13"
           letter-spacing="3" fill="${GOLD}" font-weight="500">
       ${esc(city)}
     </text>
     <text x="${(x + COL_W / 2).toFixed(1)}" y="${COL_Y + COL_H - 50}"
           text-anchor="middle"
-          font-family="ui-monospace, monospace" font-size="9"
+          font-family="${FF_MONO}" font-size="9"
           letter-spacing="3" fill="#a89c83" opacity="0.85">
       №${String(i + 1).padStart(2, '0')}
     </text>` : ''}`;
@@ -456,7 +462,13 @@ async function buildOne(slug) {
 
   const resvg = new Resvg(svg, {
     fitTo: { mode: 'width', value: W },
-    font: { loadSystemFonts: true },
+    font: {
+      // Vendored Cormorant Garamond + JetBrains Mono — matches CLP CSS vars
+      // and renders deterministically in CI (no Google Fonts at runtime).
+      fontDirs: [FONT_DIR],
+      defaultFontFamily: 'Cormorant Garamond',
+      loadSystemFonts: true, // fall through for emoji + Vietnamese diacritics if needed
+    },
   });
   const png = resvg.render().asPng();
   await fs.mkdir(OUT_DIR, { recursive: true });
