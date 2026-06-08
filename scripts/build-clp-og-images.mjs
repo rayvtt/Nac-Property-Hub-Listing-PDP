@@ -43,6 +43,7 @@ const FF_DISPLAY = "'Cormorant Garamond', Georgia, 'Times New Roman', serif";
 const FF_MONO = "'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace";
 
 const W = 1200, H = 630;
+const SPLIT_X = 720;   // 60% / 40% — navy hero frame | white text panel
 // NAC brand palette (matches country/_template-clp.html CSS variables)
 const GOLD = '#C4922C';      // --gold
 const GOLD_SOFT = '#E8BF72'; // lighter gold accent
@@ -52,7 +53,9 @@ const NAVY = '#1800ad';      // NAC blue (--nav)
 const NAVY_DEEP = '#0c0066'; // deeper variant for the gradient
 
 // NAC wordmark / logo on the dark theme — fetched once, embedded into every SVG.
-const NAC_LOGO_URL = 'https://nomadassetcollective.com/wp-content/uploads/2026/05/OTG-Passport-Icons-4.png';
+// Light-theme logo (for the navy left frame, recoloured via #whiten filter)
+// and dark-theme logo (sits on the white right panel as-is).
+const NAC_LOGO_URL = 'https://nomadassetcollective.com/wp-content/uploads/2026/04/OTG-Passport-Icons-1.png';
 let NAC_LOGO_DATAURI = null;
 
 const COUNTRY_CODE_FROM_SLUG = {
@@ -281,19 +284,19 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   const statY = priceY + 38;
 
   return `
-  <!-- NAC logo (whitened via #whiten filter) -->
+  <!-- NAC logo (dark variant — sits over the white right panel) -->
   ${nacLogo(rightX, logoY, LOGO_SIZE)}
 
   <!-- EN code caps (small mono header) -->
   ${showEnSub ? `
   <text x="${rightX}" y="${subY}" font-family="${FF_MONO}"
-        font-size="18" letter-spacing="6" fill="${GOLD_SOFT}" opacity="0.85">
+        font-size="18" letter-spacing="6" fill="${NAVY}" opacity="0.55">
     ${esc(m.nameEn.toUpperCase())}
   </text>` : ''}
 
   <!-- Country name (VI, big italic display) -->
   <text x="${rightX}" y="${nameY}" font-family="${FF_DISPLAY}"
-        font-size="86" font-style="italic" font-weight="500" fill="${GOLD}"
+        font-size="86" font-style="italic" font-weight="500" fill="${NAVY}"
         letter-spacing="-1">
     ${esc(primaryName)}
   </text>
@@ -301,16 +304,16 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   <!-- VI tagline — single line, auto-sized to fit -->
   ${m.taglineVi ? `
   <text x="${rightX}" y="${viY}" font-family="${FF_DISPLAY}"
-        font-size="${viSize}" font-style="italic" fill="${CREAM}"
-        letter-spacing="0.2" font-weight="500">
+        font-size="${viSize}" font-style="italic" fill="${NAVY}"
+        letter-spacing="0.2" font-weight="500" opacity="0.88">
     ${esc(m.taglineVi)}
   </text>` : ''}
 
   <!-- EN tagline — single line, auto-sized to fit -->
   ${m.taglineEn ? `
   <text x="${rightX}" y="${enY}" font-family="${FF_DISPLAY}"
-        font-size="${enSize}" font-style="italic" fill="${CREAM}"
-        letter-spacing="0.2" opacity="0.78">
+        font-size="${enSize}" font-style="italic" fill="${NAVY}"
+        letter-spacing="0.2" opacity="0.7">
     ${esc(m.taglineEn)}
   </text>` : ''}
 
@@ -321,11 +324,11 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   <!-- "FROM" label — mono caps above the giant price -->
   ${m.entry ? `
   <text x="${rightX}" y="${fromLblY}" font-family="${FF_MONO}"
-        font-size="16" letter-spacing="6" fill="${CREAM}" opacity="0.7">
+        font-size="16" letter-spacing="6" fill="${NAVY}" opacity="0.6">
     FROM
   </text>` : ''}
 
-  <!-- THE BILLBOARD: huge italic entry price -->
+  <!-- THE BILLBOARD: huge italic entry price in NAC gold on white -->
   ${m.entry ? `
   <text x="${rightX}" y="${priceY}" font-family="${FF_DISPLAY}"
         font-size="106" font-style="italic" font-weight="500" fill="${GOLD}"
@@ -336,36 +339,46 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   <!-- Stat row — listings · cities -->
   ${statLine ? `
   <text x="${rightX}" y="${statY}" font-family="${FF_MONO}"
-        font-size="15" letter-spacing="3.5" fill="${GOLD_SOFT}" opacity="0.85">
+        font-size="15" letter-spacing="3.5" fill="${NAVY}" opacity="0.65">
     ${esc(statLine)}
   </text>` : ''}`;
 }
 
-// NAC logo, embedded as a data URI so resvg renders it offline. Recoloured
-// to pure white via the #whiten filter so it reads cleanly over the blue bg.
-// Positioned at (x, y) — left-anchored, sized 52×52 by default.
+// NAC logo, embedded as a data URI so resvg renders it offline. With the
+// split background, the right panel is white — use the dark-theme logo
+// source (no whiten filter needed). Left-anchored at (x, y).
 function nacLogo(x, y, size = 52) {
   if (!NAC_LOGO_DATAURI) return '';
   return `
   <image href="${NAC_LOGO_DATAURI}" x="${x}" y="${y}" width="${size}" height="${size}"
-         preserveAspectRatio="xMidYMid meet" filter="url(#whiten)"/>`;
+         preserveAspectRatio="xMidYMid meet"/>`;
 }
 
 function commonChrome() {
   return `
-  <rect width="${W}" height="${H}" fill="url(#bgFade)"/>
-  <rect width="${W}" height="${H}" fill="url(#grain)" opacity="0.5"/>
+  <!-- Left 60% — NAC blue, the brand frame for the hero fan -->
+  <rect width="${SPLIT_X}" height="${H}" fill="url(#bgFade)"/>
+  <rect width="${SPLIT_X}" height="${H}" fill="url(#grain)" opacity="0.5"/>
 
-  <!-- Bottom hairline + canonical URL -->
-  <line x1="40" y1="${H - 38}" x2="${W - 40}" y2="${H - 38}"
+  <!-- Right 40% — clean white panel for the text/price billboard -->
+  <rect x="${SPLIT_X}" y="0" width="${W - SPLIT_X}" height="${H}" fill="${CREAM}"/>
+
+  <!-- Hairline gold seam between the two panels -->
+  <line x1="${SPLIT_X}" y1="0" x2="${SPLIT_X}" y2="${H}"
+        stroke="${GOLD}" stroke-width="1.5" opacity="0.9"/>
+
+  <!-- Bottom URL strip — left (cream on navy), right (navy on white) -->
+  <line x1="40" y1="${H - 38}" x2="${SPLIT_X - 16}" y2="${H - 38}"
         stroke="${GOLD}" stroke-width="0.5" opacity="0.5"/>
+  <line x1="${SPLIT_X + 16}" y1="${H - 38}" x2="${W - 40}" y2="${H - 38}"
+        stroke="${NAVY}" stroke-width="0.5" opacity="0.45"/>
   <text x="40" y="${H - 14}" font-family="${FF_MONO}"
         font-size="14" letter-spacing="2.5" fill="${CREAM}" opacity="0.8">
     NOMADASSETCOLLECTIVE.COM
   </text>
   <text x="${W - 40}" y="${H - 14}" text-anchor="end"
         font-family="${FF_MONO}"
-        font-size="14" letter-spacing="2.5" fill="${CREAM}" opacity="0.8">
+        font-size="14" letter-spacing="2.5" fill="${NAVY}" opacity="0.85">
     PROPERTY HUB
   </text>`;
 }
