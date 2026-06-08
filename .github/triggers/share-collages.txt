@@ -1,2 +1,3 @@
 replace
-2026-06-08 — full sweep: regenerate all collages with serif tagline + Giá vào/IRR/Live chips.
+only: one-central-saigon
+2026-06-08 — pilot: stripped first-clause VI+EN tagline, compact band, smaller chips.
