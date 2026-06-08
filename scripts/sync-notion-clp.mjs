@@ -933,12 +933,30 @@ async function fetchAllLiveListings(notion) {
   } while (cursor);
   _liveListingsCache = results;
   console.log(`fetchAllLiveListings: ${results.length} Live row(s) cached for the run`);
+  // Diagnostic: dump the shape of the first row's Country property so we can
+  // see if Notion is returning a different schema than .select.name now.
+  if (results[0]) {
+    const sample = results[0].properties.Country;
+    console.log(`  sample Country property keys: ${Object.keys(sample || {}).join(', ')}`);
+    console.log(`  sample Country JSON: ${JSON.stringify(sample)?.slice(0, 200)}`);
+    const allCountries = new Set();
+    for (const p of results) {
+      const c = p.properties.Country;
+      const name = c?.select?.name || c?.status?.name || c?.rich_text?.[0]?.plain_text || c?.name;
+      if (name) allCountries.add(name);
+    }
+    console.log(`  distinct Country values in cache: ${[...allCountries].join(' · ') || '(none extracted)'}`);
+  }
   return results;
 }
 
 async function fetchCountryListings(notion, countryNameEn) {
   const all = await fetchAllLiveListings(notion);
-  const results = all.filter(p => p.properties.Country?.select?.name === countryNameEn);
+  const results = all.filter(p => {
+    const c = p.properties.Country;
+    const name = c?.select?.name || c?.status?.name || c?.rich_text?.[0]?.plain_text || c?.name;
+    return name === countryNameEn;
+  });
 
   const rt = (prop) => {
     if (!prop) return '';
