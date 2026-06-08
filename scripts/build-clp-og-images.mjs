@@ -247,54 +247,56 @@ const COMMON_DEFS = `
 // Layout helpers — text panel on the right (shared by both variants)
 // ──────────────────────────────────────────────────────────────────────────
 function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
-  // Bilingual taglines — strictly one row per language. Auto-shrink the font
-  // size if a headline is too long for the right panel width (~412px usable).
-  // No wrapping, never a hanging word. Base bumped to 38pt with a 22pt floor
-  // so short headlines pop big on mobile previews (cards render ~300px wide).
+  // Bilingual taglines — strictly one row per language. Auto-shrink to fit
+  // the right panel width. Sized smaller than country/price headlines —
+  // they're supporting context, not the visual hook.
   const TAGLINE_W = W - rightX - 36;
-  const viSize = fitSingleLineFontSize(m.taglineVi || '', TAGLINE_W, 38, 22);
-  const enSize = fitSingleLineFontSize(m.taglineEn || '', TAGLINE_W, 38, 22);
+  const viSize = fitSingleLineFontSize(m.taglineVi || '', TAGLINE_W, 26, 18);
+  const enSize = fitSingleLineFontSize(m.taglineEn || '', TAGLINE_W, 24, 16);
 
+  // Stat row — listings + cities only. Entry price gets its own giant moment
+  // below, no need to duplicate it here.
   const statParts = [];
-  if (m.listings) statParts.push(`${m.listings} ${m.listings === '1' ? 'listing' : 'listings'}`);
-  if (m.cities)   statParts.push(`${m.cities} ${m.cities === '1' ? 'city' : 'cities'}`);
-  if (m.entry)    statParts.push(`from ${m.entry.replace(/\s+/g, '')}`);
+  if (m.listings) statParts.push(`${m.listings} ${m.listings === '1' ? 'LISTING' : 'LISTINGS'}`);
+  if (m.cities)   statParts.push(`${m.cities} ${m.cities === '1' ? 'CITY' : 'CITIES'}`);
   const statLine = statParts.join('  ·  ');
 
-  // VI as primary display name (Georgia italic, NAC gold, 74pt). EN subtitle
-  // below for global readability. Show the EN subtitle only when it differs
-  // from the VI name (e.g. "Singapore" / "Singapore" → suppress).
+  // VI as primary display name. EN subtitle below for global readability.
   const showEnSub = m.nameEn && m.nameEn.toLowerCase() !== (m.nameVi || '').toLowerCase();
   const primaryName = m.nameVi || m.nameEn;
-  // Logo top-aligned with where the hero images start (y=32 PAD on the
-  // heroes variant) — gives the lockup a clean horizontal baseline across
-  // the whole composition.
+
+  // Top stack: logo → small EN code caps → big VI country name → taglines.
   const LOGO_SIZE = 56;
   const logoY = 32;
-  const nameY = logoY + LOGO_SIZE + 76;
-  const subY = nameY + 40;
+  const subY = 128;
+  const nameY = 208;
+  const viY = nameY + 88;
+  const enY = viY + Math.max(viSize, enSize) + 16;
 
-  // Tagline rows: VI first (matches the big VI country name), EN below.
-  const viY = (showEnSub ? subY : nameY) + 80;
-  const gapVE = Math.max(viSize, enSize) + 22;
-  const enY = viY + gapVE;
+  // Decorative hairline + "FROM" caps + HUGE entry price → the billboard moment.
+  const ruleY = enY + 56;
+  const fromLblY = ruleY + 42;
+  const priceY = fromLblY + 100;
+  // Stat row sits just below the price; tightened so it doesn't crowd the URL.
+  const statY = priceY + 38;
 
   return `
-  <!-- NAC logo (above country name, whitened via #whiten filter) -->
+  <!-- NAC logo (whitened via #whiten filter) -->
   ${nacLogo(rightX, logoY, LOGO_SIZE)}
 
-  <!-- Country name — VI is primary -->
+  <!-- EN code caps (small mono header) -->
+  ${showEnSub ? `
+  <text x="${rightX}" y="${subY}" font-family="${FF_MONO}"
+        font-size="18" letter-spacing="6" fill="${GOLD_SOFT}" opacity="0.85">
+    ${esc(m.nameEn.toUpperCase())}
+  </text>` : ''}
+
+  <!-- Country name (VI, big italic display) -->
   <text x="${rightX}" y="${nameY}" font-family="${FF_DISPLAY}"
         font-size="86" font-style="italic" font-weight="500" fill="${GOLD}"
         letter-spacing="-1">
     ${esc(primaryName)}
   </text>
-
-  ${showEnSub ? `
-  <text x="${rightX}" y="${subY}" font-family="${FF_MONO}"
-        font-size="17" letter-spacing="4" fill="${CREAM}" opacity="0.85">
-    ${esc(m.nameEn.toUpperCase())}
-  </text>` : ''}
 
   <!-- VI tagline — single line, auto-sized to fit -->
   ${m.taglineVi ? `
@@ -308,21 +310,35 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   ${m.taglineEn ? `
   <text x="${rightX}" y="${enY}" font-family="${FF_DISPLAY}"
         font-size="${enSize}" font-style="italic" fill="${CREAM}"
-        letter-spacing="0.2" opacity="0.82">
+        letter-spacing="0.2" opacity="0.78">
     ${esc(m.taglineEn)}
   </text>` : ''}
 
-  <!-- Stat line + property-hub badge (bottom of right panel) -->
-  ${statLine ? `
-  <text x="${rightX}" y="${H - 100}" font-family="${FF_MONO}"
-        font-size="20" letter-spacing="2.4" fill="${CREAM}" opacity="0.92">
-    ${esc(statLine)}
+  <!-- Decorative gold hairline, short — divider before the price block -->
+  <line x1="${rightX}" y1="${ruleY}" x2="${rightX + 60}" y2="${ruleY}"
+        stroke="${GOLD}" stroke-width="2"/>
+
+  <!-- "FROM" label — mono caps above the giant price -->
+  ${m.entry ? `
+  <text x="${rightX}" y="${fromLblY}" font-family="${FF_MONO}"
+        font-size="16" letter-spacing="6" fill="${CREAM}" opacity="0.7">
+    FROM
   </text>` : ''}
 
-  <text x="${rightX}" y="${H - 66}" font-family="${FF_MONO}"
-        font-size="16" letter-spacing="3.5" fill="${GOLD_SOFT}" opacity="0.9">
-    ${esc(panelTitle)} · ${esc(m.code)} · 2026
-  </text>`;
+  <!-- THE BILLBOARD: huge italic entry price -->
+  ${m.entry ? `
+  <text x="${rightX}" y="${priceY}" font-family="${FF_DISPLAY}"
+        font-size="106" font-style="italic" font-weight="500" fill="${GOLD}"
+        letter-spacing="-2">
+    ${esc(m.entry.replace(/\s+/g, ''))}
+  </text>` : ''}
+
+  <!-- Stat row — listings · cities -->
+  ${statLine ? `
+  <text x="${rightX}" y="${statY}" font-family="${FF_MONO}"
+        font-size="15" letter-spacing="3.5" fill="${GOLD_SOFT}" opacity="0.85">
+    ${esc(statLine)}
+  </text>` : ''}`;
 }
 
 // NAC logo, embedded as a data URI so resvg renders it offline. Recoloured
