@@ -638,8 +638,16 @@ function applyModel(html, model, { globalStats } = {}) {
 
 // ─── Notion → model ─────────────────────────────────────────────────────────
 
+let _dumpedCountryRow = false;
 async function buildModelFromNotion(notion, countryRow) {
   const p = countryRow.properties;
+  if (!_dumpedCountryRow) {
+    _dumpedCountryRow = true;
+    console.log(`  Country DB row property keys: ${Object.keys(p).join(' · ')}`);
+    for (const key of ['Slug', 'Country Name EN', 'Country Name VI', 'Country Code']) {
+      console.log(`  Country DB[${JSON.stringify(key)}]: ${JSON.stringify(p[key])?.slice(0, 200)}`);
+    }
+  }
   const rt = (prop) => {
     if (!prop) return '';
     if (prop.title) return prop.title.map(t => t.plain_text).join('');
@@ -952,6 +960,7 @@ async function fetchAllLiveListings(notion) {
 
 async function fetchCountryListings(notion, countryNameEn) {
   const all = await fetchAllLiveListings(notion);
+  console.log(`  fetchCountryListings(<${typeof countryNameEn}> "${countryNameEn}") against ${all.length} rows`);
   const results = all.filter(p => {
     const c = p.properties.Country;
     const name = c?.select?.name || c?.status?.name || c?.rich_text?.[0]?.plain_text || c?.name;
