@@ -35,7 +35,11 @@ const ONLY = (process.env.ONLY || '').split(',').map((s) => s.trim()).filter(Boo
 if (!TOKEN) { console.error('NOTION_TOKEN required'); process.exit(1); }
 if (!CF_TOKEN) { console.error('CLOUDFLARE_API_TOKEN required'); process.exit(1); }
 
-const notion = new Client({ auth: TOKEN });
+// Pin the Notion API version. @notionhq/client is an unpinned ^2.2.15, so a fresh
+// CI `npm install` can pull a newer client that defaults to a newer Notion-Version
+// header — under which `databases.query` by database_id returns 0 rows (the
+// data-source migration). Pinning 2022-06-28 keeps the Live query deterministic.
+const notion = new Client({ auth: TOKEN, notionVersion: '2022-06-28' });
 const url = (p) => (p?.url || (p?.rich_text || []).map((t) => t.plain_text).join('')) || '';
 const rt = (p) => (p?.rich_text || p?.title || []).map((t) => t.plain_text).join('').trim();
 
