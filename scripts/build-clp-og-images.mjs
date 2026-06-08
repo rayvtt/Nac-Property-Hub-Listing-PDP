@@ -269,38 +269,30 @@ function toRoman(n) {
 
 function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   // ── editorial cover composition ────────────────────────────────────
-  // Strip everything down to four typographic moments:
-  //   1. NAC logo (top-left, navy)
+  // Five typographic moments:
+  //   1. NAC logo top-left (navy)
   //   2. Country name VI — gold italic display, the single hero element
   //   3. Long gold hairline rule beneath the name (the only frame)
-  //   4. A single editorial line — uses the EN headline if it fits at 24pt,
-  //      falls back to the VI one
+  //   4. VI share-title — italic display, ink charcoal (the lede)
+  //   5. EN share-title — italic display, ink charcoal lighter (translation)
   // Plus a discreet bottom caption with the listings count cast as an
-  // editorial issue number (Vol. XLIX) and the year in roman numerals.
+  // editorial roman-numeral volume number + MMXXVI year.
   //
-  // No big price billboard. No FROM. No stats spelled out. Numbers turn
-  // into editorial flourishes — premium magazine masthead energy.
+  // No big price billboard. No FROM. Numbers turn into editorial flourishes —
+  // premium magazine masthead energy.
   const TAGLINE_W = W - rightX - 36;
-  const pickTagline = m.taglineEn || m.taglineVi || '';
-  const tagSize = fitSingleLineFontSize(pickTagline, TAGLINE_W, 26, 18);
+  const viSize = fitSingleLineFontSize(m.taglineVi || '', TAGLINE_W, 28, 20);
+  const enSize = fitSingleLineFontSize(m.taglineEn || '', TAGLINE_W, 22, 16);
 
   const primaryName = m.nameVi || m.nameEn;
 
-  // Vertical layout — generous negative space top + bottom.
+  // Vertical layout — generous negative space, no bottom caption.
   const LOGO_SIZE = 52;
   const logoY = 36;
-  const nameY = 268;          // country name visually anchors the middle third
-  const ruleY = nameY + 30;   // hairline immediately below the descender
-  const tagY = ruleY + 56;    // single editorial line
-
-  // Bottom caption: "VOL. XLIX · MMXXVI" — listings count in roman, year too.
-  const listingsRoman = m.listings ? toRoman(parseInt(m.listings, 10) || 0) : '';
-  const yearRoman = 'MMXXVI';
-  const captionParts = [];
-  if (listingsRoman) captionParts.push(`VOL. ${listingsRoman}`);
-  captionParts.push(yearRoman);
-  const caption = captionParts.join('  ·  ');
-  const captionY = H - 56;
+  const nameY = 268;          // country name anchors the middle third
+  const ruleY = nameY + 28;   // hairline immediately below the descender
+  const viY = ruleY + 56;     // VI lede, sits just below the rule
+  const enY = viY + viSize + 12; // EN translation, tight stack underneath
 
   return `
   <!-- NAC logo, recoloured to NAC navy via #navify -->
@@ -317,19 +309,20 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   <line x1="${rightX}" y1="${ruleY}" x2="${W - 36}" y2="${ruleY}"
         stroke="${GOLD}" stroke-width="1.3" opacity="0.9"/>
 
-  <!-- Editorial line — one tagline (EN preferred), ink charcoal italic -->
-  ${pickTagline ? `
-  <text x="${rightX}" y="${tagY}" font-family="${FF_DISPLAY}"
-        font-size="${tagSize}" font-style="italic" fill="${INK}"
-        letter-spacing="0.2" opacity="0.78">
-    ${esc(pickTagline)}
+  <!-- VI share-title — italic display, ink charcoal (the lede) -->
+  ${m.taglineVi ? `
+  <text x="${rightX}" y="${viY}" font-family="${FF_DISPLAY}"
+        font-size="${viSize}" font-style="italic" fill="${INK}"
+        letter-spacing="0.2" font-weight="500" opacity="0.9">
+    ${esc(m.taglineVi)}
   </text>` : ''}
 
-  <!-- Bottom caption — issue number + year in roman, tracked mono caps -->
-  ${caption ? `
-  <text x="${rightX}" y="${captionY}" font-family="${FF_MONO}"
-        font-size="13" letter-spacing="6" fill="${INK}" opacity="0.5">
-    ${esc(caption)}
+  <!-- EN share-title — italic display, ink charcoal lighter (translation) -->
+  ${m.taglineEn ? `
+  <text x="${rightX}" y="${enY}" font-family="${FF_DISPLAY}"
+        font-size="${enSize}" font-style="italic" fill="${INK}"
+        letter-spacing="0.2" opacity="0.62">
+    ${esc(m.taglineEn)}
   </text>` : ''}`;
 }
 
