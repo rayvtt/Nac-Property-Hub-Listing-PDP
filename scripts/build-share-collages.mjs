@@ -42,6 +42,8 @@ const convert = (args) => execFileSync(IM7 ? 'magick' : 'convert', IM7 ? args : 
 const montage = (args) => execFileSync(IM7 ? 'magick' : 'montage', IM7 ? ['montage', ...args] : args, { stdio: 'pipe' });
 
 const NAVY = '#0F1A36';
+// Monospace / typewriter face for the tagline band (fonts-dejavu-core, in CI).
+const MONO = process.env.MONO_FONT || '/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf';
 
 async function dl(u, dest) {
   const res = await fetch(u, { headers: { 'User-Agent': 'Mozilla/5.0 NAC-collage' }, redirect: 'follow' });
@@ -75,29 +77,54 @@ async function uploadCF(filePath, id) {
 }
 
 // Build a 1200×630 collage: hero left (600×630) + 2×2 of the next images right.
-function buildCollage(images, work) {
+function buildCollage(images, work, tagline) {
   const hero = images[0];
   const gallery = images.slice(1);
   const left = path.join(work, 'left.jpg');
-  const out = path.join(work, 'collage.jpg');
+  const base = path.join(work, 'collage.jpg');
   convert([hero, '-resize', '600x630^', '-gravity', 'center', '-extent', '600x630', '-strip', left]);
 
   if (gallery.length === 0) {
-    // only a hero — full-bleed 1200×630
-    convert([hero, '-resize', '1200x630^', '-gravity', 'center', '-extent', '1200x630', '-strip', '-quality', '86', out]);
-    return out;
+    convert([hero, '-resize', '1200x630^', '-gravity', 'center', '-extent', '1200x630', '-strip', base]);
+  } else {
+    // four tiles (cycle through what's available to fill the 2×2)
+    const tiles = [];
+    for (let i = 0; i < 4; i++) {
+      const src = gallery[i % gallery.length];
+      const t = path.join(work, `tile${i}.jpg`);
+      convert([src, '-resize', '300x315^', '-gravity', 'center', '-extent', '300x315', '-strip', t]);
+      tiles.push(t);
+    }
+    const right = path.join(work, 'right.jpg');
+    montage([...tiles, '-tile', '2x2', '-geometry', '+0+0', '-background', NAVY, right]);
+    convert([left, right, '+append', '-strip', base]);
   }
-  // four tiles (cycle through what's available to fill the 2×2)
-  const tiles = [];
-  for (let i = 0; i < 4; i++) {
-    const src = gallery[i % gallery.length];
-    const t = path.join(work, `tile${i}.jpg`);
-    convert([src, '-resize', '300x315^', '-gravity', 'center', '-extent', '300x315', '-strip', t]);
-    tiles.push(t);
-  }
-  const right = path.join(work, 'right.jpg');
-  montage([...tiles, '-tile', '2x2', '-geometry', '+0+0', '-background', NAVY, right]);
-  convert([left, right, '+append', '-strip', '-quality', '86', out]);
+  return (tagline && fs.existsSync(MONO)) ? addTaglineBand(base, tagline, work) : finalize(base, work);
+}
+
+function finalize(src, work) {
+  const out = path.join(work, 'final.jpg');
+  convert([src, '-strip', '-quality', '86', out]);
+  return out;
+}
+
+// A soft, blurred "highlight" band across the middle of the collage carrying the
+// tagline in a monospace (typewriter) face — static, for the social preview.
+function addTaglineBand(src, tagline, work) {
+  const W = 1200, BAND_H = 150, Y = Math.round((630 - BAND_H) / 2);
+  const blur = path.join(work, 'blur.jpg');
+  const band = path.join(work, 'band.jpg');
+  const txt = path.join(work, 'txt.png');
+  const bt = path.join(work, 'bandtext.jpg');
+  const out = path.join(work, 'final.jpg');
+  const text = tagline.replace(/\s+/g, ' ').trim() + ' ▌';   // ▌ = typewriter cursor
+  // frosted highlight: blur the whole collage, crop the centre band, darken a touch
+  convert([src, '-blur', '0x16', blur]);
+  convert([blur, '-crop', `${W}x${BAND_H}+0+${Y}`, '+repage', '-brightness-contrast', '-22x6', band]);
+  // tagline in white mono, auto-fit to the band width
+  convert(['-background', 'none', '-fill', '#ffffff', '-font', MONO, '-size', `1080x${BAND_H - 46}`, '-gravity', 'center', `caption:${text}`, txt]);
+  convert([band, txt, '-gravity', 'center', '-composite', bt]);
+  convert([src, bt, '-geometry', `+0+${Y}`, '-composite', '-strip', '-quality', '88', out]);
   return out;
 }
 
@@ -129,10 +156,11 @@ async function main() {
     try {
       const local = [];
       for (let i = 0; i < imgs.length; i++) local.push(await dl(imgs[i], path.join(work, `src${i}.img`)));
-      const collage = buildCollage(local, work);
+      const tagline = rt(p['🏷️ Tagline EN']);
+      const collage = buildCollage(local, work, tagline);
       const cfUrl = await uploadCF(collage, `${slug}-share`);
       await notion.pages.update({ page_id: pg.id, properties: { 'Share Image URL': { url: cfUrl } } });
-      console.log(`  ✓ ${slug}: ${imgs.length} photos → ${cfUrl}`);
+      console.log(`  ✓ ${slug}: ${imgs.length} photos${tagline ? ' + tagline' : ''} → ${cfUrl}`);
       done++;
     } catch (e) {
       console.log(`  ✖ ${slug}: ${e.message}`);
