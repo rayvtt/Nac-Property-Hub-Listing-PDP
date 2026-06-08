@@ -5,3 +5,4 @@
 2026-06-08T14:43:56Z — fire sync-notion-clp after PR #329 Notion API pin landed (cron has been silent since 13:14Z, despite push triggers configured)
 2026-06-08T15:11:50Z — URGENT: force WP push (PDP + CLP) after the slug-key fix repopulated all listings
 2026-06-08T15:43:36Z — urgent WP push after OG card final pass (single-line auto-fit taglines)
+2026-06-08T16:05:08Z — refresh GH Pages index after slug-key + OG-bg fix
