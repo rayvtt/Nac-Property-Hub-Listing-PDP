@@ -32,8 +32,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install ImageMagick + monospace fonts (Noto covers Vietnamese)
+      - name: Install ImageMagick + fonts (DejaVu/Noto cover Vietnamese)
         run: sudo apt-get update && sudo apt-get install -y imagemagick fonts-noto-mono fonts-dejavu-core
+      - name: Fetch Property Hub display font (Cormorant Garamond Italic)
+        run: |
+          curl -sSL -o /tmp/CormorantGaramond-Italic.ttf \
+            https://raw.githubusercontent.com/google/fonts/main/ofl/cormorantgaramond/CormorantGaramond-Italic.ttf
+          echo "DISPLAY_FONT=/tmp/CormorantGaramond-Italic.ttf" >> "$GITHUB_ENV"
       - uses: actions/setup-node@v4
         with:
           node-version: "20"

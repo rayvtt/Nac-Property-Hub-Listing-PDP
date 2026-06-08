@@ -21,6 +21,9 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 const TOKEN = process.env.NOTION_TOKEN;
 const DATABASE_ID = process.env.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9';
@@ -42,13 +45,20 @@ const convert = (args) => execFileSync(IM7 ? 'magick' : 'convert', IM7 ? args : 
 const montage = (args) => execFileSync(IM7 ? 'magick' : 'montage', IM7 ? ['montage', ...args] : args, { stdio: 'pipe' });
 
 const NAVY = '#0F1A36';
-// Monospace / typewriter face for the tagline band (fonts-dejavu-core, in CI).
-// Noto Sans Mono first — it covers Vietnamese (Bến, Đà Nẵng…) which DejaVu Sans
-// Mono lacks; DejaVu is the fallback. Override with MONO_FONT if needed.
-const MONO = process.env.MONO_FONT || [
-  '/usr/share/fonts/truetype/noto/NotoSansMono-Regular.ttf',
-  '/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf',
-].find((f) => fs.existsSync(f)) || '/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf';
+const firstFont = (cands, fallback) => cands.find((f) => f && fs.existsSync(f)) || fallback;
+// Tagline = the Property Hub display face, Cormorant Garamond Italic (downloaded
+// in CI; covers Vietnamese). Falls back to Noto/DejaVu serif if unavailable.
+const DISPLAY = firstFont([
+  process.env.DISPLAY_FONT,
+  '/usr/share/fonts/truetype/cormorant/CormorantGaramond-Italic.ttf',
+  '/usr/share/fonts/truetype/noto/NotoSerif-Italic.ttf',
+  '/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf',
+], '/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf');
+// Chips use a sans with Vietnamese coverage (DejaVu Sans, installed).
+const SANS = firstFont([
+  '/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf',
+  '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+], '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf');
 
 async function dl(u, dest) {
   const res = await fetch(u, { headers: { 'User-Agent': 'Mozilla/5.0 NAC-collage' }, redirect: 'follow' });
@@ -81,8 +91,20 @@ async function uploadCF(filePath, id) {
   return data.result.variants.find((v) => v.endsWith('/public')) || data.result.variants[0];
 }
 
+// Pull the displayed entry price + IRR straight from the shipped HTML (already
+// currency-converted by sync-notion) for the chips.
+function readStats(slug) {
+  try {
+    const h = fs.readFileSync(path.join(ROOT, 'properties', slug + '.html'), 'utf8');
+    const g = (re) => { const m = h.match(re); return m ? m[1].trim() : ''; };
+    const price = g(/data-notion="price_short"[^>]*>([^<]*)/);
+    const irr = g(/data-notion="irr_pct"[^>]*>([^<]*)/);
+    return { price, irr: irr ? irr + '%' : '' };
+  } catch { return {}; }
+}
+
 // Build a 1200×630 collage: hero left (600×630) + 2×2 of the next images right.
-function buildCollage(images, work, tagline) {
+function buildCollage(images, work, tagline, stats) {
   const hero = images[0];
   const gallery = images.slice(1);
   const left = path.join(work, 'left.jpg');
@@ -104,7 +126,7 @@ function buildCollage(images, work, tagline) {
     montage([...tiles, '-tile', '2x2', '-geometry', '+0+0', '-background', NAVY, right]);
     convert([left, right, '+append', '-strip', base]);
   }
-  return (tagline && fs.existsSync(MONO)) ? addTaglineBand(base, tagline, work) : finalize(base, work);
+  return tagline ? addTaglineBand(base, tagline, stats || {}, work) : finalize(base, work);
 }
 
 function finalize(src, work) {
@@ -113,24 +135,49 @@ function finalize(src, work) {
   return out;
 }
 
-// A soft, blurred "highlight" band across the middle of the collage carrying the
-// tagline in a monospace (typewriter) face — static, for the social preview.
-function addTaglineBand(src, tagline, work) {
-  const W = 1200, BAND_H = 150, Y = Math.round((630 - BAND_H) / 2);
+// A rounded chip sized to its text: translucent stat pill, or a solid status badge.
+function makeChip(text, name, bg, fg, work) {
+  const out = path.join(work, name + '.png');
+  const w = Math.min(360, Math.max(140, 30 + text.length * 12));
+  convert(['-size', `${w}x46`, 'xc:none',
+    '-fill', bg, '-draw', `roundrectangle 0,0,${w - 1},45,23,23`,
+    '-font', SANS, '-pointsize', '20', '-fill', fg, '-gravity', 'center', '-annotate', '+0+0', text, out]);
+  return { path: out, w };
+}
+
+// Frosted "highlight" band across the middle: tagline in the Property Hub serif on
+// the left + a stacked column of Giá vào / IRR 10 năm / Live chips on the right.
+function addTaglineBand(src, tagline, stats, work) {
+  const W = 1200, BAND_H = 186, Y = Math.round((630 - BAND_H) / 2);
   const blur = path.join(work, 'blur.jpg');
   const band = path.join(work, 'band.jpg');
   const txt = path.join(work, 'txt.png');
+  const chipsPng = path.join(work, 'chips.png');
   const bt = path.join(work, 'bandtext.jpg');
   const out = path.join(work, 'final.jpg');
-  // Normalise to NFC (precomposed) so Vietnamese diacritics — e.g. "Bến" — render
-  // in the mono font instead of dropping their combining marks.
-  const text = tagline.replace(/\s+/g, ' ').trim().normalize('NFC') + ' ▌';   // ▌ = typewriter cursor
-  // frosted highlight: blur the whole collage, crop the centre band, darken a touch
+
+  // frosted highlight
   convert([src, '-blur', '0x16', blur]);
-  convert([blur, '-crop', `${W}x${BAND_H}+0+${Y}`, '+repage', '-brightness-contrast', '-22x6', band]);
-  // tagline in white mono, auto-fit to the band width
-  convert(['-background', 'none', '-fill', '#ffffff', '-font', MONO, '-size', `1080x${BAND_H - 46}`, '-gravity', 'center', `caption:${text}`, txt]);
-  convert([band, txt, '-gravity', 'center', '-composite', bt]);
+  convert([blur, '-crop', `${W}x${BAND_H}+0+${Y}`, '+repage', '-brightness-contrast', '-24x4', band]);
+
+  // stacked chips column (right)
+  const chips = [];
+  if (stats.price) chips.push(makeChip(`Giá vào   ${stats.price}`, 'c1', 'rgba(255,255,255,0.16)', '#ffffff', work));
+  if (stats.irr) chips.push(makeChip(`IRR 10 năm   ${stats.irr}`, 'c2', 'rgba(255,255,255,0.16)', '#ffffff', work));
+  chips.push(makeChip('●  Live', 'c3', '#1f9d57', '#ffffff', work));
+  montage([...chips.map((c) => c.path), '-tile', '1x' + chips.length, '-geometry', '+0+6', '-background', 'none', chipsPng]);
+  const chipsW = Math.max(...chips.map((c) => c.w));
+
+  // tagline (Property Hub serif italic), in the space left of the chips
+  const textW = W - chipsW - 130;
+  const text = tagline.replace(/\s+/g, ' ').trim().normalize('NFC');
+  convert(['-background', 'none', '-fill', '#ffffff', '-font', DISPLAY, '-size', `${textW}x${BAND_H - 44}`,
+    '-gravity', 'west', `caption:${text}`, txt]);
+
+  // compose: tagline pinned left, chips pinned right
+  convert([band,
+    txt, '-gravity', 'west', '-geometry', '+48+0', '-composite',
+    chipsPng, '-gravity', 'east', '-geometry', '+44+0', '-composite', bt]);
   convert([src, bt, '-geometry', `+0+${Y}`, '-composite', '-strip', '-quality', '88', out]);
   return out;
 }
@@ -164,7 +211,8 @@ async function main() {
       const local = [];
       for (let i = 0; i < imgs.length; i++) local.push(await dl(imgs[i], path.join(work, `src${i}.img`)));
       const tagline = rt(p['🏷️ Tagline EN']);
-      const collage = buildCollage(local, work, tagline);
+      const stats = readStats(slug);
+      const collage = buildCollage(local, work, tagline, stats);
       const cfUrl = await uploadCF(collage, `${slug}-share`);
       await notion.pages.update({ page_id: pg.id, properties: { 'Share Image URL': { url: cfUrl } } });
       console.log(`  ✓ ${slug}: ${imgs.length} photos${tagline ? ' + tagline' : ''} → ${cfUrl}`);
