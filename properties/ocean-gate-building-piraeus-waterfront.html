@@ -174,7 +174,7 @@
   - Toggle on-state in gold instead of navy
 -->
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@300;400;500&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&amp;family=JetBrains+Mono:wght@300;400;500&amp;family=Manrope:wght@300;400;500;600&amp;display=swap">
 
 <div class="nac-pdp" data-theme="light" data-lang="vi">
 
@@ -995,7 +995,7 @@
 
 .nac-pdp {
   --ff-display: 'Cormorant Garamond', 'Times New Roman', serif;
-  --ff-body:    'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --ff-body:    'Manrope', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --ff-mono:    'JetBrains Mono', 'SF Mono', Menlo, monospace;
   --orange:#d97c44; --orange-2:#ed8a52;
   --gold:#c4922c; --gold-2:#e8bf72;
@@ -1003,7 +1003,8 @@
   --red:#c44438;
   margin:0 calc(50% - 50vw);
   font-family:var(--ff-body);
-  
+  font-weight:300;
+  letter-spacing:.004em;
   font-variant-ligatures:none;
   -webkit-font-smoothing:antialiased;
   padding-bottom:96px;
@@ -1180,7 +1181,7 @@
 .nac-spine-section.active .nac-spine-dot { background:var(--gold); transform:scale(1.25); box-shadow:0 0 0 6px var(--bg), 0 0 0 8px rgba(196,146,60,.4), 0 0 24px rgba(196,146,60,.5); }
 .nac-spine-num { font-family:var(--ff-display); font-size:1.6rem; font-weight:500; color:var(--gold); line-height:1; transition:color .35s ease; }
 .nac-spine-section.active .nac-spine-num { color:var(--orange); }
-.nac-spine-label { font-family:var(--ff-mono); font-size:.6rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-top:.45rem; text-align:center; }
+.nac-spine-label { font-family:var(--ff-mono); font-size:.6rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-top:.45rem; text-align:center; }
 
 .nac-spine-section[data-side="left"] .nac-spine-content { grid-column:1; padding-bottom:5rem; transform:translateX(-30px); transition:opacity .9s cubic-bezier(.4,0,.2,1), transform .9s cubic-bezier(.4,0,.2,1); opacity:0; }
 .nac-spine-section[data-side="right"] .nac-spine-content { grid-column:3; padding-bottom:5rem; transform:translateX(30px); transition:opacity .9s cubic-bezier(.4,0,.2,1), transform .9s cubic-bezier(.4,0,.2,1); opacity:0; }
