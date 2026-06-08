@@ -252,98 +252,84 @@ const COMMON_DEFS = `
 // ──────────────────────────────────────────────────────────────────────────
 // Layout helpers — text panel on the right (shared by both variants)
 // ──────────────────────────────────────────────────────────────────────────
+// Format an integer as a small editorial roman numeral up to 3999. Used for
+// the year and the "Vol." caption on the right panel so the OG card reads
+// like a magazine masthead rather than a sales sheet.
+function toRoman(n) {
+  if (!Number.isFinite(n) || n <= 0 || n > 3999) return '';
+  const map = [
+    [1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],
+    [100,'C'],[90,'XC'],[50,'L'],[40,'XL'],
+    [10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I'],
+  ];
+  let out = '', r = Math.floor(n);
+  for (const [v, s] of map) { while (r >= v) { out += s; r -= v; } }
+  return out;
+}
+
 function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
-  // Bilingual taglines — strictly one row per language. Auto-shrink to fit
-  // the right panel width. Sized smaller than country/price headlines —
-  // they're supporting context, not the visual hook.
+  // ── editorial cover composition ────────────────────────────────────
+  // Strip everything down to four typographic moments:
+  //   1. NAC logo (top-left, navy)
+  //   2. Country name VI — gold italic display, the single hero element
+  //   3. Long gold hairline rule beneath the name (the only frame)
+  //   4. A single editorial line — uses the EN headline if it fits at 24pt,
+  //      falls back to the VI one
+  // Plus a discreet bottom caption with the listings count cast as an
+  // editorial issue number (Vol. XLIX) and the year in roman numerals.
+  //
+  // No big price billboard. No FROM. No stats spelled out. Numbers turn
+  // into editorial flourishes — premium magazine masthead energy.
   const TAGLINE_W = W - rightX - 36;
-  const viSize = fitSingleLineFontSize(m.taglineVi || '', TAGLINE_W, 26, 18);
-  const enSize = fitSingleLineFontSize(m.taglineEn || '', TAGLINE_W, 24, 16);
+  const pickTagline = m.taglineEn || m.taglineVi || '';
+  const tagSize = fitSingleLineFontSize(pickTagline, TAGLINE_W, 26, 18);
 
-  // Stat row — listings + cities only. Entry price gets its own giant moment
-  // below, no need to duplicate it here.
-  const statParts = [];
-  if (m.listings) statParts.push(`${m.listings} ${m.listings === '1' ? 'LISTING' : 'LISTINGS'}`);
-  if (m.cities)   statParts.push(`${m.cities} ${m.cities === '1' ? 'CITY' : 'CITIES'}`);
-  const statLine = statParts.join('  ·  ');
-
-  // VI as primary display name. EN subtitle below for global readability.
-  const showEnSub = m.nameEn && m.nameEn.toLowerCase() !== (m.nameVi || '').toLowerCase();
   const primaryName = m.nameVi || m.nameEn;
 
-  // Top stack: logo → small EN code caps → big VI country name → taglines.
-  const LOGO_SIZE = 56;
-  const logoY = 32;
-  const subY = 128;
-  const nameY = 208;
-  const viY = nameY + 88;
-  const enY = viY + Math.max(viSize, enSize) + 16;
+  // Vertical layout — generous negative space top + bottom.
+  const LOGO_SIZE = 52;
+  const logoY = 36;
+  const nameY = 268;          // country name visually anchors the middle third
+  const ruleY = nameY + 30;   // hairline immediately below the descender
+  const tagY = ruleY + 56;    // single editorial line
 
-  // Decorative hairline + "FROM" caps + HUGE entry price → the billboard moment.
-  const ruleY = enY + 56;
-  const fromLblY = ruleY + 42;
-  const priceY = fromLblY + 100;
-  // Stat row sits just below the price; tightened so it doesn't crowd the URL.
-  const statY = priceY + 38;
+  // Bottom caption: "VOL. XLIX · MMXXVI" — listings count in roman, year too.
+  const listingsRoman = m.listings ? toRoman(parseInt(m.listings, 10) || 0) : '';
+  const yearRoman = 'MMXXVI';
+  const captionParts = [];
+  if (listingsRoman) captionParts.push(`VOL. ${listingsRoman}`);
+  captionParts.push(yearRoman);
+  const caption = captionParts.join('  ·  ');
+  const captionY = H - 56;
 
   return `
   <!-- NAC logo, recoloured to NAC navy via #navify -->
   ${nacLogo(rightX, logoY, LOGO_SIZE)}
 
-  <!-- EN code caps — muted gold, sits above the country name -->
-  ${showEnSub ? `
-  <text x="${rightX}" y="${subY}" font-family="${FF_MONO}"
-        font-size="18" letter-spacing="6" fill="${GOLD}" opacity="0.7">
-    ${esc(m.nameEn.toUpperCase())}
-  </text>` : ''}
-
-  <!-- Country name (VI, big italic display) — NAC GOLD, the brand mark -->
+  <!-- Country name (VI, italic display) — gold, the single hero -->
   <text x="${rightX}" y="${nameY}" font-family="${FF_DISPLAY}"
-        font-size="86" font-style="italic" font-weight="500" fill="${GOLD}"
-        letter-spacing="-1">
+        font-size="98" font-style="italic" font-weight="500" fill="${GOLD}"
+        letter-spacing="-1.5">
     ${esc(primaryName)}
   </text>
 
-  <!-- VI tagline — single line, ink charcoal, italic display -->
-  ${m.taglineVi ? `
-  <text x="${rightX}" y="${viY}" font-family="${FF_DISPLAY}"
-        font-size="${viSize}" font-style="italic" fill="${INK}"
-        letter-spacing="0.2" font-weight="500" opacity="0.92">
-    ${esc(m.taglineVi)}
+  <!-- Long gold hairline — the only frame on the white side -->
+  <line x1="${rightX}" y1="${ruleY}" x2="${W - 36}" y2="${ruleY}"
+        stroke="${GOLD}" stroke-width="1.3" opacity="0.9"/>
+
+  <!-- Editorial line — one tagline (EN preferred), ink charcoal italic -->
+  ${pickTagline ? `
+  <text x="${rightX}" y="${tagY}" font-family="${FF_DISPLAY}"
+        font-size="${tagSize}" font-style="italic" fill="${INK}"
+        letter-spacing="0.2" opacity="0.78">
+    ${esc(pickTagline)}
   </text>` : ''}
 
-  <!-- EN tagline — single line, ink charcoal, lighter -->
-  ${m.taglineEn ? `
-  <text x="${rightX}" y="${enY}" font-family="${FF_DISPLAY}"
-        font-size="${enSize}" font-style="italic" fill="${INK}"
-        letter-spacing="0.2" opacity="0.62">
-    ${esc(m.taglineEn)}
-  </text>` : ''}
-
-  <!-- Short decorative gold hairline — divider before the price block -->
-  <line x1="${rightX}" y1="${ruleY}" x2="${rightX + 60}" y2="${ruleY}"
-        stroke="${GOLD}" stroke-width="2"/>
-
-  <!-- "FROM" label — mono caps above the price, ink @ low opacity -->
-  ${m.entry ? `
-  <text x="${rightX}" y="${fromLblY}" font-family="${FF_MONO}"
-        font-size="16" letter-spacing="6" fill="${INK}" opacity="0.55">
-    FROM
-  </text>` : ''}
-
-  <!-- THE BILLBOARD: huge italic entry price in NAC NAVY — the stat block -->
-  ${m.entry ? `
-  <text x="${rightX}" y="${priceY}" font-family="${FF_DISPLAY}"
-        font-size="106" font-style="italic" font-weight="500" fill="${NAVY}"
-        letter-spacing="-2">
-    ${esc(m.entry.replace(/\s+/g, ''))}
-  </text>` : ''}
-
-  <!-- Stat row — listings · cities, ink @ low opacity -->
-  ${statLine ? `
-  <text x="${rightX}" y="${statY}" font-family="${FF_MONO}"
-        font-size="15" letter-spacing="3.5" fill="${INK}" opacity="0.55">
-    ${esc(statLine)}
+  <!-- Bottom caption — issue number + year in roman, tracked mono caps -->
+  ${caption ? `
+  <text x="${rightX}" y="${captionY}" font-family="${FF_MONO}"
+        font-size="13" letter-spacing="6" fill="${INK}" opacity="0.5">
+    ${esc(caption)}
   </text>` : ''}`;
 }
 
