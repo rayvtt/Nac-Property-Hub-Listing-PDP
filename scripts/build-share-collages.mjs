@@ -128,7 +128,7 @@ function buildCollage(images, work, tagline, stats) {
     montage([...tiles, '-tile', '2x2', '-geometry', '+0+0', '-background', NAVY, right]);
     convert([left, right, '+append', '-strip', base]);
   }
-  return tagline ? addTaglineBand(base, tagline, stats || {}, work) : finalize(base, work);
+  return (tagline && (tagline.vi || tagline.en)) ? addTaglineBand(base, tagline, stats || {}, work) : finalize(base, work);
 }
 
 function finalize(src, work) {
@@ -138,22 +138,45 @@ function finalize(src, work) {
 }
 
 // A rounded chip sized to its text: translucent stat pill, or a solid status badge.
+// Small + airy — shorter height and lighter pointsize for visual breadth.
 function makeChip(text, name, bg, fg, work) {
   const out = path.join(work, name + '.png');
-  const w = Math.min(360, Math.max(140, 30 + text.length * 12));
-  convert(['-size', `${w}x46`, 'xc:none',
-    '-fill', bg, '-draw', `roundrectangle 0,0,${w - 1},45,23,23`,
-    '-font', SANS, '-pointsize', '20', '-fill', fg, '-gravity', 'center', '-annotate', '+0+0', text, out]);
-  return { path: out, w };
+  const w = Math.min(300, Math.max(118, 26 + text.length * 9.5));
+  convert(['-size', `${Math.round(w)}x34`, 'xc:none',
+    '-fill', bg, '-draw', `roundrectangle 0,0,${Math.round(w) - 1},33,17,17`,
+    '-font', SANS, '-pointsize', '15', '-fill', fg, '-gravity', 'center', '-annotate', '+0+0', text, out]);
+  return { path: out, w: Math.round(w) };
 }
 
-// Frosted "highlight" band across the middle: tagline in the Property Hub serif on
-// the left + a stacked column of Giá vào / IRR 10 năm / Live chips on the right.
+// Tagline = first clause only (before any , . · ), rendered VI over EN. VI leads
+// in full-white serif; EN sits below, smaller and softer, for clear hierarchy.
+function renderTagline(vi, en, textW, work) {
+  const parts = [];
+  if (vi) {
+    const p = path.join(work, 'tvi.png');
+    convert(['-background', 'none', '-fill', '#ffffff', '-font', DISPLAY, '-pointsize', '34',
+      '-size', `${textW}x`, '-gravity', 'west', `caption:${vi.normalize('NFC')}`, p]);
+    parts.push(p);
+  }
+  if (en) {
+    const p = path.join(work, 'ten.png');
+    convert(['-background', 'none', '-fill', 'rgba(255,255,255,0.78)', '-font', DISPLAY, '-pointsize', '23',
+      '-size', `${textW}x`, '-gravity', 'west', `caption:${en.normalize('NFC')}`, p]);
+    parts.push(p);
+  }
+  const out = path.join(work, 'txt.png');
+  if (parts.length === 1) return parts[0];
+  convert([parts[0], '-size', `${textW}x6`, 'xc:none', parts[1], '-background', 'none', '-append', out]);
+  return out;
+}
+
+// Frosted "highlight" band across the middle: tagline (VI/EN, Property Hub serif)
+// on the left + a stacked column of Giá vào / IRR 10 năm / Live chips on the right.
+// Compact band — shorter height, smaller chips — for more breathing room.
 function addTaglineBand(src, tagline, stats, work) {
-  const W = 1200, BAND_H = 186, Y = Math.round((630 - BAND_H) / 2);
+  const W = 1200, BAND_H = 132, Y = Math.round((630 - BAND_H) / 2);
   const blur = path.join(work, 'blur.jpg');
   const band = path.join(work, 'band.jpg');
-  const txt = path.join(work, 'txt.png');
   const chipsPng = path.join(work, 'chips.png');
   const bt = path.join(work, 'bandtext.jpg');
   const out = path.join(work, 'final.jpg');
@@ -167,19 +190,17 @@ function addTaglineBand(src, tagline, stats, work) {
   if (stats.price) chips.push(makeChip(`Giá vào   ${stats.price}`, 'c1', 'rgba(255,255,255,0.16)', '#ffffff', work));
   if (stats.irr) chips.push(makeChip(`IRR 10 năm   ${stats.irr}`, 'c2', 'rgba(255,255,255,0.16)', '#ffffff', work));
   chips.push(makeChip('●  Live', 'c3', '#1f9d57', '#ffffff', work));
-  montage([...chips.map((c) => c.path), '-tile', '1x' + chips.length, '-geometry', '+0+6', '-background', 'none', chipsPng]);
+  montage([...chips.map((c) => c.path), '-tile', '1x' + chips.length, '-geometry', '+0+5', '-background', 'none', chipsPng]);
   const chipsW = Math.max(...chips.map((c) => c.w));
 
-  // tagline (Property Hub serif italic), in the space left of the chips
+  // tagline (Property Hub serif), in the space left of the chips
   const textW = W - chipsW - 130;
-  const text = tagline.replace(/\s+/g, ' ').trim().normalize('NFC');
-  convert(['-background', 'none', '-fill', '#ffffff', '-font', DISPLAY, '-size', `${textW}x${BAND_H - 44}`,
-    '-gravity', 'west', `caption:${text}`, txt]);
+  const txt = renderTagline(tagline.vi, tagline.en, textW, work);
 
   // compose: tagline pinned left, chips pinned right
   convert([band,
     txt, '-gravity', 'west', '-geometry', '+48+0', '-composite',
-    chipsPng, '-gravity', 'east', '-geometry', '+44+0', '-composite', bt]);
+    chipsPng, '-gravity', 'east', '-geometry', '+40+0', '-composite', bt]);
   convert([src, bt, '-geometry', `+0+${Y}`, '-composite', '-strip', '-quality', '88', out]);
   return out;
 }
@@ -212,12 +233,15 @@ async function main() {
     try {
       const local = [];
       for (let i = 0; i < imgs.length; i++) local.push(await dl(imgs[i], path.join(work, `src${i}.img`)));
-      const tagline = rt(p['🏷️ Tagline EN']);
+      // First clause only (before any , . · or newline) — one VI line, one EN line.
+      const strip = (s) => (s || '').replace(/\s+/g, ' ').split(/[,.·\n]/)[0].trim();
+      const tagline = { vi: strip(rt(p['🏷️ Tagline VI'])), en: strip(rt(p['🏷️ Tagline EN'])) };
       const stats = readStats(slug);
       const collage = buildCollage(local, work, tagline, stats);
       const cfUrl = await uploadCF(collage, `${slug}-share`);
       await notion.pages.update({ page_id: pg.id, properties: { 'Share Image URL': { url: cfUrl } } });
-      console.log(`  ✓ ${slug}: ${imgs.length} photos${tagline ? ' + tagline' : ''} → ${cfUrl}`);
+      const hasTag = tagline.vi || tagline.en;
+      console.log(`  ✓ ${slug}: ${imgs.length} photos${hasTag ? ' + tagline' : ''} → ${cfUrl}`);
       done++;
     } catch (e) {
       console.log(`  ✖ ${slug}: ${e.message}`);
