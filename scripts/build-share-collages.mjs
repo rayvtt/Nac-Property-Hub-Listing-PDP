@@ -268,10 +268,16 @@ async function main() {
       // (no needless churn); a redesign yields a new one automatically.
       const ver = crypto.createHash('md5').update(fs.readFileSync(collage)).digest('hex').slice(0, 8);
       const verUrl = cfUrl + (cfUrl.includes('?') ? '&' : '?') + 'v=' + ver;
-      await notion.pages.update({ page_id: pg.id, properties: {
-        'Share Image URL': { url: verUrl },
-        '🔁 Share Hash': { rich_text: [{ text: { content: fp } }] },
-      } });
+      await notion.pages.update({
+        page_id: pg.id,
+        // Use the collage as the listing's Notion page cover too — versioned URL
+        // so Notion re-fetches it whenever the collage changes.
+        cover: { type: 'external', external: { url: verUrl } },
+        properties: {
+          'Share Image URL': { url: verUrl },
+          '🔁 Share Hash': { rich_text: [{ text: { content: fp } }] },
+        },
+      });
       const hasTag = tagline.vi || tagline.en;
       console.log(`  ✓ ${slug}: ${imgs.length} photos${hasTag ? ' + title' : ''} → ${verUrl}`);
       done++;
