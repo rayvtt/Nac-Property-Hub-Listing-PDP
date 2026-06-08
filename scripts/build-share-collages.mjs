@@ -75,10 +75,12 @@ async function dl(u, dest) {
 }
 
 async function uploadCF(filePath, id) {
-  if (REPLACE) {
-    await fetch(`https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/images/v1/${encodeURIComponent(id)}`,
-      { method: 'DELETE', headers: { Authorization: `Bearer ${CF_TOKEN}` } }).catch(() => {});
-  }
+  // Always delete-then-upload. CF Images keys by id, so re-POSTing an existing id
+  // returns 5409 *without* overwriting the bytes — which would silently keep the
+  // old collage. uploadCF is only ever called once we've decided to (re)build, so
+  // replacing is always the intent (delete of a missing id is a harmless no-op).
+  await fetch(`https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/images/v1/${encodeURIComponent(id)}`,
+    { method: 'DELETE', headers: { Authorization: `Bearer ${CF_TOKEN}` } }).catch(() => {});
   const fd = new FormData();
   fd.append('file', new Blob([fs.readFileSync(filePath)]), path.basename(filePath));
   fd.append('id', id);
