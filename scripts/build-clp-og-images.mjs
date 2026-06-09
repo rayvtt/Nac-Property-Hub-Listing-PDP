@@ -48,10 +48,10 @@ const SPLIT_X = 720;   // 60% / 40% — navy hero frame | white text panel
 const GOLD = '#C4922C';      // --gold
 const GOLD_SOFT = '#E8BF72'; // lighter gold accent
 const GOLD_GLOW = '#F4E4BF'; // --gold-soft
-const CREAM = '#FAFAF7';
-const NAVY = '#1800ad';      // NAC blue (--nav)
-const NAVY_DEEP = '#0c0066'; // deeper variant for the gradient
-const INK = '#1a1a2e';       // body text on white — navy-tinted charcoal
+const CREAM = '#FAFAF7';     // pure cream (logo background, etc.)
+const BONE = '#EDE3CC';      // warm bone — full-canvas background
+const ONYX = '#1a1612';      // warm dark — body text, logo recolour
+const INK = '#3a342c';       // softer body text (taglines secondary line)
 
 // NAC wordmark / logo on the dark theme — fetched once, embedded into every SVG.
 // Logo lives on whichever side we put it on. We fetch the light-tone source
@@ -216,18 +216,18 @@ async function fetchHeroDataUris(candidates, n) {
 
 const COMMON_DEFS = `
   <defs>
-    <linearGradient id="bgFade" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="${NAVY}"/>
-      <stop offset="100%" stop-color="${NAVY_DEEP}"/>
+    <linearGradient id="bgFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${BONE}"/>
+      <stop offset="100%" stop-color="#E5DAC0"/>
     </linearGradient>
     <pattern id="grain" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
-      <rect width="3" height="3" fill="${NAVY}"/>
-      <circle cx="1" cy="1" r="0.4" fill="#ffffff" opacity="0.03"/>
+      <rect width="3" height="3" fill="${BONE}"/>
+      <circle cx="1" cy="1" r="0.4" fill="${ONYX}" opacity="0.02"/>
     </pattern>
     <linearGradient id="cardVeil" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#000" stop-opacity="0"/>
       <stop offset="65%" stop-color="#000" stop-opacity="0"/>
-      <stop offset="100%" stop-color="${NAVY_DEEP}" stop-opacity="0.82"/>
+      <stop offset="100%" stop-color="${ONYX}" stop-opacity="0.82"/>
     </linearGradient>
     <radialGradient id="goldGlow" cx="50%" cy="50%" r="50%">
       <stop offset="0%" stop-color="${GOLD}" stop-opacity="0.32"/>
@@ -238,13 +238,13 @@ const COMMON_DEFS = `
       <stop offset="0%" stop-color="${GOLD}" stop-opacity="0.65"/>
       <stop offset="100%" stop-color="${GOLD}" stop-opacity="0"/>
     </radialGradient>
-    <!-- Drive every opaque pixel of the logo to NAC navy (#1800ad) while
+    <!-- Drive every opaque pixel of the logo to warm onyx (#1a1612) while
          keeping its alpha intact — recolours the gold-gradient source into
-         a single solid brand mark that reads cleanly on the white panel. -->
-    <filter id="navify" color-interpolation-filters="sRGB">
-      <feColorMatrix type="matrix" values="0 0 0 0 0.094
-                                           0 0 0 0 0
-                                           0 0 0 0 0.678
+         a single solid brand mark that reads cleanly on the bone background. -->
+    <filter id="onify" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="0 0 0 0 0.102
+                                           0 0 0 0 0.086
+                                           0 0 0 0 0.070
                                            0 0 0 1 0"/>
     </filter>
   </defs>`;
@@ -295,7 +295,7 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
   const enY = viY + viSize + 12; // EN translation, tight stack underneath
 
   return `
-  <!-- NAC logo, recoloured to NAC navy via #navify -->
+  <!-- NAC logo, recoloured to onyx via #onify -->
   ${nacLogo(rightX, logoY, LOGO_SIZE)}
 
   <!-- Country name (VI, italic display) — gold, the single hero -->
@@ -305,49 +305,42 @@ function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
     ${esc(primaryName)}
   </text>
 
-  <!-- Long gold hairline — the only frame on the white side -->
+  <!-- Long gold hairline — the only frame element -->
   <line x1="${rightX}" y1="${ruleY}" x2="${W - 36}" y2="${ruleY}"
         stroke="${GOLD}" stroke-width="1.3" opacity="0.9"/>
 
-  <!-- VI share-title — italic display, ink charcoal (the lede) -->
+  <!-- VI share-title — italic display, warm onyx (the lede) -->
   ${m.taglineVi ? `
   <text x="${rightX}" y="${viY}" font-family="${FF_DISPLAY}"
-        font-size="${viSize}" font-style="italic" fill="${INK}"
-        letter-spacing="0.2" font-weight="500" opacity="0.9">
+        font-size="${viSize}" font-style="italic" fill="${ONYX}"
+        letter-spacing="0.2" font-weight="500" opacity="0.92">
     ${esc(m.taglineVi)}
   </text>` : ''}
 
-  <!-- EN share-title — italic display, ink charcoal lighter (translation) -->
+  <!-- EN share-title — italic display, softer ink (translation) -->
   ${m.taglineEn ? `
   <text x="${rightX}" y="${enY}" font-family="${FF_DISPLAY}"
         font-size="${enSize}" font-style="italic" fill="${INK}"
-        letter-spacing="0.2" opacity="0.62">
+        letter-spacing="0.2" opacity="0.78">
     ${esc(m.taglineEn)}
   </text>` : ''}`;
 }
 
 // NAC logo, embedded as a data URI so resvg renders it offline. Recoloured
-// to NAC navy (#1800ad) via the #navify filter so it reads as a solid brand
-// mark on the white right panel. Left-anchored at (x, y).
+// to warm onyx (#1a1612) via the #onify filter so it reads as a solid brand
+// mark on the bone canvas. Left-anchored at (x, y).
 function nacLogo(x, y, size = 52) {
   if (!NAC_LOGO_DATAURI) return '';
   return `
   <image href="${NAC_LOGO_DATAURI}" x="${x}" y="${y}" width="${size}" height="${size}"
-         preserveAspectRatio="xMidYMid meet" filter="url(#navify)"/>`;
+         preserveAspectRatio="xMidYMid meet" filter="url(#onify)"/>`;
 }
 
 function commonChrome() {
   return `
-  <!-- Left 60% — NAC blue, the brand frame for the hero fan -->
-  <rect width="${SPLIT_X}" height="${H}" fill="url(#bgFade)"/>
-  <rect width="${SPLIT_X}" height="${H}" fill="url(#grain)" opacity="0.5"/>
-
-  <!-- Right 40% — clean white panel for the text/price billboard -->
-  <rect x="${SPLIT_X}" y="0" width="${W - SPLIT_X}" height="${H}" fill="${CREAM}"/>
-
-  <!-- Thin gold seam between the two panels — the only chrome on the white side -->
-  <line x1="${SPLIT_X}" y1="0" x2="${SPLIT_X}" y2="${H}"
-        stroke="${GOLD}" stroke-width="1.5" opacity="0.9"/>`;
+  <!-- Single warm bone canvas — hero cards float like editorial photo plates -->
+  <rect width="${W}" height="${H}" fill="url(#bgFade)"/>
+  <rect width="${W}" height="${H}" fill="url(#grain)" opacity="0.6"/>`;
 }
 
 // ──────────────────────────────────────────────────────────────────────────
@@ -388,7 +381,7 @@ function buildHeroesSvg(m, heroDataUris) {
     <!-- gold border on top of the image -->
     <rect x="${x.toFixed(1)}" y="${COL_Y}" width="${COL_W.toFixed(1)}" height="${COL_H}"
           rx="${RADIUS}" ry="${RADIUS}" fill="none"
-          stroke="${GOLD}" stroke-width="0.8" opacity="0.42"/>
+          stroke="${GOLD}" stroke-width="0.8" opacity="0.55"/>
     ${city ? `
     <text x="${(x + COL_W / 2).toFixed(1)}" y="${COL_Y + COL_H - 28}"
           text-anchor="middle"
