@@ -47,11 +47,15 @@ const W = 1200, H = 630;
 const GOLD = '#C4922C';      // --gold
 const GOLD_SOFT = '#E8BF72'; // lighter gold accent
 const GOLD_GLOW = '#F4E4BF'; // --gold-soft
-const CREAM = '#FAFAF7';
-const NAVY = '#1800ad';      // NAC blue (--nav)
-const NAVY_DEEP = '#0c0066'; // deeper variant for the gradient
+const CREAM = '#FAFAF7';     // pure cream (logo background, etc.)
+const BONE = '#EDE3CC';      // warm bone — full-canvas background
+const ONYX = '#1a1612';      // warm dark — body text, logo recolour
+const INK = '#3a342c';       // softer body text (taglines secondary line)
 
 // NAC wordmark / logo on the dark theme — fetched once, embedded into every SVG.
+// Logo lives on whichever side we put it on. We fetch the light-tone source
+// (gold gradient) and recolour it to NAC navy via a color-matrix filter so
+// it reads as a single solid brand mark on the white panel.
 const NAC_LOGO_URL = 'https://nomadassetcollective.com/wp-content/uploads/2026/05/OTG-Passport-Icons-4.png';
 let NAC_LOGO_DATAURI = null;
 
@@ -211,18 +215,18 @@ async function fetchHeroDataUris(candidates, n) {
 
 const COMMON_DEFS = `
   <defs>
-    <linearGradient id="bgFade" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="${NAVY}"/>
-      <stop offset="100%" stop-color="${NAVY_DEEP}"/>
+    <linearGradient id="bgFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${BONE}"/>
+      <stop offset="100%" stop-color="#E5DAC0"/>
     </linearGradient>
     <pattern id="grain" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
-      <rect width="3" height="3" fill="${NAVY}"/>
-      <circle cx="1" cy="1" r="0.4" fill="#ffffff" opacity="0.03"/>
+      <rect width="3" height="3" fill="${BONE}"/>
+      <circle cx="1" cy="1" r="0.4" fill="${ONYX}" opacity="0.02"/>
     </pattern>
     <linearGradient id="cardVeil" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#000" stop-opacity="0"/>
       <stop offset="65%" stop-color="#000" stop-opacity="0"/>
-      <stop offset="100%" stop-color="${NAVY_DEEP}" stop-opacity="0.82"/>
+      <stop offset="100%" stop-color="${ONYX}" stop-opacity="0.82"/>
     </linearGradient>
     <radialGradient id="goldGlow" cx="50%" cy="50%" r="50%">
       <stop offset="0%" stop-color="${GOLD}" stop-opacity="0.32"/>
@@ -233,12 +237,13 @@ const COMMON_DEFS = `
       <stop offset="0%" stop-color="${GOLD}" stop-opacity="0.65"/>
       <stop offset="100%" stop-color="${GOLD}" stop-opacity="0"/>
     </radialGradient>
-    <!-- Force every opaque pixel of the logo to pure white while keeping its alpha
-         intact — works regardless of which source PNG variant we load. -->
-    <filter id="whiten" color-interpolation-filters="sRGB">
-      <feColorMatrix type="matrix" values="0 0 0 0 1
-                                           0 0 0 0 1
-                                           0 0 0 0 1
+    <!-- Drive every opaque pixel of the logo to warm onyx (#1a1612) while
+         keeping its alpha intact — recolours the gold-gradient source into
+         a single solid brand mark that reads cleanly on the bone background. -->
+    <filter id="onify" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="0 0 0 0 0.102
+                                           0 0 0 0 0.086
+                                           0 0 0 0 0.070
                                            0 0 0 1 0"/>
     </filter>
   </defs>`;
@@ -246,128 +251,95 @@ const COMMON_DEFS = `
 // ──────────────────────────────────────────────────────────────────────────
 // Layout helpers — text panel on the right (shared by both variants)
 // ──────────────────────────────────────────────────────────────────────────
+// Format an integer as a small editorial roman numeral up to 3999. Used for
+// the year and the "Vol." caption on the right panel so the OG card reads
+// like a magazine masthead rather than a sales sheet.
+function toRoman(n) {
+  if (!Number.isFinite(n) || n <= 0 || n > 3999) return '';
+  const map = [
+    [1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],
+    [100,'C'],[90,'XC'],[50,'L'],[40,'XL'],
+    [10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I'],
+  ];
+  let out = '', r = Math.floor(n);
+  for (const [v, s] of map) { while (r >= v) { out += s; r -= v; } }
+  return out;
+}
+
 function rightTextPanel(m, rightX, panelTitle = 'PROPERTY · HUB') {
-  // Bilingual taglines — strictly one row per language. Auto-shrink to fit
-  // the right panel width. Sized smaller than country/price headlines —
-  // they're supporting context, not the visual hook.
+  // ── editorial cover composition ────────────────────────────────────
+  // Five typographic moments:
+  //   1. NAC logo top-left (navy)
+  //   2. Country name VI — gold italic display, the single hero element
+  //   3. Long gold hairline rule beneath the name (the only frame)
+  //   4. VI share-title — italic display, ink charcoal (the lede)
+  //   5. EN share-title — italic display, ink charcoal lighter (translation)
+  // Plus a discreet bottom caption with the listings count cast as an
+  // editorial roman-numeral volume number + MMXXVI year.
+  //
+  // No big price billboard. No FROM. Numbers turn into editorial flourishes —
+  // premium magazine masthead energy.
   const TAGLINE_W = W - rightX - 36;
-  const viSize = fitSingleLineFontSize(m.taglineVi || '', TAGLINE_W, 26, 18);
-  const enSize = fitSingleLineFontSize(m.taglineEn || '', TAGLINE_W, 24, 16);
+  const viSize = fitSingleLineFontSize(m.taglineVi || '', TAGLINE_W, 28, 20);
+  const enSize = fitSingleLineFontSize(m.taglineEn || '', TAGLINE_W, 22, 16);
 
-  // Stat row — listings + cities only. Entry price gets its own giant moment
-  // below, no need to duplicate it here.
-  const statParts = [];
-  if (m.listings) statParts.push(`${m.listings} ${m.listings === '1' ? 'LISTING' : 'LISTINGS'}`);
-  if (m.cities)   statParts.push(`${m.cities} ${m.cities === '1' ? 'CITY' : 'CITIES'}`);
-  const statLine = statParts.join('  ·  ');
-
-  // VI as primary display name. EN subtitle below for global readability.
-  const showEnSub = m.nameEn && m.nameEn.toLowerCase() !== (m.nameVi || '').toLowerCase();
   const primaryName = m.nameVi || m.nameEn;
 
-  // Top stack: logo → small EN code caps → big VI country name → taglines.
-  const LOGO_SIZE = 56;
-  const logoY = 32;
-  const subY = 128;
-  const nameY = 208;
-  const viY = nameY + 88;
-  const enY = viY + Math.max(viSize, enSize) + 16;
-
-  // Decorative hairline + "FROM" caps + HUGE entry price → the billboard moment.
-  const ruleY = enY + 56;
-  const fromLblY = ruleY + 42;
-  const priceY = fromLblY + 100;
-  // Stat row sits just below the price; tightened so it doesn't crowd the URL.
-  const statY = priceY + 38;
+  // Vertical layout — generous negative space, no bottom caption.
+  const LOGO_SIZE = 52;
+  const logoY = 36;
+  const nameY = 268;          // country name anchors the middle third
+  const ruleY = nameY + 28;   // hairline immediately below the descender
+  const viY = ruleY + 56;     // VI lede, sits just below the rule
+  const enY = viY + viSize + 12; // EN translation, tight stack underneath
 
   return `
-  <!-- NAC logo (whitened via #whiten filter) -->
+  <!-- NAC logo, recoloured to onyx via #onify -->
   ${nacLogo(rightX, logoY, LOGO_SIZE)}
 
-  <!-- EN code caps (small mono header) -->
-  ${showEnSub ? `
-  <text x="${rightX}" y="${subY}" font-family="${FF_MONO}"
-        font-size="18" letter-spacing="6" fill="${GOLD_SOFT}" opacity="0.85">
-    ${esc(m.nameEn.toUpperCase())}
-  </text>` : ''}
-
-  <!-- Country name (VI, big italic display) -->
+  <!-- Country name (VI, italic display) — gold, the single hero -->
   <text x="${rightX}" y="${nameY}" font-family="${FF_DISPLAY}"
-        font-size="86" font-style="italic" font-weight="500" fill="${GOLD}"
-        letter-spacing="-1">
+        font-size="98" font-style="italic" font-weight="500" fill="${GOLD}"
+        letter-spacing="-1.5">
     ${esc(primaryName)}
   </text>
 
-  <!-- VI tagline — single line, auto-sized to fit -->
+  <!-- Long gold hairline — the only frame element -->
+  <line x1="${rightX}" y1="${ruleY}" x2="${W - 36}" y2="${ruleY}"
+        stroke="${GOLD}" stroke-width="1.3" opacity="0.9"/>
+
+  <!-- VI share-title — italic display, warm onyx (the lede) -->
   ${m.taglineVi ? `
   <text x="${rightX}" y="${viY}" font-family="${FF_DISPLAY}"
-        font-size="${viSize}" font-style="italic" fill="${CREAM}"
-        letter-spacing="0.2" font-weight="500">
+        font-size="${viSize}" font-style="italic" fill="${ONYX}"
+        letter-spacing="0.2" font-weight="500" opacity="0.92">
     ${esc(m.taglineVi)}
   </text>` : ''}
 
-  <!-- EN tagline — single line, auto-sized to fit -->
+  <!-- EN share-title — italic display, softer ink (translation) -->
   ${m.taglineEn ? `
   <text x="${rightX}" y="${enY}" font-family="${FF_DISPLAY}"
-        font-size="${enSize}" font-style="italic" fill="${CREAM}"
+        font-size="${enSize}" font-style="italic" fill="${INK}"
         letter-spacing="0.2" opacity="0.78">
     ${esc(m.taglineEn)}
-  </text>` : ''}
-
-  <!-- Decorative gold hairline, short — divider before the price block -->
-  <line x1="${rightX}" y1="${ruleY}" x2="${rightX + 60}" y2="${ruleY}"
-        stroke="${GOLD}" stroke-width="2"/>
-
-  <!-- "FROM" label — mono caps above the giant price -->
-  ${m.entry ? `
-  <text x="${rightX}" y="${fromLblY}" font-family="${FF_MONO}"
-        font-size="16" letter-spacing="6" fill="${CREAM}" opacity="0.7">
-    FROM
-  </text>` : ''}
-
-  <!-- THE BILLBOARD: huge italic entry price -->
-  ${m.entry ? `
-  <text x="${rightX}" y="${priceY}" font-family="${FF_DISPLAY}"
-        font-size="106" font-style="italic" font-weight="500" fill="${GOLD}"
-        letter-spacing="-2">
-    ${esc(m.entry.replace(/\s+/g, ''))}
-  </text>` : ''}
-
-  <!-- Stat row — listings · cities -->
-  ${statLine ? `
-  <text x="${rightX}" y="${statY}" font-family="${FF_MONO}"
-        font-size="15" letter-spacing="3.5" fill="${GOLD_SOFT}" opacity="0.85">
-    ${esc(statLine)}
   </text>` : ''}`;
 }
 
 // NAC logo, embedded as a data URI so resvg renders it offline. Recoloured
-// to pure white via the #whiten filter so it reads cleanly over the blue bg.
-// Positioned at (x, y) — left-anchored, sized 52×52 by default.
+// to warm onyx (#1a1612) via the #onify filter so it reads as a solid brand
+// mark on the bone canvas. Left-anchored at (x, y).
 function nacLogo(x, y, size = 52) {
   if (!NAC_LOGO_DATAURI) return '';
   return `
   <image href="${NAC_LOGO_DATAURI}" x="${x}" y="${y}" width="${size}" height="${size}"
-         preserveAspectRatio="xMidYMid meet" filter="url(#whiten)"/>`;
+         preserveAspectRatio="xMidYMid meet" filter="url(#onify)"/>`;
 }
 
 function commonChrome() {
   return `
+  <!-- Single warm bone canvas — hero cards float like editorial photo plates -->
   <rect width="${W}" height="${H}" fill="url(#bgFade)"/>
-  <rect width="${W}" height="${H}" fill="url(#grain)" opacity="0.5"/>
-
-  <!-- Bottom hairline + canonical URL -->
-  <line x1="40" y1="${H - 38}" x2="${W - 40}" y2="${H - 38}"
-        stroke="${GOLD}" stroke-width="0.5" opacity="0.5"/>
-  <text x="40" y="${H - 14}" font-family="${FF_MONO}"
-        font-size="14" letter-spacing="2.5" fill="${CREAM}" opacity="0.8">
-    NOMADASSETCOLLECTIVE.COM
-  </text>
-  <text x="${W - 40}" y="${H - 14}" text-anchor="end"
-        font-family="${FF_MONO}"
-        font-size="14" letter-spacing="2.5" fill="${CREAM}" opacity="0.8">
-    PROPERTY HUB
-  </text>`;
+  <rect width="${W}" height="${H}" fill="url(#grain)" opacity="0.6"/>`;
 }
 
 // ──────────────────────────────────────────────────────────────────────────
@@ -408,7 +380,7 @@ function buildHeroesSvg(m, heroDataUris) {
     <!-- gold border on top of the image -->
     <rect x="${x.toFixed(1)}" y="${COL_Y}" width="${COL_W.toFixed(1)}" height="${COL_H}"
           rx="${RADIUS}" ry="${RADIUS}" fill="none"
-          stroke="${GOLD}" stroke-width="0.8" opacity="0.42"/>
+          stroke="${GOLD}" stroke-width="0.8" opacity="0.55"/>
     ${city ? `
     <text x="${(x + COL_W / 2).toFixed(1)}" y="${COL_Y + COL_H - 28}"
           text-anchor="middle"
@@ -431,9 +403,6 @@ function buildHeroesSvg(m, heroDataUris) {
   <!-- LEFT PANEL — three hero cards (60%) -->
   ${cards}
 
-  <!-- vertical hairline divider -->
-  <line x1="720" y1="60" x2="720" y2="${H - 60}"
-        stroke="${GOLD}" stroke-width="0.5" opacity="0.32"/>
 
   <!-- RIGHT PANEL — text (logo + name + tagline + stats) -->
   ${rightTextPanel(m, 752)}
