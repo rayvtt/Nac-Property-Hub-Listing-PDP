@@ -1,10 +1,4 @@
-2026-06-08 chat: upgrade share buttons to footer-style icons (v3) hub-wide + propagate to WP — sync-notion
-2026-06-08 chat: per-city §04 market cards (PR #314) — populate 📊 Market Stats JSON for Phuket/Dubai/Kuala Lumpur/Bangkok/Paphos/Johor Bahru listings (were showing the generic 33M+/23%/80–95% default); sync-notion then renders the per-city cards — set-market-stats:write
-2026-06-08 chat: re-render §01 Tổng Quan facts + §04 market cards (PRs #314/#321) — 14 recent-batch PDPs had empty Location/Ownership/Residency/Completion (unbound spans); now bound, so sync-notion fills them from Notion alongside the new per-city market cards — sync-notion
-2026-06-08 chat: collage cache-bust (PR #322) — sweep wrote content-hash ?v= into Share Image URL; sync-notion now patches og:image/twitter:image with the versioned URL so social previews refresh without manual re-scrape, then sync-wp pushes to WP — sync-notion
-2026-06-08T14:43:56Z — fire sync-notion-clp after PR #329 Notion API pin landed (cron has been silent since 13:14Z, despite push triggers configured)
-2026-06-08T15:11:50Z — URGENT: force WP push (PDP + CLP) after the slug-key fix repopulated all listings
-2026-06-08T15:43:36Z — urgent WP push after OG card final pass (single-line auto-fit taglines)
 2026-06-08T16:05:08Z — refresh GH Pages index after slug-key + OG-bg fix
 2026-06-08T19:47Z — heal sweep after restoring 🔗 Slug field (was truncated to 🔗 Sl, breaking the slug lookup): fire create-pdp + sync-notion to scaffold any stranded PDP and patch any unsynced content
 2026-06-09T22:53:22Z — actioning all: editorial cover OG live on every CLP + PDP
+2026-06-10T22:30Z — currency fix: Limassol Del Mar + Blu Marine relabelled USD→EUR (numbers were already EUR; Cyprus prices in EUR). Sync-notion to patch the €-headline + statement onto the PDPs → WP.
