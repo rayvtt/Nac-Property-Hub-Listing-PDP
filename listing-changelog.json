@@ -1,8 +1,8 @@
 {
- "generated": "2026-06-10T22:26:11.774Z",
+ "generated": "2026-06-10T22:28:37.964Z",
  "ledger": true,
  "windowDays": 3650,
- "count": 1223,
+ "count": 1225,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -20,6 +20,28 @@
   "dubai": "🇦🇪"
  },
  "entries": [
+  {
+   "ts": "2026-06-10T22:28:11Z",
+   "country": "cyprus",
+   "slug": "limassol-blu-marine-dao-sip",
+   "name": "Limassol Blu Marine",
+   "field": "price",
+   "label": "Entry Price",
+   "kind": "money",
+   "from": "$748K",
+   "to": "€748K"
+  },
+  {
+   "ts": "2026-06-10T22:28:11Z",
+   "country": "cyprus",
+   "slug": "limassol-del-mar-dao-sip",
+   "name": "Limassol Del Mar",
+   "field": "price",
+   "label": "Entry Price",
+   "kind": "money",
+   "from": "$1.6M",
+   "to": "€1.6M"
+  },
   {
    "ts": "2026-06-10T00:02:03Z",
    "country": "thailand",
