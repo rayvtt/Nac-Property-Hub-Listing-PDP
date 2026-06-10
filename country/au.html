@@ -3574,6 +3574,22 @@ body.cl-modal-open { overflow:hidden; }
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <meta property="og:url" content="https://nomadassetcollective.com/property-hub-bat-dong-san/australia/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="vi_VN">
@@ -5014,6 +5030,11 @@ body.cl-modal-open { overflow:hidden; }
 
         
                 
+        
+        
+        
+        
+        
         
         
         
@@ -9236,6 +9257,22 @@ body.cl-modal-open { overflow:hidden; }
       const id = row.dataset.listing;
       const card = document.querySelector(`.cl-card[data-listing="${id}"]`);
       if (card) openModal(card);
+    });
+  });
+
+  // Mobile sort pills — delegate to the existing thead handler so the
+  // sort logic stays in one place. Active pill mirrors thead's
+  // sort-asc/sort-desc class.
+  document.querySelectorAll('.cl-tbl-mobsort button[data-msort]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.msort;
+      const th = tbl.querySelector(`thead th[data-sort="${key}"]`);
+      if (!th) return;
+      th.click();
+      btn.parentElement.querySelectorAll('button[data-msort]').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      const arrow = btn.querySelector('.arrow');
+      if (arrow) arrow.textContent = th.classList.contains('sort-desc') ? '▾' : '▴';
     });
   });
 })();
