@@ -659,6 +659,79 @@ body[data-theme="dark"] .nac-logo-light { display:none; }
   background:var(--gold-soft); color:var(--gold);
 }
 
+/* Mobile sort-pill bar — hidden on desktop, shown above the comparison cards */
+.cl-tbl-mobsort { display:none; }
+
+/* Mobile comparison cards — each <tr> becomes a stacked listing card with
+   name + NAC pill at the top, city beneath, and a 3-up metric grid (Entry,
+   Yield, IRR) at the bottom. The desktop table is untouched. */
+@media(max-width:680px) {
+  .cl-compare { padding-inline:0; }
+  .cl-tbl-mobsort {
+    display:flex; gap:.4rem; align-items:center;
+    overflow-x:auto; padding:0 .2rem 1rem;
+    margin-bottom:.4rem; scrollbar-width:none;
+  }
+  .cl-tbl-mobsort::-webkit-scrollbar { display:none; }
+  .cl-tbl-mobsort-lbl { flex:0 0 auto; font-family:var(--ff-mono); font-size:.58rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-right:.2rem; }
+  .cl-tbl-mobsort button {
+    flex:0 0 auto; border:1px solid var(--line); background:var(--surface);
+    color:var(--display); padding:.4rem .8rem; border-radius:999px;
+    font-family:var(--ff-mono); font-size:.6rem; font-weight:500;
+    letter-spacing:.12em; text-transform:uppercase; cursor:pointer; white-space:nowrap;
+    display:inline-flex; align-items:center; gap:.25rem;
+  }
+  .cl-tbl-mobsort button.on { border-color:var(--gold); background:var(--gold-soft); color:var(--gold); }
+  .cl-tbl-mobsort button .arrow { display:none; font-size:.8em; }
+  .cl-tbl-mobsort button.on .arrow { display:inline; }
+
+  .cl-tbl-wrap { overflow:visible; background:transparent; border:none; box-shadow:none; border-radius:0; }
+  .cl-tbl { display:block; min-width:0; border-collapse:separate; }
+  .cl-tbl thead { display:none; }
+  .cl-tbl tbody { display:block; }
+  .cl-tbl tbody tr {
+    display:grid; grid-template-columns:1fr 1fr auto;
+    grid-template-areas:
+      "name name pill"
+      "city city pill"
+      "entry yield irr";
+    gap:.7rem .9rem;
+    padding:1.1rem 1.1rem 1.2rem;
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:14px; box-shadow:var(--shadow-sm);
+    margin-bottom:.7rem;
+  }
+  .cl-tbl tbody tr:hover { background:var(--surface); }
+  .cl-tbl tbody tr:last-child { margin-bottom:0; }
+  .cl-tbl tbody tr > td { padding:0; border:none; vertical-align:top; }
+  .cl-tbl tbody tr > td:nth-of-type(1) { grid-area:name; }
+  .cl-tbl tbody tr > td:nth-of-type(2) {
+    grid-area:city;
+    font-family:var(--ff-mono); font-size:.6rem; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--muted); line-height:1.4;
+    align-self:center; padding-top:.1rem;
+  }
+  .cl-tbl tbody tr > td:nth-of-type(2)::before { content:'📍 '; opacity:.7; }
+  .cl-tbl tbody tr > td:nth-of-type(3) { grid-area:entry; }
+  .cl-tbl tbody tr > td:nth-of-type(4) { grid-area:yield; }
+  .cl-tbl tbody tr > td:nth-of-type(5) { grid-area:irr; }
+  .cl-tbl tbody tr > td:nth-of-type(6) { grid-area:pill; align-self:start; }
+  .cl-tbl tbody tr > td:nth-of-type(3)::after,
+  .cl-tbl tbody tr > td:nth-of-type(4)::after,
+  .cl-tbl tbody tr > td:nth-of-type(5)::after {
+    display:block; margin-top:.35rem; line-height:1;
+    font-family:var(--ff-mono); font-size:.5rem; font-weight:500;
+    letter-spacing:.18em; text-transform:uppercase; color:var(--muted-2);
+  }
+  .cl-tbl tbody tr > td:nth-of-type(3)::after { content:'Entry'; }
+  .cl-tbl tbody tr > td:nth-of-type(4)::after { content:'Yield'; }
+  .cl-tbl tbody tr > td:nth-of-type(5)::after { content:'IRR'; }
+  .cl-tbl-val { font-size:1.02rem; }
+  .cl-tbl-local { font-size:.56rem; }
+  .cl-tbl-name { font-size:1rem; }
+  .cl-tbl-pill { padding:.28rem .58rem; font-size:.58rem; }
+}
+
 /* ─── ASPIRATION ────────────────────────────── */
 /* ═══ TRUST — track-record ribbon + representative journeys ═══ */
 .cl-trust { max-width:var(--maxw); margin:0 auto; padding:0 var(--pad) 4.5rem; }
@@ -8069,6 +8142,14 @@ body.cl-modal-open { overflow:hidden; }
         <span data-vi="Bấm tiêu đề cột để sắp xếp · bấm hàng để xem nhanh">Bấm tiêu đề cột để sắp xếp · bấm hàng để xem nhanh</span>
         <span data-en="Click column header to sort · click row for quick view">Click column header to sort · click row for quick view</span>
       </p>
+    </div>
+
+    <div class="cl-tbl-mobsort" role="toolbar" aria-label="Sort comparison">
+      <span class="cl-tbl-mobsort-lbl"><span data-vi="Sắp xếp">Sắp xếp</span><span data-en="Sort">Sort</span></span>
+      <button type="button" data-msort="price"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span><span class="arrow">▾</span></button>
+      <button type="button" data-msort="yield">Yield<span class="arrow">▾</span></button>
+      <button type="button" data-msort="irr">IRR<span class="arrow">▾</span></button>
+      <button type="button" data-msort="score">NAC<span class="arrow">▾</span></button>
     </div>
 
     <div class="cl-tbl-wrap reveal">
