@@ -31,6 +31,7 @@ import * as cheerio from 'cheerio';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadRates, toUSD, roundUSD } from './fx.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -124,6 +125,51 @@ const priceString = (usd) => {
   const { num, unit } = priceParts(usd);
   return `$${num}${unit}`;
 };
+
+// ── Live-FX money display (mirrors sync-notion.mjs) ─────────────────────────
+// Cards show USD as the primary figure with the brochure-local amount in
+// parentheses beneath. Notion source: Local Price/Currency when set, else the
+// legacy Purchase Price/Currency pair. FX rates load once per run (daily
+// on-disk cache). If a rate is missing we keep the local figure as primary
+// rather than emit a wrong USD number.
+let FX = null;
+const CURRENCY_SYMBOLS = {
+  USD: '$',  EUR: '€',  GBP: '£',  AED: 'AED ',  CAD: 'C$',  AUD: 'A$',
+  JPY: '¥',  CHF: 'CHF ', CNY: '¥', SGD: 'S$', MYR: 'RM ', THB: '฿', VND: '₫',
+};
+// Local amount → compact "RM 1.58M" / "฿2.46M" / "€450K" string.
+function localPriceString(amount, cur) {
+  if (amount == null) return '';
+  const sym = CURRENCY_SYMBOLS[(cur || '').toUpperCase()] || `${cur} `;
+  if (amount >= 1e9) return `${sym}${stripNum(amount / 1e9)}B`;
+  if (amount >= 1e6) return `${sym}${stripNum(amount / 1e6)}M`;
+  if (amount >= 1e3) return `${sym}${Math.round(amount / 1e3)}K`;
+  return `${sym}${Math.round(amount)}`;
+}
+// Resolve { usdPrice, localDisp } for a listing. usdPrice drives every USD
+// surface (card, plaque, compare table, data-price sorting); localDisp is the
+// "(RM 1.58M)" sub-line, empty when the source is already USD or conversion
+// would just echo the same figure.
+function resolvePrices(l) {
+  const srcCur = (l.localCurrency || l.currency || 'USD').toUpperCase();
+  const localAmt = l.localPrice != null ? l.localPrice : l.purchasePrice;
+  if (localAmt == null) return { usdPrice: null, localDisp: '' };
+  if (srcCur === 'USD') return { usdPrice: localAmt, localDisp: '' };
+  // Non-USD source. If Purchase Price was already USD-normalised upstream
+  // (Local Price set, differs from Purchase Price), prefer the live-FX figure
+  // for display consistency; otherwise convert the only figure we have.
+  const usd = roundUSD(toUSD(localAmt, srcCur, FX));
+  if (usd == null) {
+    // No rate — never show a wrong USD figure. If the stored Purchase Price
+    // looks distinct from the local amount it's most likely pre-normalised
+    // USD; trust it. Else keep local as primary with no sub-line.
+    const preNorm = l.localPrice != null && l.purchasePrice != null && l.purchasePrice !== l.localPrice;
+    return preNorm
+      ? { usdPrice: l.purchasePrice, localDisp: localPriceString(localAmt, srcCur) }
+      : { usdPrice: localAmt, localDisp: '' };
+  }
+  return { usdPrice: usd, localDisp: localPriceString(localAmt, srcCur) };
+}
 const pct1 = (decimal) => (decimal == null ? null : (decimal * 100).toFixed(1));
 
 // donut: r=42 → circumference 2π·42 ≈ 263.9; offset = C·(1 − score/100)
@@ -237,7 +283,8 @@ function renderCard(l) {
           <p class="cl-card-tag">${biSpans(l.taglineVi, l.taglineEn)}</p>
           <div class="cl-card-stats">
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">$${num}<small>${unit}</small></span>
+              <span class="cl-card-stat-num">$${num}<small>${unit}</small></span>${l.localDisp ? `
+              <span class="cl-card-stat-local">(${escText(l.localDisp)})</span>` : ''}
               <span class="cl-card-stat-lbl"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry">Entry</span></span>
             </div>
             <div class="cl-card-stat">
@@ -966,6 +1013,8 @@ async function fetchCountryListings(notion, countryNameEn) {
       brand: rt(p['✦ Brand']),
       purchasePrice: num(p['Purchase Price']),
       currency: sel(p['Currency']),
+      localPrice: num(p['Local Price']),
+      localCurrency: sel(p['Local Currency']),
       hubType: sel(p['🏨 Hub Type']),
       yieldPct: num(p['Yield %']),
       irrPct: num(p['IRR %']),
@@ -980,6 +1029,14 @@ async function fetchCountryListings(notion, countryNameEn) {
       tags: ms(p['Tags']),
     };
   });
+  // Normalise money once at the source: purchasePrice becomes the USD display
+  // figure (drives card, plaque, compare table, data-price sorting uniformly)
+  // and localDisp carries the "(RM 1.58M)" sub-line for the card.
+  for (const l of mapped) {
+    const { usdPrice, localDisp } = resolvePrices(l);
+    l.purchasePrice = usdPrice;
+    l.localDisp = localDisp;
+  }
   return mapped.filter(l => l.slug);
 }
 
@@ -1098,6 +1155,10 @@ async function runLive() {
   } catch (err) {
     console.warn(`fetchGlobalStats failed: ${err.message} — track-record ribbon will keep stale numbers`);
   }
+
+  // FX rates for the USD-primary + local-sub-line money display. Daily cached;
+  // failure degrades gracefully (resolvePrices keeps local figures).
+  FX = await loadRates();
 
   let ok = 0, fail = 0;
   for (const row of live) {
