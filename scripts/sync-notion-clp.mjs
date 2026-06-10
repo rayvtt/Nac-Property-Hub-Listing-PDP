@@ -327,7 +327,7 @@ function renderCompareRow(l) {
               <span class="cl-tbl-brand">${escText(shortBrand(l.brand))}</span>
             </td>
             <td>${escText(cityName)}</td>
-            <td><span class="cl-tbl-val">$${num}<small>${unit}</small></span></td>
+            <td><span class="cl-tbl-val">$${num}<small>${unit}</small></span>${l.localDisp ? `<span class="cl-tbl-local">(${escText(l.localDisp)})</span>` : ''}</td>
             <td><span class="cl-tbl-val">${y ?? '—'}<small>%</small></span></td>
             <td><span class="cl-tbl-val">${irr ?? '—'}<small>%</small></span></td>
             <td><span class="cl-tbl-pill">${l.nacScore ?? '—'} / 100</span></td>
