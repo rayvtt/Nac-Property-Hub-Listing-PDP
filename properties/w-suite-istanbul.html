@@ -177,7 +177,19 @@
   <!-- ═══ END SEO PACKAGE ═══ -->
 
   <style>body { margin:0; background:#07091a; }</style>
-</head>
+<style id="nac-spotlight-style">
+#nac-spotlight{position:fixed;left:1.15rem;bottom:1.5rem;z-index:85;display:flex;align-items:center;gap:.6rem;padding:.45rem .85rem .45rem .5rem;border-radius:999px;background:linear-gradient(135deg,rgba(14,24,38,.92),rgba(18,30,48,.85));border:1px solid rgba(232,191,114,.55);color:#f7f1e6;text-decoration:none;cursor:default;font-family:var(--ff-sans,'Inter',system-ui,sans-serif);box-shadow:0 10px 30px -8px rgba(0,0,0,.55),0 0 0 1px rgba(232,191,114,.12),0 0 26px -8px rgba(196,146,44,.6);-webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%);transform-origin:left bottom;animation:nacsp-in .9s cubic-bezier(.34,1.56,.64,1) both;max-width:min(82vw,320px)}
+#nac-spotlight .nacsp-gem{flex:0 0 auto;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(circle at 32% 28%,#f6dca0,#e8bf72 38%,#c4922c 78%,#9c6f1d);box-shadow:inset 0 1px 2px rgba(255,255,255,.6),inset 0 -2px 4px rgba(120,84,16,.5),0 0 14px -2px rgba(232,191,114,.7);animation:nacsp-breathe 3.4s ease-in-out infinite}
+#nac-spotlight .nacsp-gem svg{width:20px;height:20px;fill:#3a2a07;filter:drop-shadow(0 1px 0 rgba(255,255,255,.45))}
+#nac-spotlight .nacsp-gem::after{content:"";position:absolute;top:0;left:-120%;width:55%;height:100%;background:linear-gradient(115deg,transparent,rgba(255,255,255,.85),transparent);transform:skewX(-18deg);animation:nacsp-shine 3.8s ease-in-out infinite}
+#nac-spotlight .nacsp-label{overflow:hidden;white-space:nowrap;max-width:0;opacity:0;transform:translateX(-6px);font-weight:700;font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;background:linear-gradient(90deg,#e8bf72,#f6dca0,#c4922c);-webkit-background-clip:text;background-clip:text;color:transparent;transition:max-width .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,transform .5s cubic-bezier(.4,0,.2,1)}
+#nac-spotlight:hover .nacsp-label,#nac-spotlight:focus-within .nacsp-label{max-width:240px;opacity:1;transform:none;padding-right:.2rem}
+@keyframes nacsp-in{0%{opacity:0;transform:scale(.5) translateY(10px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes nacsp-breathe{0%,100%{box-shadow:inset 0 1px 2px rgba(255,255,255,.6),inset 0 -2px 4px rgba(120,84,16,.5),0 0 12px -3px rgba(232,191,114,.6)}50%{box-shadow:inset 0 1px 2px rgba(255,255,255,.6),inset 0 -2px 4px rgba(120,84,16,.5),0 0 22px 0 rgba(232,191,114,.9)}}
+@keyframes nacsp-shine{0%{left:-120%}55%{left:150%}100%{left:150%}}
+@media(max-width:900px){#nac-spotlight{left:.85rem;bottom:1rem;padding:.4rem .8rem .4rem .45rem;gap:.5rem}#nac-spotlight .nacsp-gem{width:34px;height:34px}#nac-spotlight .nacsp-gem svg{width:18px;height:18px}#nac-spotlight .nacsp-label{max-width:240px;opacity:1;transform:none;font-size:.68rem}}
+@media(prefers-reduced-motion:reduce){#nac-spotlight,#nac-spotlight .nacsp-gem,#nac-spotlight .nacsp-gem::after{animation:none}#nac-spotlight .nacsp-label{transition:none}}
+</style></head>
 <body>
 <!--
   NAC Property Detail Page — Template v5
@@ -1057,7 +1069,7 @@
     </form>
   </div>
 
-</div>
+<aside id="nac-spotlight" role="note" aria-label="Spotlight Listing"><span class="nacsp-gem" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 1.8l2.7 6.4 6.9.6-5.2 4.6 1.6 6.8L12 16.9 5.9 20.2l1.6-6.8L2.4 8.8l6.9-.6z"></path></svg></span><span class="nacsp-label"><span data-vi="">Dự Án Nổi Bật</span><span data-en="">Spotlight Listing</span></span></aside></div>
 
 <style>
 /* ═══════════════════════ RESET + TOKENS ═══════════════════════ */
