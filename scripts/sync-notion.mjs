@@ -466,7 +466,6 @@ const SPOTLIGHT_STYLE = `<style id="nac-spotlight-style">
 #nac-spotlight .nacsp-sep{color:rgba(237,138,82,.55);font-size:.85rem}
 @keyframes nacsp-run{to{transform:translateX(-50%)}}
 @media(max-width:680px){#nac-spotlight{padding:.85rem 0}#nac-spotlight .nacsp-word{font-size:.66rem;letter-spacing:.26em;padding:0 1.1rem}}
-@media(prefers-reduced-motion:reduce){#nac-spotlight .nacsp-track{animation:none}}
 </style>`;
 const SPOTLIGHT_SEQ = Array(4).fill(
   `<span class="nacsp-word">Dự Án Nổi Bật</span><span class="nacsp-sep">✦</span>` +
