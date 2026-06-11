@@ -458,13 +458,13 @@ function patchHeadSeo($, prop) {
 // label on hover/focus (always shown on mobile). Bilingual via the page's own
 // .nac-pdp[data-lang] [data-vi]/[data-en] rule, so it must live inside .nac-pdp.
 const SPOTLIGHT_STYLE = `<style id="nac-spotlight-style">
-#nac-spotlight{position:fixed;left:1.15rem;bottom:1.5rem;z-index:85;display:flex;align-items:center;gap:.5rem;padding:.4rem .95rem .4rem .42rem;border-radius:999px;background:linear-gradient(135deg,rgba(13,22,36,.9),rgba(22,34,55,.82));border:1px solid rgba(232,191,114,.42);color:#f7f1e6;text-decoration:none;cursor:pointer;outline:none;font-family:var(--ff-sans,'Inter',system-ui,sans-serif);box-shadow:0 14px 38px -12px rgba(0,0,0,.62),0 0 0 1px rgba(232,191,114,.08),0 0 20px -12px rgba(196,146,44,.42);-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);transform-origin:left bottom;animation:nacsp-in 1s cubic-bezier(.34,1.56,.64,1) both;max-width:min(82vw,320px)}
+#nac-spotlight{position:fixed;left:1.15rem;bottom:1.5rem;z-index:85;display:flex;align-items:center;gap:.5rem;padding:.4rem .95rem .4rem .42rem;border-radius:999px;background:linear-gradient(135deg,rgba(13,22,36,.9),rgba(22,34,55,.82));border:1px solid rgba(237,138,82,.45);color:#f7f1e6;text-decoration:none;cursor:pointer;outline:none;font-family:var(--ff-sans,'Inter',system-ui,sans-serif);box-shadow:0 14px 38px -12px rgba(0,0,0,.62),0 0 0 1px rgba(237,138,82,.08),0 0 20px -12px rgba(217,124,68,.45);-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);transform-origin:left bottom;animation:nacsp-in 1s cubic-bezier(.34,1.56,.64,1) both;max-width:min(82vw,320px)}
 #nac-spotlight .nacsp-gem{flex:0 0 auto;width:40px;height:40px;position:relative;display:grid;place-items:center}
-#nac-spotlight .nacsp-gem::before{content:"";position:absolute;inset:4px;border-radius:50%;background:radial-gradient(circle,rgba(232,191,114,.3),rgba(232,191,114,0) 72%);animation:nacsp-glow 4.2s ease-in-out infinite}
-#nac-spotlight .nacsp-star{width:25px;height:25px;transform-origin:50% 50%;animation:nacsp-spin 14s linear infinite;filter:drop-shadow(0 0 2px rgba(246,220,160,.4))}
-#nac-spotlight .nacsp-label{overflow:hidden;white-space:nowrap;max-width:0;opacity:0;transform:translateX(-6px);font-weight:700;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;background:linear-gradient(90deg,#e8bf72,#f6dca0,#c4922c);-webkit-background-clip:text;background-clip:text;color:transparent;transition:max-width .55s cubic-bezier(.4,0,.2,1),opacity .45s ease,transform .55s cubic-bezier(.4,0,.2,1)}
+#nac-spotlight .nacsp-gem::before{content:"";position:absolute;inset:4px;border-radius:50%;background:radial-gradient(circle,rgba(237,138,82,.3),rgba(237,138,82,0) 72%);animation:nacsp-glow 4.2s ease-in-out infinite}
+#nac-spotlight .nacsp-star{width:25px;height:25px;transform-origin:50% 50%;animation:nacsp-spin 6s linear infinite;filter:drop-shadow(0 0 2px rgba(247,180,137,.45))}
+#nac-spotlight .nacsp-label{overflow:hidden;white-space:nowrap;max-width:0;opacity:0;transform:translateX(-6px);font-weight:700;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;background:linear-gradient(90deg,#ed8a52,#f7b489,#d97c44);-webkit-background-clip:text;background-clip:text;color:transparent;transition:max-width .55s cubic-bezier(.4,0,.2,1),opacity .45s ease,transform .55s cubic-bezier(.4,0,.2,1)}
 #nac-spotlight:hover .nacsp-label,#nac-spotlight:focus .nacsp-label,#nac-spotlight:focus-within .nacsp-label{max-width:240px;opacity:1;transform:none;padding-right:.25rem}
-#nac-spotlight:hover .nacsp-star,#nac-spotlight:focus .nacsp-star{animation-duration:5s}
+#nac-spotlight:hover .nacsp-star,#nac-spotlight:focus .nacsp-star{animation-duration:2.4s}
 @keyframes nacsp-in{0%{opacity:0;transform:scale(.5) translateY(10px)}100%{opacity:1;transform:scale(1) translateY(0)}}
 @keyframes nacsp-in-top{0%{opacity:0;transform:scale(.5) translateY(-8px)}100%{opacity:1;transform:scale(1) translateY(0)}}
 @keyframes nacsp-spin{to{transform:rotate(360deg)}}
@@ -480,7 +480,7 @@ const SPOTLIGHT_STYLE = `<style id="nac-spotlight-style">
 </style>`;
 const SPOTLIGHT_MARKUP = `<aside id="nac-spotlight" role="note" tabindex="0" aria-label="Spotlight Listing">` +
   `<span class="nacsp-gem" aria-hidden="true">` +
-    `<svg class="nacsp-star" viewBox="0 0 24 24"><defs><linearGradient id="nacsp-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6dca0"/><stop offset=".5" stop-color="#e8bf72"/><stop offset="1" stop-color="#c4922c"/></linearGradient></defs><path fill="url(#nacsp-grad)" d="M12 1.5c.78 6.66 3.06 8.94 9.72 9.72-6.66.78-8.94 3.06-9.72 9.72-.78-6.66-3.06-8.94-9.72-9.72 6.66-.78 8.94-3.06 9.72-9.72z"/></svg>` +
+    `<svg class="nacsp-star" viewBox="0 0 24 24"><defs><linearGradient id="nacsp-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7b489"/><stop offset=".5" stop-color="#ed8a52"/><stop offset="1" stop-color="#c96a3a"/></linearGradient></defs><path fill="url(#nacsp-grad)" d="M12 1.5c.78 6.66 3.06 8.94 9.72 9.72-6.66.78-8.94 3.06-9.72 9.72-.78-6.66-3.06-8.94-9.72-9.72 6.66-.78 8.94-3.06 9.72-9.72z"/></svg>` +
   `</span>` +
   `<span class="nacsp-label"><span data-vi="">Dự Án Nổi Bật</span><span data-en="">Spotlight Listing</span></span>` +
   `</aside>`;

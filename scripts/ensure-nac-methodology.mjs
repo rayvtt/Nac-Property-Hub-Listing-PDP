@@ -41,6 +41,9 @@ const CSS_BLOCK = `/* ── NAC scoring methodology — accordion beneath the d
 .nac-method {
   margin-top:2.6rem; max-width:640px; margin-left:auto; margin-right:auto;
   border-top:1px solid var(--line);
+  /* §06 is data-side="full": mask the centre spine line so it can't cut
+     through the accordion text */
+  position:relative; z-index:2; background:var(--bg); padding-inline:1.2rem;
 }
 .nac-method[open] { padding-bottom:2.4rem; }
 .nac-method-summary {
@@ -101,7 +104,7 @@ const CSS_BLOCK = `/* ── NAC scoring methodology — accordion beneath the d
   color:var(--muted); font-style:italic;
   padding:1.05rem 1.2rem; background:var(--surface-2);
   border-radius:12px; border-left:2px solid var(--gold);
-  margin:0 0 2rem;
+  margin:0 0 2.6rem;
 }
 .nac-method-grades { display:flex; flex-direction:column; gap:.55rem; }
 .nac-method-grade-head {
