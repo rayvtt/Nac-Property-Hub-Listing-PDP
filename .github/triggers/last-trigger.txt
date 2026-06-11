@@ -2,3 +2,4 @@
 2026-06-08T19:47Z — heal sweep after restoring 🔗 Slug field (was truncated to 🔗 Sl, breaking the slug lookup): fire create-pdp + sync-notion to scaffold any stranded PDP and patch any unsynced content
 2026-06-09T22:53:22Z — actioning all: editorial cover OG live on every CLP + PDP
 2026-06-10T22:30Z — currency fix: Limassol Del Mar + Blu Marine relabelled USD→EUR (numbers were already EUR; Cyprus prices in EUR). Sync-notion to patch the €-headline + statement onto the PDPs → WP.
+2026-06-11T09:30Z — ship Spotlight Listing badge (PR #366): premium sticky "Spotlight Listing / Dự Án Nổi Bật" callout injected on PDPs whose Notion Spotlight? box is ticked. One Central Saigon flagged as the first spotlight — sync-notion to render the badge onto it (and refresh any others) → WP.
