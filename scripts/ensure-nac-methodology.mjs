@@ -106,7 +106,9 @@ const CSS_BLOCK = `/* ── NAC scoring methodology — accordion beneath the d
   border-radius:12px; border-left:2px solid var(--gold);
   margin:0 0 2.6rem;
 }
-.nac-method-grades { display:flex; flex-direction:column; gap:.55rem; }
+/* margin-top carries the calib→grades gap (not the <p>'s margin-bottom,
+   which WP theme CSS can reset) — keeps the section rhythm on WP too */
+.nac-method-grades { display:flex; flex-direction:column; gap:.55rem; margin-top:2.6rem; }
 .nac-method-grade-head {
   font-family:var(--ff-mono); font-size:.6rem; letter-spacing:.18em;
   text-transform:uppercase; color:var(--muted); margin-bottom:.3rem;
