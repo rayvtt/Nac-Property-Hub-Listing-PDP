@@ -3,3 +3,4 @@
 2026-06-09T22:53:22Z — actioning all: editorial cover OG live on every CLP + PDP
 2026-06-10T22:30Z — currency fix: Limassol Del Mar + Blu Marine relabelled USD→EUR (numbers were already EUR; Cyprus prices in EUR). Sync-notion to patch the €-headline + statement onto the PDPs → WP.
 2026-06-11T09:30Z — ship Spotlight Listing badge (PR #366): premium sticky "Spotlight Listing / Dự Án Nổi Bật" callout injected on PDPs whose Notion Spotlight? box is ticked. One Central Saigon flagged as the first spotlight — sync-notion to render the badge onto it (and refresh any others) → WP.
+2026-06-11T10:05Z — refine Spotlight badge to a spinning faceted gold star (PR #367). Re-render so the new star markup replaces the old coin on spotlighted PDPs → WP — sync-notion
