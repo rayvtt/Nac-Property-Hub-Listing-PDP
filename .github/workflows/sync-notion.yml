@@ -59,6 +59,10 @@ jobs:
         working-directory: scripts
         run: node ensure-share-section.mjs
 
+      - name: Ensure NAC methodology accordion on all PDPs
+        working-directory: scripts
+        run: node ensure-nac-methodology.mjs
+
       - name: Rebuild index.html from Notion
         working-directory: scripts
         env:
