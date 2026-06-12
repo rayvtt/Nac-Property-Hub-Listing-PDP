@@ -1,8 +1,8 @@
 {
- "generated": "2026-06-12T15:50:00.188Z",
+ "generated": "2026-06-12T17:15:41.846Z",
  "ledger": true,
  "windowDays": 3650,
- "count": 1334,
+ "count": 1335,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -20,6 +20,17 @@
   "dubai": "🇦🇪"
  },
  "entries": [
+  {
+   "ts": "2026-06-12T17:15:08Z",
+   "country": "vietnam",
+   "slug": "sycamore-binh-duong",
+   "name": "The Sycamore by CapitaLand",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
   {
    "ts": "2026-06-12T03:47:36Z",
    "country": "thailand",
