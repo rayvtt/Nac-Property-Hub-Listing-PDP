@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-12T17:15:07Z",
+  "generated": "2026-06-12T17:43:26Z",
   "reviewed": "2026-06-12",
-  "fingerprint": "053b374decea8ce7",
+  "fingerprint": "94676bda301ab311",
   "dims": [
     "id",
     "fin",
@@ -2083,7 +2083,7 @@
         {
           "name": "The Sycamore by CapitaLand — Bình Dương",
           "slug": "sycamore-binh-duong",
-          "thumb": "",
+          "thumb": "sycamore-binh-duong-hero",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2091,7 +2091,7 @@
             "edit": "done",
             "json": "done",
             "cine": "done",
-            "img": "block",
+            "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
