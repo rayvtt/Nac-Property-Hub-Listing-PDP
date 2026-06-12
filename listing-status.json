@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-08T16:11:22Z",
-  "reviewed": "2026-06-08",
-  "fingerprint": "3a1036c8abdcc4a8",
+  "generated": "2026-06-12T17:15:07Z",
+  "reviewed": "2026-06-12",
+  "fingerprint": "053b374decea8ce7",
   "dims": [
     "id",
     "fin",
@@ -15,7 +15,7 @@
     "qa"
   ],
   "imgHash": "qse3Pw84PrZ2S0PQOTtixw",
-  "total": 122,
+  "total": 123,
   "countries": [
     {
       "code": "AU",
@@ -45,7 +45,7 @@
       "code": "VN",
       "name": "Vietnam",
       "flag": "🇻🇳",
-      "count": 7
+      "count": 8
     },
     {
       "code": "CY",
@@ -2065,6 +2065,33 @@
             "json": "done",
             "cine": "done",
             "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Vietnam",
+      "code": "VN",
+      "flag": "🇻🇳",
+      "region": "Bình Dương New City (Thủ Dầu Một)",
+      "rows": [
+        {
+          "name": "The Sycamore by CapitaLand — Bình Dương",
+          "slug": "sycamore-binh-duong",
+          "thumb": "",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "block",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
