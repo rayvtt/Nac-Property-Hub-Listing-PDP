@@ -465,9 +465,10 @@ const SPOTLIGHT_STYLE = `<style id="nac-spotlight-style">
 .nacsp-ov .nacsp-word{font-family:var(--ff-mono,'IBM Plex Mono',monospace);font-size:.75rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;background:linear-gradient(90deg,#ed8a52,#f7b489,#d97c44);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 1.5rem}
 .nacsp-ov .nacsp-sep{color:rgba(237,138,82,.6);font-size:.82rem}
 @keyframes nacsp-run{to{transform:translateX(-50%)}}
+.nac-hero:has(#nacsp-hero) .nac-hero-inner{padding-bottom:8rem}
 .nac-hero:has(#nacsp-hero) .nac-hero-scroll{bottom:3.1rem}
 #nac-img-3:has(#nacsp-end) .nac-cine-asp{bottom:2.7rem}
-@media(max-width:680px){.nacsp-ov{padding:.48rem 0}.nacsp-ov .nacsp-word{font-size:.63rem;letter-spacing:.22em;padding:0 1rem}.nac-hero:has(#nacsp-hero) .nac-hero-scroll{bottom:2.6rem}#nac-img-3:has(#nacsp-end) .nac-cine-asp{bottom:2.3rem}}
+@media(max-width:680px){.nacsp-ov{padding:.48rem 0}.nacsp-ov .nacsp-word{font-size:.63rem;letter-spacing:.22em;padding:0 1rem}.nac-hero:has(#nacsp-hero) .nac-hero-inner{padding-bottom:6rem}.nac-hero:has(#nacsp-hero) .nac-hero-scroll{bottom:2.6rem}#nac-img-3:has(#nacsp-end) .nac-cine-asp{bottom:2.3rem}}
 </style>`;
 const SPOTLIGHT_SEQ = Array(8).fill(
   `<span class="nacsp-word">Dự Án Nổi Bật</span><span class="nacsp-sep">✦</span>` +
