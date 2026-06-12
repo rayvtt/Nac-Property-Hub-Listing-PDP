@@ -450,31 +450,34 @@ function patchHeadSeo($, prop) {
   });
 }
 
-// ─── Spotlight banner ───────────────────────────────────────────────────────
-// A full-bleed running (marquee) ribbon — "Dự Án Nổi Bật ✦ Spotlight Listing" —
-// injected midway through the PDP (before the §07 cine image) only when the
-// Notion `Spotlight?` checkbox is ticked. Replaces the earlier sticky icon.
-// Both languages run in the ribbon by design (editorial ticker look), so it
-// needs no [data-lang] plumbing. Seamless loop: two identical sequences inside
-// a max-content track animated to translateX(-50%); pauses on hover.
+// ─── Spotlight banners ──────────────────────────────────────────────────────
+// Running (marquee) ribbons — "Dự Án Nổi Bật ✦ Spotlight Listing" — layered over
+// the bottom edge of the hero image AND the bottom edge of the closing (§11)
+// image, only when the Notion `Spotlight?` checkbox is ticked. Translucent navy
+// band + NAC-orange ticker; seamless translateX(-50%) loop; pauses on hover. The
+// spotlight-only CSS lifts the hero scroll cue and the closing CTA above their
+// ribbons via :has(), so nothing is covered. ids: #nacsp-hero / #nacsp-end.
 const SPOTLIGHT_STYLE = `<style id="nac-spotlight-style">
-#nac-spotlight{overflow:hidden;position:relative;padding:1.05rem 0;background:linear-gradient(135deg,#0d1624,#162237);border-top:1px solid rgba(237,138,82,.4);border-bottom:1px solid rgba(237,138,82,.4)}
-#nac-spotlight .nacsp-track{display:flex;width:max-content;animation:nacsp-run 26s linear infinite;will-change:transform}
-#nac-spotlight:hover .nacsp-track{animation-play-state:paused}
-#nac-spotlight .nacsp-seq{display:flex;align-items:center;white-space:nowrap}
-#nac-spotlight .nacsp-word{font-family:var(--ff-mono,'IBM Plex Mono',monospace);font-size:.78rem;font-weight:600;letter-spacing:.32em;text-transform:uppercase;background:linear-gradient(90deg,#ed8a52,#f7b489,#d97c44);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 1.6rem}
-#nac-spotlight .nacsp-sep{color:rgba(237,138,82,.55);font-size:.85rem}
+.nacsp-ov{position:absolute;left:0;right:0;bottom:0;z-index:6;overflow:hidden;padding:.6rem 0;background:linear-gradient(to top,rgba(10,16,30,.95),rgba(10,16,30,.74) 70%,rgba(10,16,30,.35));border-top:1px solid rgba(237,138,82,.5);pointer-events:none}
+.nacsp-ov .nacsp-track{display:flex;align-items:center;width:max-content;animation:nacsp-run 30s linear infinite;will-change:transform}
+.nacsp-ov:hover .nacsp-track{animation-play-state:paused}
+.nacsp-ov .nacsp-seq{display:flex;align-items:center;white-space:nowrap}
+.nacsp-ov .nacsp-word{font-family:var(--ff-mono,'IBM Plex Mono',monospace);font-size:.75rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;background:linear-gradient(90deg,#ed8a52,#f7b489,#d97c44);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 1.5rem}
+.nacsp-ov .nacsp-sep{color:rgba(237,138,82,.6);font-size:.82rem}
 @keyframes nacsp-run{to{transform:translateX(-50%)}}
-@media(max-width:680px){#nac-spotlight{padding:.85rem 0}#nac-spotlight .nacsp-word{font-size:.66rem;letter-spacing:.26em;padding:0 1.1rem}}
+.nac-hero:has(#nacsp-hero) .nac-hero-scroll{bottom:3.1rem}
+#nac-img-3:has(#nacsp-end) .nac-cine-asp{bottom:2.7rem}
+@media(max-width:680px){.nacsp-ov{padding:.48rem 0}.nacsp-ov .nacsp-word{font-size:.63rem;letter-spacing:.22em;padding:0 1rem}.nac-hero:has(#nacsp-hero) .nac-hero-scroll{bottom:2.6rem}#nac-img-3:has(#nacsp-end) .nac-cine-asp{bottom:2.3rem}}
 </style>`;
-const SPOTLIGHT_SEQ = Array(4).fill(
+const SPOTLIGHT_SEQ = Array(8).fill(
   `<span class="nacsp-word">Dự Án Nổi Bật</span><span class="nacsp-sep">✦</span>` +
   `<span class="nacsp-word">Spotlight Listing</span><span class="nacsp-sep">✦</span>`
 ).join('');
-const SPOTLIGHT_MARKUP = `<aside id="nac-spotlight" role="note" aria-label="Spotlight Listing — Dự Án Nổi Bật">` +
-  `<div class="nacsp-track" aria-hidden="true">` +
-    `<div class="nacsp-seq">${SPOTLIGHT_SEQ}</div><div class="nacsp-seq">${SPOTLIGHT_SEQ}</div>` +
-  `</div>` +
+const spotlightBanner = (id) =>
+  `<aside id="${id}" class="nacsp-ov" role="note" aria-label="Spotlight Listing — Dự Án Nổi Bật">` +
+    `<div class="nacsp-track" aria-hidden="true">` +
+      `<div class="nacsp-seq">${SPOTLIGHT_SEQ}</div><div class="nacsp-seq">${SPOTLIGHT_SEQ}</div>` +
+    `</div>` +
   `</aside>`;
 
 function patch(html, prop) {
@@ -712,19 +715,19 @@ function patch(html, prop) {
     roi.attr('data-local-cur', prop._srcCur);
   }
 
-  // ─── Spotlight banner ───────────────────────────────────────────────────
+  // ─── Spotlight banners ──────────────────────────────────────────────────
   // Injected only when the Notion `Spotlight?` checkbox is ticked. Idempotent:
-  // stripped first so un-ticking the box removes it on the next sync (this
-  // also clears the retired sticky-icon variant, which shared these ids).
-  // Placement: midway through the LLP — before the §07 cine image, falling
-  // back to the other cine breaks for older layouts.
-  $('#nac-spotlight, #nac-spotlight-style').remove();
+  // stripped first so un-ticking removes them on the next sync (the id list also
+  // clears the retired sticky-icon and midway-banner variants). Placement: a
+  // running ribbon layered over the bottom edge of the hero image and of the
+  // closing (§11) image.
+  $('#nac-spotlight, #nacsp-hero, #nacsp-end, #nac-spotlight-style').remove();
   if (prop.spotlight) {
     $('head').append(SPOTLIGHT_STYLE);
-    const anchor = ['#nac-img-2', '#nac-img-3', '#nac-img-1']
-      .map(sel => $(sel)).find(el => el.length);
-    if (anchor) anchor.before(SPOTLIGHT_MARKUP);
-    else $('.nac-pdp').first().append(SPOTLIGHT_MARKUP);
+    const hero = $('.nac-hero').first();
+    if (hero.length) hero.append(spotlightBanner('nacsp-hero'));
+    const closing = $('#nac-img-3').first();
+    if (closing.length) closing.append(spotlightBanner('nacsp-end'));
   }
 
   // ─── SEO / GEO / LLM structured data ────────────────────────────────────
