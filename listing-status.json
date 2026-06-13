@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-12T17:43:26Z",
-  "reviewed": "2026-06-12",
-  "fingerprint": "94676bda301ab311",
+  "generated": "2026-06-13T08:28:06Z",
+  "reviewed": "2026-06-13",
+  "fingerprint": "8f57463073e5df10",
   "dims": [
     "id",
     "fin",
@@ -1584,7 +1584,7 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "block",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
