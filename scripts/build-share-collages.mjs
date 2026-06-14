@@ -55,11 +55,13 @@ const convert = (args) => execFileSync(IM7 ? 'magick' : 'convert', args, { stdio
 const imgW = (f) => parseInt(execFileSync(IM7 ? 'magick' : 'convert', [f, '-format', '%w', 'info:']).toString().trim(), 10) || 0;
 
 const NAVY = '#0F1A36';
+const CHARCOAL = '#17191F';
+const BG = CHARCOAL;            // default footer / frame colour
 const ORANGE = '#E8743B';
 const CREAM = '#F5F1E8';
 // Bump when the collage *design* changes. Folded into the input fingerprint so a
 // redesign forces a hub-wide repaint on the next scheduled run.
-const DESIGN_VERSION = 'editorial-v3';
+const DESIGN_VERSION = 'editorial-v4-charcoal';
 // Accept a font only if it's a real file (a 404 page saved by curl is tiny).
 const validFont = (f) => { try { return f && fs.statSync(f).size > 5000; } catch { return false; } };
 const firstFont = (cands, fallback) => cands.find(validFont) || fallback;
@@ -243,7 +245,7 @@ function renderEditorial(meta, tagline, textW, work) {
 }
 
 // Assemble: mosaic (top) + orange rule + editorial footer (bottom). bg = band/frame.
-function buildCollage(images, work, meta, tagline, bg = NAVY) {
+function buildCollage(images, work, meta, tagline, bg = BG) {
   const mosaic = buildMosaic(images, work, bg);
   const cluster = makeStatCluster(meta, work);
   const PAD = 50, GAP = 46, BAND_H = 168;
