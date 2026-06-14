@@ -34,6 +34,9 @@ const CF_TOKEN = process.env.CLOUDFLARE_API_TOKEN;
 const CF_ACCOUNT = process.env.CLOUDFLARE_ACCOUNT_ID || '2adeb401a00c6f459573f25eabb790da';
 const REPLACE = /^(1|true|yes)$/i.test(process.env.REPLACE || '');
 const ONLY = (process.env.ONLY || '').split(',').map((s) => s.trim()).filter(Boolean);
+// Background-colour exploration: `VARIANTS="navy:#0F1A36,forest:#12251D,…"` renders
+// one preview per colour to throwaway CF ids `<slug>-share-<name>` (no Notion write).
+const VARIANTS = (process.env.VARIANTS || '').split(',').map((s) => s.trim()).filter((s) => s.includes(':'));
 if (!TOKEN) { console.error('NOTION_TOKEN required'); process.exit(1); }
 if (!CF_TOKEN) { console.error('CLOUDFLARE_API_TOKEN required'); process.exit(1); }
 
@@ -139,8 +142,8 @@ function imgTile(src, w, h, work, name) {
   return out;
 }
 
-// 3-photo mosaic, 1200×462: hero left + up to two stacked on the right, navy seams.
-function buildMosaic(images, work) {
+// 3-photo mosaic, 1200×462: hero left + up to two stacked on the right, seams in bg.
+function buildMosaic(images, work, bg) {
   const MW = 1200, MH = 462, SEAM = 4, out = path.join(work, 'mosaic.jpg');
   const hero = images[0];
   const gallery = images.slice(1);
@@ -158,11 +161,11 @@ function buildMosaic(images, work) {
     const r0 = imgTile(gallery[0], rightW, ih, work, 'r0');
     const r1 = imgTile(gallery[1], rightW, MH - SEAM - ih, work, 'r1');
     rightCol = path.join(work, 'rcol.jpg');
-    convert(['-size', `${rightW}x${MH}`, `xc:${NAVY}`,
+    convert(['-size', `${rightW}x${MH}`, `xc:${bg}`,
       r0, '-gravity', 'northwest', '-geometry', '+0+0', '-composite',
       r1, '-gravity', 'northwest', '-geometry', `+0+${ih + SEAM}`, '-composite', rightCol]);
   }
-  convert(['-size', `${MW}x${MH}`, `xc:${NAVY}`,
+  convert(['-size', `${MW}x${MH}`, `xc:${bg}`,
     heroT, '-gravity', 'northwest', '-geometry', '+0+0', '-composite',
     rightCol, '-gravity', 'northwest', '-geometry', `+${heroW + SEAM}+0`, '-composite', '-strip', out]);
   return out;
@@ -239,22 +242,22 @@ function renderEditorial(meta, tagline, textW, work) {
   return out;
 }
 
-// Assemble: mosaic (top) + orange rule + navy editorial footer (bottom).
-function buildCollage(images, work, meta, tagline) {
-  const mosaic = buildMosaic(images, work);
+// Assemble: mosaic (top) + orange rule + editorial footer (bottom). bg = band/frame.
+function buildCollage(images, work, meta, tagline, bg = NAVY) {
+  const mosaic = buildMosaic(images, work, bg);
   const cluster = makeStatCluster(meta, work);
   const PAD = 50, GAP = 46, BAND_H = 168;
   const textW = Math.max(360, 1200 - PAD * 2 - (cluster ? cluster.w : 0) - (cluster ? GAP : 0));
   const left = renderEditorial(meta, tagline || {}, textW, work);
 
   const band = path.join(work, 'band.png');
-  const bandCmd = ['-size', `1200x${BAND_H}`, `xc:${NAVY}`, left, '-gravity', 'west', '-geometry', `+${PAD}+0`, '-composite'];
+  const bandCmd = ['-size', `1200x${BAND_H}`, `xc:${bg}`, left, '-gravity', 'west', '-geometry', `+${PAD}+0`, '-composite'];
   if (cluster) bandCmd.push(cluster.path, '-gravity', 'east', '-geometry', `+${PAD}+0`, '-composite');
   bandCmd.push(band);
   convert(bandCmd);
 
   const out = path.join(work, 'final.jpg');
-  convert(['-size', '1200x630', `xc:${NAVY}`,
+  convert(['-size', '1200x630', `xc:${bg}`,
     mosaic, '-gravity', 'northwest', '-geometry', '+0+0', '-composite',
     band, '-gravity', 'southwest', '-geometry', '+0+0', '-composite',
     '-fill', ORANGE, '-draw', 'rectangle 0,460 1199,463',
@@ -305,6 +308,19 @@ async function main() {
     try {
       const local = [];
       for (let i = 0; i < imgs.length; i++) local.push(await dl(imgs[i], path.join(work, `src${i}.img`)));
+
+      // Colour-exploration mode: render one preview per background colour to a
+      // throwaway CF id, don't touch Notion. Used to pick the footer palette.
+      if (VARIANTS.length) {
+        for (const v of VARIANTS) {
+          const i = v.indexOf(':'); const name = v.slice(0, i).trim(); const hex = v.slice(i + 1).trim();
+          const c = buildCollage(local, work, meta, tagline, hex);
+          const u = await uploadCF(c, `${slug}-share-${name}`);
+          console.log(`  ◆ ${slug} [${name} ${hex}] → ${u}`);
+        }
+        done++; continue;
+      }
+
       const collage = buildCollage(local, work, meta, tagline);
       const cfUrl = await uploadCF(collage, `${slug}-share`);
       // Cache-bust: append a content hash of the collage as ?v= so Facebook/LinkedIn

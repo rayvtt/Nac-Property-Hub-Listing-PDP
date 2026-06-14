@@ -59,6 +59,8 @@ jobs:
             if grep -qi 'replace' "$FILE" 2>/dev/null; then echo "REPLACE=1" >> "$GITHUB_ENV"; fi
             ONLY_LINE=$(grep -i '^only:' "$FILE" 2>/dev/null | tail -1 | sed 's/^only:[[:space:]]*//I' || true)
             if [ -n "$ONLY_LINE" ]; then echo "ONLY=$ONLY_LINE" >> "$GITHUB_ENV"; fi
+            VAR_LINE=$(grep -i '^variants:' "$FILE" 2>/dev/null | tail -1 | sed 's/^variants:[[:space:]]*//I' || true)
+            if [ -n "$VAR_LINE" ]; then echo "VARIANTS=$VAR_LINE" >> "$GITHUB_ENV"; fi
           else
             if [ "${{ inputs.replace }}" = "true" ]; then echo "REPLACE=1" >> "$GITHUB_ENV"; fi
             echo "ONLY=${{ inputs.only }}" >> "$GITHUB_ENV"
