@@ -59,9 +59,12 @@ const CHARCOAL = '#17191F';
 const BG = CHARCOAL;            // default footer / frame colour
 const ORANGE = '#E8743B';
 const CREAM = '#F5F1E8';
+// Card geometry — band + mosaic always sum to the card height, so the footer can
+// grow for breathing room without overlapping the image.
+const CARD_W = 1200, CARD_H = 630, BAND_H = 182, MOSAIC_H = CARD_H - BAND_H;
 // Bump when the collage *design* changes. Folded into the input fingerprint so a
 // redesign forces a hub-wide repaint on the next scheduled run.
-const DESIGN_VERSION = 'editorial-v4-charcoal';
+const DESIGN_VERSION = 'editorial-v5-charcoal';
 // Accept a font only if it's a real file (a 404 page saved by curl is tiny).
 const validFont = (f) => { try { return f && fs.statSync(f).size > 5000; } catch { return false; } };
 const firstFont = (cands, fallback) => cands.find(validFont) || fallback;
@@ -146,7 +149,7 @@ function imgTile(src, w, h, work, name) {
 
 // 3-photo mosaic, 1200×462: hero left + up to two stacked on the right, seams in bg.
 function buildMosaic(images, work, bg) {
-  const MW = 1200, MH = 462, SEAM = 4, out = path.join(work, 'mosaic.jpg');
+  const MW = CARD_W, MH = MOSAIC_H, SEAM = 4, out = path.join(work, 'mosaic.jpg');
   const hero = images[0];
   const gallery = images.slice(1);
   if (!gallery.length) {
@@ -248,21 +251,21 @@ function renderEditorial(meta, tagline, textW, work) {
 function buildCollage(images, work, meta, tagline, bg = BG) {
   const mosaic = buildMosaic(images, work, bg);
   const cluster = makeStatCluster(meta, work);
-  const PAD = 50, GAP = 46, BAND_H = 168;
-  const textW = Math.max(360, 1200 - PAD * 2 - (cluster ? cluster.w : 0) - (cluster ? GAP : 0));
+  const PAD = 50, GAP = 46;
+  const textW = Math.max(360, CARD_W - PAD * 2 - (cluster ? cluster.w : 0) - (cluster ? GAP : 0));
   const left = renderEditorial(meta, tagline || {}, textW, work);
 
   const band = path.join(work, 'band.png');
-  const bandCmd = ['-size', `1200x${BAND_H}`, `xc:${bg}`, left, '-gravity', 'west', '-geometry', `+${PAD}+0`, '-composite'];
+  const bandCmd = ['-size', `${CARD_W}x${BAND_H}`, `xc:${bg}`, left, '-gravity', 'west', '-geometry', `+${PAD}+0`, '-composite'];
   if (cluster) bandCmd.push(cluster.path, '-gravity', 'east', '-geometry', `+${PAD}+0`, '-composite');
   bandCmd.push(band);
   convert(bandCmd);
 
   const out = path.join(work, 'final.jpg');
-  convert(['-size', '1200x630', `xc:${bg}`,
+  convert(['-size', `${CARD_W}x${CARD_H}`, `xc:${bg}`,
     mosaic, '-gravity', 'northwest', '-geometry', '+0+0', '-composite',
     band, '-gravity', 'southwest', '-geometry', '+0+0', '-composite',
-    '-fill', ORANGE, '-draw', 'rectangle 0,460 1199,463',
+    '-fill', ORANGE, '-draw', `rectangle 0,${MOSAIC_H - 2} ${CARD_W - 1},${MOSAIC_H + 1}`,
     '-strip', '-quality', '90', out]);
   return out;
 }
@@ -292,7 +295,9 @@ async function main() {
 
     // Headline — editor-controlled 📣 Share Title VI/EN, else the on-page tagline's
     // first clause. One VI line, one EN line.
-    const strip = (s) => (s || '').replace(/\s+/g, ' ').split(/[,.·\n]/)[0].trim();
+    // First clause only — split on comma/period/middot/em-dash/en-dash (NOT plain
+    // hyphen, so "Ritz-Carlton" stays intact).
+    const strip = (s) => (s || '').replace(/\s+/g, ' ').split(/[,.·—–\n]/)[0].trim();
     const tagline = {
       vi: rt(p['📣 Share Title VI']) || strip(rt(p['🏷️ Tagline VI'])),
       en: rt(p['📣 Share Title EN']) || strip(rt(p['🏷️ Tagline EN'])),
