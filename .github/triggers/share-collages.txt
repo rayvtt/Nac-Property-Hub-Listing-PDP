@@ -1,2 +1,3 @@
 only: one-central-saigon
-2026-06-14 — pilot the editorial-v3 premium collage redesign on One Central Saigon.
+variants: navy:#0F1A36,charcoal:#17191F,forest:#12251D,espresso:#221A13,oxblood:#2A151A,plum:#1F1726
+2026-06-14 — colour exploration: render the editorial footer in 6 background tones on One Central Saigon.
