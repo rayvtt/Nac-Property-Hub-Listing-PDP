@@ -1,18 +1,20 @@
 #!/usr/bin/env node
 /**
- * build-share-collages.mjs — generate a 5-photo social share image per listing.
+ * build-share-collages.mjs — generate a premium "editorial brochure" share card
+ * per listing.
  *
- * For each Live listing it montages the hero + up to 4 gallery images into a
- * 1200×630 collage (hero left, 2×2 gallery right), uploads it to Cloudflare
- * Images as `<slug>-share`, and writes the URL to the Notion `Share Image URL`
- * field. sync-notion then points og:image / twitter:image at it, so shared
- * links unfurl with the photo collage (the short blurb is og:description).
+ * Layout (1200×630): a clean 3-photo mosaic up top (hero + two stacked, hairline
+ * seams) → a crisp orange rule → a NAVY editorial footer carrying the location
+ * eyebrow, the headline in Cormorant Garamond, and an inline stat row with the
+ * NAC-score donut — the LLP's own design language (navy + orange, serif display,
+ * tracked eyebrows, the score ring). Uploaded to Cloudflare as `<slug>-share`,
+ * written to Notion `Share Image URL` (also used as the page cover); sync-notion
+ * points og:image / twitter:image at it.
  *
- * Idempotent: skips listings that already have a Share Image URL unless REPLACE.
- * Requires ImageMagick (convert/montage or magick) — installed in CI alongside
- * sync-images. Env: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, NOTION_TOKEN.
+ * Idempotent via a content fingerprint (🔁 Share Hash); REPLACE / ONLY force it.
+ * Requires ImageMagick. Env: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, NOTION_TOKEN.
  *
- *   node build-share-collages.mjs              # all Live listings, skip done
+ *   node build-share-collages.mjs              # all Live listings, skip unchanged
  *   ONLY=slug-a,slug-b node build-share-collages.mjs   # pilot a few
  *   REPLACE=1 node build-share-collages.mjs    # regenerate all
  */
@@ -43,21 +45,22 @@ const notion = new Client({ auth: TOKEN, notionVersion: '2022-06-28' });
 const url = (p) => (p?.url || (p?.rich_text || []).map((t) => t.plain_text).join('')) || '';
 const rt = (p) => (p?.rich_text || p?.title || []).map((t) => t.plain_text).join('').trim();
 
-// ImageMagick: prefer IM7 `magick`, fall back to IM6 `convert`/`montage`.
+// ImageMagick: prefer IM7 `magick`, fall back to IM6 `convert`.
 let IM7 = false;
 try { execFileSync('magick', ['-version'], { stdio: 'ignore' }); IM7 = true; } catch { /* IM6 */ }
-const convert = (args) => execFileSync(IM7 ? 'magick' : 'convert', IM7 ? args : args, { stdio: 'pipe' });
-const montage = (args) => execFileSync(IM7 ? 'magick' : 'montage', IM7 ? ['montage', ...args] : args, { stdio: 'pipe' });
+const convert = (args) => execFileSync(IM7 ? 'magick' : 'convert', args, { stdio: 'pipe' });
+const imgW = (f) => parseInt(execFileSync(IM7 ? 'magick' : 'convert', [f, '-format', '%w', 'info:']).toString().trim(), 10) || 0;
 
 const NAVY = '#0F1A36';
-// Bump when the collage *design* changes (band layout, fonts, chips). It's folded
-// into the input fingerprint so a redesign forces a hub-wide repaint on the next
-// scheduled run, even when no Notion field changed.
-const DESIGN_VERSION = 'band-v2';
+const ORANGE = '#E8743B';
+const CREAM = '#F5F1E8';
+// Bump when the collage *design* changes. Folded into the input fingerprint so a
+// redesign forces a hub-wide repaint on the next scheduled run.
+const DESIGN_VERSION = 'editorial-v3';
 // Accept a font only if it's a real file (a 404 page saved by curl is tiny).
 const validFont = (f) => { try { return f && fs.statSync(f).size > 5000; } catch { return false; } };
 const firstFont = (cands, fallback) => cands.find(validFont) || fallback;
-// Tagline = the Property Hub display face, Cormorant Garamond Italic (downloaded
+// Headline = the Property Hub display face, Cormorant Garamond Italic (downloaded
 // in CI; covers Vietnamese). Falls back to Noto/DejaVu serif if unavailable.
 const DISPLAY = firstFont([
   process.env.DISPLAY_FONT,
@@ -65,11 +68,15 @@ const DISPLAY = firstFont([
   '/usr/share/fonts/truetype/noto/NotoSerif-Italic.ttf',
   '/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf',
 ], '/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf');
-// Chips use a sans with Vietnamese coverage (DejaVu Sans, installed).
+// Labels/stats use a sans with full Vietnamese coverage (Noto Sans, else DejaVu).
 const SANS = firstFont([
   '/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf',
   '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
 ], '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf');
+const SANS_BOLD = firstFont([
+  '/usr/share/fonts/truetype/noto/NotoSans-Bold.ttf',
+  '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
+], SANS);
 
 async function dl(u, dest) {
   const res = await fetch(u, { headers: { 'User-Agent': 'Mozilla/5.0 NAC-collage' }, redirect: 'follow' });
@@ -80,9 +87,8 @@ async function dl(u, dest) {
 
 async function uploadCF(filePath, id) {
   // Always delete-then-upload. CF Images keys by id, so re-POSTing an existing id
-  // returns 5409 *without* overwriting the bytes — which would silently keep the
-  // old collage. uploadCF is only ever called once we've decided to (re)build, so
-  // replacing is always the intent (delete of a missing id is a harmless no-op).
+  // returns 5409 *without* overwriting the bytes — uploadCF is only ever called
+  // once we've decided to (re)build, so replacing is always the intent.
   await fetch(`https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/images/v1/${encodeURIComponent(id)}`,
     { method: 'DELETE', headers: { Authorization: `Bearer ${CF_TOKEN}` } }).catch(() => {});
   const fd = new FormData();
@@ -94,7 +100,7 @@ async function uploadCF(filePath, id) {
   const data = await res.json();
   if (!data.success) {
     const code = data.errors?.[0]?.code;
-    if (code === 5409 || code === 5410) { // exists — fetch its URL
+    if (code === 5409 || code === 5410) {
       const g = await (await fetch(`https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/images/v1/${encodeURIComponent(id)}`,
         { headers: { Authorization: `Bearer ${CF_TOKEN}` } })).json();
       if (g.success) return (g.result.variants.find((v) => v.endsWith('/public')) || g.result.variants[0]);
@@ -104,115 +110,155 @@ async function uploadCF(filePath, id) {
   return data.result.variants.find((v) => v.endsWith('/public')) || data.result.variants[0];
 }
 
-// Pull the displayed entry price + IRR straight from the shipped HTML (already
-// currency-converted by sync-notion) for the chips.
-function readStats(slug) {
+// Pull the displayed editorial fields straight from the shipped HTML (already
+// localized + currency-converted by sync-notion): location, brand, price, yield,
+// NAC score, names. One source of truth = what's actually on the page.
+function readMeta(slug) {
   try {
     const h = fs.readFileSync(path.join(ROOT, 'properties', slug + '.html'), 'utf8');
-    const g = (re) => { const m = h.match(re); return m ? m[1].trim() : ''; };
-    const price = g(/data-notion="price_short"[^>]*>([^<]*)/);
-    const irr = g(/data-notion="irr_pct"[^>]*>([^<]*)/);
-    return { price, irr: irr ? irr + '%' : '' };
+    const g = (re) => { const m = h.match(re); return m ? m[1].replace(/<[^>]*>/g, '').trim() : ''; };
+    const num = (v) => (v || '').replace(/[^\d.]/g, '');
+    return {
+      country: g(/data-notion="country"[^>]*>([^<]*)/),
+      district: g(/data-notion="district"[^>]*>([^<]*)/),
+      brand: g(/data-notion="brand"[^>]*>([\s\S]*?)</),
+      price: g(/data-notion="price_short"[^>]*>([^<]*)/),
+      yield: num(g(/data-notion="yield_pct"[^>]*>([\s\S]*?)<\/div>/)),
+      irr: num(g(/data-notion="irr_pct"[^>]*>([\s\S]*?)<\/div>/)),
+      nac: g(/class="nac-donut-score"[^>]*data-count-to="([^"]*)"/),
+      nameVi: g(/data-notion="property_name_vi"[^>]*>([^<]*)/),
+      nameEn: g(/data-notion="property_name_en"[^>]*>([^<]*)/),
+    };
   } catch { return {}; }
 }
 
-// Build a 1200×630 collage: hero left (600×630) + 2×2 of the next images right.
-function buildCollage(images, work, tagline, stats) {
+// ── image helpers ──────────────────────────────────────────────────────────
+function imgTile(src, w, h, work, name) {
+  const out = path.join(work, 'tile_' + name + '.jpg');
+  convert([src, '-resize', `${w}x${h}^`, '-gravity', 'center', '-extent', `${w}x${h}`, '-strip', out]);
+  return out;
+}
+
+// 3-photo mosaic, 1200×462: hero left + up to two stacked on the right, navy seams.
+function buildMosaic(images, work) {
+  const MW = 1200, MH = 462, SEAM = 4, out = path.join(work, 'mosaic.jpg');
   const hero = images[0];
   const gallery = images.slice(1);
-  const left = path.join(work, 'left.jpg');
-  const base = path.join(work, 'collage.jpg');
-  convert([hero, '-resize', '600x630^', '-gravity', 'center', '-extent', '600x630', '-strip', left]);
-
-  if (gallery.length === 0) {
-    convert([hero, '-resize', '1200x630^', '-gravity', 'center', '-extent', '1200x630', '-strip', base]);
+  if (!gallery.length) {
+    convert([hero, '-resize', `${MW}x${MH}^`, '-gravity', 'center', '-extent', `${MW}x${MH}`, '-strip', out]);
+    return out;
+  }
+  const heroW = 742, rightW = MW - heroW - SEAM;
+  const heroT = imgTile(hero, heroW, MH, work, 'h');
+  let rightCol;
+  if (gallery.length === 1) {
+    rightCol = imgTile(gallery[0], rightW, MH, work, 'r0');
   } else {
-    // four tiles (cycle through what's available to fill the 2×2)
-    const tiles = [];
-    for (let i = 0; i < 4; i++) {
-      const src = gallery[i % gallery.length];
-      const t = path.join(work, `tile${i}.jpg`);
-      convert([src, '-resize', '300x315^', '-gravity', 'center', '-extent', '300x315', '-strip', t]);
-      tiles.push(t);
-    }
-    const right = path.join(work, 'right.jpg');
-    montage([...tiles, '-tile', '2x2', '-geometry', '+0+0', '-background', NAVY, right]);
-    convert([left, right, '+append', '-strip', base]);
+    const ih = Math.round((MH - SEAM) / 2);
+    const r0 = imgTile(gallery[0], rightW, ih, work, 'r0');
+    const r1 = imgTile(gallery[1], rightW, MH - SEAM - ih, work, 'r1');
+    rightCol = path.join(work, 'rcol.jpg');
+    convert(['-size', `${rightW}x${MH}`, `xc:${NAVY}`,
+      r0, '-gravity', 'northwest', '-geometry', '+0+0', '-composite',
+      r1, '-gravity', 'northwest', '-geometry', `+0+${ih + SEAM}`, '-composite', rightCol]);
   }
-  return (tagline && (tagline.vi || tagline.en)) ? addTaglineBand(base, tagline, stats || {}, work) : finalize(base, work);
-}
-
-function finalize(src, work) {
-  const out = path.join(work, 'final.jpg');
-  convert([src, '-strip', '-quality', '86', out]);
+  convert(['-size', `${MW}x${MH}`, `xc:${NAVY}`,
+    heroT, '-gravity', 'northwest', '-geometry', '+0+0', '-composite',
+    rightCol, '-gravity', 'northwest', '-geometry', `+${heroW + SEAM}+0`, '-composite', '-strip', out]);
   return out;
 }
 
-// A rounded chip sized to its text: translucent stat pill, or a solid status badge.
-// Small + airy — shorter height and lighter pointsize for visual breadth.
-function makeChip(text, name, bg, fg, work) {
+// ── editorial footer pieces ──────────────────────────────────────────────────
+// NAC-score donut: faint full ring + an orange arc for the score fraction, with
+// the number + "NAC" centered — the LLP's signature score mark.
+function makeRing(score, work) {
+  const out = path.join(work, 'ring.png');
+  const s = Math.max(0, Math.min(100, Number(score) || 0));
+  const D = 102, c = 51, r = 46, end = -90 + (s / 100) * 360;
+  convert(['-size', `${D}x${D}`, 'xc:none',
+    '-fill', 'none', '-stroke', 'rgba(245,241,232,0.16)', '-strokewidth', '5', '-draw', `ellipse ${c},${c} ${r},${r} 0,360`,
+    '-stroke', ORANGE, '-strokewidth', '5', '-draw', `ellipse ${c},${c} ${r},${r} -90,${end.toFixed(1)}`,
+    '-stroke', 'none',
+    '-font', SANS_BOLD, '-fill', CREAM, '-pointsize', '33', '-gravity', 'center', '-annotate', '+0+9', String(Math.round(s)),
+    '-font', SANS, '-fill', ORANGE, '-pointsize', '11', '-kerning', '2.5', '-gravity', 'center', '-annotate', '+0-23', 'NAC',
+    out]);
+  return out;
+}
+
+// A stacked stat: tracked uppercase label over a cream value.
+function statCol(label, value, work, name) {
   const out = path.join(work, name + '.png');
-  const w = Math.min(300, Math.max(118, 26 + text.length * 9.5));
-  convert(['-size', `${Math.round(w)}x34`, 'xc:none',
-    '-fill', bg, '-draw', `roundrectangle 0,0,${Math.round(w) - 1},33,17,17`,
-    '-font', SANS, '-pointsize', '15', '-fill', fg, '-gravity', 'center', '-annotate', '+0+0', text, out]);
-  return { path: out, w: Math.round(w) };
+  const lab = path.join(work, name + '_l.png');
+  const val = path.join(work, name + '_v.png');
+  convert(['-background', 'none', '-fill', 'rgba(245,241,232,0.55)', '-font', SANS, '-pointsize', '14', '-kerning', '2.5', `label:${label.toUpperCase().normalize('NFC')}`, lab]);
+  convert(['-background', 'none', '-fill', CREAM, '-font', SANS, '-pointsize', '28', `label:${String(value).normalize('NFC')}`, val]);
+  convert([lab, '-size', '4x10', 'xc:none', val, '-background', 'none', '-gravity', 'west', '-append', out]);
+  return out;
+}
+const vrule = (work, name, h = 60) => { const o = path.join(work, name + '.png'); convert(['-size', `1x${h}`, 'xc:rgba(245,241,232,0.20)', o]); return o; };
+const hgap = (w, work, name) => { const o = path.join(work, name + '.png'); convert(['-size', `${w}x1`, 'xc:none', o]); return o; };
+const vgap = (w, h, work, name) => { const o = path.join(work, name + '.png'); convert(['-size', `${w}x${h}`, 'xc:none', o]); return o; };
+
+// Right-side stat cluster: [Giá vào] | [Lợi suất] | NAC ring — hairline dividers.
+function makeStatCluster(meta, work) {
+  const cols = [];
+  if (meta.price) cols.push(statCol('Giá vào', meta.price, work, 'sc_price'));
+  if (meta.yield) cols.push(statCol('Lợi suất', meta.yield + '%', work, 'sc_yield'));
+  const joined = [];
+  cols.forEach((e, i) => { if (i) joined.push(hgap(24, work, 'g' + i + 'a'), vrule(work, 'v' + i), hgap(24, work, 'g' + i + 'b')); joined.push(e); });
+  if (meta.nac) { if (joined.length) joined.push(hgap(28, work, 'gn')); joined.push(makeRing(meta.nac, work)); }
+  if (!joined.length) return null;
+  const out = path.join(work, 'cluster.png');
+  convert([...joined, '-background', 'none', '-gravity', 'center', '+append', out]);
+  return { path: out, w: imgW(out) };
 }
 
-// Tagline = first clause only (before any , . · ), rendered VI over EN. VI leads
-// in full-white serif; EN sits below, smaller and softer, for clear hierarchy.
-function renderTagline(vi, en, textW, work) {
+// Left editorial block: eyebrow (COUNTRY · DISTRICT) + serif headline + serif sub.
+function renderEditorial(meta, tagline, textW, work) {
   const parts = [];
-  if (vi) {
-    const p = path.join(work, 'tvi.png');
-    convert(['-background', 'none', '-fill', '#ffffff', '-font', DISPLAY, '-pointsize', '34',
-      '-size', `${textW}x`, '-gravity', 'west', `caption:${vi.normalize('NFC')}`, p]);
+  const eye = [meta.country, meta.district].filter(Boolean).join('  ·  ').toUpperCase();
+  if (eye) {
+    const p = path.join(work, 'eye.png');
+    convert(['-background', 'none', '-fill', ORANGE, '-font', SANS, '-pointsize', '15', '-kerning', '3', `label:${eye.normalize('NFC')}`, p]);
+    parts.push(p, vgap(textW, 13, work, 'eg'));
+  }
+  const head = (tagline.vi || meta.nameVi || meta.nameEn || '').normalize('NFC');
+  if (head) {
+    const p = path.join(work, 'head.png');
+    convert(['-background', 'none', '-fill', CREAM, '-font', DISPLAY, '-pointsize', '38', '-size', `${textW}x`, '-gravity', 'west', `caption:${head}`, p]);
     parts.push(p);
   }
-  if (en) {
-    const p = path.join(work, 'ten.png');
-    convert(['-background', 'none', '-fill', 'rgba(255,255,255,0.78)', '-font', DISPLAY, '-pointsize', '23',
-      '-size', `${textW}x`, '-gravity', 'west', `caption:${en.normalize('NFC')}`, p]);
-    parts.push(p);
+  const sub = (tagline.en || '').normalize('NFC');
+  if (sub) {
+    const p = path.join(work, 'sub.png');
+    convert(['-background', 'none', '-fill', 'rgba(245,241,232,0.70)', '-font', DISPLAY, '-pointsize', '22', '-size', `${textW}x`, '-gravity', 'west', `caption:${sub}`, p]);
+    parts.push(vgap(textW, 8, work, 'sg'), p);
   }
-  const out = path.join(work, 'txt.png');
-  if (parts.length === 1) return parts[0];
-  convert([parts[0], '-size', `${textW}x6`, 'xc:none', parts[1], '-background', 'none', '-append', out]);
+  const out = path.join(work, 'left.png');
+  convert([...parts, '-background', 'none', '-gravity', 'west', '-append', out]);
   return out;
 }
 
-// Frosted "highlight" band across the middle: tagline (VI/EN, Property Hub serif)
-// on the left + a stacked column of Giá vào / IRR 10 năm / Live chips on the right.
-// Compact band — shorter height, smaller chips — for more breathing room.
-function addTaglineBand(src, tagline, stats, work) {
-  const W = 1200, BAND_H = 132, Y = Math.round((630 - BAND_H) / 2);
-  const blur = path.join(work, 'blur.jpg');
-  const band = path.join(work, 'band.jpg');
-  const chipsPng = path.join(work, 'chips.png');
-  const bt = path.join(work, 'bandtext.jpg');
+// Assemble: mosaic (top) + orange rule + navy editorial footer (bottom).
+function buildCollage(images, work, meta, tagline) {
+  const mosaic = buildMosaic(images, work);
+  const cluster = makeStatCluster(meta, work);
+  const PAD = 50, GAP = 46, BAND_H = 168;
+  const textW = Math.max(360, 1200 - PAD * 2 - (cluster ? cluster.w : 0) - (cluster ? GAP : 0));
+  const left = renderEditorial(meta, tagline || {}, textW, work);
+
+  const band = path.join(work, 'band.png');
+  const bandCmd = ['-size', `1200x${BAND_H}`, `xc:${NAVY}`, left, '-gravity', 'west', '-geometry', `+${PAD}+0`, '-composite'];
+  if (cluster) bandCmd.push(cluster.path, '-gravity', 'east', '-geometry', `+${PAD}+0`, '-composite');
+  bandCmd.push(band);
+  convert(bandCmd);
+
   const out = path.join(work, 'final.jpg');
-
-  // frosted highlight
-  convert([src, '-blur', '0x16', blur]);
-  convert([blur, '-crop', `${W}x${BAND_H}+0+${Y}`, '+repage', '-brightness-contrast', '-24x4', band]);
-
-  // stacked chips column (right)
-  const chips = [];
-  if (stats.price) chips.push(makeChip(`Giá vào   ${stats.price}`, 'c1', 'rgba(255,255,255,0.16)', '#ffffff', work));
-  if (stats.irr) chips.push(makeChip(`IRR 10 năm   ${stats.irr}`, 'c2', 'rgba(255,255,255,0.16)', '#ffffff', work));
-  chips.push(makeChip('●  Live', 'c3', '#1f9d57', '#ffffff', work));
-  montage([...chips.map((c) => c.path), '-tile', '1x' + chips.length, '-geometry', '+0+5', '-background', 'none', chipsPng]);
-  const chipsW = Math.max(...chips.map((c) => c.w));
-
-  // tagline (Property Hub serif), in the space left of the chips
-  const textW = W - chipsW - 130;
-  const txt = renderTagline(tagline.vi, tagline.en, textW, work);
-
-  // compose: tagline pinned left, chips pinned right
-  convert([band,
-    txt, '-gravity', 'west', '-geometry', '+48+0', '-composite',
-    chipsPng, '-gravity', 'east', '-geometry', '+40+0', '-composite', bt]);
-  convert([src, bt, '-geometry', `+0+${Y}`, '-composite', '-strip', '-quality', '88', out]);
+  convert(['-size', '1200x630', `xc:${NAVY}`,
+    mosaic, '-gravity', 'northwest', '-geometry', '+0+0', '-composite',
+    band, '-gravity', 'southwest', '-geometry', '+0+0', '-composite',
+    '-fill', ORANGE, '-draw', 'rectangle 0,460 1199,463',
+    '-strip', '-quality', '90', out]);
   return out;
 }
 
@@ -239,22 +285,18 @@ async function main() {
     const imgs = [hero, ...gal].filter((u) => u && !u.includes('{'));
     if (!imgs.length) { console.log(`  ⤳ ${slug}: no images — skipped`); skip++; continue; }
 
-    // Preview title — editor-controlled in Notion (📣 Share Title VI/EN, shown
-    // verbatim) and only falls back to the on-page tagline's first clause when
-    // blank. One VI line, one EN line.
+    // Headline — editor-controlled 📣 Share Title VI/EN, else the on-page tagline's
+    // first clause. One VI line, one EN line.
     const strip = (s) => (s || '').replace(/\s+/g, ' ').split(/[,.·\n]/)[0].trim();
     const tagline = {
       vi: rt(p['📣 Share Title VI']) || strip(rt(p['🏷️ Tagline VI'])),
       en: rt(p['📣 Share Title EN']) || strip(rt(p['🏷️ Tagline EN'])),
     };
-    const stats = readStats(slug);
+    const meta = readMeta(slug);
 
-    // Input fingerprint → rebuild only when a source actually changed, so the
-    // scheduled run is incremental: edit a 📣 Share Title in Notion and the next
-    // tick repaints just that listing (≈10 min, no manual trigger). REPLACE or an
-    // explicit ONLY list force a rebuild regardless.
+    // Input fingerprint → rebuild only when a source actually changed.
     const fp = crypto.createHash('md5')
-      .update(JSON.stringify({ v: DESIGN_VERSION, imgs, tagline, stats }))
+      .update(JSON.stringify({ v: DESIGN_VERSION, imgs, tagline, meta }))
       .digest('hex').slice(0, 12);
     const force = REPLACE || ONLY.length > 0;
     if (!force && url(p['Share Image URL']) && rt(p['🔁 Share Hash']) === fp) { skip++; continue; }
@@ -263,27 +305,21 @@ async function main() {
     try {
       const local = [];
       for (let i = 0; i < imgs.length; i++) local.push(await dl(imgs[i], path.join(work, `src${i}.img`)));
-      const collage = buildCollage(local, work, tagline, stats);
+      const collage = buildCollage(local, work, meta, tagline);
       const cfUrl = await uploadCF(collage, `${slug}-share`);
-      // Cache-bust: append a content hash of the collage as ?v=. CF ignores the
-      // query (serves the same image), but Facebook/LinkedIn cache OG previews by
-      // URL — a new hash = a URL they've never seen = fresh unfurl. The hash is
-      // deterministic from the bytes, so an unchanged collage keeps the same URL
-      // (no needless churn); a redesign yields a new one automatically.
+      // Cache-bust: append a content hash of the collage as ?v= so Facebook/LinkedIn
+      // (which cache OG previews by URL) refresh when the image changes.
       const ver = crypto.createHash('md5').update(fs.readFileSync(collage)).digest('hex').slice(0, 8);
       const verUrl = cfUrl + (cfUrl.includes('?') ? '&' : '?') + 'v=' + ver;
       await notion.pages.update({
         page_id: pg.id,
-        // Use the collage as the listing's Notion page cover too — versioned URL
-        // so Notion re-fetches it whenever the collage changes.
         cover: { type: 'external', external: { url: verUrl } },
         properties: {
           'Share Image URL': { url: verUrl },
           '🔁 Share Hash': { rich_text: [{ text: { content: fp } }] },
         },
       });
-      const hasTag = tagline.vi || tagline.en;
-      console.log(`  ✓ ${slug}: ${imgs.length} photos${hasTag ? ' + title' : ''} → ${verUrl}`);
+      console.log(`  ✓ ${slug}: ${imgs.length} photos · NAC ${meta.nac || '—'} → ${verUrl}`);
       done++;
     } catch (e) {
       console.log(`  ✖ ${slug}: ${e.message}`);
