@@ -1,2 +1,2 @@
-only: one-central-saigon,limassol-del-mar-dao-sip
-2026-06-14 — pilot the editorial-v5 spacing fix (single-clause headline + taller footer) before full resweep.
+replace
+2026-06-14 — editorial-v5 spacing fix: regenerate every listing's share card (single-clause headline + taller footer) → Cloudflare + Notion covers + versioned Share Image URL.
