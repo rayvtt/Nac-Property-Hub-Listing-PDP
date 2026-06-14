@@ -1,2 +1,2 @@
-replace
-2026-06-14 — adopt Charcoal footer (editorial-v4): regenerate every listing's share card → Cloudflare + Notion covers + versioned Share Image URL.
+only: one-central-saigon,limassol-del-mar-dao-sip
+2026-06-14 — pilot the editorial-v5 spacing fix (single-clause headline + taller footer) before full resweep.
