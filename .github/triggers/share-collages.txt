@@ -1,2 +1,2 @@
-replace
-2026-06-08 chat: full incremental collage sweep across all Live after 🔗 Slug field restored — repaints any listing stranded during the broken window (title edited but never repainted) and builds any missing collage
+only: one-central-saigon
+2026-06-14 — pilot the editorial-v3 premium collage redesign on One Central Saigon.
