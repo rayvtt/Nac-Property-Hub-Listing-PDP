@@ -1,3 +1,2 @@
-only: one-central-saigon
-variants: navy:#0F1A36,charcoal:#17191F,forest:#12251D,espresso:#221A13,oxblood:#2A151A,plum:#1F1726
-2026-06-14 — colour exploration: render the editorial footer in 6 background tones on One Central Saigon.
+replace
+2026-06-14 — adopt Charcoal footer (editorial-v4): regenerate every listing's share card → Cloudflare + Notion covers + versioned Share Image URL.
