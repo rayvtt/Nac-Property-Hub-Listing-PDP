@@ -1,2 +1,2 @@
-replace
-2026-06-14 — editorial-v5 spacing fix: regenerate every listing's share card (single-clause headline + taller footer) → Cloudflare + Notion covers + versioned Share Image URL.
+only: macquarie-rise-macquarie-rise,limassol-del-mar-dao-sip,bagcilar-garden-istanbul
+2026-06-14 — pilot editorial-v6 single-line headline (longest + normal + short) before full resweep.
