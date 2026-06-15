@@ -64,7 +64,7 @@ const CREAM = '#F5F1E8';
 const CARD_W = 1200, CARD_H = 630, BAND_H = 182, MOSAIC_H = CARD_H - BAND_H;
 // Bump when the collage *design* changes. Folded into the input fingerprint so a
 // redesign forces a hub-wide repaint on the next scheduled run.
-const DESIGN_VERSION = 'editorial-v5-charcoal';
+const DESIGN_VERSION = 'editorial-v6-charcoal';
 // Accept a font only if it's a real file (a 404 page saved by curl is tiny).
 const validFont = (f) => { try { return f && fs.statSync(f).size > 5000; } catch { return false; } };
 const firstFont = (cands, fallback) => cands.find(validFont) || fallback;
@@ -227,19 +227,20 @@ function renderEditorial(meta, tagline, textW, work) {
   const eye = [meta.country, meta.district].filter(Boolean).join('  ·  ').toUpperCase();
   if (eye) {
     const p = path.join(work, 'eye.png');
-    convert(['-background', 'none', '-fill', ORANGE, '-font', SANS, '-pointsize', '15', '-kerning', '3', `label:${eye.normalize('NFC')}`, p]);
+    convert(['-background', 'none', '-fill', ORANGE, '-font', SANS, '-pointsize', '15', '-kerning', '3', `label:${eye.normalize('NFC')}`, '-resize', `${textW}x>`, p]);
     parts.push(p, vgap(textW, 13, work, 'eg'));
   }
   const head = (tagline.vi || meta.nameVi || meta.nameEn || '').normalize('NFC');
   if (head) {
     const p = path.join(work, 'head.png');
-    convert(['-background', 'none', '-fill', CREAM, '-font', DISPLAY, '-pointsize', '38', '-size', `${textW}x`, '-gravity', 'west', `caption:${head}`, p]);
+    // Single line, scaled down to fit the available width — never wraps to 2 lines.
+    convert(['-background', 'none', '-fill', CREAM, '-font', DISPLAY, '-pointsize', '38', `label:${head}`, '-resize', `${textW}x>`, p]);
     parts.push(p);
   }
   const sub = (tagline.en || '').normalize('NFC');
   if (sub) {
     const p = path.join(work, 'sub.png');
-    convert(['-background', 'none', '-fill', 'rgba(245,241,232,0.70)', '-font', DISPLAY, '-pointsize', '22', '-size', `${textW}x`, '-gravity', 'west', `caption:${sub}`, p]);
+    convert(['-background', 'none', '-fill', 'rgba(245,241,232,0.70)', '-font', DISPLAY, '-pointsize', '22', `label:${sub}`, '-resize', `${textW}x>`, p]);
     parts.push(vgap(textW, 8, work, 'sg'), p);
   }
   const out = path.join(work, 'left.png');
