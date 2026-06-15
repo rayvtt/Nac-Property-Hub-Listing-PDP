@@ -1,8 +1,8 @@
 {
- "generated": "2026-06-14T23:46:00.942Z",
+ "generated": "2026-06-15T00:09:27.321Z",
  "ledger": true,
  "windowDays": 3650,
- "count": 1407,
+ "count": 1415,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -20,6 +20,94 @@
   "dubai": "🇦🇪"
  },
  "entries": [
+  {
+   "ts": "2026-06-15T00:08:53Z",
+   "country": "thailand",
+   "slug": "balco-villas",
+   "name": "Balco Villas by Origin",
+   "field": "price",
+   "label": "Entry Price",
+   "kind": "money",
+   "from": "$977K",
+   "to": "$978K"
+  },
+  {
+   "ts": "2026-06-15T00:08:53Z",
+   "country": "thailand",
+   "slug": "balco-villas",
+   "name": "Balco Villas by Origin",
+   "field": "nacnote",
+   "label": "NAC Note",
+   "kind": "text",
+   "from": "Balco is a boutique collection of 35 modern pool vil…",
+   "to": "Balco is a boutique collection of 35 modern pool vil…"
+  },
+  {
+   "ts": "2026-06-15T00:08:53Z",
+   "country": "thailand",
+   "slug": "balco-villas",
+   "name": "Balco Villas by Origin",
+   "field": "desc",
+   "label": "Description",
+   "kind": "text",
+   "from": "Balco is an exclusive collection of 35 modern luxury…",
+   "to": "Balco is an exclusive collection of 35 modern luxury…"
+  },
+  {
+   "ts": "2026-06-15T00:08:53Z",
+   "country": "thailand",
+   "slug": "botanica-four-seasons",
+   "name": "Botanica Four Seasons",
+   "field": "nacnote",
+   "label": "NAC Note",
+   "kind": "text",
+   "from": "Botanica Four Seasons is Botanica Luxury Phuket's la…",
+   "to": "Botanica Four Seasons is Botanica Luxury Phuket's la…"
+  },
+  {
+   "ts": "2026-06-15T00:08:53Z",
+   "country": "thailand",
+   "slug": "botanica-louvre",
+   "name": "Botanica Louvre",
+   "field": "desc",
+   "label": "Description",
+   "kind": "text",
+   "from": "Botanica Louvre is an exclusive boutique enclave of …",
+   "to": "Botanica Louvre is an exclusive boutique enclave of …"
+  },
+  {
+   "ts": "2026-06-15T00:08:53Z",
+   "country": "thailand",
+   "slug": "coco-parc",
+   "name": "Coco Parc",
+   "field": "nacnote",
+   "label": "NAC Note",
+   "kind": "text",
+   "from": "Coco Parc is a foreign-quota freehold condominium by…",
+   "to": "Coco Parc is a foreign-quota freehold condominium by…"
+  },
+  {
+   "ts": "2026-06-15T00:08:53Z",
+   "country": "thailand",
+   "slug": "the-address-siam-ratchathewi",
+   "name": "The Address Siam-Ratchathewi",
+   "field": "desc",
+   "label": "Description",
+   "kind": "text",
+   "from": "The Address Siam-Ratchathewi is a completed freehold…",
+   "to": "The Address Siam-Ratchathewi is a completed freehold…"
+  },
+  {
+   "ts": "2026-06-15T00:08:53Z",
+   "country": "thailand",
+   "slug": "the-residence-prime",
+   "name": "The Residence Prime",
+   "field": "desc",
+   "label": "Description",
+   "kind": "text",
+   "from": "The Residence Prime, developed by Andaman Asset Solu…",
+   "to": "The Residence Prime, developed by Andaman Asset Solu…"
+  },
   {
    "ts": "2026-06-14T00:45:34Z",
    "country": "thailand",
