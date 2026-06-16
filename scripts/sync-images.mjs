@@ -1197,7 +1197,9 @@ async function processProperty(prop) {
     // 1d. Web-search fallback — runs when all primary sources yielded zero.
     // Most common trigger: GS Source Folder was set but the Drive service
     // account doesn't have read access, so the folder query returned nothing.
-    if (!candidates.length) {
+    // Skipped in --fill-galleries mode: a backfill must only draw from the
+    // listing's known source, never a non-deterministic web search.
+    if (!candidates.length && !FILL_GALLERIES) {
       console.log('  🌐 no primary candidates — falling back to web search');
       const webUrls = await searchWebForPropertyImages({
         propertyName: prop.propertyName,
@@ -1325,9 +1327,20 @@ async function main() {
     }
   } else {
     properties = await fetchLiveProperties();
-    if (!REPLACE) {
+    // --fill-galleries needs the ALREADY-imaged rows (to add their missing
+    // gallery slots), so it must NOT apply the placeholder-only filter.
+    if (!REPLACE && !FILL_GALLERIES) {
       properties = properties.filter(p =>
         !p.imageUrl || p.imageUrl.includes('/wp-content/uploads/2026/05/')
+      );
+    }
+    // In fill-galleries mode, only touch rows that still have an empty gallery
+    // slot AND a primary source to backfill from — skip the rest up front so a
+    // 60-row sweep doesn't waste a web-search call per source-less listing.
+    if (FILL_GALLERIES) {
+      properties = properties.filter(p =>
+        (p.gallery || []).some(u => !u)
+        && (p.imageUrlsJson || p.gsSourceFolder || p.gsSourceFile || p.berkeleyPage)
       );
     }
     // Optional country scope — lets a --replace sweep target one market (e.g.
