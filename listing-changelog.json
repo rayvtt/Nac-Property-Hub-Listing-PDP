@@ -1,8 +1,8 @@
 {
- "generated": "2026-06-16T05:44:56.458Z",
+ "generated": "2026-06-16T08:27:26.174Z",
  "ledger": true,
  "windowDays": 3650,
- "count": 1527,
+ "count": 1528,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -20,6 +20,17 @@
   "dubai": "🇦🇪"
  },
  "entries": [
+  {
+   "ts": "2026-06-16T08:26:45Z",
+   "country": "grenada",
+   "slug": "intercontinental-grenada-resort",
+   "name": "InterContinental Grenada Resort",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
   {
    "ts": "2026-06-16T02:01:57Z",
    "country": "thailand",
