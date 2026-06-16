@@ -521,5 +521,14 @@
   "La Sagesse Beach, La Sagesse, St. David, Grenada": {
     "lat": 12.0232621,
     "lng": -61.6731807
+  },
+  "Le Méridien Đà Nẵng — Marriott Beachfront Villas, Đà Nẵng–Hội An coast, Vietnam": null,
+  "Điện Dương, Quảng Nam, Đà Nẵng–Hội An coast, Vietnam": null,
+  "Đà Nẵng–Hội An coast, Vietnam": null,
+  "Maia Resort Hồ Tràm — Fusion Beachfront Residences, Hồ Tràm, Bà Rịa–Vũng Tàu, Vietnam": null,
+  "Phước Thuận, Xuyên Mộc, Hồ Tràm, Bà Rịa–Vũng Tàu, Vietnam": null,
+  "Hồ Tràm, Bà Rịa–Vũng Tàu, Vietnam": {
+    "lat": 10.4863509,
+    "lng": 107.4542812
   }
 }

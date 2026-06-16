@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-16T09:20:00Z",
+  "generated": "2026-06-16T10:41:18Z",
   "reviewed": "2026-06-16",
-  "fingerprint": "7473f3a457613ed3",
+  "fingerprint": "5db1067b3ed4d971",
   "dims": [
     "id",
     "fin",
@@ -15,7 +15,7 @@
     "qa"
   ],
   "imgHash": "qse3Pw84PrZ2S0PQOTtixw",
-  "total": 124,
+  "total": 126,
   "countries": [
     {
       "code": "AU",
@@ -45,7 +45,7 @@
       "code": "VN",
       "name": "Vietnam",
       "flag": "🇻🇳",
-      "count": 8
+      "count": 10
     },
     {
       "code": "CY",
@@ -2111,6 +2111,33 @@
       "country": "Vietnam",
       "code": "VN",
       "flag": "🇻🇳",
+      "region": "Điện Dương",
+      "rows": [
+        {
+          "name": "Le Méridien Đà Nẵng — Marriott Beachfront Villas",
+          "slug": "le-meridien-da-nang",
+          "thumb": "le-meridien-da-nang-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "block",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Vietnam",
+      "code": "VN",
+      "flag": "🇻🇳",
       "region": "Mỹ Khê Beach",
       "rows": [
         {
@@ -2212,6 +2239,35 @@
           },
           "note": "",
           "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Vietnam",
+      "code": "VN",
+      "flag": "🇻🇳",
+      "region": "Phước Thuận",
+      "rows": [
+        {
+          "name": "Maia Resort Hồ Tràm — Fusion Beachfront Residences",
+          "slug": "maia-ho-tram",
+          "thumb": "maia-ho-tram-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "band",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {
+            "nac": 2
+          }
         }
       ]
     },
@@ -2584,7 +2640,7 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "done",
+            "nac": "band",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -2594,7 +2650,9 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {}
+          "dup": {
+            "nac": 2
+          }
         }
       ]
     },
