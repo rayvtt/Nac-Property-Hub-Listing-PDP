@@ -191,6 +191,9 @@ Position dictates what role the image plays. The picker uses URL-keyword classif
 | 2 | §08 cine | interior → unclassified → overview → aspirational | Interior detail — what the flat looks like |
 | 3 | §11 cine (right before closing aspiration line) | overview → unclassified → interior → aspirational | **Project Overview / ending image** — building/areas, not flat. Must be visually distinct from hero |
 | 4 | gallery_4 (currently unused in template) | unclassified → overview → interior → aspirational | Filler — Notion stores it for future use |
+| 5 | gallery_5 (currently unused in template) | unclassified → interior → overview → aspirational | Filler — Notion stores it for future use |
+
+**Minimum 7 assets per listing.** The picker selects up to 6 desktop images (hero + 5 gallery → `Image URL` + `🖼️ Image 1-5`); together with the always-produced mobile hero variant (`Mobile Image URL`, the same CF ID at the `/mobile` variant) that is the ≥7-asset target. `sync-images` logs a `⚠ … below the ≥7-asset target` warning (never a hard fail) when the source was too thin to fill 6 desktop slots — a nudge to widen `📷 Image URLs JSON` / the Drive source before going Live. Slots 4–5 are stored in Notion but not yet shown in the PDP template.
 
 **Diversity rule** (Grand Marina taught us this): hero (slot 0) and ending (slot 3) should not be the same kind of shot. Implemented via post-pick diversity check: if slots 0 and 3 are visually similar (same source region + same class), the script tries the next-best candidate for slot 3.
 
@@ -207,7 +210,7 @@ Berkeley CDN paths map cleanly to classes; PDF-extracted images default to `uncl
 When sync-images uploads to CF, it writes these Notion fields:
 
 - `Image URL` → CF hero `/public` URL
-- `🖼️ Image 1-4` → CF gallery `/public` URLs (per slot mapping above)
+- `🖼️ Image 1-5` → CF gallery `/public` URLs (per slot mapping above)
 - `Mobile Image URL` → CF hero `/mobile` URL (same image ID, different variant). HTML uses this via inline `--bg-mobile` CSS variable on the hero element; CSS media query swaps it in on ≤900px
 
 ### Triggering
@@ -348,7 +351,7 @@ Author all of these at creation time. Only the *italicised* ones are auto-filled
 - **Score + JSON metadata (the most-missed — fill these):** `⭐ NAC Score` · `📊 Sub-Scores JSON` · `✅ Pros JSON` · `⚠️ Cons JSON` · `✨ Features JSON` · `🔄 Process JSON`
 - **Per-city / structural JSON:** `📊 Market Stats JSON` (per-metro §04 cards — see *Per-city market stats* above) · `💲 Price Bands JSON` (Residence Mix table; reveals only when present; currency-aware) · `🔑 Handover EN/VI` — both used by the Greece/Turkey generators (`scripts/generate-gr-listings.mjs`, `generate-tr-listings.mjs`).
 - **Cine titles:** `🎬 Cine 1/2/3 VI`+`EN` — fill in Notion, **or** leave blank ONLY when `ANTHROPIC_API_KEY` has credit (the generator fills blanks; on a $0 balance they stay empty).
-- **Images (pipeline-filled):** *`Image URL`* · *`🖼️ Image 1-4`* · *`Mobile Image URL`* come from `sync-images` — but you must set **`GS Source Folder`** (or `🌐 Berkeley Page URL` / `📷 Image URLs JSON`) so it has a source to pull from.
+- **Images (pipeline-filled):** *`Image URL`* · *`🖼️ Image 1-5`* · *`Mobile Image URL`* come from `sync-images` — but you must set **`GS Source Folder`** (or `🌐 Berkeley Page URL` / `📷 Image URLs JSON`) so it has a source to pull from. Source **≥7 images** so the picker can fill hero + 5 gallery (+ mobile hero); fewer leaves gallery slots empty and trips the `⚠ below the ≥7-asset target` warning.
 
 **JSON field shapes:** before writing the JSON fields, `notion-fetch` an already-complete listing (e.g. `pullman-panama-city`, `nobu-da-nang`, `grand-marina-…`) and copy the exact structure — `✅ Pros JSON` / `⚠️ Cons JSON` / `✨ Features JSON` / `🔄 Process JSON` / `📊 Sub-Scores JSON` each have a shape the PDP renderer expects; a malformed or empty value renders a blank or placeholder section. `📊 Sub-Scores JSON` must align with `⭐ NAC Score` (drives the count-up donut) — see `NAC-PDP-DESIGN.md`.
 
