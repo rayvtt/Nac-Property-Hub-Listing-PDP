@@ -33,7 +33,7 @@ const TASKS_DB = process.env.SEO_TASKS_DB_ID || 'ada6bd2f8c324773b0d026f9db78d3a
 
 if (!NOTION_TOKEN) { console.error('NOTION_TOKEN required'); process.exit(0); } // soft-exit
 
-const notion = new Client({ auth: NOTION_TOKEN });
+const notion = new Client({ auth: NOTION_TOKEN, notionVersion: '2022-06-28' });
 
 const slugsArg = process.argv.slice(2).join(' ') || process.env.NEW_SLUGS || '';
 const slugs = slugsArg.split(/[\s,]+/).map((s) => s.trim()).filter(Boolean);

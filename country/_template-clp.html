@@ -37,11 +37,11 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="NAC Property Collection">
 <meta property="og:description" content="Branded residences curated by NAC's Property Hub.">
-<meta property="og:image" content="https://nomadassetcollective.com/wp-content/uploads/2026/05/nac-cover.png">
+<meta property="og:image" content="https://rayvtt.github.io/Nac-Property-Hub-Listing-PDP/og-images/clp-vn.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="NAC Property Collection">
 <meta name="twitter:description" content="Branded residences curated by NAC's Property Hub.">
-<meta name="twitter:image" content="https://nomadassetcollective.com/wp-content/uploads/2026/05/nac-cover.png">
+<meta name="twitter:image" content="https://rayvtt.github.io/Nac-Property-Hub-Listing-PDP/og-images/clp-vn.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -593,11 +593,12 @@ body[data-theme="dark"] .nac-logo-light { display:none; }
 .cl-card-name span[data-en] { font-style:italic; font-weight:400; color:var(--muted); font-size:.74em; margin-top:.1rem; }
 .cl-card-tag { font-family:var(--ff-display); font-size:.95rem; font-style:italic; color:var(--muted); line-height:1.45; margin-bottom:1.2rem; }
 
-.cl-card-stats { display:flex; gap:1.6rem; align-items:flex-end; }
+.cl-card-stats { display:flex; gap:1.6rem; align-items:flex-start; }
 .cl-card-stat { display:flex; flex-direction:column; }
 .cl-card-stat-num { font-family:var(--ff-display); font-size:1.5rem; font-weight:500; color:var(--display); line-height:1; }
 .cl-card-stat-num small { font-size:.6em; color:var(--gold); font-weight:400; margin-left:.1em; }
 .cl-card-stat-lbl { font-family:var(--ff-mono); font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted-2); margin-top:.35rem; }
+.cl-card-stat-local { font-family:var(--ff-mono); font-size:.62rem; color:var(--muted); margin-top:.3rem; letter-spacing:.03em; line-height:1; }
 
 /* Mini donut */
 .cl-mini-donut { position:relative; width:88px; height:88px; flex-shrink:0; }
@@ -655,10 +656,84 @@ body[data-theme="dark"] .nac-logo-light { display:none; }
 .cl-tbl-brand { font-family:var(--ff-mono); font-size:.55rem; letter-spacing:.14em; color:var(--muted); text-transform:uppercase; margin-top:.2rem; }
 .cl-tbl-val { font-family:var(--ff-display); font-size:1.08rem; font-weight:500; color:var(--display); }
 .cl-tbl-val small { color:var(--gold); font-size:.7em; margin-left:.1em; font-weight:400; }
+.cl-tbl-local { display:block; font-family:var(--ff-mono); font-size:.58rem; color:var(--muted); margin-top:.2rem; letter-spacing:.03em; line-height:1; }
 .cl-tbl-pill {
   display:inline-block; padding:.32rem .7rem; border-radius:999px;
   font-family:var(--ff-mono); font-size:.62rem; font-weight:500;
   background:var(--gold-soft); color:var(--gold);
+}
+
+/* Mobile sort-pill bar — hidden on desktop, shown above the comparison cards */
+.cl-tbl-mobsort { display:none; }
+
+/* Mobile comparison cards — each <tr> becomes a stacked listing card with
+   name + NAC pill at the top, city beneath, and a 3-up metric grid (Entry,
+   Yield, IRR) at the bottom. The desktop table is untouched. */
+@media(max-width:680px) {
+  .cl-compare { padding-inline:0; }
+  .cl-tbl-mobsort {
+    display:flex; gap:.4rem; align-items:center;
+    overflow-x:auto; padding:0 .2rem 1rem;
+    margin-bottom:.4rem; scrollbar-width:none;
+  }
+  .cl-tbl-mobsort::-webkit-scrollbar { display:none; }
+  .cl-tbl-mobsort-lbl { flex:0 0 auto; font-family:var(--ff-mono); font-size:.58rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-right:.2rem; }
+  .cl-tbl-mobsort button {
+    flex:0 0 auto; border:1px solid var(--line); background:var(--surface);
+    color:var(--display); padding:.4rem .8rem; border-radius:999px;
+    font-family:var(--ff-mono); font-size:.6rem; font-weight:500;
+    letter-spacing:.12em; text-transform:uppercase; cursor:pointer; white-space:nowrap;
+    display:inline-flex; align-items:center; gap:.25rem;
+  }
+  .cl-tbl-mobsort button.on { border-color:var(--gold); background:var(--gold-soft); color:var(--gold); }
+  .cl-tbl-mobsort button .arrow { display:none; font-size:.8em; }
+  .cl-tbl-mobsort button.on .arrow { display:inline; }
+
+  .cl-tbl-wrap { overflow:visible; background:transparent; border:none; box-shadow:none; border-radius:0; }
+  .cl-tbl { display:block; min-width:0; border-collapse:separate; }
+  .cl-tbl thead { display:none; }
+  .cl-tbl tbody { display:block; }
+  .cl-tbl tbody tr {
+    display:grid; grid-template-columns:1fr 1fr auto;
+    grid-template-areas:
+      "name name pill"
+      "city city pill"
+      "entry yield irr";
+    gap:.7rem .9rem;
+    padding:1.1rem 1.1rem 1.2rem;
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:14px; box-shadow:var(--shadow-sm);
+    margin-bottom:.7rem;
+  }
+  .cl-tbl tbody tr:hover { background:var(--surface); }
+  .cl-tbl tbody tr:last-child { margin-bottom:0; }
+  .cl-tbl tbody tr > td { padding:0; border:none; vertical-align:top; }
+  .cl-tbl tbody tr > td:nth-of-type(1) { grid-area:name; }
+  .cl-tbl tbody tr > td:nth-of-type(2) {
+    grid-area:city;
+    font-family:var(--ff-mono); font-size:.6rem; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--muted); line-height:1.4;
+    align-self:center; padding-top:.1rem;
+  }
+  .cl-tbl tbody tr > td:nth-of-type(2)::before { content:'📍 '; opacity:.7; }
+  .cl-tbl tbody tr > td:nth-of-type(3) { grid-area:entry; }
+  .cl-tbl tbody tr > td:nth-of-type(4) { grid-area:yield; }
+  .cl-tbl tbody tr > td:nth-of-type(5) { grid-area:irr; }
+  .cl-tbl tbody tr > td:nth-of-type(6) { grid-area:pill; align-self:start; }
+  .cl-tbl tbody tr > td:nth-of-type(3)::after,
+  .cl-tbl tbody tr > td:nth-of-type(4)::after,
+  .cl-tbl tbody tr > td:nth-of-type(5)::after {
+    display:block; margin-top:.35rem; line-height:1;
+    font-family:var(--ff-mono); font-size:.5rem; font-weight:500;
+    letter-spacing:.18em; text-transform:uppercase; color:var(--muted-2);
+  }
+  .cl-tbl tbody tr > td:nth-of-type(3)::after { content:'Entry'; }
+  .cl-tbl tbody tr > td:nth-of-type(4)::after { content:'Yield'; }
+  .cl-tbl tbody tr > td:nth-of-type(5)::after { content:'IRR'; }
+  .cl-tbl-val { font-size:1.02rem; }
+  .cl-tbl-local { font-size:.56rem; }
+  .cl-tbl-name { font-size:1rem; }
+  .cl-tbl-pill { padding:.28rem .58rem; font-size:.58rem; }
 }
 
 /* ─── ASPIRATION ────────────────────────────── */
@@ -784,6 +859,38 @@ body[data-theme="dark"] .nac-logo-light { display:none; }
 .cl-modal-sub-fill { height:100%; background:linear-gradient(90deg, var(--orange), var(--gold)); border-radius:999px; transform-origin:left; transform:scaleX(0); transition:transform 1.1s cubic-bezier(.2,.6,.2,1); }
 .cl-modal-sub-val { font-family:var(--ff-display); font-weight:500; color:var(--display); text-align:right; }
 
+/* ── NAC score — Breakdown / Methodology tabs ── */
+.cl-modal-score { margin-bottom:1.8rem; }
+.cl-modal-tabs { display:flex; gap:.4rem; margin-bottom:1.2rem; border-bottom:1px solid var(--line); }
+.cl-modal-tab {
+  appearance:none; border:none; background:none; cursor:pointer;
+  padding:.55rem .2rem; margin-bottom:-1px;
+  font-family:var(--ff-mono); font-size:.62rem; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--muted); border-bottom:2px solid transparent; transition:color .2s, border-color .2s;
+}
+.cl-modal-tab + .cl-modal-tab { margin-left:1.4rem; }
+.cl-modal-tab:hover { color:var(--text); }
+.cl-modal-tab.on { color:var(--gold); border-bottom-color:var(--gold); }
+.cl-modal-tabpanel { display:none; }
+.cl-modal-tabpanel.on { display:block; animation:clTabIn .35s ease; }
+@keyframes clTabIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+
+.cl-method-intro { font-family:var(--ff-body); font-size:.84rem; line-height:1.55; color:var(--text); margin:0 0 1.2rem; }
+.cl-method-pillars { display:flex; flex-direction:column; gap:.95rem; margin-bottom:1.3rem; }
+.cl-method-pillar { display:grid; grid-template-columns:1fr auto; gap:.15rem 1rem; align-items:baseline; }
+.cl-method-pillar-name { font-family:var(--ff-display); font-size:1rem; font-weight:500; color:var(--display); }
+.cl-method-pillar-wt { font-family:var(--ff-mono); font-size:.72rem; font-weight:500; color:var(--gold); white-space:nowrap; }
+.cl-method-pillar-desc { grid-column:1 / -1; font-family:var(--ff-body); font-size:.78rem; line-height:1.5; color:var(--muted); }
+.cl-method-pillar-track { grid-column:1 / -1; height:4px; border-radius:999px; background:var(--surface-2); overflow:hidden; margin-top:.25rem; }
+.cl-method-pillar-fill { height:100%; border-radius:999px; background:linear-gradient(90deg, var(--orange), var(--gold)); }
+.cl-method-calib { font-family:var(--ff-body); font-size:.78rem; line-height:1.55; color:var(--muted); font-style:italic; padding:.95rem 1.1rem; background:var(--surface-2); border-radius:12px; border-left:2px solid var(--gold); margin-bottom:1.3rem; }
+.cl-method-grades { display:flex; flex-direction:column; gap:.45rem; }
+.cl-method-grade-head { font-family:var(--ff-mono); font-size:.58rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:.2rem; }
+.cl-method-grade { display:grid; grid-template-columns:58px auto 1fr; align-items:center; gap:.7rem; font-size:.8rem; }
+.cl-method-grade-band { font-family:var(--ff-mono); font-size:.7rem; color:var(--display); font-weight:500; }
+.cl-method-grade-stars { color:var(--gold); font-size:.72rem; letter-spacing:.05em; }
+.cl-method-grade-lbl { font-family:var(--ff-body); color:var(--muted); }
+
 .cl-modal-cta {
   display:flex; align-items:center; justify-content:center; gap:.6rem;
   padding:1.1rem; border-radius:14px;
@@ -794,6 +901,36 @@ body[data-theme="dark"] .nac-logo-light { display:none; }
 .cl-modal-cta:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(196,146,60,.32); }
 
 body.cl-modal-open { overflow:hidden; }
+</style>
+<style id="cl-method-style">
+.cl-method{padding:3.4rem 1.5rem 1rem;}
+.cl-method .nac-method{margin:0 auto;max-width:640px;border-top:1px solid var(--line);}
+.cl-method .nac-method[open]{padding-bottom:2.4rem;}
+.cl-method .nac-method-summary{list-style:none;cursor:pointer;padding:1.4rem .2rem 1.2rem;display:grid;grid-template-columns:1fr auto;column-gap:1rem;align-items:center;user-select:none;}
+.cl-method .nac-method-summary::-webkit-details-marker{display:none;}
+.cl-method .nac-method-summary::marker{content:'';}
+.cl-method .nac-method-summary-text{font-family:var(--ff-display);font-size:1.15rem;font-weight:500;color:var(--display);letter-spacing:-.005em;}
+.cl-method .nac-method-summary-chev{font-family:var(--ff-display);font-size:1.5rem;font-weight:300;color:var(--gold);transition:transform .25s ease;}
+.cl-method .nac-method[open] .nac-method-summary-chev{transform:rotate(45deg);}
+.cl-method .nac-method-summary:hover .nac-method-summary-text{color:var(--gold);}
+.cl-method .nac-method-body{padding:.4rem .2rem 0;animation:clMethIn .35s ease;}
+@keyframes clMethIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.cl-method .nac-method-pillars{display:flex;flex-direction:column;gap:1.1rem;margin-bottom:1.7rem;}
+.cl-method .nac-method-pillar{display:grid;grid-template-columns:1fr auto;gap:.18rem 1rem;align-items:baseline;padding-bottom:1.05rem;border-bottom:1px solid var(--line);}
+.cl-method .nac-method-pillar:last-child{border-bottom:none;padding-bottom:0;}
+.cl-method .nac-method-pillar-name{font-family:var(--ff-display);font-size:1.05rem;font-weight:500;color:var(--display);}
+.cl-method .nac-method-pillar-wt{font-family:var(--ff-mono);font-size:.78rem;font-weight:500;color:var(--gold);white-space:nowrap;}
+.cl-method .nac-method-pillar-desc{grid-column:1 / -1;font-family:var(--ff-body);font-size:.84rem;line-height:1.55;color:var(--muted);margin-top:.1rem;}
+.cl-method .nac-method-pillar-track{grid-column:1 / -1;height:4px;border-radius:999px;background:var(--surface-2);overflow:hidden;margin-top:.55rem;}
+.cl-method .nac-method-pillar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--orange),var(--gold));}
+.cl-method .nac-method-calib{font-family:var(--ff-body);font-size:.85rem;line-height:1.6;color:var(--muted);font-style:italic;padding:1.05rem 1.2rem;background:var(--surface-2);border-radius:12px;border-left:2px solid var(--gold);margin:0 0 2.6rem;}
+.cl-method .nac-method-grades{display:flex;flex-direction:column;gap:.55rem;margin-top:2.6rem;}
+.cl-method .nac-method-grade-head{font-family:var(--ff-mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem;}
+.cl-method .nac-method-grade{display:grid;grid-template-columns:64px auto 1fr;align-items:center;gap:.8rem;font-size:.85rem;}
+.cl-method .nac-method-grade-band{font-family:var(--ff-mono);font-size:.74rem;color:var(--display);font-weight:500;}
+.cl-method .nac-method-grade-stars{color:var(--gold);font-size:.78rem;letter-spacing:.05em;}
+.cl-method .nac-method-grade-lbl{font-family:var(--ff-body);color:var(--muted);}
+@media(max-width:680px){.cl-method{padding:2.4rem 1.1rem .5rem;}.cl-method .nac-method-summary-text{font-size:1.05rem;}.cl-method .nac-method-pillar-name{font-size:1rem;}}
 </style>
 </head>
 <body data-lang="vi" data-theme="light">
@@ -897,7 +1034,7 @@ body.cl-modal-open { overflow:hidden; }
         <span class="cl-plaque-row-val">3</span>
       </div>
       <div class="cl-plaque-row">
-        <span class="cl-plaque-row-lbl"><span data-vi="Giá vào cửa">Giá vào cửa</span><span data-en="Entry from">Entry from</span></span>
+        <span class="cl-plaque-row-lbl"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry from">Entry from</span></span>
         <span class="cl-plaque-row-val">$360<small>K</small></span>
       </div>
       <div class="cl-plaque-row">
@@ -1122,7 +1259,7 @@ body.cl-modal-open { overflow:hidden; }
           <div class="cl-card-stats">
             <div class="cl-card-stat">
               <span class="cl-card-stat-num">$360<small>K</small></span>
-              <span class="cl-card-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></span>
+              <span class="cl-card-stat-lbl"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry">Entry</span></span>
             </div>
             <div class="cl-card-stat">
               <span class="cl-card-stat-num">6.0<small>%</small></span>
@@ -1191,7 +1328,7 @@ body.cl-modal-open { overflow:hidden; }
           <div class="cl-card-stats">
             <div class="cl-card-stat">
               <span class="cl-card-stat-num">$1.8<small>M</small></span>
-              <span class="cl-card-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></span>
+              <span class="cl-card-stat-lbl"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry">Entry</span></span>
             </div>
             <div class="cl-card-stat">
               <span class="cl-card-stat-num">6.0<small>%</small></span>
@@ -1261,7 +1398,7 @@ body.cl-modal-open { overflow:hidden; }
           <div class="cl-card-stats">
             <div class="cl-card-stat">
               <span class="cl-card-stat-num">$450<small>K</small></span>
-              <span class="cl-card-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></span>
+              <span class="cl-card-stat-lbl"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry">Entry</span></span>
             </div>
             <div class="cl-card-stat">
               <span class="cl-card-stat-num">5.8<small>%</small></span>
@@ -1331,7 +1468,7 @@ body.cl-modal-open { overflow:hidden; }
           <div class="cl-card-stats">
             <div class="cl-card-stat">
               <span class="cl-card-stat-num">$606<small>K</small></span>
-              <span class="cl-card-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></span>
+              <span class="cl-card-stat-lbl"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry">Entry</span></span>
             </div>
             <div class="cl-card-stat">
               <span class="cl-card-stat-num">6.5<small>%</small></span>
@@ -1382,13 +1519,21 @@ body.cl-modal-open { overflow:hidden; }
       </p>
     </div>
 
+    <div class="cl-tbl-mobsort" role="toolbar" aria-label="Sort comparison">
+      <span class="cl-tbl-mobsort-lbl"><span data-vi="Sắp xếp">Sắp xếp</span><span data-en="Sort">Sort</span></span>
+      <button type="button" data-msort="price"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span><span class="arrow">▾</span></button>
+      <button type="button" data-msort="yield">Yield<span class="arrow">▾</span></button>
+      <button type="button" data-msort="irr">IRR<span class="arrow">▾</span></button>
+      <button type="button" data-msort="score">NAC<span class="arrow">▾</span></button>
+    </div>
+
     <div class="cl-tbl-wrap reveal">
       <table class="cl-tbl" id="cl-tbl">
         <thead>
           <tr>
             <th><span data-vi="Dự án">Dự án</span><span data-en="Listing">Listing</span></th>
             <th data-sort="city" data-type="text"><span data-vi="Thành phố">Thành phố</span><span data-en="City">City</span><span class="sort-arrow">▾</span></th>
-            <th data-sort="price" data-type="num"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span><span class="sort-arrow">▾</span></th>
+            <th data-sort="price" data-type="num"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry">Entry</span><span class="sort-arrow">▾</span></th>
             <th data-sort="yield" data-type="num">Yield<span class="sort-arrow">▾</span></th>
             <th data-sort="irr" data-type="num">IRR<span class="sort-arrow">▾</span></th>
             <th data-sort="score" data-type="num">NAC<span class="sort-arrow">▾</span></th>
@@ -1510,6 +1655,129 @@ body.cl-modal-open { overflow:hidden; }
   </div>
 </section>
 
+
+
+      <!-- SHARE THIS COUNTRY (self-contained: scoped styles + inline script) -->
+      <section id="cl-share" class="cl-share" data-share-clp-v="2" aria-label="Share this country page">
+        <span class="cl-share-lbl"><span data-vi="Chia sẻ trang quốc gia">Chia sẻ trang quốc gia</span><span data-en="Share this country">Share this country</span></span>
+        <div class="cl-share-row">
+          <button type="button" class="cl-share-btn" data-net="facebook" aria-label="Share on Facebook" title="Facebook"><img src="https://cdn.simpleicons.org/facebook/ffffff" alt="" aria-hidden="true"></button>
+          <button type="button" class="cl-share-btn" data-net="linkedin" aria-label="Share on LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="#ffffff" d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.3 8h4.4v13H.3V8zm7.1 0h4.2v1.8h.06c.6-1.1 2-2.2 4.06-2.2 4.35 0 5.15 2.86 5.15 6.58V21h-4.4v-5.9c0-1.4 0-3.2-2-3.2-2 0-2.3 1.5-2.3 3.1V21H7.4V8z"/></svg></button>
+          <button type="button" class="cl-share-btn" data-net="threads" aria-label="Share on Threads" title="Threads"><img src="https://cdn.simpleicons.org/threads/ffffff" alt="" aria-hidden="true"></button>
+          <button type="button" class="cl-share-btn" data-net="instagram" aria-label="Copy caption for Instagram" title="Instagram (copies caption)"><img src="https://cdn.simpleicons.org/instagram/ffffff" alt="" aria-hidden="true"></button>
+          <button type="button" class="cl-share-btn" data-net="copy" aria-label="Copy link" title="Copy link"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="#ffffff" d="M3.9 12a3.1 3.1 0 0 1 3.1-3.1h4V7h-4a5 5 0 0 0 0 10h4v-1.9h-4A3.1 3.1 0 0 1 3.9 12zM8 13h8v-2H8v2zm5-6v1.9h4a3.1 3.1 0 0 1 0 6.2h-4V17h4a5 5 0 0 0 0-10h-4z"/></svg></button>
+        </div>
+        <span class="cl-share-toast" id="cl-share-toast" role="status" hidden></span>
+        <style>
+          .cl-share{max-width:760px;margin:0 auto;padding:3rem 1.4rem 1rem;text-align:center}
+          .cl-share-lbl{display:block;font-family:var(--ff-mono,ui-monospace,monospace);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted,#8a8576);margin-bottom:1.1rem}
+          .cl-share-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+          /* filled brand circles + white glyphs — matches PDP share row + CLP footer aesthetic */
+          .cl-share-btn{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;
+            border:none;padding:0;color:#fff;transition:transform .18s ease,filter .18s ease,box-shadow .22s ease}
+          .cl-share-btn img,.cl-share-btn svg{width:19px;height:19px;display:block}
+          .cl-share-btn:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 8px 24px -8px rgba(212,175,55,.45)}
+          .cl-share-btn:active{transform:translateY(0)}
+          .cl-share-btn[data-net="facebook"]{background:#1877F2}
+          .cl-share-btn[data-net="linkedin"]{background:#0A66C2}
+          .cl-share-btn[data-net="threads"]{background:#000}
+          .cl-share-btn[data-net="instagram"]{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+          .cl-share-btn[data-net="copy"]{background:var(--gold,#d4af37);color:#0a0a0a}
+          .cl-share-toast{display:inline-block;margin-top:14px;min-height:1.1em;font-family:var(--ff-mono,ui-monospace,monospace);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold,#d4af37);transition:opacity .2s}
+          @media (max-width:680px){ .cl-share{padding:2.2rem 1rem .6rem} .cl-share-btn{width:42px;height:42px} }
+        </style>
+        <script>
+          (function(){
+            var s=document.getElementById('cl-share'); if(!s||s.dataset.wired) return; s.dataset.wired='1';
+            var meta=function(p){var e=document.querySelector('meta[property="'+p+'"]');return e?e.getAttribute('content'):'';};
+            var txt=function(sel){var e=document.querySelector(sel);return e?e.textContent.trim():'';};
+            var url=meta('og:url')||location.href;
+            var name=(meta('og:title')||document.title||'').split('·')[0].split('|')[0].trim();
+            var tag=txt('.cl-hero-tag [data-en]')||txt('.cl-hero-tag [data-vi]');
+            var cap=name+(tag?' — '+tag.replace(/\s+/g,' ').trim():'');
+            var links={
+              facebook:'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url),
+              linkedin:'https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(url),
+              threads:'https://www.threads.net/intent/post?text='+encodeURIComponent(cap+' '+url)
+            };
+            var toast=function(m){var t=document.getElementById('cl-share-toast'); if(!t)return; t.textContent=m; t.hidden=false; clearTimeout(t._t); t._t=setTimeout(function(){t.hidden=true;},2800);};
+            var copy=function(text,msg){
+              if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){toast(msg);},function(){toast('Copy failed — long-press to copy');});}
+              else{var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand('copy');toast(msg);}catch(e){toast('Copy failed');}document.body.removeChild(ta);}
+            };
+            s.querySelectorAll('.cl-share-btn').forEach(function(b){
+              b.addEventListener('click',function(){
+                var net=b.getAttribute('data-net');
+                if(links[net]){window.open(links[net],'_blank','noopener,noreferrer,width=640,height=660');}
+                else if(net==='instagram'){copy(cap+' '+url,'Caption copied — paste into Instagram'); window.open('https://www.instagram.com/','_blank','noopener,noreferrer');}
+                else if(net==='copy'){copy(url,'Link copied');}
+              });
+            });
+          })();
+        </script>
+      </section>
+
+<!-- ═══ NAC SCORING METHODOLOGY ═══ -->
+<section class="cl-method" id="cl-method">
+  <details class="nac-method">
+    <summary class="nac-method-summary" aria-label="Show NAC scoring methodology">
+      <span class="nac-method-summary-text"><span data-vi="">Phương pháp chấm điểm NAC</span><span data-en="">How NAC scores</span></span>
+      <span class="nac-method-summary-chev" aria-hidden="true">＋</span>
+    </summary>
+    <div class="nac-method-body">
+      <div class="nac-method-pillars">
+            <div class="nac-method-pillar">
+              <span class="nac-method-pillar-name"><span data-vi="">Thương Hiệu & CĐT</span><span data-en="">Brand &amp; Developer</span></span>
+              <span class="nac-method-pillar-wt">20%</span>
+              <span class="nac-method-pillar-desc"><span data-vi="">Uy tín nhà điều hành, đối tác thiết kế, lịch sử bàn giao.</span><span data-en="">Operator pedigree, design partner, delivery record.</span></span>
+              <div class="nac-method-pillar-track"><div class="nac-method-pillar-fill" style="width:100%"></div></div>
+            </div>
+            <div class="nac-method-pillar">
+              <span class="nac-method-pillar-name"><span data-vi="">Lợi Suất & Dòng Tiền</span><span data-en="">Yield &amp; Cash Flow</span></span>
+              <span class="nac-method-pillar-wt">20%</span>
+              <span class="nac-method-pillar-desc"><span data-vi="">Lợi suất cho thuê gộp/ròng, cash-on-cash, độ bền thu nhập.</span><span data-en="">Gross &amp; net rental yield, cash-on-cash, income durability.</span></span>
+              <div class="nac-method-pillar-track"><div class="nac-method-pillar-fill" style="width:100%"></div></div>
+            </div>
+            <div class="nac-method-pillar">
+              <span class="nac-method-pillar-name"><span data-vi="">Vị Trí & Thị Trường</span><span data-en="">Location &amp; Market</span></span>
+              <span class="nac-method-pillar-wt">20%</span>
+              <span class="nac-method-pillar-desc"><span data-vi="">Vi vị trí, nền tảng thành phố, cung–cầu, quỹ đạo tăng trưởng.</span><span data-en="">Micro-location, city fundamentals, supply–demand, growth trajectory.</span></span>
+              <div class="nac-method-pillar-track"><div class="nac-method-pillar-fill" style="width:100%"></div></div>
+            </div>
+            <div class="nac-method-pillar">
+              <span class="nac-method-pillar-name"><span data-vi="">Quản Lý & Vận Hành</span><span data-en="">Management &amp; Ops</span></span>
+              <span class="nac-method-pillar-wt">15%</span>
+              <span class="nac-method-pillar-desc"><span data-vi="">Chất lượng chương trình cho thuê, mức độ rảnh tay, chuẩn dịch vụ.</span><span data-en="">Rental-programme quality, hands-off operation, service standard.</span></span>
+              <div class="nac-method-pillar-track"><div class="nac-method-pillar-fill" style="width:75%"></div></div>
+            </div>
+            <div class="nac-method-pillar">
+              <span class="nac-method-pillar-name"><span data-vi="">Thanh Khoản & Thoát Vốn</span><span data-en="">Liquidity &amp; Exit</span></span>
+              <span class="nac-method-pillar-wt">15%</span>
+              <span class="nac-method-pillar-desc"><span data-vi="">Độ sâu thị trường thứ cấp, quyền mua nước ngoài, lựa chọn thoát vốn.</span><span data-en="">Resale depth, foreign-buyer access, exit optionality.</span></span>
+              <div class="nac-method-pillar-track"><div class="nac-method-pillar-fill" style="width:75%"></div></div>
+            </div>
+            <div class="nac-method-pillar">
+              <span class="nac-method-pillar-name"><span data-vi="">Hồ Sơ Rủi Ro</span><span data-en="">Risk Profile</span></span>
+              <span class="nac-method-pillar-wt">10%</span>
+              <span class="nac-method-pillar-desc"><span data-vi="">Rủi ro thi công, tỷ giá, pháp lý, chu kỳ thị trường (điểm nghịch — cao hơn = rủi ro thấp hơn).</span><span data-en="">Construction, currency, legal, market cyclicality (scored inversely — higher = lower risk).</span></span>
+              <div class="nac-method-pillar-track"><div class="nac-method-pillar-fill" style="width:50%"></div></div>
+            </div>
+      </div>
+      <p class="nac-method-calib">
+        <span data-vi="">Sáu trụ cột được tính theo trọng số, sau đó hiệu chỉnh bởi Hội đồng Đầu tư NAC dựa trên các giao dịch so sánh trước khi công bố điểm tổng hợp trên thang /100.</span>
+        <span data-en="">The six pillars are weighted, then calibrated by the NAC Investment Committee against comparable transactions before the /100 composite is published.</span>
+      </p>
+      <div class="nac-method-grades">
+        <div class="nac-method-grade-head"><span data-vi="">Thang xếp hạng</span><span data-en="">Grade scale</span></div>
+        <div class="nac-method-grade"><span class="nac-method-grade-band">85–100</span><span class="nac-method-grade-stars">★★★★★</span><span class="nac-method-grade-lbl"><span data-vi="">Xuất Sắc</span><span data-en="">Outstanding</span></span></div>
+        <div class="nac-method-grade"><span class="nac-method-grade-band">75–84</span><span class="nac-method-grade-stars">★★★★</span><span class="nac-method-grade-lbl"><span data-vi="">Rất Tốt</span><span data-en="">Excellent</span></span></div>
+        <div class="nac-method-grade"><span class="nac-method-grade-band">65–74</span><span class="nac-method-grade-stars">★★★</span><span class="nac-method-grade-lbl"><span data-vi="">Tốt</span><span data-en="">Strong</span></span></div>
+        <div class="nac-method-grade"><span class="nac-method-grade-band">55–64</span><span class="nac-method-grade-stars">★★</span><span class="nac-method-grade-lbl"><span data-vi="">Khá</span><span data-en="">Fair</span></span></div>
+      </div>
+    </div>
+  </details>
+</section>
+
 <footer class="cl-foot">
   <span data-vi="Tuyển chọn bởi">Tuyển chọn bởi</span><span data-en="Curated by">Curated by</span>
   &nbsp;<a href="https://nomadassetcollective.com" target="_blank">Nomad Asset Collective</a>
@@ -1533,7 +1801,7 @@ body.cl-modal-open { overflow:hidden; }
       <div class="cl-modal-stats">
         <div class="cl-modal-stat">
           <div class="cl-modal-stat-num" id="cl-modal-price"></div>
-          <div class="cl-modal-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></div>
+          <div class="cl-modal-stat-lbl"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry">Entry</span></div>
         </div>
         <div class="cl-modal-stat">
           <div class="cl-modal-stat-num" id="cl-modal-yield"></div>
@@ -1548,9 +1816,74 @@ body.cl-modal-open { overflow:hidden; }
           <div class="cl-modal-stat-lbl">NAC <span data-vi="Điểm">Điểm</span><span data-en="Score">Score</span></div>
         </div>
       </div>
-      <div class="cl-modal-subs">
-        <div class="cl-modal-sub-head"><span data-vi="Điểm thành phần">Điểm thành phần</span><span data-en="Composite breakdown">Composite breakdown</span> · / 10</div>
-        <div id="cl-modal-subs"></div>
+      <div class="cl-modal-score">
+        <div class="cl-modal-tabs" role="tablist">
+          <button type="button" class="cl-modal-tab on" data-tab="breakdown" role="tab" aria-selected="true"><span data-vi="Điểm thành phần">Điểm thành phần</span><span data-en="Breakdown">Breakdown</span></button>
+          <button type="button" class="cl-modal-tab" data-tab="method" role="tab" aria-selected="false"><span data-vi="Phương pháp">Phương pháp</span><span data-en="Methodology">Methodology</span></button>
+        </div>
+
+        <div class="cl-modal-tabpanel on" data-panel="breakdown" role="tabpanel">
+          <div class="cl-modal-subs">
+            <div class="cl-modal-sub-head"><span data-vi="Điểm thành phần">Điểm thành phần</span><span data-en="Composite breakdown">Composite breakdown</span> · / 10</div>
+            <div id="cl-modal-subs"></div>
+          </div>
+        </div>
+
+        <div class="cl-modal-tabpanel" data-panel="method" role="tabpanel">
+          <p class="cl-method-intro">
+            <span data-vi="Mỗi điểm NAC Composite là sự kết hợp có trọng số của sáu trụ cột đầu tư — cân theo những gì bảo toàn và gia tăng vốn trong suốt kỳ nắm giữ.">Mỗi điểm NAC Composite là sự kết hợp có trọng số của sáu trụ cột đầu tư — cân theo những gì bảo toàn và gia tăng vốn trong suốt kỳ nắm giữ.</span>
+            <span data-en="Every NAC Composite is a weighted blend of six investment pillars — weighted by what protects and compounds capital across a full hold.">Every NAC Composite is a weighted blend of six investment pillars — weighted by what protects and compounds capital across a full hold.</span>
+          </p>
+          <div class="cl-method-pillars">
+            <div class="cl-method-pillar">
+              <span class="cl-method-pillar-name"><span data-vi="Thương Hiệu & CĐT">Thương Hiệu & CĐT</span><span data-en="Brand & Developer">Brand &amp; Developer</span></span>
+              <span class="cl-method-pillar-wt">20%</span>
+              <span class="cl-method-pillar-desc"><span data-vi="Uy tín nhà điều hành, đối tác thiết kế, lịch sử bàn giao.">Uy tín nhà điều hành, đối tác thiết kế, lịch sử bàn giao.</span><span data-en="Operator pedigree, design partner, delivery record.">Operator pedigree, design partner, delivery record.</span></span>
+              <div class="cl-method-pillar-track"><div class="cl-method-pillar-fill" style="width:100%"></div></div>
+            </div>
+            <div class="cl-method-pillar">
+              <span class="cl-method-pillar-name"><span data-vi="Lợi Suất & Dòng Tiền">Lợi Suất & Dòng Tiền</span><span data-en="Yield & Cash Flow">Yield &amp; Cash Flow</span></span>
+              <span class="cl-method-pillar-wt">20%</span>
+              <span class="cl-method-pillar-desc"><span data-vi="Lợi suất cho thuê gộp/ròng, cash-on-cash, độ bền thu nhập.">Lợi suất cho thuê gộp/ròng, cash-on-cash, độ bền thu nhập.</span><span data-en="Gross & net rental yield, cash-on-cash, income durability.">Gross &amp; net rental yield, cash-on-cash, income durability.</span></span>
+              <div class="cl-method-pillar-track"><div class="cl-method-pillar-fill" style="width:100%"></div></div>
+            </div>
+            <div class="cl-method-pillar">
+              <span class="cl-method-pillar-name"><span data-vi="Vị Trí & Thị Trường">Vị Trí & Thị Trường</span><span data-en="Location & Market">Location &amp; Market</span></span>
+              <span class="cl-method-pillar-wt">20%</span>
+              <span class="cl-method-pillar-desc"><span data-vi="Vi vị trí, nền tảng thành phố, cung–cầu, quỹ đạo tăng trưởng.">Vi vị trí, nền tảng thành phố, cung–cầu, quỹ đạo tăng trưởng.</span><span data-en="Micro-location, city fundamentals, supply–demand, growth trajectory.">Micro-location, city fundamentals, supply–demand, growth trajectory.</span></span>
+              <div class="cl-method-pillar-track"><div class="cl-method-pillar-fill" style="width:100%"></div></div>
+            </div>
+            <div class="cl-method-pillar">
+              <span class="cl-method-pillar-name"><span data-vi="Quản Lý & Vận Hành">Quản Lý & Vận Hành</span><span data-en="Management & Ops">Management &amp; Ops</span></span>
+              <span class="cl-method-pillar-wt">15%</span>
+              <span class="cl-method-pillar-desc"><span data-vi="Chất lượng chương trình cho thuê, mức độ rảnh tay, chuẩn dịch vụ.">Chất lượng chương trình cho thuê, mức độ rảnh tay, chuẩn dịch vụ.</span><span data-en="Rental-programme quality, hands-off operation, service standard.">Rental-programme quality, hands-off operation, service standard.</span></span>
+              <div class="cl-method-pillar-track"><div class="cl-method-pillar-fill" style="width:75%"></div></div>
+            </div>
+            <div class="cl-method-pillar">
+              <span class="cl-method-pillar-name"><span data-vi="Thanh Khoản & Thoát Vốn">Thanh Khoản & Thoát Vốn</span><span data-en="Liquidity & Exit">Liquidity &amp; Exit</span></span>
+              <span class="cl-method-pillar-wt">15%</span>
+              <span class="cl-method-pillar-desc"><span data-vi="Độ sâu thị trường thứ cấp, quyền mua nước ngoài, lựa chọn thoát vốn.">Độ sâu thị trường thứ cấp, quyền mua nước ngoài, lựa chọn thoát vốn.</span><span data-en="Resale depth, foreign-buyer access, exit optionality.">Resale depth, foreign-buyer access, exit optionality.</span></span>
+              <div class="cl-method-pillar-track"><div class="cl-method-pillar-fill" style="width:75%"></div></div>
+            </div>
+            <div class="cl-method-pillar">
+              <span class="cl-method-pillar-name"><span data-vi="Hồ Sơ Rủi Ro">Hồ Sơ Rủi Ro</span><span data-en="Risk Profile">Risk Profile</span></span>
+              <span class="cl-method-pillar-wt">10%</span>
+              <span class="cl-method-pillar-desc"><span data-vi="Rủi ro thi công, tỷ giá, pháp lý, chu kỳ thị trường (điểm nghịch — cao hơn = rủi ro thấp hơn).">Rủi ro thi công, tỷ giá, pháp lý, chu kỳ thị trường (điểm nghịch — cao hơn = rủi ro thấp hơn).</span><span data-en="Construction, currency, legal, market cyclicality (scored inversely — higher = lower risk).">Construction, currency, legal, market cyclicality (scored inversely — higher = lower risk).</span></span>
+              <div class="cl-method-pillar-track"><div class="cl-method-pillar-fill" style="width:50%"></div></div>
+            </div>
+          </div>
+          <p class="cl-method-calib">
+            <span data-vi="Sáu trụ cột được tính theo trọng số, sau đó hiệu chỉnh bởi Hội đồng Đầu tư NAC dựa trên các giao dịch so sánh trước khi công bố điểm tổng hợp trên thang /100.">Sáu trụ cột được tính theo trọng số, sau đó hiệu chỉnh bởi Hội đồng Đầu tư NAC dựa trên các giao dịch so sánh trước khi công bố điểm tổng hợp trên thang /100.</span>
+            <span data-en="The six pillars are weighted, then calibrated by the NAC Investment Committee against comparable transactions before the /100 composite is published.">The six pillars are weighted, then calibrated by the NAC Investment Committee against comparable transactions before the /100 composite is published.</span>
+          </p>
+          <div class="cl-method-grades">
+            <div class="cl-method-grade-head"><span data-vi="Thang xếp hạng">Thang xếp hạng</span><span data-en="Grade scale">Grade scale</span></div>
+            <div class="cl-method-grade"><span class="cl-method-grade-band">85–100</span><span class="cl-method-grade-stars">★★★★★</span><span class="cl-method-grade-lbl"><span data-vi="Xuất Sắc">Xuất Sắc</span><span data-en="Outstanding">Outstanding</span></span></div>
+            <div class="cl-method-grade"><span class="cl-method-grade-band">75–84</span><span class="cl-method-grade-stars">★★★★</span><span class="cl-method-grade-lbl"><span data-vi="Rất Tốt">Rất Tốt</span><span data-en="Excellent">Excellent</span></span></div>
+            <div class="cl-method-grade"><span class="cl-method-grade-band">65–74</span><span class="cl-method-grade-stars">★★★</span><span class="cl-method-grade-lbl"><span data-vi="Tốt">Tốt</span><span data-en="Strong">Strong</span></span></div>
+            <div class="cl-method-grade"><span class="cl-method-grade-band">55–64</span><span class="cl-method-grade-stars">★★</span><span class="cl-method-grade-lbl"><span data-vi="Khá">Khá</span><span data-en="Fair">Fair</span></span></div>
+          </div>
+        </div>
       </div>
       <a class="cl-modal-cta" id="cl-modal-cta" href="#">
         <span data-vi="Mở Dự Án Đầy Đủ">Mở Dự Án Đầy Đủ</span><span data-en="Open Full Listing">Open Full Listing</span>
@@ -1816,6 +2149,9 @@ body.cl-modal-open { overflow:hidden; }
 
     document.getElementById('cl-modal-cta').href = d.url;
 
+    // Reset score tabs to Breakdown each time the modal opens.
+    setScoreTab('breakdown');
+
     modal.classList.add('open');
     modal.setAttribute('aria-hidden','false');
     body.classList.add('cl-modal-open');
@@ -1827,6 +2163,22 @@ body.cl-modal-open { overflow:hidden; }
       });
     });
   }
+
+  // Score tabs — Breakdown ⇄ Methodology. Methodology content is static
+  // (the framework, not per-listing data), so the tab just toggles panels.
+  function setScoreTab(name) {
+    document.querySelectorAll('.cl-modal-tab').forEach(t => {
+      const on = t.dataset.tab === name;
+      t.classList.toggle('on', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    document.querySelectorAll('.cl-modal-tabpanel').forEach(p => {
+      p.classList.toggle('on', p.dataset.panel === name);
+    });
+  }
+  document.querySelectorAll('.cl-modal-tab').forEach(t => {
+    t.addEventListener('click', () => setScoreTab(t.dataset.tab));
+  });
   function closeModal() {
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden','true');
@@ -1914,6 +2266,22 @@ body.cl-modal-open { overflow:hidden; }
       const id = row.dataset.listing;
       const card = document.querySelector(`.cl-card[data-listing="${id}"]`);
       if (card) openModal(card);
+    });
+  });
+
+  // Mobile sort pills — delegate to the existing thead handler so the
+  // sort logic stays in one place. Active pill mirrors thead's
+  // sort-asc/sort-desc class.
+  document.querySelectorAll('.cl-tbl-mobsort button[data-msort]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.msort;
+      const th = tbl.querySelector(`thead th[data-sort="${key}"]`);
+      if (!th) return;
+      th.click();
+      btn.parentElement.querySelectorAll('button[data-msort]').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      const arrow = btn.querySelector('.arrow');
+      if (arrow) arrow.textContent = th.classList.contains('sort-desc') ? '▾' : '▴';
     });
   });
 })();

@@ -31,12 +31,12 @@
 <meta name="referrer" content="no-referrer">
 
 <title>Malaysia · NAC Property Collection</title>
-<meta name="description" content="Branded residences across Malaysia — 1 curated listing from NAC's Property Hub.">
+<meta name="description" content="Branded residences across Malaysia — 6 curated listings from NAC's Property Hub.">
 
 
 <meta property="og:title" content="Malaysia · NAC Property Collection">
-<meta property="og:description" content="Branded residences across Malaysia — 1 curated listing from NAC's Property Hub.">
-<meta property="og:image" content="https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/conlay-signature-suites-klcc-hero/public">
+<meta property="og:description" content="Branded residences across Malaysia — 6 curated listings from NAC's Property Hub.">
+<meta property="og:image" content="https://rayvtt.github.io/Nac-Property-Hub-Listing-PDP/og-images/clp-my.png">
 
 
 
@@ -589,11 +589,12 @@ body[data-theme="dark"] .nac-logo-light { display:none; }
 .cl-card-name span[data-en] { font-style:italic; font-weight:400; color:var(--muted); font-size:.74em; margin-top:.1rem; }
 .cl-card-tag { font-family:var(--ff-display); font-size:.95rem; font-style:italic; color:var(--muted); line-height:1.45; margin-bottom:1.2rem; }
 
-.cl-card-stats { display:flex; gap:1.6rem; align-items:flex-end; }
+.cl-card-stats { display:flex; gap:1.6rem; align-items:flex-start; }
 .cl-card-stat { display:flex; flex-direction:column; }
 .cl-card-stat-num { font-family:var(--ff-display); font-size:1.5rem; font-weight:500; color:var(--display); line-height:1; }
 .cl-card-stat-num small { font-size:.6em; color:var(--gold); font-weight:400; margin-left:.1em; }
 .cl-card-stat-lbl { font-family:var(--ff-mono); font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted-2); margin-top:.35rem; }
+.cl-card-stat-local { font-family:var(--ff-mono); font-size:.62rem; color:var(--muted); margin-top:.3rem; letter-spacing:.03em; line-height:1; }
 
 /* Mini donut */
 .cl-mini-donut { position:relative; width:88px; height:88px; flex-shrink:0; }
@@ -651,10 +652,84 @@ body[data-theme="dark"] .nac-logo-light { display:none; }
 .cl-tbl-brand { font-family:var(--ff-mono); font-size:.55rem; letter-spacing:.14em; color:var(--muted); text-transform:uppercase; margin-top:.2rem; }
 .cl-tbl-val { font-family:var(--ff-display); font-size:1.08rem; font-weight:500; color:var(--display); }
 .cl-tbl-val small { color:var(--gold); font-size:.7em; margin-left:.1em; font-weight:400; }
+.cl-tbl-local { display:block; font-family:var(--ff-mono); font-size:.58rem; color:var(--muted); margin-top:.2rem; letter-spacing:.03em; line-height:1; }
 .cl-tbl-pill {
   display:inline-block; padding:.32rem .7rem; border-radius:999px;
   font-family:var(--ff-mono); font-size:.62rem; font-weight:500;
   background:var(--gold-soft); color:var(--gold);
+}
+
+/* Mobile sort-pill bar — hidden on desktop, shown above the comparison cards */
+.cl-tbl-mobsort { display:none; }
+
+/* Mobile comparison cards — each <tr> becomes a stacked listing card with
+   name + NAC pill at the top, city beneath, and a 3-up metric grid (Entry,
+   Yield, IRR) at the bottom. The desktop table is untouched. */
+@media(max-width:680px) {
+  .cl-compare { padding-inline:0; }
+  .cl-tbl-mobsort {
+    display:flex; gap:.4rem; align-items:center;
+    overflow-x:auto; padding:0 .2rem 1rem;
+    margin-bottom:.4rem; scrollbar-width:none;
+  }
+  .cl-tbl-mobsort::-webkit-scrollbar { display:none; }
+  .cl-tbl-mobsort-lbl { flex:0 0 auto; font-family:var(--ff-mono); font-size:.58rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-right:.2rem; }
+  .cl-tbl-mobsort button {
+    flex:0 0 auto; border:1px solid var(--line); background:var(--surface);
+    color:var(--display); padding:.4rem .8rem; border-radius:999px;
+    font-family:var(--ff-mono); font-size:.6rem; font-weight:500;
+    letter-spacing:.12em; text-transform:uppercase; cursor:pointer; white-space:nowrap;
+    display:inline-flex; align-items:center; gap:.25rem;
+  }
+  .cl-tbl-mobsort button.on { border-color:var(--gold); background:var(--gold-soft); color:var(--gold); }
+  .cl-tbl-mobsort button .arrow { display:none; font-size:.8em; }
+  .cl-tbl-mobsort button.on .arrow { display:inline; }
+
+  .cl-tbl-wrap { overflow:visible; background:transparent; border:none; box-shadow:none; border-radius:0; }
+  .cl-tbl { display:block; min-width:0; border-collapse:separate; }
+  .cl-tbl thead { display:none; }
+  .cl-tbl tbody { display:block; }
+  .cl-tbl tbody tr {
+    display:grid; grid-template-columns:1fr 1fr auto;
+    grid-template-areas:
+      "name name pill"
+      "city city pill"
+      "entry yield irr";
+    gap:.7rem .9rem;
+    padding:1.1rem 1.1rem 1.2rem;
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:14px; box-shadow:var(--shadow-sm);
+    margin-bottom:.7rem;
+  }
+  .cl-tbl tbody tr:hover { background:var(--surface); }
+  .cl-tbl tbody tr:last-child { margin-bottom:0; }
+  .cl-tbl tbody tr > td { padding:0; border:none; vertical-align:top; }
+  .cl-tbl tbody tr > td:nth-of-type(1) { grid-area:name; }
+  .cl-tbl tbody tr > td:nth-of-type(2) {
+    grid-area:city;
+    font-family:var(--ff-mono); font-size:.6rem; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--muted); line-height:1.4;
+    align-self:center; padding-top:.1rem;
+  }
+  .cl-tbl tbody tr > td:nth-of-type(2)::before { content:'📍 '; opacity:.7; }
+  .cl-tbl tbody tr > td:nth-of-type(3) { grid-area:entry; }
+  .cl-tbl tbody tr > td:nth-of-type(4) { grid-area:yield; }
+  .cl-tbl tbody tr > td:nth-of-type(5) { grid-area:irr; }
+  .cl-tbl tbody tr > td:nth-of-type(6) { grid-area:pill; align-self:start; }
+  .cl-tbl tbody tr > td:nth-of-type(3)::after,
+  .cl-tbl tbody tr > td:nth-of-type(4)::after,
+  .cl-tbl tbody tr > td:nth-of-type(5)::after {
+    display:block; margin-top:.35rem; line-height:1;
+    font-family:var(--ff-mono); font-size:.5rem; font-weight:500;
+    letter-spacing:.18em; text-transform:uppercase; color:var(--muted-2);
+  }
+  .cl-tbl tbody tr > td:nth-of-type(3)::after { content:'Entry'; }
+  .cl-tbl tbody tr > td:nth-of-type(4)::after { content:'Yield'; }
+  .cl-tbl tbody tr > td:nth-of-type(5)::after { content:'IRR'; }
+  .cl-tbl-val { font-size:1.02rem; }
+  .cl-tbl-local { font-size:.56rem; }
+  .cl-tbl-name { font-size:1rem; }
+  .cl-tbl-pill { padding:.28rem .58rem; font-size:.58rem; }
 }
 
 /* ─── ASPIRATION ────────────────────────────── */
@@ -779,6 +854,38 @@ body[data-theme="dark"] .nac-logo-light { display:none; }
 .cl-modal-sub-bar { height:6px; border-radius:999px; background:var(--surface-2); overflow:hidden; }
 .cl-modal-sub-fill { height:100%; background:linear-gradient(90deg, var(--orange), var(--gold)); border-radius:999px; transform-origin:left; transform:scaleX(0); transition:transform 1.1s cubic-bezier(.2,.6,.2,1); }
 .cl-modal-sub-val { font-family:var(--ff-display); font-weight:500; color:var(--display); text-align:right; }
+
+/* ── NAC score — Breakdown / Methodology tabs ── */
+.cl-modal-score { margin-bottom:1.8rem; }
+.cl-modal-tabs { display:flex; gap:.4rem; margin-bottom:1.2rem; border-bottom:1px solid var(--line); }
+.cl-modal-tab {
+  appearance:none; border:none; background:none; cursor:pointer;
+  padding:.55rem .2rem; margin-bottom:-1px;
+  font-family:var(--ff-mono); font-size:.62rem; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--muted); border-bottom:2px solid transparent; transition:color .2s, border-color .2s;
+}
+.cl-modal-tab + .cl-modal-tab { margin-left:1.4rem; }
+.cl-modal-tab:hover { color:var(--text); }
+.cl-modal-tab.on { color:var(--gold); border-bottom-color:var(--gold); }
+.cl-modal-tabpanel { display:none; }
+.cl-modal-tabpanel.on { display:block; animation:clTabIn .35s ease; }
+@keyframes clTabIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+
+.cl-method-intro { font-family:var(--ff-body); font-size:.84rem; line-height:1.55; color:var(--text); margin:0 0 1.2rem; }
+.cl-method-pillars { display:flex; flex-direction:column; gap:.95rem; margin-bottom:1.3rem; }
+.cl-method-pillar { display:grid; grid-template-columns:1fr auto; gap:.15rem 1rem; align-items:baseline; }
+.cl-method-pillar-name { font-family:var(--ff-display); font-size:1rem; font-weight:500; color:var(--display); }
+.cl-method-pillar-wt { font-family:var(--ff-mono); font-size:.72rem; font-weight:500; color:var(--gold); white-space:nowrap; }
+.cl-method-pillar-desc { grid-column:1 / -1; font-family:var(--ff-body); font-size:.78rem; line-height:1.5; color:var(--muted); }
+.cl-method-pillar-track { grid-column:1 / -1; height:4px; border-radius:999px; background:var(--surface-2); overflow:hidden; margin-top:.25rem; }
+.cl-method-pillar-fill { height:100%; border-radius:999px; background:linear-gradient(90deg, var(--orange), var(--gold)); }
+.cl-method-calib { font-family:var(--ff-body); font-size:.78rem; line-height:1.55; color:var(--muted); font-style:italic; padding:.95rem 1.1rem; background:var(--surface-2); border-radius:12px; border-left:2px solid var(--gold); margin-bottom:1.3rem; }
+.cl-method-grades { display:flex; flex-direction:column; gap:.45rem; }
+.cl-method-grade-head { font-family:var(--ff-mono); font-size:.58rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:.2rem; }
+.cl-method-grade { display:grid; grid-template-columns:58px auto 1fr; align-items:center; gap:.7rem; font-size:.8rem; }
+.cl-method-grade-band { font-family:var(--ff-mono); font-size:.7rem; color:var(--display); font-weight:500; }
+.cl-method-grade-stars { color:var(--gold); font-size:.72rem; letter-spacing:.05em; }
+.cl-method-grade-lbl { font-family:var(--ff-body); color:var(--muted); }
 
 .cl-modal-cta {
   display:flex; align-items:center; justify-content:center; gap:.6rem;
@@ -2320,6 +2427,2644 @@ body.cl-modal-open { overflow:hidden; }
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="cl-method-style">
+.cl-method{padding:3.4rem 1.5rem 1rem;}
+.cl-method .nac-method{margin:0 auto;max-width:640px;border-top:1px solid var(--line);}
+.cl-method .nac-method[open]{padding-bottom:2.4rem;}
+.cl-method .nac-method-summary{list-style:none;cursor:pointer;padding:1.4rem .2rem 1.2rem;display:grid;grid-template-columns:1fr auto;column-gap:1rem;align-items:center;user-select:none;}
+.cl-method .nac-method-summary::-webkit-details-marker{display:none;}
+.cl-method .nac-method-summary::marker{content:'';}
+.cl-method .nac-method-summary-text{font-family:var(--ff-display);font-size:1.15rem;font-weight:500;color:var(--display);letter-spacing:-.005em;}
+.cl-method .nac-method-summary-chev{font-family:var(--ff-display);font-size:1.5rem;font-weight:300;color:var(--gold);transition:transform .25s ease;}
+.cl-method .nac-method[open] .nac-method-summary-chev{transform:rotate(45deg);}
+.cl-method .nac-method-summary:hover .nac-method-summary-text{color:var(--gold);}
+.cl-method .nac-method-body{padding:.4rem .2rem 0;animation:clMethIn .35s ease;}
+@keyframes clMethIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.cl-method .nac-method-pillars{display:flex;flex-direction:column;gap:1.1rem;margin-bottom:1.7rem;}
+.cl-method .nac-method-pillar{display:grid;grid-template-columns:1fr auto;gap:.18rem 1rem;align-items:baseline;padding-bottom:1.05rem;border-bottom:1px solid var(--line);}
+.cl-method .nac-method-pillar:last-child{border-bottom:none;padding-bottom:0;}
+.cl-method .nac-method-pillar-name{font-family:var(--ff-display);font-size:1.05rem;font-weight:500;color:var(--display);}
+.cl-method .nac-method-pillar-wt{font-family:var(--ff-mono);font-size:.78rem;font-weight:500;color:var(--gold);white-space:nowrap;}
+.cl-method .nac-method-pillar-desc{grid-column:1 / -1;font-family:var(--ff-body);font-size:.84rem;line-height:1.55;color:var(--muted);margin-top:.1rem;}
+.cl-method .nac-method-pillar-track{grid-column:1 / -1;height:4px;border-radius:999px;background:var(--surface-2);overflow:hidden;margin-top:.55rem;}
+.cl-method .nac-method-pillar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--orange),var(--gold));}
+.cl-method .nac-method-calib{font-family:var(--ff-body);font-size:.85rem;line-height:1.6;color:var(--muted);font-style:italic;padding:1.05rem 1.2rem;background:var(--surface-2);border-radius:12px;border-left:2px solid var(--gold);margin:0 0 2.6rem;}
+.cl-method .nac-method-grades{display:flex;flex-direction:column;gap:.55rem;margin-top:2.6rem;}
+.cl-method .nac-method-grade-head{font-family:var(--ff-mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem;}
+.cl-method .nac-method-grade{display:grid;grid-template-columns:64px auto 1fr;align-items:center;gap:.8rem;font-size:.85rem;}
+.cl-method .nac-method-grade-band{font-family:var(--ff-mono);font-size:.74rem;color:var(--display);font-weight:500;}
+.cl-method .nac-method-grade-stars{color:var(--gold);font-size:.78rem;letter-spacing:.05em;}
+.cl-method .nac-method-grade-lbl{font-family:var(--ff-body);color:var(--muted);}
+@media(max-width:680px){.cl-method{padding:2.4rem 1.1rem .5rem;}.cl-method .nac-method-summary-text{font-size:1.05rem;}.cl-method .nac-method-pillar-name{font-size:1rem;}}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <meta property="og:url" content="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="vi_VN">
@@ -2327,8 +5072,8 @@ body.cl-modal-open { overflow:hidden; }
 <meta property="og:site_name" content="Nomad Asset Collective">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Malaysia · NAC Property Collection">
-<meta name="twitter:description" content="Branded residences across Malaysia — 1 curated listing from NAC's Property Hub.">
-<meta name="twitter:image" content="https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/conlay-signature-suites-klcc-hero/public">
+<meta name="twitter:description" content="Branded residences across Malaysia — 6 curated listings from NAC's Property Hub.">
+<meta name="twitter:image" content="https://rayvtt.github.io/Nac-Property-Hub-Listing-PDP/og-images/clp-my.png">
 <link rel="canonical" href="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/">
 <link rel="alternate" hreflang="vi" href="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/">
 <link rel="alternate" hreflang="en" href="https://nomadassetcollective.com/en/property-hub-bat-dong-san/malaysia/">
@@ -2341,10 +5086,10 @@ body.cl-modal-open { overflow:hidden; }
     {
       "@type": "CollectionPage",
       "name": "Malaysia · NAC Property Collection",
-      "description": "Branded residences across Malaysia — 1 curated listing from NAC's Property Hub.",
+      "description": "Branded residences across Malaysia — 6 curated listings from NAC's Property Hub.",
       "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/",
       "inLanguage": "vi",
-      "numberOfItems": 1,
+      "numberOfItems": 6,
       "isPartOf": {
         "@type": "WebSite",
         "name": "Nomad Asset Collective",
@@ -2354,7 +5099,7 @@ body.cl-modal-open { overflow:hidden; }
         "@type": "Country",
         "name": "Malaysia"
       },
-      "primaryImageOfPage": "https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/conlay-signature-suites-klcc-hero/public",
+      "primaryImageOfPage": "https://rayvtt.github.io/Nac-Property-Hub-Listing-PDP/og-images/clp-my.png",
       "publisher": {
         "@type": "Organization",
         "name": "Nomad Asset Collective",
@@ -2388,7 +5133,7 @@ body.cl-modal-open { overflow:hidden; }
     {
       "@type": "ItemList",
       "name": "Branded residences in Malaysia",
-      "numberOfItems": 1,
+      "numberOfItems": 6,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -2406,10 +5151,125 @@ body.cl-modal-open { overflow:hidden; }
             "areaServed": "KLCC, Kuala Lumpur",
             "offers": {
               "@type": "Offer",
-              "price": 1582000,
+              "price": 391000,
               "priceCurrency": "USD",
               "availability": "https://schema.org/InStock",
               "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/conlay-signature-suites-klcc"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "Product",
+            "name": "Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H)",
+            "category": "Condo",
+            "image": "https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/golden-crown-residence-klcc-hero/public",
+            "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/golden-crown-residence-klcc",
+            "brand": {
+              "@type": "Brand",
+              "name": "Golden Crown"
+            },
+            "areaServed": "Jalan Ampang, Kuala Lumpur",
+            "offers": {
+              "@type": "Offer",
+              "price": 334000,
+              "priceCurrency": "USD",
+              "availability": "https://schema.org/InStock",
+              "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/golden-crown-residence-klcc"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "Product",
+            "name": "Oxley Towers KLCC — Kuala Lumpur (MM2H)",
+            "category": "Branded Residences",
+            "image": "https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/oxley-towers-klcc-hero/public",
+            "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/oxley-towers-klcc",
+            "brand": {
+              "@type": "Brand",
+              "name": "Oxley Towers"
+            },
+            "areaServed": "KLCC, Kuala Lumpur",
+            "offers": {
+              "@type": "Offer",
+              "price": 331000,
+              "priceCurrency": "USD",
+              "availability": "https://schema.org/InStock",
+              "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/oxley-towers-klcc"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "Product",
+            "name": "Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H)",
+            "category": "Condo",
+            "image": "https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/pavilion-square-klcc-hero/public",
+            "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/pavilion-square-klcc",
+            "brand": {
+              "@type": "Brand",
+              "name": "Pavilion"
+            },
+            "areaServed": "Bukit Bintang, Kuala Lumpur",
+            "offers": {
+              "@type": "Offer",
+              "price": 247000,
+              "priceCurrency": "USD",
+              "availability": "https://schema.org/InStock",
+              "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/pavilion-square-klcc"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@type": "Product",
+            "name": "Centrix The Station KLCC — Kuala Lumpur (MM2H)",
+            "category": "Condo",
+            "image": "https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/e43ab661-5cbf-487c-d513-0823541d9d00/public",
+            "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/centrix-the-station-klcc",
+            "brand": {
+              "@type": "Brand",
+              "name": "Centrix"
+            },
+            "areaServed": "Jalan Ampang, Kuala Lumpur",
+            "offers": {
+              "@type": "Offer",
+              "price": 197000,
+              "priceCurrency": "USD",
+              "availability": "https://schema.org/InStock",
+              "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/centrix-the-station-klcc"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "item": {
+            "@type": "Product",
+            "name": "Curvo Residences — Setapak, Kuala Lumpur (MM2H)",
+            "category": "Condo",
+            "image": "https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/372f3f54-86f0-41d6-f172-856c4f1d3000/public",
+            "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/curvo-residences-setapak",
+            "brand": {
+              "@type": "Brand",
+              "name": "Curvo"
+            },
+            "areaServed": "Setapak, Kuala Lumpur",
+            "offers": {
+              "@type": "Offer",
+              "price": 139000,
+              "priceCurrency": "USD",
+              "availability": "https://schema.org/InStock",
+              "url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/curvo-residences-setapak"
             }
           }
         }
@@ -2458,7 +5318,12 @@ body.cl-modal-open { overflow:hidden; }
 
 <!-- ═══ HERO ═══ -->
 <section class="cl-hero" id="cl-hero">
-  <div class="cl-hero-slides" id="cl-hero-slides">      <div class="cl-hero-slide on" data-name-vi="The Conlay Signature Suites — Kuala Lumpur (MM2H)" data-name-en="The Conlay Signature Suites — Kuala Lumpur (MM2H)" data-price="$1.6M" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/conlay-signature-suites-klcc" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/conlay-signature-suites-klcc-hero/public')"></div></div>
+  <div class="cl-hero-slides" id="cl-hero-slides">      <div class="cl-hero-slide on" data-name-vi="The Conlay Signature Suites — Kuala Lumpur (MM2H)" data-name-en="The Conlay Signature Suites — Kuala Lumpur (MM2H)" data-price="$391K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/conlay-signature-suites-klcc" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/conlay-signature-suites-klcc-hero/public')"></div>
+      <div class="cl-hero-slide" data-name-vi="Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H)" data-name-en="Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H)" data-price="$334K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/golden-crown-residence-klcc" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/golden-crown-residence-klcc-hero/public')"></div>
+      <div class="cl-hero-slide" data-name-vi="Oxley Towers KLCC — Kuala Lumpur (MM2H)" data-name-en="Oxley Towers KLCC — Kuala Lumpur (MM2H)" data-price="$331K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/oxley-towers-klcc" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/oxley-towers-klcc-hero/public')"></div>
+      <div class="cl-hero-slide" data-name-vi="Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H)" data-name-en="Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H)" data-price="$247K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/pavilion-square-klcc" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/pavilion-square-klcc-hero/public')"></div>
+      <div class="cl-hero-slide" data-name-vi="Centrix The Station KLCC — Kuala Lumpur (MM2H)" data-name-en="Centrix The Station KLCC — Kuala Lumpur (MM2H)" data-price="$197K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/centrix-the-station-klcc" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/e43ab661-5cbf-487c-d513-0823541d9d00/public')"></div>
+      <div class="cl-hero-slide" data-name-vi="Curvo Residences — Setapak, Kuala Lumpur (MM2H)" data-name-en="Curvo Residences — Setapak, Kuala Lumpur (MM2H)" data-price="$139K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/curvo-residences-setapak" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/372f3f54-86f0-41d6-f172-856c4f1d3000/public')"></div></div>
   <div class="cl-hero-veil"></div>
   <div class="cl-hero-grain"></div>
 
@@ -2466,7 +5331,7 @@ body.cl-modal-open { overflow:hidden; }
     <div class="cl-hero-text reveal">
       <div class="cl-hero-eyebrow">
         <span><span data-vi="Quốc gia · Malaysia">Quốc gia · Malaysia</span><span data-en="Country · Malaysia">Country · Malaysia</span></span>
-        <span class="live"><span data-vi="1 dự án Live">1 dự án Live</span><span data-en="1 listing live">1 listing live</span></span>
+        <span class="live"><span data-vi="6 dự án Live">6 dự án Live</span><span data-en="6 listings live">6 listings live</span></span>
       </div>
       <h1 class="cl-name"><span data-vi="Malaysia">Malaysia</span><span data-en="Malaysia">Malaysia</span></h1>
       <p class="cl-hero-tag"><span data-vi="<strong>Cửa ngõ ASEAN</strong> — căn hộ branded Kuala Lumpur quanh Khu Tam Giác Vàng, sở hữu strata vĩnh viễn, định cư MM2H 10 năm."><strong>Cửa ngõ ASEAN</strong> — căn hộ branded Kuala Lumpur quanh Khu Tam Giác Vàng, sở hữu strata vĩnh viễn, định cư MM2H 10 năm.</span><span data-en="<strong>The ASEAN gateway</strong> — branded Kuala Lumpur residences around the Golden Triangle, freehold strata, 10-year MM2H residency."><strong>The ASEAN gateway</strong> — branded Kuala Lumpur residences around the Golden Triangle, freehold strata, 10-year MM2H residency.</span></p>
@@ -2477,7 +5342,7 @@ body.cl-modal-open { overflow:hidden; }
         <span class="cl-hero-featured-thumb" id="cl-hero-featured-thumb" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/conlay-signature-suites-klcc-hero/public')"></span>
         <span class="cl-hero-featured-txt">
           <span class="cl-hero-featured-lbl"><span data-vi="Tiêu điểm">Tiêu điểm</span><span data-en="Featured">Featured</span></span>
-          <span class="cl-hero-featured-name" id="cl-hero-featured-name">The Conlay Signature Suites — Kuala Lumpur (MM2H) <small>$1.6M</small></span>
+          <span class="cl-hero-featured-name" id="cl-hero-featured-name">The Conlay Signature Suites — Kuala Lumpur (MM2H) <small>$391K</small></span>
         </span>
         <span class="cl-hero-featured-arrow">→</span>
       </a>
@@ -2487,19 +5352,19 @@ body.cl-modal-open { overflow:hidden; }
       <div class="cl-plaque-lbl"><span data-vi="Tổng quan thị trường">Tổng quan thị trường</span><span data-en="Market snapshot">Market snapshot</span></div>
       <div class="cl-plaque-row">
         <span class="cl-plaque-row-lbl"><span data-vi="Dự án">Dự án</span><span data-en="Listings">Listings</span></span>
-        <span class="cl-plaque-row-val">1</span>
+        <span class="cl-plaque-row-val">6</span>
       </div>
       <div class="cl-plaque-row">
         <span class="cl-plaque-row-lbl"><span data-vi="Thành phố">Thành phố</span><span data-en="Cities">Cities</span></span>
         <span class="cl-plaque-row-val">1</span>
       </div>
       <div class="cl-plaque-row">
-        <span class="cl-plaque-row-lbl"><span data-vi="Giá vào cửa">Giá vào cửa</span><span data-en="Entry from">Entry from</span></span>
-        <span class="cl-plaque-row-val">$1.6<small>M</small></span>
+        <span class="cl-plaque-row-lbl"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry from">Entry from</span></span>
+        <span class="cl-plaque-row-val">$139<small>K</small></span>
       </div>
       <div class="cl-plaque-row">
         <span class="cl-plaque-row-lbl">Yield</span>
-        <span class="cl-plaque-row-val">4.0<small>%</small></span>
+        <span class="cl-plaque-row-val">4.0–5.5<small>%</small></span>
       </div>
       <div class="cl-plaque-row">
         <span class="cl-plaque-row-lbl">YoY USD</span>
@@ -2538,7 +5403,7 @@ body.cl-modal-open { overflow:hidden; }
             <div class="cl-atlas-pinlist-city">Kuala Lumpur</div>
             <div class="cl-atlas-pinlist-meta"><span data-vi="Thủ đô · Tam Giác Vàng">Thủ đô · Tam Giác Vàng</span><span data-en="Capital · Golden Triangle">Capital · Golden Triangle</span></div>
           </div>
-          <span class="cl-atlas-pinlist-count">1 <span data-vi="dự án">dự án</span><span data-en="listing">listing</span></span>
+          <span class="cl-atlas-pinlist-count">6 <span data-vi="dự án">dự án</span><span data-en="listings">listings</span></span>
         </a></div>
     </div>
 
@@ -2592,6 +5457,160 @@ body.cl-modal-open { overflow:hidden; }
         
         
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <g class="cl-pin-group" onclick="window.clFilterCity &amp;&amp; clFilterCity('kuala-lumpur')">
           <circle class="cl-pin-halo" cx="108" cy="160" r="7"></circle>
           <circle class="cl-pin-ring" cx="108" cy="160" r="6"></circle>
@@ -2618,7 +5637,7 @@ body.cl-modal-open { overflow:hidden; }
     </div>
     <div class="cl-coll-meta">
       <div class="cl-coll-meta-stat">
-        <div class="cl-coll-meta-num">1</div>
+        <div class="cl-coll-meta-num">6</div>
         <div class="cl-coll-meta-lbl"><span data-vi="Dự án">Dự án</span><span data-en="Listings">Listings</span></div>
       </div>
       <div class="cl-coll-meta-stat">
@@ -2628,13 +5647,13 @@ body.cl-modal-open { overflow:hidden; }
     </div>
   </div>
 
-  <div class="cl-coll-filter reveal">      <button class="cl-pill on" data-filter="all"><span data-vi="Tất cả">Tất cả</span><span data-en="All">All</span><span class="pill-cnt">1</span></button>
-      <button class="cl-pill" data-filter="kuala-lumpur">Kuala Lumpur <span class="pill-cnt">1</span></button></div>
+  <div class="cl-coll-filter reveal">      <button class="cl-pill on" data-filter="all"><span data-vi="Tất cả">Tất cả</span><span data-en="All">All</span><span class="pill-cnt">6</span></button>
+      <button class="cl-pill" data-filter="kuala-lumpur">Kuala Lumpur <span class="pill-cnt">6</span></button></div>
 
   <div class="cl-cards-wrap">
     <button class="cl-cards-nav cl-cards-nav-prev" aria-label="Previous listing">‹</button>
     <button class="cl-cards-nav cl-cards-nav-next" aria-label="Next listing">›</button>
-    <div class="cl-cards" id="cl-collection-track">    <a class="cl-card reveal" href="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/conlay-signature-suites-klcc" rel="noopener" data-city="kuala-lumpur" data-listing="conlay-signature-suites-klcc" data-img="https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/conlay-signature-suites-klcc-hero/public" data-brand="The Conlay" data-name-vi="The Conlay Signature Suites — Kuala Lumpur (MM2H)" data-name-en="The Conlay Signature Suites — Kuala Lumpur (MM2H)" data-tag-vi="Căn hộ dịch vụ E&amp;O × Mitsui giữa lòng KLCC" data-tag-en="E&amp;O × Mitsui serviced living in the heart of KLCC" data-price="1582" data-yield="4.0" data-irr="5.2" data-coc="2.7" data-rent="5250" data-score="76" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:7.5},{&quot;vi&quot;:&quot;Yield&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:5},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:9},{&quot;vi&quot;:&quot;Quản Lý&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:7.5},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:6.5},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:7}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/conlay-signature-suites-klcc">
+    <div class="cl-cards" id="cl-collection-track">    <a class="cl-card reveal" href="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/conlay-signature-suites-klcc" rel="noopener" data-city="kuala-lumpur" data-listing="conlay-signature-suites-klcc" data-img="https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/conlay-signature-suites-klcc-hero/public" data-brand="The Conlay" data-name-vi="The Conlay Signature Suites — Kuala Lumpur (MM2H)" data-name-en="The Conlay Signature Suites — Kuala Lumpur (MM2H)" data-tag-vi="Căn hộ dịch vụ E&amp;O × Mitsui giữa lòng KLCC" data-tag-en="E&amp;O × Mitsui serviced living in the heart of KLCC" data-price="391" data-yield="4.0" data-irr="5.2" data-coc="2.7" data-rent="5250" data-score="76" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:7.5},{&quot;vi&quot;:&quot;Yield&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:5},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:9},{&quot;vi&quot;:&quot;Quản Lý&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:7.5},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:6.5},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:7}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/conlay-signature-suites-klcc">
       <div class="cl-card-img-wrap">
         <div class="cl-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/conlay-signature-suites-klcc-hero/public')"></div>
         <div class="cl-card-img-veil"></div>
@@ -2651,8 +5670,9 @@ body.cl-modal-open { overflow:hidden; }
           <p class="cl-card-tag"><span data-vi="Căn hộ dịch vụ E&amp;O × Mitsui giữa lòng KLCC">Căn hộ dịch vụ E&amp;O × Mitsui giữa lòng KLCC</span><span data-en="E&amp;O × Mitsui serviced living in the heart of KLCC">E&amp;O × Mitsui serviced living in the heart of KLCC</span></p>
           <div class="cl-card-stats">
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">$1.6<small>M</small></span>
-              <span class="cl-card-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></span>
+              <span class="cl-card-stat-num">$391<small>K</small></span>
+              <span class="cl-card-stat-local">(RM 1.6M)</span>
+              <span class="cl-card-stat-lbl"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry">Entry</span></span>
             </div>
             <div class="cl-card-stat">
               <span class="cl-card-stat-num">4.0<small>%</small></span>
@@ -2679,6 +5699,241 @@ body.cl-modal-open { overflow:hidden; }
         <span class="cl-card-footer-quick"><span data-vi="Xem nhanh">Xem nhanh</span><span data-en="Quick view">Quick view</span></span>
         <span class="cl-card-footer-arrow"><span data-vi="Mở dự án">Mở dự án</span><span data-en="Open listing">Open listing</span> <span>→</span></span>
       </div>
+    </a>
+    <a class="cl-card reveal" href="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/golden-crown-residence-klcc" rel="noopener" data-city="kuala-lumpur" data-listing="golden-crown-residence-klcc" data-img="https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/golden-crown-residence-klcc-hero/public" data-brand="Golden Crown" data-name-vi="Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H)" data-name-en="Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H)" data-tag-vi="Sống căn hộ dịch vụ trên Jalan Ampang" data-tag-en="Serviced-residence living on Jalan Ampang" data-price="334" data-yield="5.5" data-irr="8.0" data-coc="4.5" data-rent="6200" data-score="72" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:6.5},{&quot;vi&quot;:&quot;Yield&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:6.5},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:8},{&quot;vi&quot;:&quot;Quản Lý&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:7},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:7},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:6.5}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/golden-crown-residence-klcc">
+      <div class="cl-card-img-wrap">
+        <div class="cl-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/golden-crown-residence-klcc-hero/public')"></div>
+        <div class="cl-card-img-veil"></div>
+        <div class="cl-card-chips">
+          <span class="cl-card-chip city">Kuala Lumpur</span>
+          <span class="cl-card-chip">🛂 <span data-vi="Định cư">Định cư</span><span data-en="Residency">Residency</span></span>
+          <span class="cl-card-chip live"><span data-vi="Live">Live</span><span data-en="Live">Live</span></span>
+        </div>
+        <div class="cl-card-brandmark">Golden Crown</div>
+      </div>
+      <div class="cl-card-body">
+        <div class="cl-card-info">
+          <h3 class="cl-card-name"><span data-vi="Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H)">Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H)</span><span data-en="Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H)">Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H)</span></h3>
+          <p class="cl-card-tag"><span data-vi="Sống căn hộ dịch vụ trên Jalan Ampang">Sống căn hộ dịch vụ trên Jalan Ampang</span><span data-en="Serviced-residence living on Jalan Ampang">Serviced-residence living on Jalan Ampang</span></p>
+          <div class="cl-card-stats">
+            <div class="cl-card-stat">
+              <span class="cl-card-stat-num">$334<small>K</small></span>
+              <span class="cl-card-stat-local">(RM 1.4M)</span>
+              <span class="cl-card-stat-lbl"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry">Entry</span></span>
+            </div>
+            <div class="cl-card-stat">
+              <span class="cl-card-stat-num">5.5<small>%</small></span>
+              <span class="cl-card-stat-lbl">Yield</span>
+            </div>
+            <div class="cl-card-stat">
+              <span class="cl-card-stat-num">8.0<small>%</small></span>
+              <span class="cl-card-stat-lbl">IRR</span>
+            </div>
+          </div>
+        </div>
+        <div class="cl-mini-donut">
+          <svg viewBox="0 0 100 100">
+            <circle class="cl-mini-donut-track" cx="50" cy="50" r="42"></circle>
+            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="73.9" data-final="73.9"></circle>
+          </svg>
+          <div class="cl-mini-donut-center">
+            <span class="cl-mini-donut-val" data-count-to="72">0</span>
+            <span class="cl-mini-donut-lbl">NAC</span>
+          </div>
+        </div>
+      </div>
+      <div class="cl-card-footer">
+        <span class="cl-card-footer-quick"><span data-vi="Xem nhanh">Xem nhanh</span><span data-en="Quick view">Quick view</span></span>
+        <span class="cl-card-footer-arrow"><span data-vi="Mở dự án">Mở dự án</span><span data-en="Open listing">Open listing</span> <span>→</span></span>
+      </div>
+    </a>
+    <a class="cl-card reveal" href="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/oxley-towers-klcc" rel="noopener" data-city="kuala-lumpur" data-listing="oxley-towers-klcc" data-img="https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/oxley-towers-klcc-hero/public" data-brand="Oxley Towers" data-name-vi="Oxley Towers KLCC — Kuala Lumpur (MM2H)" data-name-en="Oxley Towers KLCC — Kuala Lumpur (MM2H)" data-tag-vi="Sống gắn thương hiệu SO/ Sofitel &amp; Jumeirah, sở hữu vĩnh viễn tại KLCC" data-tag-en="Freehold SO/ Sofitel &amp; Jumeirah branded living at KLCC" data-price="331" data-yield="5.0" data-irr="8.0" data-coc="4.0" data-rent="5600" data-score="78" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:8.5},{&quot;vi&quot;:&quot;Yield&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:6},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:9},{&quot;vi&quot;:&quot;Quản Lý&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:7.5},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:7},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:6.5}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/oxley-towers-klcc">
+      <div class="cl-card-img-wrap">
+        <div class="cl-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/oxley-towers-klcc-hero/public')"></div>
+        <div class="cl-card-img-veil"></div>
+        <div class="cl-card-chips">
+          <span class="cl-card-chip city">Kuala Lumpur</span>
+          <span class="cl-card-chip">🛂 <span data-vi="Định cư">Định cư</span><span data-en="Residency">Residency</span></span>
+          <span class="cl-card-chip live"><span data-vi="Live">Live</span><span data-en="Live">Live</span></span>
+        </div>
+        <div class="cl-card-brandmark">Oxley Towers</div>
+      </div>
+      <div class="cl-card-body">
+        <div class="cl-card-info">
+          <h3 class="cl-card-name"><span data-vi="Oxley Towers KLCC — Kuala Lumpur (MM2H)">Oxley Towers KLCC — Kuala Lumpur (MM2H)</span><span data-en="Oxley Towers KLCC — Kuala Lumpur (MM2H)">Oxley Towers KLCC — Kuala Lumpur (MM2H)</span></h3>
+          <p class="cl-card-tag"><span data-vi="Sống gắn thương hiệu SO/ Sofitel &amp; Jumeirah, sở hữu vĩnh viễn tại KLCC">Sống gắn thương hiệu SO/ Sofitel &amp; Jumeirah, sở hữu vĩnh viễn tại KLCC</span><span data-en="Freehold SO/ Sofitel &amp; Jumeirah branded living at KLCC">Freehold SO/ Sofitel &amp; Jumeirah branded living at KLCC</span></p>
+          <div class="cl-card-stats">
+            <div class="cl-card-stat">
+              <span class="cl-card-stat-num">$331<small>K</small></span>
+              <span class="cl-card-stat-local">(RM 1.3M)</span>
+              <span class="cl-card-stat-lbl"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry">Entry</span></span>
+            </div>
+            <div class="cl-card-stat">
+              <span class="cl-card-stat-num">5.0<small>%</small></span>
+              <span class="cl-card-stat-lbl">Yield</span>
+            </div>
+            <div class="cl-card-stat">
+              <span class="cl-card-stat-num">8.0<small>%</small></span>
+              <span class="cl-card-stat-lbl">IRR</span>
+            </div>
+          </div>
+        </div>
+        <div class="cl-mini-donut">
+          <svg viewBox="0 0 100 100">
+            <circle class="cl-mini-donut-track" cx="50" cy="50" r="42"></circle>
+            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="58.1" data-final="58.1"></circle>
+          </svg>
+          <div class="cl-mini-donut-center">
+            <span class="cl-mini-donut-val" data-count-to="78">0</span>
+            <span class="cl-mini-donut-lbl">NAC</span>
+          </div>
+        </div>
+      </div>
+      <div class="cl-card-footer">
+        <span class="cl-card-footer-quick"><span data-vi="Xem nhanh">Xem nhanh</span><span data-en="Quick view">Quick view</span></span>
+        <span class="cl-card-footer-arrow"><span data-vi="Mở dự án">Mở dự án</span><span data-en="Open listing">Open listing</span> <span>→</span></span>
+      </div>
+    </a>
+    <a class="cl-card reveal" href="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/pavilion-square-klcc" rel="noopener" data-city="kuala-lumpur" data-listing="pavilion-square-klcc" data-img="https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/pavilion-square-klcc-hero/public" data-brand="Pavilion" data-name-vi="Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H)" data-name-en="Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H)" data-tag-vi="Sống phức hợp Pavilion giữa trung tâm Bukit Bintang" data-tag-en="Integrated Pavilion living in the heart of Bukit Bintang" data-price="247" data-yield="5.0" data-irr="8.0" data-coc="4.0" data-rent="4200" data-score="73" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:8},{&quot;vi&quot;:&quot;Yield&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:6},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:8},{&quot;vi&quot;:&quot;Quản Lý&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:7},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:7.5},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:6.5}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/pavilion-square-klcc">
+      <div class="cl-card-img-wrap">
+        <div class="cl-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/pavilion-square-klcc-hero/public')"></div>
+        <div class="cl-card-img-veil"></div>
+        <div class="cl-card-chips">
+          <span class="cl-card-chip city">Kuala Lumpur</span>
+          <span class="cl-card-chip">🛂 <span data-vi="Định cư">Định cư</span><span data-en="Residency">Residency</span></span>
+          <span class="cl-card-chip live"><span data-vi="Live">Live</span><span data-en="Live">Live</span></span>
+        </div>
+        <div class="cl-card-brandmark">Pavilion</div>
+      </div>
+      <div class="cl-card-body">
+        <div class="cl-card-info">
+          <h3 class="cl-card-name"><span data-vi="Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H)">Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H)</span><span data-en="Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H)">Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H)</span></h3>
+          <p class="cl-card-tag"><span data-vi="Sống phức hợp Pavilion giữa trung tâm Bukit Bintang">Sống phức hợp Pavilion giữa trung tâm Bukit Bintang</span><span data-en="Integrated Pavilion living in the heart of Bukit Bintang">Integrated Pavilion living in the heart of Bukit Bintang</span></p>
+          <div class="cl-card-stats">
+            <div class="cl-card-stat">
+              <span class="cl-card-stat-num">$247<small>K</small></span>
+              <span class="cl-card-stat-local">(RM 1M)</span>
+              <span class="cl-card-stat-lbl"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry">Entry</span></span>
+            </div>
+            <div class="cl-card-stat">
+              <span class="cl-card-stat-num">5.0<small>%</small></span>
+              <span class="cl-card-stat-lbl">Yield</span>
+            </div>
+            <div class="cl-card-stat">
+              <span class="cl-card-stat-num">8.0<small>%</small></span>
+              <span class="cl-card-stat-lbl">IRR</span>
+            </div>
+          </div>
+        </div>
+        <div class="cl-mini-donut">
+          <svg viewBox="0 0 100 100">
+            <circle class="cl-mini-donut-track" cx="50" cy="50" r="42"></circle>
+            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="71.3" data-final="71.3"></circle>
+          </svg>
+          <div class="cl-mini-donut-center">
+            <span class="cl-mini-donut-val" data-count-to="73">0</span>
+            <span class="cl-mini-donut-lbl">NAC</span>
+          </div>
+        </div>
+      </div>
+      <div class="cl-card-footer">
+        <span class="cl-card-footer-quick"><span data-vi="Xem nhanh">Xem nhanh</span><span data-en="Quick view">Quick view</span></span>
+        <span class="cl-card-footer-arrow"><span data-vi="Mở dự án">Mở dự án</span><span data-en="Open listing">Open listing</span> <span>→</span></span>
+      </div>
+    </a>
+    <a class="cl-card reveal" href="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/centrix-the-station-klcc" rel="noopener" data-city="kuala-lumpur" data-listing="centrix-the-station-klcc" data-img="https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/e43ab661-5cbf-487c-d513-0823541d9d00/public" data-brand="Centrix" data-name-vi="Centrix The Station KLCC — Kuala Lumpur (MM2H)" data-name-en="Centrix The Station KLCC — Kuala Lumpur (MM2H)" data-tag-vi="Sống SOHO định hướng giao thông trên LRT Dang Wangi" data-tag-en="Transit-oriented SOHO living above Dang Wangi LRT" data-price="197" data-yield="5.5" data-irr="8.0" data-coc="4.5" data-rent="3700" data-score="70" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:6.5},{&quot;vi&quot;:&quot;Yield&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:6.5},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:8},{&quot;vi&quot;:&quot;Quản Lý&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:7},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:7},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:6.5}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/centrix-the-station-klcc">
+      <div class="cl-card-img-wrap">
+        <div class="cl-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/e43ab661-5cbf-487c-d513-0823541d9d00/public')"></div>
+        <div class="cl-card-img-veil"></div>
+        <div class="cl-card-chips">
+          <span class="cl-card-chip city">Kuala Lumpur</span>
+          <span class="cl-card-chip">🛂 <span data-vi="Định cư">Định cư</span><span data-en="Residency">Residency</span></span>
+          <span class="cl-card-chip live"><span data-vi="Live">Live</span><span data-en="Live">Live</span></span>
+        </div>
+        <div class="cl-card-brandmark">Centrix</div>
+      </div>
+      <div class="cl-card-body">
+        <div class="cl-card-info">
+          <h3 class="cl-card-name"><span data-vi="Centrix The Station KLCC — Kuala Lumpur (MM2H)">Centrix The Station KLCC — Kuala Lumpur (MM2H)</span><span data-en="Centrix The Station KLCC — Kuala Lumpur (MM2H)">Centrix The Station KLCC — Kuala Lumpur (MM2H)</span></h3>
+          <p class="cl-card-tag"><span data-vi="Sống SOHO định hướng giao thông trên LRT Dang Wangi">Sống SOHO định hướng giao thông trên LRT Dang Wangi</span><span data-en="Transit-oriented SOHO living above Dang Wangi LRT">Transit-oriented SOHO living above Dang Wangi LRT</span></p>
+          <div class="cl-card-stats">
+            <div class="cl-card-stat">
+              <span class="cl-card-stat-num">$197<small>K</small></span>
+              <span class="cl-card-stat-local">(RM 800K)</span>
+              <span class="cl-card-stat-lbl"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry">Entry</span></span>
+            </div>
+            <div class="cl-card-stat">
+              <span class="cl-card-stat-num">5.5<small>%</small></span>
+              <span class="cl-card-stat-lbl">Yield</span>
+            </div>
+            <div class="cl-card-stat">
+              <span class="cl-card-stat-num">8.0<small>%</small></span>
+              <span class="cl-card-stat-lbl">IRR</span>
+            </div>
+          </div>
+        </div>
+        <div class="cl-mini-donut">
+          <svg viewBox="0 0 100 100">
+            <circle class="cl-mini-donut-track" cx="50" cy="50" r="42"></circle>
+            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="79.2" data-final="79.2"></circle>
+          </svg>
+          <div class="cl-mini-donut-center">
+            <span class="cl-mini-donut-val" data-count-to="70">0</span>
+            <span class="cl-mini-donut-lbl">NAC</span>
+          </div>
+        </div>
+      </div>
+      <div class="cl-card-footer">
+        <span class="cl-card-footer-quick"><span data-vi="Xem nhanh">Xem nhanh</span><span data-en="Quick view">Quick view</span></span>
+        <span class="cl-card-footer-arrow"><span data-vi="Mở dự án">Mở dự án</span><span data-en="Open listing">Open listing</span> <span>→</span></span>
+      </div>
+    </a>
+    <a class="cl-card reveal" href="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/curvo-residences-setapak" rel="noopener" data-city="kuala-lumpur" data-listing="curvo-residences-setapak" data-img="https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/372f3f54-86f0-41d6-f172-856c4f1d3000/public" data-brand="Curvo" data-name-vi="Curvo Residences — Setapak, Kuala Lumpur (MM2H)" data-name-en="Curvo Residences — Setapak, Kuala Lumpur (MM2H)" data-tag-vi="Sống gia đình rộng rãi gần trung tâm, bởi SkyWorld" data-tag-en="Spacious family living near the city, by SkyWorld" data-price="139" data-yield="5.0" data-irr="7.0" data-coc="4.0" data-rent="2400" data-score="66" data-subs="[{&quot;vi&quot;:&quot;Thương Hiệu&quot;,&quot;en&quot;:&quot;Brand&quot;,&quot;val&quot;:6.5},{&quot;vi&quot;:&quot;Yield&quot;,&quot;en&quot;:&quot;Yield&quot;,&quot;val&quot;:6},{&quot;vi&quot;:&quot;Vị Trí&quot;,&quot;en&quot;:&quot;Location&quot;,&quot;val&quot;:6.5},{&quot;vi&quot;:&quot;Quản Lý&quot;,&quot;en&quot;:&quot;Management&quot;,&quot;val&quot;:7},{&quot;vi&quot;:&quot;Thanh Khoản&quot;,&quot;en&quot;:&quot;Liquidity&quot;,&quot;val&quot;:6.5},{&quot;vi&quot;:&quot;Rủi Ro&quot;,&quot;en&quot;:&quot;Risk&quot;,&quot;val&quot;:6.5}]" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/curvo-residences-setapak">
+      <div class="cl-card-img-wrap">
+        <div class="cl-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/372f3f54-86f0-41d6-f172-856c4f1d3000/public')"></div>
+        <div class="cl-card-img-veil"></div>
+        <div class="cl-card-chips">
+          <span class="cl-card-chip city">Kuala Lumpur</span>
+          <span class="cl-card-chip">🛂 <span data-vi="Định cư">Định cư</span><span data-en="Residency">Residency</span></span>
+          <span class="cl-card-chip live"><span data-vi="Live">Live</span><span data-en="Live">Live</span></span>
+        </div>
+        <div class="cl-card-brandmark">Curvo</div>
+      </div>
+      <div class="cl-card-body">
+        <div class="cl-card-info">
+          <h3 class="cl-card-name"><span data-vi="Curvo Residences — Setapak, Kuala Lumpur (MM2H)">Curvo Residences — Setapak, Kuala Lumpur (MM2H)</span><span data-en="Curvo Residences — Setapak, Kuala Lumpur (MM2H)">Curvo Residences — Setapak, Kuala Lumpur (MM2H)</span></h3>
+          <p class="cl-card-tag"><span data-vi="Sống gia đình rộng rãi gần trung tâm, bởi SkyWorld">Sống gia đình rộng rãi gần trung tâm, bởi SkyWorld</span><span data-en="Spacious family living near the city, by SkyWorld">Spacious family living near the city, by SkyWorld</span></p>
+          <div class="cl-card-stats">
+            <div class="cl-card-stat">
+              <span class="cl-card-stat-num">$139<small>K</small></span>
+              <span class="cl-card-stat-local">(RM 564K)</span>
+              <span class="cl-card-stat-lbl"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry">Entry</span></span>
+            </div>
+            <div class="cl-card-stat">
+              <span class="cl-card-stat-num">5.0<small>%</small></span>
+              <span class="cl-card-stat-lbl">Yield</span>
+            </div>
+            <div class="cl-card-stat">
+              <span class="cl-card-stat-num">7.0<small>%</small></span>
+              <span class="cl-card-stat-lbl">IRR</span>
+            </div>
+          </div>
+        </div>
+        <div class="cl-mini-donut">
+          <svg viewBox="0 0 100 100">
+            <circle class="cl-mini-donut-track" cx="50" cy="50" r="42"></circle>
+            <circle class="cl-mini-donut-fill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="89.7" data-final="89.7"></circle>
+          </svg>
+          <div class="cl-mini-donut-center">
+            <span class="cl-mini-donut-val" data-count-to="66">0</span>
+            <span class="cl-mini-donut-lbl">NAC</span>
+          </div>
+        </div>
+      </div>
+      <div class="cl-card-footer">
+        <span class="cl-card-footer-quick"><span data-vi="Xem nhanh">Xem nhanh</span><span data-en="Quick view">Quick view</span></span>
+        <span class="cl-card-footer-arrow"><span data-vi="Mở dự án">Mở dự án</span><span data-en="Open listing">Open listing</span> <span>→</span></span>
+      </div>
     </a></div>
     <div class="cl-cards-meta">
       <span class="cl-cards-counter"><span class="current">1</span><span class="sep">/</span><span class="total">4</span></span>
@@ -2693,13 +5948,21 @@ body.cl-modal-open { overflow:hidden; }
     <div class="cl-compare-head reveal">
       <div class="cl-compare-eye">§ <span data-vi="So sánh">So sánh</span><span data-en="Comparison">Comparison</span></div>
       <h2 class="cl-compare-title">
-        <span data-vi="Bốn dự án. Một <em>cái nhìn</em>.">Bốn dự án. Một <em>cái nhìn</em>.</span>
-        <span data-en="Four listings. One <em>side-by-side</em>.">Four listings. One <em>side-by-side</em>.</span>
+        <span data-vi="Sáu dự án. Một <em>cái nhìn</em>.">Sáu dự án. Một <em>cái nhìn</em>.</span>
+        <span data-en="Six listings. One <em>side-by-side</em>.">Six listings. One <em>side-by-side</em>.</span>
       </h2>
       <p class="cl-compare-sub">
         <span data-vi="Bấm tiêu đề cột để sắp xếp · bấm hàng để xem nhanh">Bấm tiêu đề cột để sắp xếp · bấm hàng để xem nhanh</span>
         <span data-en="Click column header to sort · click row for quick view">Click column header to sort · click row for quick view</span>
       </p>
+    </div>
+
+    <div class="cl-tbl-mobsort" role="toolbar" aria-label="Sort comparison">
+      <span class="cl-tbl-mobsort-lbl"><span data-vi="Sắp xếp">Sắp xếp</span><span data-en="Sort">Sort</span></span>
+      <button type="button" data-msort="price"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span><span class="arrow">▾</span></button>
+      <button type="button" data-msort="yield">Yield<span class="arrow">▾</span></button>
+      <button type="button" data-msort="irr">IRR<span class="arrow">▾</span></button>
+      <button type="button" data-msort="score">NAC<span class="arrow">▾</span></button>
     </div>
 
     <div class="cl-tbl-wrap reveal">
@@ -2708,22 +5971,77 @@ body.cl-modal-open { overflow:hidden; }
           <tr>
             <th><span data-vi="Dự án">Dự án</span><span data-en="Listing">Listing</span></th>
             <th data-sort="city" data-type="text"><span data-vi="Thành phố">Thành phố</span><span data-en="City">City</span><span class="sort-arrow">▾</span></th>
-            <th data-sort="price" data-type="num"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span><span class="sort-arrow">▾</span></th>
+            <th data-sort="price" data-type="num"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry">Entry</span><span class="sort-arrow">▾</span></th>
             <th data-sort="yield" data-type="num">Yield<span class="sort-arrow">▾</span></th>
             <th data-sort="irr" data-type="num">IRR<span class="sort-arrow">▾</span></th>
             <th data-sort="score" data-type="num">NAC<span class="sort-arrow">▾</span></th>
           </tr>
         </thead>
-        <tbody>          <tr data-listing="conlay-signature-suites-klcc" data-city="Kuala Lumpur" data-price="1582" data-yield="4.0" data-irr="5.2" data-score="76">
+        <tbody>          <tr data-listing="conlay-signature-suites-klcc" data-city="Kuala Lumpur" data-price="391" data-yield="4.0" data-irr="5.2" data-score="76">
             <td>
               <span class="cl-tbl-name"><span data-vi="The Conlay Signature Suites — Kuala Lumpur (MM2H)">The Conlay Signature Suites — Kuala Lumpur (MM2H)</span><span data-en="The Conlay Signature Suites — Kuala Lumpur (MM2H)">The Conlay Signature Suites — Kuala Lumpur (MM2H)</span></span>
               <span class="cl-tbl-brand">The Conlay</span>
             </td>
             <td>Kuala Lumpur</td>
-            <td><span class="cl-tbl-val">$1.6<small>M</small></span></td>
+            <td><span class="cl-tbl-val">$391<small>K</small></span><span class="cl-tbl-local">(RM 1.6M)</span></td>
             <td><span class="cl-tbl-val">4.0<small>%</small></span></td>
             <td><span class="cl-tbl-val">5.2<small>%</small></span></td>
             <td><span class="cl-tbl-pill">76 / 100</span></td>
+          </tr>
+          <tr data-listing="golden-crown-residence-klcc" data-city="Kuala Lumpur" data-price="334" data-yield="5.5" data-irr="8.0" data-score="72">
+            <td>
+              <span class="cl-tbl-name"><span data-vi="Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H)">Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H)</span><span data-en="Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H)">Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H)</span></span>
+              <span class="cl-tbl-brand">Golden Crown</span>
+            </td>
+            <td>Kuala Lumpur</td>
+            <td><span class="cl-tbl-val">$334<small>K</small></span><span class="cl-tbl-local">(RM 1.4M)</span></td>
+            <td><span class="cl-tbl-val">5.5<small>%</small></span></td>
+            <td><span class="cl-tbl-val">8.0<small>%</small></span></td>
+            <td><span class="cl-tbl-pill">72 / 100</span></td>
+          </tr>
+          <tr data-listing="oxley-towers-klcc" data-city="Kuala Lumpur" data-price="331" data-yield="5.0" data-irr="8.0" data-score="78">
+            <td>
+              <span class="cl-tbl-name"><span data-vi="Oxley Towers KLCC — Kuala Lumpur (MM2H)">Oxley Towers KLCC — Kuala Lumpur (MM2H)</span><span data-en="Oxley Towers KLCC — Kuala Lumpur (MM2H)">Oxley Towers KLCC — Kuala Lumpur (MM2H)</span></span>
+              <span class="cl-tbl-brand">Oxley Towers</span>
+            </td>
+            <td>Kuala Lumpur</td>
+            <td><span class="cl-tbl-val">$331<small>K</small></span><span class="cl-tbl-local">(RM 1.3M)</span></td>
+            <td><span class="cl-tbl-val">5.0<small>%</small></span></td>
+            <td><span class="cl-tbl-val">8.0<small>%</small></span></td>
+            <td><span class="cl-tbl-pill">78 / 100</span></td>
+          </tr>
+          <tr data-listing="pavilion-square-klcc" data-city="Kuala Lumpur" data-price="247" data-yield="5.0" data-irr="8.0" data-score="73">
+            <td>
+              <span class="cl-tbl-name"><span data-vi="Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H)">Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H)</span><span data-en="Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H)">Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H)</span></span>
+              <span class="cl-tbl-brand">Pavilion</span>
+            </td>
+            <td>Kuala Lumpur</td>
+            <td><span class="cl-tbl-val">$247<small>K</small></span><span class="cl-tbl-local">(RM 1M)</span></td>
+            <td><span class="cl-tbl-val">5.0<small>%</small></span></td>
+            <td><span class="cl-tbl-val">8.0<small>%</small></span></td>
+            <td><span class="cl-tbl-pill">73 / 100</span></td>
+          </tr>
+          <tr data-listing="centrix-the-station-klcc" data-city="Kuala Lumpur" data-price="197" data-yield="5.5" data-irr="8.0" data-score="70">
+            <td>
+              <span class="cl-tbl-name"><span data-vi="Centrix The Station KLCC — Kuala Lumpur (MM2H)">Centrix The Station KLCC — Kuala Lumpur (MM2H)</span><span data-en="Centrix The Station KLCC — Kuala Lumpur (MM2H)">Centrix The Station KLCC — Kuala Lumpur (MM2H)</span></span>
+              <span class="cl-tbl-brand">Centrix</span>
+            </td>
+            <td>Kuala Lumpur</td>
+            <td><span class="cl-tbl-val">$197<small>K</small></span><span class="cl-tbl-local">(RM 800K)</span></td>
+            <td><span class="cl-tbl-val">5.5<small>%</small></span></td>
+            <td><span class="cl-tbl-val">8.0<small>%</small></span></td>
+            <td><span class="cl-tbl-pill">70 / 100</span></td>
+          </tr>
+          <tr data-listing="curvo-residences-setapak" data-city="Kuala Lumpur" data-price="139" data-yield="5.0" data-irr="7.0" data-score="66">
+            <td>
+              <span class="cl-tbl-name"><span data-vi="Curvo Residences — Setapak, Kuala Lumpur (MM2H)">Curvo Residences — Setapak, Kuala Lumpur (MM2H)</span><span data-en="Curvo Residences — Setapak, Kuala Lumpur (MM2H)">Curvo Residences — Setapak, Kuala Lumpur (MM2H)</span></span>
+              <span class="cl-tbl-brand">Curvo</span>
+            </td>
+            <td>Kuala Lumpur</td>
+            <td><span class="cl-tbl-val">$139<small>K</small></span><span class="cl-tbl-local">(RM 564K)</span></td>
+            <td><span class="cl-tbl-val">5.0<small>%</small></span></td>
+            <td><span class="cl-tbl-val">7.0<small>%</small></span></td>
+            <td><span class="cl-tbl-pill">66 / 100</span></td>
           </tr></tbody>
       </table>
     </div>
@@ -2735,17 +6053,17 @@ body.cl-modal-open { overflow:hidden; }
 <section class="cl-trust reveal">
   <div class="cl-track" aria-label="NAC Property Hub coverage">
     <div class="cl-track-item">
-      <div class="cl-track-num">20<span class="cl-track-plus">+</span></div>
+      <div class="cl-track-num">140<span class="cl-track-plus">+</span></div>
       <div class="cl-track-lbl"><span data-vi="">Hồ Sơ Đã Thẩm Định</span><span data-en="">Vetted Listings</span></div>
     </div>
     <div class="cl-track-div" aria-hidden="true"></div>
     <div class="cl-track-item">
-      <div class="cl-track-num">6</div>
+      <div class="cl-track-num">22</div>
       <div class="cl-track-lbl"><span data-vi="">Quốc Gia</span><span data-en="">Countries</span></div>
     </div>
     <div class="cl-track-div" aria-hidden="true"></div>
     <div class="cl-track-item">
-      <div class="cl-track-num">3</div>
+      <div class="cl-track-num">5</div>
       <div class="cl-track-lbl"><span data-vi="">Châu Lục</span><span data-en="">Continents</span></div>
     </div>
   </div>
@@ -2792,6 +6110,129 @@ body.cl-modal-open { overflow:hidden; }
   </div>
 </section>
 
+
+
+      <!-- SHARE THIS COUNTRY (self-contained: scoped styles + inline script) -->
+      <section id="cl-share" class="cl-share" data-share-clp-v="2" aria-label="Share this country page">
+        <span class="cl-share-lbl"><span data-vi="Chia sẻ trang quốc gia">Chia sẻ trang quốc gia</span><span data-en="Share this country">Share this country</span></span>
+        <div class="cl-share-row">
+          <button type="button" class="cl-share-btn" data-net="facebook" aria-label="Share on Facebook" title="Facebook"><img src="https://cdn.simpleicons.org/facebook/ffffff" alt="" aria-hidden="true"></button>
+          <button type="button" class="cl-share-btn" data-net="linkedin" aria-label="Share on LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="#ffffff" d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.3 8h4.4v13H.3V8zm7.1 0h4.2v1.8h.06c.6-1.1 2-2.2 4.06-2.2 4.35 0 5.15 2.86 5.15 6.58V21h-4.4v-5.9c0-1.4 0-3.2-2-3.2-2 0-2.3 1.5-2.3 3.1V21H7.4V8z"></path></svg></button>
+          <button type="button" class="cl-share-btn" data-net="threads" aria-label="Share on Threads" title="Threads"><img src="https://cdn.simpleicons.org/threads/ffffff" alt="" aria-hidden="true"></button>
+          <button type="button" class="cl-share-btn" data-net="instagram" aria-label="Copy caption for Instagram" title="Instagram (copies caption)"><img src="https://cdn.simpleicons.org/instagram/ffffff" alt="" aria-hidden="true"></button>
+          <button type="button" class="cl-share-btn" data-net="copy" aria-label="Copy link" title="Copy link"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="#ffffff" d="M3.9 12a3.1 3.1 0 0 1 3.1-3.1h4V7h-4a5 5 0 0 0 0 10h4v-1.9h-4A3.1 3.1 0 0 1 3.9 12zM8 13h8v-2H8v2zm5-6v1.9h4a3.1 3.1 0 0 1 0 6.2h-4V17h4a5 5 0 0 0 0-10h-4z"></path></svg></button>
+        </div>
+        <span class="cl-share-toast" id="cl-share-toast" role="status" hidden=""></span>
+        <style>
+          .cl-share{max-width:760px;margin:0 auto;padding:3rem 1.4rem 1rem;text-align:center}
+          .cl-share-lbl{display:block;font-family:var(--ff-mono,ui-monospace,monospace);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted,#8a8576);margin-bottom:1.1rem}
+          .cl-share-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+          /* filled brand circles + white glyphs — matches PDP share row + CLP footer aesthetic */
+          .cl-share-btn{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;
+            border:none;padding:0;color:#fff;transition:transform .18s ease,filter .18s ease,box-shadow .22s ease}
+          .cl-share-btn img,.cl-share-btn svg{width:19px;height:19px;display:block}
+          .cl-share-btn:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 8px 24px -8px rgba(212,175,55,.45)}
+          .cl-share-btn:active{transform:translateY(0)}
+          .cl-share-btn[data-net="facebook"]{background:#1877F2}
+          .cl-share-btn[data-net="linkedin"]{background:#0A66C2}
+          .cl-share-btn[data-net="threads"]{background:#000}
+          .cl-share-btn[data-net="instagram"]{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+          .cl-share-btn[data-net="copy"]{background:var(--gold,#d4af37);color:#0a0a0a}
+          .cl-share-toast{display:inline-block;margin-top:14px;min-height:1.1em;font-family:var(--ff-mono,ui-monospace,monospace);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold,#d4af37);transition:opacity .2s}
+          @media (max-width:680px){ .cl-share{padding:2.2rem 1rem .6rem} .cl-share-btn{width:42px;height:42px} }
+        </style>
+        <script>
+          (function(){
+            var s=document.getElementById('cl-share'); if(!s||s.dataset.wired) return; s.dataset.wired='1';
+            var meta=function(p){var e=document.querySelector('meta[property="'+p+'"]');return e?e.getAttribute('content'):'';};
+            var txt=function(sel){var e=document.querySelector(sel);return e?e.textContent.trim():'';};
+            var url=meta('og:url')||location.href;
+            var name=(meta('og:title')||document.title||'').split('·')[0].split('|')[0].trim();
+            var tag=txt('.cl-hero-tag [data-en]')||txt('.cl-hero-tag [data-vi]');
+            var cap=name+(tag?' — '+tag.replace(/\s+/g,' ').trim():'');
+            var links={
+              facebook:'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url),
+              linkedin:'https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(url),
+              threads:'https://www.threads.net/intent/post?text='+encodeURIComponent(cap+' '+url)
+            };
+            var toast=function(m){var t=document.getElementById('cl-share-toast'); if(!t)return; t.textContent=m; t.hidden=false; clearTimeout(t._t); t._t=setTimeout(function(){t.hidden=true;},2800);};
+            var copy=function(text,msg){
+              if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){toast(msg);},function(){toast('Copy failed — long-press to copy');});}
+              else{var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand('copy');toast(msg);}catch(e){toast('Copy failed');}document.body.removeChild(ta);}
+            };
+            s.querySelectorAll('.cl-share-btn').forEach(function(b){
+              b.addEventListener('click',function(){
+                var net=b.getAttribute('data-net');
+                if(links[net]){window.open(links[net],'_blank','noopener,noreferrer,width=640,height=660');}
+                else if(net==='instagram'){copy(cap+' '+url,'Caption copied — paste into Instagram'); window.open('https://www.instagram.com/','_blank','noopener,noreferrer');}
+                else if(net==='copy'){copy(url,'Link copied');}
+              });
+            });
+          })();
+        </script>
+      </section>
+
+<!-- ═══ NAC SCORING METHODOLOGY ═══ -->
+<section class="cl-method" id="cl-method">
+  <details class="nac-method">
+    <summary class="nac-method-summary" aria-label="Show NAC scoring methodology">
+      <span class="nac-method-summary-text"><span data-vi="">Phương pháp chấm điểm NAC</span><span data-en="">How NAC scores</span></span>
+      <span class="nac-method-summary-chev" aria-hidden="true">＋</span>
+    </summary>
+    <div class="nac-method-body">
+      <div class="nac-method-pillars">
+            <div class="nac-method-pillar">
+              <span class="nac-method-pillar-name"><span data-vi="">Thương Hiệu &amp; CĐT</span><span data-en="">Brand &amp; Developer</span></span>
+              <span class="nac-method-pillar-wt">20%</span>
+              <span class="nac-method-pillar-desc"><span data-vi="">Uy tín nhà điều hành, đối tác thiết kế, lịch sử bàn giao.</span><span data-en="">Operator pedigree, design partner, delivery record.</span></span>
+              <div class="nac-method-pillar-track"><div class="nac-method-pillar-fill" style="width:100%"></div></div>
+            </div>
+            <div class="nac-method-pillar">
+              <span class="nac-method-pillar-name"><span data-vi="">Lợi Suất &amp; Dòng Tiền</span><span data-en="">Yield &amp; Cash Flow</span></span>
+              <span class="nac-method-pillar-wt">20%</span>
+              <span class="nac-method-pillar-desc"><span data-vi="">Lợi suất cho thuê gộp/ròng, cash-on-cash, độ bền thu nhập.</span><span data-en="">Gross &amp; net rental yield, cash-on-cash, income durability.</span></span>
+              <div class="nac-method-pillar-track"><div class="nac-method-pillar-fill" style="width:100%"></div></div>
+            </div>
+            <div class="nac-method-pillar">
+              <span class="nac-method-pillar-name"><span data-vi="">Vị Trí &amp; Thị Trường</span><span data-en="">Location &amp; Market</span></span>
+              <span class="nac-method-pillar-wt">20%</span>
+              <span class="nac-method-pillar-desc"><span data-vi="">Vi vị trí, nền tảng thành phố, cung–cầu, quỹ đạo tăng trưởng.</span><span data-en="">Micro-location, city fundamentals, supply–demand, growth trajectory.</span></span>
+              <div class="nac-method-pillar-track"><div class="nac-method-pillar-fill" style="width:100%"></div></div>
+            </div>
+            <div class="nac-method-pillar">
+              <span class="nac-method-pillar-name"><span data-vi="">Quản Lý &amp; Vận Hành</span><span data-en="">Management &amp; Ops</span></span>
+              <span class="nac-method-pillar-wt">15%</span>
+              <span class="nac-method-pillar-desc"><span data-vi="">Chất lượng chương trình cho thuê, mức độ rảnh tay, chuẩn dịch vụ.</span><span data-en="">Rental-programme quality, hands-off operation, service standard.</span></span>
+              <div class="nac-method-pillar-track"><div class="nac-method-pillar-fill" style="width:75%"></div></div>
+            </div>
+            <div class="nac-method-pillar">
+              <span class="nac-method-pillar-name"><span data-vi="">Thanh Khoản &amp; Thoát Vốn</span><span data-en="">Liquidity &amp; Exit</span></span>
+              <span class="nac-method-pillar-wt">15%</span>
+              <span class="nac-method-pillar-desc"><span data-vi="">Độ sâu thị trường thứ cấp, quyền mua nước ngoài, lựa chọn thoát vốn.</span><span data-en="">Resale depth, foreign-buyer access, exit optionality.</span></span>
+              <div class="nac-method-pillar-track"><div class="nac-method-pillar-fill" style="width:75%"></div></div>
+            </div>
+            <div class="nac-method-pillar">
+              <span class="nac-method-pillar-name"><span data-vi="">Hồ Sơ Rủi Ro</span><span data-en="">Risk Profile</span></span>
+              <span class="nac-method-pillar-wt">10%</span>
+              <span class="nac-method-pillar-desc"><span data-vi="">Rủi ro thi công, tỷ giá, pháp lý, chu kỳ thị trường (điểm nghịch — cao hơn = rủi ro thấp hơn).</span><span data-en="">Construction, currency, legal, market cyclicality (scored inversely — higher = lower risk).</span></span>
+              <div class="nac-method-pillar-track"><div class="nac-method-pillar-fill" style="width:50%"></div></div>
+            </div>
+      </div>
+      <p class="nac-method-calib">
+        <span data-vi="">Sáu trụ cột được tính theo trọng số, sau đó hiệu chỉnh bởi Hội đồng Đầu tư NAC dựa trên các giao dịch so sánh trước khi công bố điểm tổng hợp trên thang /100.</span>
+        <span data-en="">The six pillars are weighted, then calibrated by the NAC Investment Committee against comparable transactions before the /100 composite is published.</span>
+      </p>
+      <div class="nac-method-grades">
+        <div class="nac-method-grade-head"><span data-vi="">Thang xếp hạng</span><span data-en="">Grade scale</span></div>
+        <div class="nac-method-grade"><span class="nac-method-grade-band">85–100</span><span class="nac-method-grade-stars">★★★★★</span><span class="nac-method-grade-lbl"><span data-vi="">Xuất Sắc</span><span data-en="">Outstanding</span></span></div>
+        <div class="nac-method-grade"><span class="nac-method-grade-band">75–84</span><span class="nac-method-grade-stars">★★★★</span><span class="nac-method-grade-lbl"><span data-vi="">Rất Tốt</span><span data-en="">Excellent</span></span></div>
+        <div class="nac-method-grade"><span class="nac-method-grade-band">65–74</span><span class="nac-method-grade-stars">★★★</span><span class="nac-method-grade-lbl"><span data-vi="">Tốt</span><span data-en="">Strong</span></span></div>
+        <div class="nac-method-grade"><span class="nac-method-grade-band">55–64</span><span class="nac-method-grade-stars">★★</span><span class="nac-method-grade-lbl"><span data-vi="">Khá</span><span data-en="">Fair</span></span></div>
+      </div>
+    </div>
+  </details>
+</section>
+
 <footer class="cl-foot">
   <span data-vi="Tuyển chọn bởi">Tuyển chọn bởi</span><span data-en="Curated by">Curated by</span>
   &nbsp;<a href="https://nomadassetcollective.com" target="_blank">Nomad Asset Collective</a>
@@ -2815,7 +6256,7 @@ body.cl-modal-open { overflow:hidden; }
       <div class="cl-modal-stats">
         <div class="cl-modal-stat">
           <div class="cl-modal-stat-num" id="cl-modal-price"></div>
-          <div class="cl-modal-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></div>
+          <div class="cl-modal-stat-lbl"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry">Entry</span></div>
         </div>
         <div class="cl-modal-stat">
           <div class="cl-modal-stat-num" id="cl-modal-yield"></div>
@@ -2830,9 +6271,74 @@ body.cl-modal-open { overflow:hidden; }
           <div class="cl-modal-stat-lbl">NAC <span data-vi="Điểm">Điểm</span><span data-en="Score">Score</span></div>
         </div>
       </div>
-      <div class="cl-modal-subs">
-        <div class="cl-modal-sub-head"><span data-vi="Điểm thành phần">Điểm thành phần</span><span data-en="Composite breakdown">Composite breakdown</span> · / 10</div>
-        <div id="cl-modal-subs"></div>
+      <div class="cl-modal-score">
+        <div class="cl-modal-tabs" role="tablist">
+          <button type="button" class="cl-modal-tab on" data-tab="breakdown" role="tab" aria-selected="true"><span data-vi="Điểm thành phần">Điểm thành phần</span><span data-en="Breakdown">Breakdown</span></button>
+          <button type="button" class="cl-modal-tab" data-tab="method" role="tab" aria-selected="false"><span data-vi="Phương pháp">Phương pháp</span><span data-en="Methodology">Methodology</span></button>
+        </div>
+
+        <div class="cl-modal-tabpanel on" data-panel="breakdown" role="tabpanel">
+          <div class="cl-modal-subs">
+            <div class="cl-modal-sub-head"><span data-vi="Điểm thành phần">Điểm thành phần</span><span data-en="Composite breakdown">Composite breakdown</span> · / 10</div>
+            <div id="cl-modal-subs"></div>
+          </div>
+        </div>
+
+        <div class="cl-modal-tabpanel" data-panel="method" role="tabpanel">
+          <p class="cl-method-intro">
+            <span data-vi="Mỗi điểm NAC Composite là sự kết hợp có trọng số của sáu trụ cột đầu tư — cân theo những gì bảo toàn và gia tăng vốn trong suốt kỳ nắm giữ.">Mỗi điểm NAC Composite là sự kết hợp có trọng số của sáu trụ cột đầu tư — cân theo những gì bảo toàn và gia tăng vốn trong suốt kỳ nắm giữ.</span>
+            <span data-en="Every NAC Composite is a weighted blend of six investment pillars — weighted by what protects and compounds capital across a full hold.">Every NAC Composite is a weighted blend of six investment pillars — weighted by what protects and compounds capital across a full hold.</span>
+          </p>
+          <div class="cl-method-pillars">
+            <div class="cl-method-pillar">
+              <span class="cl-method-pillar-name"><span data-vi="Thương Hiệu &amp; CĐT">Thương Hiệu &amp; CĐT</span><span data-en="Brand &amp; Developer">Brand &amp; Developer</span></span>
+              <span class="cl-method-pillar-wt">20%</span>
+              <span class="cl-method-pillar-desc"><span data-vi="Uy tín nhà điều hành, đối tác thiết kế, lịch sử bàn giao.">Uy tín nhà điều hành, đối tác thiết kế, lịch sử bàn giao.</span><span data-en="Operator pedigree, design partner, delivery record.">Operator pedigree, design partner, delivery record.</span></span>
+              <div class="cl-method-pillar-track"><div class="cl-method-pillar-fill" style="width:100%"></div></div>
+            </div>
+            <div class="cl-method-pillar">
+              <span class="cl-method-pillar-name"><span data-vi="Lợi Suất &amp; Dòng Tiền">Lợi Suất &amp; Dòng Tiền</span><span data-en="Yield &amp; Cash Flow">Yield &amp; Cash Flow</span></span>
+              <span class="cl-method-pillar-wt">20%</span>
+              <span class="cl-method-pillar-desc"><span data-vi="Lợi suất cho thuê gộp/ròng, cash-on-cash, độ bền thu nhập.">Lợi suất cho thuê gộp/ròng, cash-on-cash, độ bền thu nhập.</span><span data-en="Gross &amp; net rental yield, cash-on-cash, income durability.">Gross &amp; net rental yield, cash-on-cash, income durability.</span></span>
+              <div class="cl-method-pillar-track"><div class="cl-method-pillar-fill" style="width:100%"></div></div>
+            </div>
+            <div class="cl-method-pillar">
+              <span class="cl-method-pillar-name"><span data-vi="Vị Trí &amp; Thị Trường">Vị Trí &amp; Thị Trường</span><span data-en="Location &amp; Market">Location &amp; Market</span></span>
+              <span class="cl-method-pillar-wt">20%</span>
+              <span class="cl-method-pillar-desc"><span data-vi="Vi vị trí, nền tảng thành phố, cung–cầu, quỹ đạo tăng trưởng.">Vi vị trí, nền tảng thành phố, cung–cầu, quỹ đạo tăng trưởng.</span><span data-en="Micro-location, city fundamentals, supply–demand, growth trajectory.">Micro-location, city fundamentals, supply–demand, growth trajectory.</span></span>
+              <div class="cl-method-pillar-track"><div class="cl-method-pillar-fill" style="width:100%"></div></div>
+            </div>
+            <div class="cl-method-pillar">
+              <span class="cl-method-pillar-name"><span data-vi="Quản Lý &amp; Vận Hành">Quản Lý &amp; Vận Hành</span><span data-en="Management &amp; Ops">Management &amp; Ops</span></span>
+              <span class="cl-method-pillar-wt">15%</span>
+              <span class="cl-method-pillar-desc"><span data-vi="Chất lượng chương trình cho thuê, mức độ rảnh tay, chuẩn dịch vụ.">Chất lượng chương trình cho thuê, mức độ rảnh tay, chuẩn dịch vụ.</span><span data-en="Rental-programme quality, hands-off operation, service standard.">Rental-programme quality, hands-off operation, service standard.</span></span>
+              <div class="cl-method-pillar-track"><div class="cl-method-pillar-fill" style="width:75%"></div></div>
+            </div>
+            <div class="cl-method-pillar">
+              <span class="cl-method-pillar-name"><span data-vi="Thanh Khoản &amp; Thoát Vốn">Thanh Khoản &amp; Thoát Vốn</span><span data-en="Liquidity &amp; Exit">Liquidity &amp; Exit</span></span>
+              <span class="cl-method-pillar-wt">15%</span>
+              <span class="cl-method-pillar-desc"><span data-vi="Độ sâu thị trường thứ cấp, quyền mua nước ngoài, lựa chọn thoát vốn.">Độ sâu thị trường thứ cấp, quyền mua nước ngoài, lựa chọn thoát vốn.</span><span data-en="Resale depth, foreign-buyer access, exit optionality.">Resale depth, foreign-buyer access, exit optionality.</span></span>
+              <div class="cl-method-pillar-track"><div class="cl-method-pillar-fill" style="width:75%"></div></div>
+            </div>
+            <div class="cl-method-pillar">
+              <span class="cl-method-pillar-name"><span data-vi="Hồ Sơ Rủi Ro">Hồ Sơ Rủi Ro</span><span data-en="Risk Profile">Risk Profile</span></span>
+              <span class="cl-method-pillar-wt">10%</span>
+              <span class="cl-method-pillar-desc"><span data-vi="Rủi ro thi công, tỷ giá, pháp lý, chu kỳ thị trường (điểm nghịch — cao hơn = rủi ro thấp hơn).">Rủi ro thi công, tỷ giá, pháp lý, chu kỳ thị trường (điểm nghịch — cao hơn = rủi ro thấp hơn).</span><span data-en="Construction, currency, legal, market cyclicality (scored inversely — higher = lower risk).">Construction, currency, legal, market cyclicality (scored inversely — higher = lower risk).</span></span>
+              <div class="cl-method-pillar-track"><div class="cl-method-pillar-fill" style="width:50%"></div></div>
+            </div>
+          </div>
+          <p class="cl-method-calib">
+            <span data-vi="Sáu trụ cột được tính theo trọng số, sau đó hiệu chỉnh bởi Hội đồng Đầu tư NAC dựa trên các giao dịch so sánh trước khi công bố điểm tổng hợp trên thang /100.">Sáu trụ cột được tính theo trọng số, sau đó hiệu chỉnh bởi Hội đồng Đầu tư NAC dựa trên các giao dịch so sánh trước khi công bố điểm tổng hợp trên thang /100.</span>
+            <span data-en="The six pillars are weighted, then calibrated by the NAC Investment Committee against comparable transactions before the /100 composite is published.">The six pillars are weighted, then calibrated by the NAC Investment Committee against comparable transactions before the /100 composite is published.</span>
+          </p>
+          <div class="cl-method-grades">
+            <div class="cl-method-grade-head"><span data-vi="Thang xếp hạng">Thang xếp hạng</span><span data-en="Grade scale">Grade scale</span></div>
+            <div class="cl-method-grade"><span class="cl-method-grade-band">85–100</span><span class="cl-method-grade-stars">★★★★★</span><span class="cl-method-grade-lbl"><span data-vi="Xuất Sắc">Xuất Sắc</span><span data-en="Outstanding">Outstanding</span></span></div>
+            <div class="cl-method-grade"><span class="cl-method-grade-band">75–84</span><span class="cl-method-grade-stars">★★★★</span><span class="cl-method-grade-lbl"><span data-vi="Rất Tốt">Rất Tốt</span><span data-en="Excellent">Excellent</span></span></div>
+            <div class="cl-method-grade"><span class="cl-method-grade-band">65–74</span><span class="cl-method-grade-stars">★★★</span><span class="cl-method-grade-lbl"><span data-vi="Tốt">Tốt</span><span data-en="Strong">Strong</span></span></div>
+            <div class="cl-method-grade"><span class="cl-method-grade-band">55–64</span><span class="cl-method-grade-stars">★★</span><span class="cl-method-grade-lbl"><span data-vi="Khá">Khá</span><span data-en="Fair">Fair</span></span></div>
+          </div>
+        </div>
       </div>
       <a class="cl-modal-cta" id="cl-modal-cta" href="#">
         <span data-vi="Mở Dự Án Đầy Đủ">Mở Dự Án Đầy Đủ</span><span data-en="Open Full Listing">Open Full Listing</span>
@@ -3098,6 +6604,9 @@ body.cl-modal-open { overflow:hidden; }
 
     document.getElementById('cl-modal-cta').href = d.url;
 
+    // Reset score tabs to Breakdown each time the modal opens.
+    setScoreTab('breakdown');
+
     modal.classList.add('open');
     modal.setAttribute('aria-hidden','false');
     body.classList.add('cl-modal-open');
@@ -3109,6 +6618,22 @@ body.cl-modal-open { overflow:hidden; }
       });
     });
   }
+
+  // Score tabs — Breakdown ⇄ Methodology. Methodology content is static
+  // (the framework, not per-listing data), so the tab just toggles panels.
+  function setScoreTab(name) {
+    document.querySelectorAll('.cl-modal-tab').forEach(t => {
+      const on = t.dataset.tab === name;
+      t.classList.toggle('on', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    document.querySelectorAll('.cl-modal-tabpanel').forEach(p => {
+      p.classList.toggle('on', p.dataset.panel === name);
+    });
+  }
+  document.querySelectorAll('.cl-modal-tab').forEach(t => {
+    t.addEventListener('click', () => setScoreTab(t.dataset.tab));
+  });
   function closeModal() {
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden','true');
@@ -3196,6 +6721,22 @@ body.cl-modal-open { overflow:hidden; }
       const id = row.dataset.listing;
       const card = document.querySelector(`.cl-card[data-listing="${id}"]`);
       if (card) openModal(card);
+    });
+  });
+
+  // Mobile sort pills — delegate to the existing thead handler so the
+  // sort logic stays in one place. Active pill mirrors thead's
+  // sort-asc/sort-desc class.
+  document.querySelectorAll('.cl-tbl-mobsort button[data-msort]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.msort;
+      const th = tbl.querySelector(`thead th[data-sort="${key}"]`);
+      if (!th) return;
+      th.click();
+      btn.parentElement.querySelectorAll('button[data-msort]').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      const arrow = btn.querySelector('.arrow');
+      if (arrow) arrow.textContent = th.classList.contains('sort-desc') ? '▾' : '▴';
     });
   });
 })();

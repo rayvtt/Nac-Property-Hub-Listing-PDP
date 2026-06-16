@@ -26,17 +26,19 @@
     .sub { font-family:var(--ff-mono); font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-top:.5rem; }
 
     /* Instagram grid */
-    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; }
-    @media(max-width:600px) { .grid { grid-template-columns:repeat(2,1fr); } }
+    .grid { display:grid; grid-template-columns:repeat(5,1fr); gap:3px; }
+    @media(max-width:1280px) { .grid { grid-template-columns:repeat(4,1fr); } }
+    @media(max-width:980px)  { .grid { grid-template-columns:repeat(3,1fr); } }
+    @media(max-width:600px)  { .grid { grid-template-columns:repeat(2,1fr); } }
 
     .tile { position:relative; aspect-ratio:1; overflow:hidden; background:var(--display); cursor:pointer; }
     .tile-img { position:absolute; inset:0; background-size:cover; background-position:center; transition:transform .5s ease; }
     .tile:hover .tile-img { transform:scale(1.06); }
     .tile::after { content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(5,8,20,.88) 0%, rgba(5,8,20,.35) 55%, rgba(5,8,20,.05) 100%); pointer-events:none; }
 
-    .tile-info { position:absolute; bottom:3.2rem; left:1rem; right:1rem; z-index:1; }
-    .tile-country { display:block; font-family:var(--ff-mono); font-size:.58rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:.35rem; }
-    .tile-name { display:block; font-family:var(--ff-display); font-size:1.15rem; font-weight:500; color:#fff; line-height:1.2; }
+    .tile-info { position:absolute; bottom:3rem; left:.85rem; right:.85rem; z-index:1; }
+    .tile-country { display:block; font-family:var(--ff-mono); font-size:.55rem; letter-spacing:.13em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:.3rem; }
+    .tile-name { display:block; font-family:var(--ff-display); font-size:1.02rem; font-weight:500; color:#fff; line-height:1.18; }
     .tile-stats { display:block; font-family:var(--ff-mono); font-size:.5rem; color:rgba(255,255,255,.38); margin-top:.45rem; letter-spacing:.08em; min-height:.65rem; }
 
     .tile-btns { position:absolute; bottom:.75rem; left:1rem; right:1rem; z-index:1; display:flex; gap:.4rem; }
@@ -103,7 +105,7 @@
     <div class="country-row">
       <!-- INDEX_COUNTRIES_START — rebuilt by scripts/update-index.mjs from Notion Country DB Live rows -->
       <div class="country-card" data-slug="au">
-        <div class="country-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/the-signature-collection-pagewood-rivera-hero/public')"></div>
+        <div class="country-card-img" style="background-image:url('og-images/clp-au.png')"></div>
         <div class="country-card-body">
           <div class="country-card-meta">
             <span class="flag">🌍 Australia · CLP</span>
@@ -117,7 +119,7 @@
         </div>
       </div>
       <div class="country-card" data-slug="cy">
-        <div class="country-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/pearl-park-beachfront-condo-paphos-hero/public')"></div>
+        <div class="country-card-img" style="background-image:url('og-images/clp-cy.png')"></div>
         <div class="country-card-body">
           <div class="country-card-meta">
             <span class="flag">🇨🇾 Cyprus · CLP</span>
@@ -130,22 +132,8 @@
           <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/cyprus/" class="country-card-btn country-card-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
         </div>
       </div>
-      <div class="country-card" data-slug="ae">
-        <div class="country-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/sobha-estates-hartland-2-hero/public')"></div>
-        <div class="country-card-body">
-          <div class="country-card-meta">
-            <span class="flag">🌍 Dubai · CLP</span>
-            <span class="name">UAE</span>
-            <span class="stat">5 listings</span>
-          </div>
-        </div>
-        <div class="country-card-btns">
-          <a href="country/ae.html" class="country-card-btn country-card-btn-preview" target="_blank">Preview ↗</a>
-          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/uae/" class="country-card-btn country-card-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
-        </div>
-      </div>
       <div class="country-card" data-slug="gr">
-        <div class="country-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/izi-lux-kallithea-athens-hero/public')"></div>
+        <div class="country-card-img" style="background-image:url('og-images/clp-gr.png')"></div>
         <div class="country-card-body">
           <div class="country-card-meta">
             <span class="flag">🌍 Greece · CLP</span>
@@ -159,12 +147,12 @@
         </div>
       </div>
       <div class="country-card" data-slug="my">
-        <div class="country-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/conlay-signature-suites-klcc-hero/public')"></div>
+        <div class="country-card-img" style="background-image:url('og-images/clp-my.png')"></div>
         <div class="country-card-body">
           <div class="country-card-meta">
             <span class="flag">🇲🇾 Malaysia · CLP</span>
             <span class="name">Malaysia</span>
-            <span class="stat">1 listing</span>
+            <span class="stat">6 listings</span>
           </div>
         </div>
         <div class="country-card-btns">
@@ -173,7 +161,7 @@
         </div>
       </div>
       <div class="country-card" data-slug="pa">
-        <div class="country-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/santa-maria-panama-hero/public')"></div>
+        <div class="country-card-img" style="background-image:url('og-images/clp-pa.png')"></div>
         <div class="country-card-body">
           <div class="country-card-meta">
             <span class="flag">🇵🇦 Panama · CLP</span>
@@ -187,7 +175,7 @@
         </div>
       </div>
       <div class="country-card" data-slug="sg">
-        <div class="country-card-img"></div>
+        <div class="country-card-img" style="background-image:url('og-images/clp-sg.png')"></div>
         <div class="country-card-body">
           <div class="country-card-meta">
             <span class="flag">🇸🇬 Singapore · CLP</span>
@@ -201,12 +189,12 @@
         </div>
       </div>
       <div class="country-card" data-slug="th">
-        <div class="country-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/coco-parc-hero/public')"></div>
+        <div class="country-card-img" style="background-image:url('og-images/clp-th.png')"></div>
         <div class="country-card-body">
           <div class="country-card-meta">
             <span class="flag">🇹🇭 Thailand · CLP</span>
             <span class="name">Thái Lan</span>
-            <span class="stat">8 listings</span>
+            <span class="stat">23 listings</span>
           </div>
         </div>
         <div class="country-card-btns">
@@ -215,7 +203,7 @@
         </div>
       </div>
       <div class="country-card" data-slug="tr">
-        <div class="country-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/legend-residences-sariyer-hero/public')"></div>
+        <div class="country-card-img" style="background-image:url('og-images/clp-tr.png')"></div>
         <div class="country-card-body">
           <div class="country-card-meta">
             <span class="flag">🇹🇷 Turkey · CLP</span>
@@ -228,8 +216,22 @@
           <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/turkey/" class="country-card-btn country-card-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
         </div>
       </div>
+      <div class="country-card" data-slug="ae">
+        <div class="country-card-img" style="background-image:url('og-images/clp-ae.png')"></div>
+        <div class="country-card-body">
+          <div class="country-card-meta">
+            <span class="flag">🇦🇪 UAE · CLP</span>
+            <span class="name">UAE</span>
+            <span class="stat">5 listings</span>
+          </div>
+        </div>
+        <div class="country-card-btns">
+          <a href="country/ae.html" class="country-card-btn country-card-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/uae/" class="country-card-btn country-card-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
       <div class="country-card" data-slug="uk">
-        <div class="country-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/fulham-reach-london-hero/public')"></div>
+        <div class="country-card-img" style="background-image:url('og-images/clp-uk.png')"></div>
         <div class="country-card-body">
           <div class="country-card-meta">
             <span class="flag">🇬🇧 United Kingdom · CLP</span>
@@ -243,12 +245,12 @@
         </div>
       </div>
       <div class="country-card" data-slug="vn">
-        <div class="country-card-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/hyatt-regency-ho-tram-hero/public')"></div>
+        <div class="country-card-img" style="background-image:url('og-images/clp-vn.png')"></div>
         <div class="country-card-body">
           <div class="country-card-meta">
             <span class="flag">🇻🇳 Vietnam · CLP</span>
             <span class="name">Việt Nam</span>
-            <span class="stat">4 listings</span>
+            <span class="stat">8 listings</span>
           </div>
         </div>
         <div class="country-card-btns">
@@ -264,66 +266,243 @@
       <h2>Listing Pages</h2>
       <span class="count" id="listing-count">12 listings</span>
     </div>
+    <!-- LISTING FILTER (self-contained; outside the INDEX_CARDS markers so rebuilds keep it) -->
+    <style>
+      .lp-filter{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 20px}
+      .lp-search{flex:0 0 auto;min-width:250px;font:inherit;font-size:14px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text)}
+      .lp-search:focus{outline:none;border-color:var(--orange)}
+      .lp-countries{display:flex;flex-wrap:wrap;gap:6px}
+      .lp-chip{font:inherit;font-size:12.5px;padding:6px 12px;border:1px solid var(--line);border-radius:20px;background:var(--surface);color:var(--display);cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+      .lp-chip:hover{border-color:var(--orange)}
+      .lp-chip.on{background:var(--display);color:#fff;border-color:var(--display)}
+      .lp-chip .n{opacity:.55;margin-left:5px;font-variant-numeric:tabular-nums}
+      /* real flag images — emoji flags fall back to bare country codes on Windows */
+      .flag-img{display:inline-block;width:19px;height:13px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px;box-shadow:0 0 0 1px rgba(0,0,0,.07)}
+      .tile-country .flag-img{vertical-align:0;margin-right:5px}
+      .lp-empty{display:none;padding:34px 10px;text-align:center;color:var(--muted);font-size:14px}
+      .lp-empty.show{display:block}
+    </style>
+    <div class="lp-filter" id="lp-filter">
+      <input class="lp-search" id="lp-search" type="search" placeholder="🔍 Search a listing by name…" autocomplete="off" aria-label="Search listings">
+      <div class="lp-countries" id="lp-countries"></div>
+    </div>
+    <p class="lp-empty" id="lp-empty">No listings match — try another name or country.</p>
     <div class="grid">
       <!-- INDEX_CARDS_START — rebuilt by scripts/update-index.mjs from Notion Live rows -->
-      <div class="tile" data-slug="binghatti-mercedes-benz-city">
-        <div class="tile-img"></div>
+      <div class="tile" data-slug="le-meridien-da-nang">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/le-meridien-da-nang-hero/public')"></div>
         <div class="tile-info">
-          <span class="tile-country">🌍 Dubai</span>
-          <span class="tile-name">🌟 Mercedes-Benz Places · Binghatti City — Nad Al Sheba, Dubai (Golden Visa)</span>
+          <span class="tile-country">🇻🇳 Vietnam</span>
+          <span class="tile-name">Le Méridien Đà Nẵng — Marriott Beachfront Villas</span>
           <span class="tile-stats"></span>
         </div>
         <div class="tile-btns">
-          <a href="properties/binghatti-mercedes-benz-city.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
-          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/dubai/binghatti-mercedes-benz-city" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+          <a href="properties/le-meridien-da-nang.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/le-meridien-da-nang/" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="maia-ho-tram">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/maia-ho-tram-hero/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇻🇳 Vietnam</span>
+          <span class="tile-name">Maia Resort Hồ Tràm — Fusion Beachfront Residences</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/maia-ho-tram.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/maia-ho-tram/" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="intercontinental-grenada-resort">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/intercontinental-grenada-resort-hero/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🌍 Grenada</span>
+          <span class="tile-name">InterContinental Grenada Resort — Grenada Citizenship (CBI)</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/intercontinental-grenada-resort.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/grenada/intercontinental-grenada-resort/" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="sycamore-binh-duong">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/sycamore-binh-duong-hero/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇻🇳 Vietnam</span>
+          <span class="tile-name">The Sycamore by CapitaLand — Bình Dương</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/sycamore-binh-duong.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/sycamore-binh-duong/" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="one-central-saigon">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/one-central-saigon-hero/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇻🇳 Vietnam</span>
+          <span class="tile-name">One Central Saigon — The Ritz-Carlton Residences</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/one-central-saigon.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/one-central-saigon/" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="oxley-towers-klcc">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/oxley-towers-klcc-hero/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇲🇾 Malaysia</span>
+          <span class="tile-name">Oxley Towers KLCC — Kuala Lumpur (MM2H)</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/oxley-towers-klcc.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/oxley-towers-klcc" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="golden-crown-residence-klcc">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/golden-crown-residence-klcc-hero/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇲🇾 Malaysia</span>
+          <span class="tile-name">Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H)</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/golden-crown-residence-klcc.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/golden-crown-residence-klcc" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="centrix-the-station-klcc">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/e43ab661-5cbf-487c-d513-0823541d9d00/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇲🇾 Malaysia</span>
+          <span class="tile-name">Centrix The Station KLCC — Kuala Lumpur (MM2H)</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/centrix-the-station-klcc.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/centrix-the-station-klcc" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="pavilion-square-klcc">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/pavilion-square-klcc-hero/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇲🇾 Malaysia</span>
+          <span class="tile-name">Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H)</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/pavilion-square-klcc.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/pavilion-square-klcc" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="curvo-residences-setapak">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/372f3f54-86f0-41d6-f172-856c4f1d3000/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇲🇾 Malaysia</span>
+          <span class="tile-name">Curvo Residences — Setapak, Kuala Lumpur (MM2H)</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/curvo-residences-setapak.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/curvo-residences-setapak" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="damac-safa-gate">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/8f7f9483-695b-4425-bda9-5e5cb585ab00/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇦🇪 UAE</span>
+          <span class="tile-name">DAMAC Safa Gate — Sheikh Zayed Road, Dubai (Golden Visa)</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/damac-safa-gate.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/uae/damac-safa-gate" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
         </div>
       </div>
       <div class="tile" data-slug="damac-towers-paramount">
-        <div class="tile-img"></div>
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/056ce46f-755d-49a0-a01f-7286b78fe200/public')"></div>
         <div class="tile-info">
-          <span class="tile-country">🌍 Dubai</span>
-          <span class="tile-name">🎬 DAMAC Towers by Paramount — Business Bay, Dubai (Golden Visa)</span>
+          <span class="tile-country">🇦🇪 UAE</span>
+          <span class="tile-name">DAMAC Towers by Paramount — Business Bay, Dubai (Golden Visa)</span>
           <span class="tile-stats"></span>
         </div>
         <div class="tile-btns">
           <a href="properties/damac-towers-paramount.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
-          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/dubai/damac-towers-paramount" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/uae/damac-towers-paramount" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
         </div>
       </div>
       <div class="tile" data-slug="damac-golf-greens">
-        <div class="tile-img"></div>
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/damac-golf-greens-hero/public')"></div>
         <div class="tile-info">
-          <span class="tile-country">🌍 Dubai</span>
-          <span class="tile-name">⛳ DAMAC Golf Greens — DAMAC Hills, Dubai (Golden Visa)</span>
+          <span class="tile-country">🇦🇪 UAE</span>
+          <span class="tile-name">DAMAC Golf Greens — DAMAC Hills, Dubai (Golden Visa)</span>
           <span class="tile-stats"></span>
         </div>
         <div class="tile-btns">
           <a href="properties/damac-golf-greens.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
-          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/dubai/damac-golf-greens" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/uae/damac-golf-greens" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
         </div>
       </div>
       <div class="tile" data-slug="binghatti-mercedes-benz-places">
-        <div class="tile-img"></div>
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/088624e5-323c-4615-fad1-d9fb008d7600/public')"></div>
         <div class="tile-info">
-          <span class="tile-country">🌍 Dubai</span>
-          <span class="tile-name">⭐ Mercedes-Benz Places by Binghatti — Downtown Dubai (Golden Visa)</span>
+          <span class="tile-country">🇦🇪 UAE</span>
+          <span class="tile-name">Mercedes-Benz Places by Binghatti — Downtown Dubai (Golden Visa)</span>
           <span class="tile-stats"></span>
         </div>
         <div class="tile-btns">
           <a href="properties/binghatti-mercedes-benz-places.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
-          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/dubai/binghatti-mercedes-benz-places" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/uae/binghatti-mercedes-benz-places" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
         </div>
       </div>
       <div class="tile" data-slug="sobha-estates-hartland-2">
         <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/sobha-estates-hartland-2-hero/public')"></div>
         <div class="tile-info">
-          <span class="tile-country">🌍 Dubai</span>
-          <span class="tile-name">🌳 Sobha Estates — Hartland II, Dubai (Golden Visa)</span>
+          <span class="tile-country">🇦🇪 UAE</span>
+          <span class="tile-name">Sobha Estates — Hartland II, Dubai (Golden Visa)</span>
           <span class="tile-stats"></span>
         </div>
         <div class="tile-btns">
           <a href="properties/sobha-estates-hartland-2.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
-          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/dubai/sobha-estates-hartland-2" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/uae/sobha-estates-hartland-2" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="origin-residences-sukhumvit-48">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/3385e5cd-8d5e-4f9b-9e26-d56b710f5200/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇹🇭 Thailand</span>
+          <span class="tile-name">Origin Residences Sukhumvit 48 — Bangkok</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/origin-residences-sukhumvit-48.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/origin-residences-sukhumvit-48" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="culture-chula">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/66869eda-dc10-44f7-7486-071d3d5ea200/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇹🇭 Thailand</span>
+          <span class="tile-name">Culture Chula — Bangkok</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/culture-chula.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/culture-chula" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="xt-phayathai">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/51a20b15-e49f-491d-1877-0cc038d22000/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇹🇭 Thailand</span>
+          <span class="tile-name">XT Phayathai — Bangkok</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/xt-phayathai.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/xt-phayathai" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
         </div>
       </div>
       <div class="tile" data-slug="coco-parc">
@@ -351,7 +530,7 @@
         </div>
       </div>
       <div class="tile" data-slug="botanica-louvre">
-        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/botanica-louvre-hero/public')"></div>
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/c19f50d2-fca6-419a-a6ad-862c77da4900/public')"></div>
         <div class="tile-info">
           <span class="tile-country">🇹🇭 Thailand</span>
           <span class="tile-name">Botanica Louvre — Phuket</span>
@@ -362,8 +541,20 @@
           <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/botanica-louvre" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
         </div>
       </div>
+      <div class="tile" data-slug="botanica-grand-avenue">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/botanica-grand-avenue-hero/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇹🇭 Thailand</span>
+          <span class="tile-name">Botanica Grand Avenue — Phuket</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/botanica-grand-avenue.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/botanica-grand-avenue" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
       <div class="tile" data-slug="botanica-montazure">
-        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/botanica-montazure-hero/public')"></div>
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/a6a97b90-67de-474d-e652-e037b2610500/public')"></div>
         <div class="tile-info">
           <span class="tile-country">🇹🇭 Thailand</span>
           <span class="tile-name">Botanica MontAzure — Phuket</span>
@@ -374,8 +565,104 @@
           <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/botanica-montazure" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
         </div>
       </div>
+      <div class="tile" data-slug="laguna-banyan-tree-residences">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/laguna-banyan-tree-residences-hero/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇹🇭 Thailand</span>
+          <span class="tile-name">Laguna Phuket — Banyan Tree &amp; Angsana Residences</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/laguna-banyan-tree-residences.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/laguna-banyan-tree-residences" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="balco-villas">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/balco-villas-hero/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇹🇭 Thailand</span>
+          <span class="tile-name">Balco Villas by Origin — Phuket</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/balco-villas.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/balco-villas" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="the-residence-prime">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/33c5940e-2f8e-4fa3-6ae4-1b4e70e84400/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇹🇭 Thailand</span>
+          <span class="tile-name">The Residence Prime — Phuket</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/the-residence-prime.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/the-residence-prime" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="ayana-luxury-villas">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/ayana-luxury-villas-hero/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇹🇭 Thailand</span>
+          <span class="tile-name">Ayana Luxury Villas — Phuket</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/ayana-luxury-villas.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/ayana-luxury-villas" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="anchan-villas">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/anchan-villas-hero/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇹🇭 Thailand</span>
+          <span class="tile-name">Anchan Villas — Phuket</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/anchan-villas.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/anchan-villas" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="layan-green-park">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/layan-green-park-hero/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇹🇭 Thailand</span>
+          <span class="tile-name">Layan Green Park — Phuket</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/layan-green-park.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/layan-green-park" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="layan-verde">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/layan-verde-hero/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇹🇭 Thailand</span>
+          <span class="tile-name">Layan Verde — Phuket</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/layan-verde.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/layan-verde" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="the-standard-residences-bangtao">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/the-standard-residences-bangtao-hero/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇹🇭 Thailand</span>
+          <span class="tile-name">The Standard Residences Bangtao — Phuket</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/the-standard-residences-bangtao.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/the-standard-residences-bangtao" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
       <div class="tile" data-slug="hythe-by-botanica">
-        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/hythe-by-botanica-hero/public')"></div>
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/1f79b085-eca4-475f-0865-4478721b3100/public')"></div>
         <div class="tile-info">
           <span class="tile-country">🇹🇭 Thailand</span>
           <span class="tile-name">Hythe by Botanica — Phuket</span>
@@ -399,7 +686,7 @@
         </div>
       </div>
       <div class="tile" data-slug="botanica-foresta-ii">
-        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/botanica-foresta-ii-hero/public')"></div>
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/9872f1b7-401d-45f1-0b93-7bc221254800/public')"></div>
         <div class="tile-info">
           <span class="tile-country">🇹🇭 Thailand</span>
           <span class="tile-name">Botanica Foresta II — Phuket</span>
@@ -408,6 +695,42 @@
         <div class="tile-btns">
           <a href="properties/botanica-foresta-ii.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
           <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/botanica-foresta-ii" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="ideo-sukhumvit-rama-4">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/11a5c0c0-575e-4a38-7ec4-0e33432b5700/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇹🇭 Thailand</span>
+          <span class="tile-name">Ideo Sukhumvit-Rama 4 — Bangkok</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/ideo-sukhumvit-rama-4.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/ideo-sukhumvit-rama-4" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="culture-thonglor">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/7f69062e-16dc-46d9-babc-de64ba8d3100/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇹🇭 Thailand</span>
+          <span class="tile-name">Culture Thonglor — Bangkok</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/culture-thonglor.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/culture-thonglor" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
+        </div>
+      </div>
+      <div class="tile" data-slug="so-origin-bangtao-beach">
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/caf271b6-134b-478b-4131-5129988d1c00/public')"></div>
+        <div class="tile-info">
+          <span class="tile-country">🇹🇭 Thailand</span>
+          <span class="tile-name">So Origin Bangtao Beach — Phuket</span>
+          <span class="tile-stats"></span>
+        </div>
+        <div class="tile-btns">
+          <a href="properties/so-origin-bangtao-beach.html" class="tile-btn tile-btn-preview" target="_blank">Preview ↗</a>
+          <a href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/so-origin-bangtao-beach" class="tile-btn tile-btn-live" target="_blank" rel="noreferrer">Live ↗</a>
         </div>
       </div>
       <div class="tile" data-slug="origin-kathu-patong">
@@ -1179,7 +1502,7 @@
         </div>
       </div>
       <div class="tile" data-slug="hyatt-regency-ho-tram">
-        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/hyatt-regency-ho-tram-hero/public')"></div>
+        <div class="tile-img" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/302f5470-b7fc-4b20-aecb-4c4ba03dd700/public')"></div>
         <div class="tile-info">
           <span class="tile-country">🇻🇳 Vietnam</span>
           <span class="tile-name">Hyatt Regency Hồ Tràm</span>
@@ -1491,5 +1814,51 @@
 </div>
 <script>document.addEventListener('keydown',function(e){if(e.key==='Escape'){var o=document.getElementById('nac-ps-ov');if(o)o.classList.remove('open');}});</script>
 <!-- ===== /NAC personalisation-status pop-up ===== -->
+<!-- ===== Listing filter (country + name search) ===== -->
+<script>
+  (function(){
+    var grid=document.querySelector('.grid'); if(!grid) return;
+    var tiles=[].slice.call(grid.querySelectorAll('.tile'));
+    var search=document.getElementById('lp-search');
+    var chipsBox=document.getElementById('lp-countries');
+    var countEl=document.getElementById('listing-count');
+    var emptyEl=document.getElementById('lp-empty');
+    if(!tiles.length||!search||!chipsBox) return;
+    // Country name → ISO2 for flagcdn images (emoji flags render as bare codes on Windows).
+    var ISO={'Vietnam':'vn','Malaysia':'my','UAE':'ae','United Arab Emirates':'ae','Thailand':'th','Australia':'au','United Kingdom':'gb','Cyprus':'cy','Greece':'gr','Panama':'pa','Singapore':'sg','Turkey':'tr','Türkiye':'tr','Indonesia':'id','Philippines':'ph','Japan':'jp','Portugal':'pt','Spain':'es','Italy':'it','France':'fr','Malta':'mt','United States':'us','USA':'us'};
+    var cleanName=function(s){ return s.replace(/^[^A-Za-zÀ-ÿ]+/,'').trim(); };
+    var flag=function(name){ var i=ISO[name]; return i?'<img class="flag-img" src="https://flagcdn.com/w40/'+i+'.png" srcset="https://flagcdn.com/w80/'+i+'.png 2x" alt="" loading="lazy">':''; };
+    var counts={}; var order=[];
+    tiles.forEach(function(t){
+      var c=cleanName(((t.querySelector('.tile-country')||{}).textContent||'').trim());
+      t._c=c;
+      t._n=(((t.querySelector('.tile-name')||{}).textContent||'')+' '+(t.getAttribute('data-slug')||'')).toLowerCase();
+      var ce=t.querySelector('.tile-country'); if(ce) ce.innerHTML=flag(c)+c;   // swap emoji → real flag in the tile too
+      if(c){ if(!(c in counts)){counts[c]=0;order.push(c);} counts[c]++; }
+    });
+    order.sort();
+    var active='all';
+    function mkChip(label,val,n){
+      var b=document.createElement('button'); b.className='lp-chip'; b.dataset.val=val;
+      b.innerHTML=label+'<span class="n">'+n+'</span>';
+      b.onclick=function(){active=val;render();};
+      return b;
+    }
+    chipsBox.appendChild(mkChip('All','all',tiles.length));
+    order.forEach(function(c){ chipsBox.appendChild(mkChip(flag(c)+c,c,counts[c])); });
+    function render(){
+      var q=(search.value||'').toLowerCase().trim(), shown=0;
+      tiles.forEach(function(t){
+        var ok=(active==='all'||t._c===active)&&(!q||t._n.indexOf(q)>-1);
+        t.style.display=ok?'':'none'; if(ok)shown++;
+      });
+      [].forEach.call(chipsBox.children,function(b){ b.classList.toggle('on',b.dataset.val===active); });
+      if(countEl) countEl.textContent=shown+(shown===1?' listing':' listings');
+      if(emptyEl) emptyEl.classList.toggle('show',shown===0);
+    }
+    search.addEventListener('input',render);
+    render();
+  })();
+</script>
 </body>
 </html>

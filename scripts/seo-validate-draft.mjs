@@ -45,7 +45,7 @@ const MODEL = process.env.ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001';
 if (!NOTION_TOKEN) { console.error('NOTION_TOKEN required'); process.exit(1); }
 if (!ANTHROPIC_API_KEY) { console.error('ANTHROPIC_API_KEY required'); process.exit(1); }
 
-const notion = new Client({ auth: NOTION_TOKEN });
+const notion = new Client({ auth: NOTION_TOKEN, notionVersion: '2022-06-28' });
 const claude = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

@@ -1,0 +1,2 @@
+apply
+2026-06-10 — real run: mirror Currency→Local Currency + Purchase Price→Local Price on the 98 non-USD listings.

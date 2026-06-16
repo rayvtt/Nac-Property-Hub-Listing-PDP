@@ -397,5 +397,138 @@
   "Nad Al Sheba, Dubai, Dubai": {
     "lat": 25.1456302,
     "lng": 55.364275
+  },
+  "Mercedes-Benz Places · Binghatti City — Nad Al Sheba, Dubai (Golden Visa), Nad Al Sheba, Dubai, Dubai": null,
+  "DAMAC Towers by Paramount — Business Bay, Dubai (Golden Visa), Business Bay, Dubai, Dubai": null,
+  "DAMAC Golf Greens — DAMAC Hills, Dubai (Golden Visa), DAMAC Hills, Dubai, Dubai": null,
+  "Mercedes-Benz Places by Binghatti — Downtown Dubai (Golden Visa), Downtown Dubai, Dubai": null,
+  "Sobha Estates — Hartland II, Dubai (Golden Visa), Nad Al Sheba, Dubai, Dubai": null,
+  "Laguna Phuket — Banyan Tree & Angsana Residences, Laguna, Phuket, Thailand": null,
+  "Choeng Thale, Thalang, Phuket, Laguna, Phuket, Thailand": null,
+  "Laguna, Phuket, Thailand": {
+    "lat": 8.008192,
+    "lng": 98.3028486
+  },
+  "Balco Villas by Origin — Phuket, Bangtao, Phuket, Thailand": null,
+  "Choeng Thale, Thalang, Phuket, Bangtao, Phuket, Thailand": null,
+  "Bangtao, Phuket, Thailand": {
+    "lat": 7.9939487,
+    "lng": 98.2926089
+  },
+  "Ayana Luxury Villas — Phuket, Bangtao, Phuket, Thailand": null,
+  "Si Sunthon, Thalang, Phuket, Bangtao, Phuket, Thailand": null,
+  "Anchan Villas — Phuket, Layan, Phuket, Thailand": null,
+  "Choeng Thale, Thalang, Phuket, Layan, Phuket, Thailand": null,
+  "Layan Green Park — Phuket, Layan, Phuket, Thailand": null,
+  "Layan Verde — Phuket, Layan, Phuket, Thailand": null,
+  "The Standard Residences Bangtao — Phuket, Bangtao, Phuket, Thailand": null,
+  "The Residence Prime — Phuket, Bangtao, Phuket, Thailand": null,
+  "Thep Krasattri, Thalang, Phuket, Bangtao, Phuket, Thailand": null,
+  "So Origin Bangtao Beach — Phuket, Bangtao, Phuket, Thailand": null,
+  "Origin Residences Sukhumvit 48 — Bangkok, Sukhumvit 48, Bangkok, Thailand": null,
+  "Phra Khanong, Khlong Toei, Bangkok, Sukhumvit 48, Bangkok, Thailand": {
+    "lat": 13.7104684,
+    "lng": 100.5978792
+  },
+  "Botanica Grand Avenue — Phuket, Laguna, Phuket, Thailand": null,
+  "Ideo Sukhumvit-Rama 4 — Bangkok, Phra Khanong, Bangkok, Thailand": null,
+  "Phra Khanong, Khlong Toei, Bangkok, Phra Khanong, Bangkok, Thailand": {
+    "lat": 13.7151693,
+    "lng": 100.5912365
+  },
+  "Culture Thonglor — Bangkok, Thonglor, Bangkok, Thailand": null,
+  "Khlong Tan Nuea, Watthana, Bangkok, Thonglor, Bangkok, Thailand": null,
+  "Thonglor, Bangkok, Thailand": {
+    "lat": 13.7405686,
+    "lng": 100.5848775
+  },
+  "Culture Chula — Bangkok, Sam Yan, Bangkok, Thailand": null,
+  "Bang Rak, Bangkok, Sam Yan, Bangkok, Thailand": null,
+  "Sam Yan, Bangkok, Thailand": {
+    "lat": 13.7320608,
+    "lng": 100.5301206
+  },
+  "XT Phayathai — Bangkok, Phaya Thai, Bangkok, Thailand": {
+    "lat": 13.7576135,
+    "lng": 100.5391164
+  },
+  "Mercedes-Benz Places · Binghatti City — Nad Al Sheba, Dubai (Golden Visa), Nad Al Sheba, Dubai, UAE": null,
+  "Nad Al Sheba (Meydan), Dubai, Nad Al Sheba, Dubai, UAE": {
+    "lat": 25.1475574,
+    "lng": 55.2863658
+  },
+  "DAMAC Towers by Paramount — Business Bay, Dubai (Golden Visa), Business Bay, Dubai, UAE": null,
+  "Business Bay, Dubai, Business Bay, Dubai, UAE": {
+    "lat": 25.1912836,
+    "lng": 55.2604063
+  },
+  "DAMAC Golf Greens — DAMAC Hills, Dubai (Golden Visa), DAMAC Hills, Dubai, UAE": null,
+  "DAMAC Hills, Dubai, DAMAC Hills, Dubai, UAE": {
+    "lat": 25.0131537,
+    "lng": 55.2551349
+  },
+  "Mercedes-Benz Places by Binghatti — Downtown Dubai (Golden Visa), Downtown Dubai, UAE": null,
+  "Downtown Dubai, Downtown Dubai, UAE": {
+    "lat": 25.1812198,
+    "lng": 55.2622481
+  },
+  "Sobha Estates — Hartland II, Dubai (Golden Visa), Nad Al Sheba, Dubai, UAE": null,
+  "Sobha Hartland II, Nad Al Sheba, Nad Al Sheba, Dubai, UAE": null,
+  "Nad Al Sheba, Dubai, UAE": {
+    "lat": 25.1456302,
+    "lng": 55.364275
+  },
+  "One Central Saigon — The Ritz-Carlton Residences, District 1, Ho Chi Minh City, Vietnam": null,
+  "Bến Thành · District 1, District 1, Ho Chi Minh City, Vietnam": {
+    "lat": 10.7747697,
+    "lng": 106.7007331
+  },
+  "Oxley Towers KLCC — Kuala Lumpur (MM2H), KLCC, Kuala Lumpur, Malaysia": null,
+  "Jalan Ampang, KLCC, KLCC, Kuala Lumpur, Malaysia": null,
+  "Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H), Jalan Ampang, Kuala Lumpur, Malaysia": null,
+  "Jalan Ampang (KLCC fringe), Jalan Ampang, Kuala Lumpur, Malaysia": null,
+  "Jalan Ampang, Kuala Lumpur, Malaysia": {
+    "lat": 3.1564895,
+    "lng": 101.7047155
+  },
+  "Centrix The Station KLCC — Kuala Lumpur (MM2H), Jalan Ampang, Kuala Lumpur, Malaysia": null,
+  "Dang Wangi, Jalan Ampang, Jalan Ampang, Kuala Lumpur, Malaysia": {
+    "lat": 3.1562363,
+    "lng": 101.7029801
+  },
+  "Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H), Bukit Bintang, Kuala Lumpur, Malaysia": null,
+  "Bukit Bintang, Bukit Bintang, Kuala Lumpur, Malaysia": {
+    "lat": 3.1460953,
+    "lng": 101.7114762
+  },
+  "Curvo Residences — Setapak, Kuala Lumpur (MM2H), Setapak, Kuala Lumpur, Malaysia": null,
+  "Setapak, Setapak, Kuala Lumpur, Malaysia": {
+    "lat": 3.1856775,
+    "lng": 101.7144441
+  },
+  "DAMAC Safa Gate — Sheikh Zayed Road, Dubai (Golden Visa), Al Safa, Dubai, UAE": null,
+  "Sheikh Zayed Road, Al Safa, Al Safa, Dubai, UAE": {
+    "lat": 25.1677493,
+    "lng": 55.2371923
+  },
+  "The Sycamore by CapitaLand — Bình Dương, Bình Dương New City, Vietnam": null,
+  "Bình Dương New City (Thủ Dầu Một), Bình Dương New City, Vietnam": null,
+  "Bình Dương New City, Vietnam": {
+    "lat": 11.0723211,
+    "lng": 106.678342
+  },
+  "InterContinental Grenada Resort — Grenada Citizenship (CBI), La Sagesse, St. David, Grenada": null,
+  "La Sagesse Beach, La Sagesse, St. David, Grenada": {
+    "lat": 12.0232621,
+    "lng": -61.6731807
+  },
+  "Le Méridien Đà Nẵng — Marriott Beachfront Villas, Đà Nẵng–Hội An coast, Vietnam": null,
+  "Điện Dương, Quảng Nam, Đà Nẵng–Hội An coast, Vietnam": null,
+  "Đà Nẵng–Hội An coast, Vietnam": null,
+  "Maia Resort Hồ Tràm — Fusion Beachfront Residences, Hồ Tràm, Bà Rịa–Vũng Tàu, Vietnam": null,
+  "Phước Thuận, Xuyên Mộc, Hồ Tràm, Bà Rịa–Vũng Tàu, Vietnam": null,
+  "Hồ Tràm, Bà Rịa–Vũng Tàu, Vietnam": {
+    "lat": 10.4863509,
+    "lng": 107.4542812
   }
 }

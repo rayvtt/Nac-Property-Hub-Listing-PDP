@@ -18,6 +18,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.40.0",
     "@notionhq/client": "^2.2.15",
+    "@resvg/resvg-js": "^2.6.2",
     "cheerio": "^1.0.0",
     "googleapis": "^144.0.0"
   },

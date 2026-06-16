@@ -58,15 +58,21 @@ jobs:
           ONLY_SLUG: ${{ github.event.inputs.only_slug }}
         run: node sync-notion-clp.mjs
 
+      - name: Ensure share section on every CLP
+        run: node scripts/ensure-share-section.mjs --clp
+
+      - name: Rebuild bespoke OG social cards
+        run: node scripts/build-clp-og-images.mjs
+
       - name: Commit and push (with rebase retry)
         run: |
           git config user.name "nac-notion-bot"
           git config user.email "nac-notion-bot@users.noreply.github.com"
-          if git diff --quiet -- country/; then
+          if git diff --quiet -- country/ og-images/; then
             echo "No CLP changes."
             exit 0
           fi
-          git add country/
+          git add country/ og-images/
           git commit -m "chore(clp-sync): refresh country pages from Notion"
 
           for attempt in 1 2 3 4 5; do

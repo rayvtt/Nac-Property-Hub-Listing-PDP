@@ -31,6 +31,7 @@ import * as cheerio from 'cheerio';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadRates, toUSD, roundUSD } from './fx.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -81,6 +82,20 @@ const COUNTRY_LOOKUP = {
   'Vanuatu':         { slug: 'vu',  code: 'VU', nameVi: 'Vanuatu',          wpSlug: 'vanuatu',         region: 'pac',    flag: '🇻🇺' },
   'United States':   { slug: 'us',  code: 'US', nameVi: 'Hoa Kỳ',           wpSlug: 'usa',             region: 'us',     flag: '🇺🇸' },
   'USA':             { slug: 'us',  code: 'US', nameVi: 'Hoa Kỳ',           wpSlug: 'usa',             region: 'us',     flag: '🇺🇸' },
+  'Australia':       { slug: 'au',  code: 'AU', nameVi: 'Úc',               wpSlug: 'australia',       region: 'pac',    flag: '🇦🇺' },
+  'New Zealand':     { slug: 'nz',  code: 'NZ', nameVi: 'New Zealand',      wpSlug: 'new-zealand',     region: 'pac',    flag: '🇳🇿' },
+};
+
+// NAC region code → continent label (drives the §10 track-record ribbon count).
+// UK and EU both roll into Europe for a single continent bucket.
+const REGION_CONTINENT = {
+  asia:   'Asia',
+  eu:     'Europe',
+  uk:     'Europe',
+  me:     'Middle East',
+  caribe: 'Central America',
+  us:     'North America',
+  pac:    'Oceania',
 };
 
 // ─── small utils ──────────────────────────────────────────────────────────
@@ -110,6 +125,51 @@ const priceString = (usd) => {
   const { num, unit } = priceParts(usd);
   return `$${num}${unit}`;
 };
+
+// ── Live-FX money display (mirrors sync-notion.mjs) ─────────────────────────
+// Cards show USD as the primary figure with the brochure-local amount in
+// parentheses beneath. Notion source: Local Price/Currency when set, else the
+// legacy Purchase Price/Currency pair. FX rates load once per run (daily
+// on-disk cache). If a rate is missing we keep the local figure as primary
+// rather than emit a wrong USD number.
+let FX = null;
+const CURRENCY_SYMBOLS = {
+  USD: '$',  EUR: '€',  GBP: '£',  AED: 'AED ',  CAD: 'C$',  AUD: 'A$',
+  JPY: '¥',  CHF: 'CHF ', CNY: '¥', SGD: 'S$', MYR: 'RM ', THB: '฿', VND: '₫',
+};
+// Local amount → compact "RM 1.58M" / "฿2.46M" / "€450K" string.
+function localPriceString(amount, cur) {
+  if (amount == null) return '';
+  const sym = CURRENCY_SYMBOLS[(cur || '').toUpperCase()] || `${cur} `;
+  if (amount >= 1e9) return `${sym}${stripNum(amount / 1e9)}B`;
+  if (amount >= 1e6) return `${sym}${stripNum(amount / 1e6)}M`;
+  if (amount >= 1e3) return `${sym}${Math.round(amount / 1e3)}K`;
+  return `${sym}${Math.round(amount)}`;
+}
+// Resolve { usdPrice, localDisp } for a listing. usdPrice drives every USD
+// surface (card, plaque, compare table, data-price sorting); localDisp is the
+// "(RM 1.58M)" sub-line, empty when the source is already USD or conversion
+// would just echo the same figure.
+function resolvePrices(l) {
+  const srcCur = (l.localCurrency || l.currency || 'USD').toUpperCase();
+  const localAmt = l.localPrice != null ? l.localPrice : l.purchasePrice;
+  if (localAmt == null) return { usdPrice: null, localDisp: '' };
+  if (srcCur === 'USD') return { usdPrice: localAmt, localDisp: '' };
+  // Non-USD source. If Purchase Price was already USD-normalised upstream
+  // (Local Price set, differs from Purchase Price), prefer the live-FX figure
+  // for display consistency; otherwise convert the only figure we have.
+  const usd = roundUSD(toUSD(localAmt, srcCur, FX));
+  if (usd == null) {
+    // No rate — never show a wrong USD figure. If the stored Purchase Price
+    // looks distinct from the local amount it's most likely pre-normalised
+    // USD; trust it. Else keep local as primary with no sub-line.
+    const preNorm = l.localPrice != null && l.purchasePrice != null && l.purchasePrice !== l.localPrice;
+    return preNorm
+      ? { usdPrice: l.purchasePrice, localDisp: localPriceString(localAmt, srcCur) }
+      : { usdPrice: localAmt, localDisp: '' };
+  }
+  return { usdPrice: usd, localDisp: localPriceString(localAmt, srcCur) };
+}
 const pct1 = (decimal) => (decimal == null ? null : (decimal * 100).toFixed(1));
 
 // donut: r=42 → circumference 2π·42 ≈ 263.9; offset = C·(1 − score/100)
@@ -223,8 +283,9 @@ function renderCard(l) {
           <p class="cl-card-tag">${biSpans(l.taglineVi, l.taglineEn)}</p>
           <div class="cl-card-stats">
             <div class="cl-card-stat">
-              <span class="cl-card-stat-num">$${num}<small>${unit}</small></span>
-              <span class="cl-card-stat-lbl"><span data-vi="Vào cửa">Vào cửa</span><span data-en="Entry">Entry</span></span>
+              <span class="cl-card-stat-num">$${num}<small>${unit}</small></span>${l.localDisp ? `
+              <span class="cl-card-stat-local">(${escText(l.localDisp)})</span>` : ''}
+              <span class="cl-card-stat-lbl"><span data-vi="Giá khởi điểm">Giá khởi điểm</span><span data-en="Entry">Entry</span></span>
             </div>
             <div class="cl-card-stat">
               <span class="cl-card-stat-num">${y ?? '—'}<small>%</small></span>
@@ -266,7 +327,7 @@ function renderCompareRow(l) {
               <span class="cl-tbl-brand">${escText(shortBrand(l.brand))}</span>
             </td>
             <td>${escText(cityName)}</td>
-            <td><span class="cl-tbl-val">$${num}<small>${unit}</small></span></td>
+            <td><span class="cl-tbl-val">$${num}<small>${unit}</small></span>${l.localDisp ? `<span class="cl-tbl-local">(${escText(l.localDisp)})</span>` : ''}</td>
             <td><span class="cl-tbl-val">${y ?? '—'}<small>%</small></span></td>
             <td><span class="cl-tbl-val">${irr ?? '—'}<small>%</small></span></td>
             <td><span class="cl-tbl-pill">${l.nacScore ?? '—'} / 100</span></td>
@@ -440,7 +501,7 @@ function stripManagedSeoHead($) {
 
 // ─── the patcher: model → patched HTML string ───────────────────────────────
 
-function applyModel(html, model) {
+function applyModel(html, model, { globalStats } = {}) {
   const $ = cheerio.load(html, { decodeEntities: false });
   const { country, body, listings } = model;
 
@@ -470,7 +531,13 @@ function applyModel(html, model) {
   $('meta[name="description"]').attr('content', descText);
   $('meta[property="og:description"]').attr('content', descText);
   $('meta[name="twitter:description"]').attr('content', descText);
-  const ogImg = ordered.find(l => l.heroImg)?.heroImg;
+  // Bespoke per-country social card (constellation atlas + tagline + stamp).
+  // Generated by scripts/build-clp-og-images.mjs and served from GH Pages.
+  // Falls back to the first listing's hero if the slug is missing (shouldn't
+  // happen — every Live CLP gets a card).
+  const ogImg = country.slug
+    ? `https://rayvtt.github.io/Nac-Property-Hub-Listing-PDP/og-images/clp-${country.slug}.png`
+    : ordered.find(l => l.heroImg)?.heroImg;
   if (ogImg) {
     $('meta[property="og:image"]').attr('content', ogImg);
   }
@@ -582,6 +649,36 @@ function applyModel(html, model) {
   // ── compare table ─────────────────────────────────────────────────
   const tbody = $('#cl-tbl tbody').length ? $('#cl-tbl tbody') : $('#cl-tbl').find('tbody');
   if (tbody.length) tbody.html(ordered.map(renderCompareRow).join('\n'));
+
+  // Heading mirrors the row count — "Bốn dự án" / "Four listings" was the
+  // hardcoded template default and stayed wrong for any country with ≠4
+  // listings. Spell out 1–10 in both langs, fall back to digits beyond.
+  const n = ordered.length;
+  const VI_NUMS = ['Không','Một','Hai','Ba','Bốn','Năm','Sáu','Bảy','Tám','Chín','Mười'];
+  const EN_NUMS = ['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten'];
+  const viWord = n >= 0 && n <= 10 ? VI_NUMS[n] : String(n);
+  const enWord = n >= 0 && n <= 10 ? EN_NUMS[n] : String(n);
+  const enUnit = n === 1 ? 'listing' : 'listings';
+  const viTitle = `${viWord} dự án. Một <em>cái nhìn</em>.`;
+  const enTitle = `${enWord} ${enUnit}. One <em>side-by-side</em>.`;
+  $('.cl-compare-title [data-vi]').attr('data-vi', viTitle).html(viTitle);
+  $('.cl-compare-title [data-en]').attr('data-en', enTitle).html(enTitle);
+  // 0-listing CLPs: hide the entire compare section so the framing stays
+  // honest (no "Zero listings. One side-by-side." heading on its own).
+  if (n === 0) $('.cl-compare').attr('hidden', 'hidden');
+  else $('.cl-compare').removeAttr('hidden');
+
+  // ── §10 track-record ribbon (NAC-wide brag) ───────────────────────
+  // Only present on the newer CLP layout (AE/AU/MY/SG/TH/VN). Older
+  // CLPs (CY/GR/PA/TR/UK) skipped this section — silently no-op there.
+  if (globalStats) {
+    const trackNums = $('.cl-track .cl-track-num');
+    if (trackNums.length >= 3) {
+      $(trackNums[0]).html(`${globalStats.listingsFloor}<span class="cl-track-plus">+</span>`);
+      $(trackNums[1]).text(String(globalStats.countriesCount));
+      $(trackNums[2]).text(String(globalStats.continentsCount));
+    }
+  }
 
   return $.html();
 }
@@ -824,23 +921,71 @@ async function scaffoldMissingCountries(notion) {
   return { created, skipped };
 }
 
-async function fetchCountryListings(notion, countryNameEn) {
-  let results = [];
+// NAC-wide brag stats for the §10 track-record ribbon. Counts Live + Draft
+// so the "100+" suffix stays honest as drafts flip to Live (no churn per
+// status change). Continents derived from COUNTRY_LOOKUP[c].region via
+// REGION_CONTINENT — unknown countries are simply skipped from the count.
+async function fetchGlobalStats(notion) {
+  const countries = new Set();
+  let total = 0;
+  for (const status of ['Live', 'Draft']) {
+    let cursor;
+    do {
+      const res = await notion.databases.query({
+        database_id: LLP_DB_ID,
+        filter: { property: 'Hub Status', select: { equals: status } },
+        start_cursor: cursor,
+        page_size: 100,
+      });
+      total += res.results.length;
+      for (const p of res.results) {
+        const c = p.properties.Country?.select?.name;
+        if (c) countries.add(c);
+      }
+      cursor = res.has_more ? res.next_cursor : undefined;
+    } while (cursor);
+  }
+  const continents = new Set();
+  for (const c of countries) {
+    const region = COUNTRY_LOOKUP[c]?.region;
+    const continent = region && REGION_CONTINENT[region];
+    if (continent) continents.add(continent);
+  }
+  return {
+    listingsFloor: Math.floor(total / 10) * 10,
+    countriesCount: countries.size,
+    continentsCount: continents.size,
+  };
+}
+
+// Cache the full Live-listings set per run so we don't make 11 round-trips
+// (one per country). Also dodges a Notion data-source-API quirk where
+// compound `and: [Hub Status, Country]` filters silently return 0 even
+// with the API version pinned — single-property filters work, compound
+// ones don't. Filter client-side instead.
+let _liveListingsCache = null;
+async function fetchAllLiveListings(notion) {
+  if (_liveListingsCache) return _liveListingsCache;
+  const results = [];
   let cursor;
   do {
     const res = await notion.databases.query({
       database_id: LLP_DB_ID,
-      filter: {
-        and: [
-          { property: 'Hub Status', select: { equals: 'Live' } },
-          { property: 'Country', select: { equals: countryNameEn } },
-        ],
-      },
+      filter: { property: 'Hub Status', select: { equals: 'Live' } },
       start_cursor: cursor,
+      page_size: 100,
     });
-    results = results.concat(res.results);
+    results.push(...res.results);
     cursor = res.has_more ? res.next_cursor : undefined;
   } while (cursor);
+  _liveListingsCache = results;
+  console.log(`fetchAllLiveListings: ${results.length} Live row(s) cached for the run`);
+  return results;
+}
+
+async function fetchCountryListings(notion, countryNameEn) {
+  const all = await fetchAllLiveListings(notion);
+  const results = all.filter(p => p.properties.Country?.select?.name === countryNameEn);
 
   const rt = (prop) => {
     if (!prop) return '';
@@ -854,10 +999,13 @@ async function fetchCountryListings(notion, countryNameEn) {
   const sel = (prop) => (prop && prop.select ? prop.select.name : null);
   const json = (prop) => { const t = rt(prop).trim(); if (!t) return []; try { return JSON.parse(t); } catch { return []; } };
 
-  return results.map(page => {
+  const mapped = results.map(page => {
     const p = page.properties;
     return {
-      slug: rt(p['🔗 Slug']),
+      // The Notion property was renamed/truncated from "🔗 Slug" to "🔗 Sl"
+      // upstream. Look up both keys so we cope with either name (and the
+      // fix survives if someone renames it back).
+      slug: rt(p['🔗 Slug']) || rt(p['🔗 Sl']),
       nameVi: rt(p['Name VI']) || rt(p['Property Name']),
       nameEn: rt(p['Property Name']),
       taglineVi: rt(p['🏷️ Tagline VI']),
@@ -865,6 +1013,8 @@ async function fetchCountryListings(notion, countryNameEn) {
       brand: rt(p['✦ Brand']),
       purchasePrice: num(p['Purchase Price']),
       currency: sel(p['Currency']),
+      localPrice: num(p['Local Price']),
+      localCurrency: sel(p['Local Currency']),
       hubType: sel(p['🏨 Hub Type']),
       yieldPct: num(p['Yield %']),
       irrPct: num(p['IRR %']),
@@ -878,7 +1028,16 @@ async function fetchCountryListings(notion, countryNameEn) {
       district: rt(p['📍 District']),
       tags: ms(p['Tags']),
     };
-  }).filter(l => l.slug);
+  });
+  // Normalise money once at the source: purchasePrice becomes the USD display
+  // figure (drives card, plaque, compare table, data-price sorting uniformly)
+  // and localDisp carries the "(RM 1.58M)" sub-line for the card.
+  for (const l of mapped) {
+    const { usdPrice, localDisp } = resolvePrices(l);
+    l.purchasePrice = usdPrice;
+    l.localDisp = localDisp;
+  }
+  return mapped.filter(l => l.slug);
 }
 
 // ─── per-country processing ─────────────────────────────────────────────────
@@ -913,12 +1072,12 @@ async function getTemplateScriptBody() {
   return _templateScriptBody;
 }
 
-async function syncCountry(model, { outOverride } = {}) {
+async function syncCountry(model, { outOverride, globalStats } = {}) {
   const slug = model.country.slug;
   if (!slug) return { slug: '(missing)', skipped: 'no Slug' };
   const { file, created } = await ensureFile(slug);
   const html = await fs.readFile(file, 'utf-8');
-  let patched = applyModel(html, model);
+  let patched = applyModel(html, model, { globalStats });
 
   // Overwrite the country file's <script> with the template's. Skips the
   // template itself (which is the source we just read from).
@@ -952,7 +1111,7 @@ async function runLive() {
   const { Client } = await import('@notionhq/client');
   const TOKEN = process.env.NOTION_TOKEN;
   if (!TOKEN) { console.error('NOTION_TOKEN env var is required'); process.exit(1); }
-  const notion = new Client({ auth: TOKEN });
+  const notion = new Client({ auth: TOKEN, notionVersion: '2022-06-28' });
 
   // Auto-scaffold step: for any country with a Live LLP listing but no Country DB
   // row, create a Draft row with auto-fields + a structured body template.
@@ -987,11 +1146,25 @@ async function runLive() {
   }
   console.log(`Country DB: ${rows.length} Live, ${live.length} to process.`);
 
+  // NAC-wide stats for the §10 track-record ribbon — fetched once, reused
+  // for every country so all CLPs render identical brag numbers.
+  let globalStats = null;
+  try {
+    globalStats = await fetchGlobalStats(notion);
+    console.log(`Global stats: ${globalStats.listingsFloor}+ listings · ${globalStats.countriesCount} countries · ${globalStats.continentsCount} continents`);
+  } catch (err) {
+    console.warn(`fetchGlobalStats failed: ${err.message} — track-record ribbon will keep stale numbers`);
+  }
+
+  // FX rates for the USD-primary + local-sub-line money display. Daily cached;
+  // failure degrades gracefully (resolvePrices keeps local figures).
+  FX = await loadRates();
+
   let ok = 0, fail = 0;
   for (const row of live) {
     try {
       const model = await buildModelFromNotion(notion, row);
-      const r = await syncCountry(model);
+      const r = await syncCountry(model, { globalStats });
       console.log(`  ✓ ${r.slug} → ${path.relative(ROOT, r.file)} (${r.listings} listings)${r.created ? ' [scaffolded]' : ''}`);
       // write back Last Synced + Listings Count
       await notion.pages.update({

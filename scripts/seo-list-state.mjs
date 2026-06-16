@@ -24,7 +24,7 @@ const FILTER_PRIORITY = (process.env.FILTER_PRIORITY ?? '').trim();
 
 if (!TOKEN) { console.error('NOTION_TOKEN required'); process.exit(1); }
 
-const notion = new Client({ auth: TOKEN });
+const notion = new Client({ auth: TOKEN, notionVersion: '2022-06-28' });
 
 const conditions = [];
 if (FILTER_STATUS) conditions.push({ property: 'Status', select: { equals: FILTER_STATUS } });

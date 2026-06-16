@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-06T11:05:49Z",
-  "reviewed": "2026-06-06",
-  "fingerprint": "51a6aab6cb50bb92",
+  "generated": "2026-06-16T10:41:18Z",
+  "reviewed": "2026-06-16",
+  "fingerprint": "5db1067b3ed4d971",
   "dims": [
     "id",
     "fin",
@@ -15,7 +15,7 @@
     "qa"
   ],
   "imgHash": "qse3Pw84PrZ2S0PQOTtixw",
-  "total": 100,
+  "total": 126,
   "countries": [
     {
       "code": "AU",
@@ -45,7 +45,7 @@
       "code": "VN",
       "name": "Vietnam",
       "flag": "🇻🇳",
-      "count": 6
+      "count": 10
     },
     {
       "code": "CY",
@@ -63,19 +63,25 @@
       "code": "TH",
       "name": "Thailand",
       "flag": "🇹🇭",
-      "count": 8
+      "count": 23
     },
     {
       "code": "MY",
       "name": "Malaysia",
       "flag": "🇲🇾",
-      "count": 1
+      "count": 6
     },
     {
       "code": "AE",
       "name": "UAE",
       "flag": "🇦🇪",
-      "count": 5
+      "count": 6
+    },
+    {
+      "code": "GD",
+      "name": "GD",
+      "flag": "🏳️",
+      "count": 1
     }
   ],
   "groups": [
@@ -1584,7 +1590,7 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "block",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
@@ -2002,7 +2008,7 @@
         {
           "name": "Hyatt Regency Hồ Tràm",
           "slug": "hyatt-regency-ho-tram",
-          "thumb": "hyatt-regency-ho-tram-hero",
+          "thumb": "302f5470-b7fc-4b20-aecb-4c4ba03dd700",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2040,6 +2046,87 @@
             "img": "done",
             "geo": "done",
             "ovw": "block",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Vietnam",
+      "code": "VN",
+      "flag": "🇻🇳",
+      "region": "Bến Thành · District 1",
+      "rows": [
+        {
+          "name": "One Central Saigon — The Ritz-Carlton Residences",
+          "slug": "one-central-saigon",
+          "thumb": "one-central-saigon-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Vietnam",
+      "code": "VN",
+      "flag": "🇻🇳",
+      "region": "Bình Dương New City (Thủ Dầu Một)",
+      "rows": [
+        {
+          "name": "The Sycamore by CapitaLand — Bình Dương",
+          "slug": "sycamore-binh-duong",
+          "thumb": "sycamore-binh-duong-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Vietnam",
+      "code": "VN",
+      "flag": "🇻🇳",
+      "region": "Điện Dương",
+      "rows": [
+        {
+          "name": "Le Méridien Đà Nẵng — Marriott Beachfront Villas",
+          "slug": "le-meridien-da-nang",
+          "thumb": "le-meridien-da-nang-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "block",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
@@ -2152,6 +2239,35 @@
           },
           "note": "",
           "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Vietnam",
+      "code": "VN",
+      "flag": "🇻🇳",
+      "region": "Phước Thuận",
+      "rows": [
+        {
+          "name": "Maia Resort Hồ Tràm — Fusion Beachfront Residences",
+          "slug": "maia-ho-tram",
+          "thumb": "maia-ho-tram-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "band",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {
+            "nac": 2
+          }
         }
       ]
     },
@@ -2286,12 +2402,12 @@
       "country": "Thailand",
       "code": "TH",
       "flag": "🇹🇭",
-      "region": "Cherngtalay",
+      "region": "Bang Rak",
       "rows": [
         {
-          "name": "Botanica Foresta II — Phuket",
-          "slug": "botanica-foresta-ii",
-          "thumb": "botanica-foresta-ii-hero",
+          "name": "Culture Chula — Bangkok",
+          "slug": "culture-chula",
+          "thumb": "66869eda-dc10-44f7-7486-071d3d5ea200",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2301,7 +2417,34 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
-            "ovw": "block",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "flag": "🇹🇭",
+      "region": "Cherngtalay",
+      "rows": [
+        {
+          "name": "Botanica Foresta II — Phuket",
+          "slug": "botanica-foresta-ii",
+          "thumb": "9872f1b7-401d-45f1-0b93-7bc221254800",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
@@ -2310,7 +2453,7 @@
         {
           "name": "Hythe by Botanica — Phuket",
           "slug": "hythe-by-botanica",
-          "thumb": "hythe-by-botanica-hero",
+          "thumb": "1f79b085-eca4-475f-0865-4478721b3100",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2320,7 +2463,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
-            "ovw": "block",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
@@ -2335,9 +2478,9 @@
       "region": "Choeng Thale",
       "rows": [
         {
-          "name": "Botanica Louvre — Phuket",
-          "slug": "botanica-louvre",
-          "thumb": "botanica-louvre-hero",
+          "name": "Anchan Villas — Phuket",
+          "slug": "anchan-villas",
+          "thumb": "anchan-villas-hero",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2347,11 +2490,169 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
-            "ovw": "block",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
           "dup": {}
+        },
+        {
+          "name": "Balco Villas by Origin — Phuket",
+          "slug": "balco-villas",
+          "thumb": "balco-villas-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "band",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {
+            "nac": 2
+          }
+        },
+        {
+          "name": "Botanica Grand Avenue — Phuket",
+          "slug": "botanica-grand-avenue",
+          "thumb": "botanica-grand-avenue-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        },
+        {
+          "name": "Botanica Louvre — Phuket",
+          "slug": "botanica-louvre",
+          "thumb": "c19f50d2-fca6-419a-a6ad-862c77da4900",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "band",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {
+            "nac": 2
+          }
+        },
+        {
+          "name": "Laguna Phuket — Banyan Tree & Angsana Residences",
+          "slug": "laguna-banyan-tree-residences",
+          "thumb": "laguna-banyan-tree-residences-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        },
+        {
+          "name": "Layan Green Park — Phuket",
+          "slug": "layan-green-park",
+          "thumb": "layan-green-park-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        },
+        {
+          "name": "Layan Verde — Phuket",
+          "slug": "layan-verde",
+          "thumb": "layan-verde-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        },
+        {
+          "name": "So Origin Bangtao Beach — Phuket",
+          "slug": "so-origin-bangtao-beach",
+          "thumb": "caf271b6-134b-478b-4131-5129988d1c00",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        },
+        {
+          "name": "The Standard Residences Bangtao — Phuket",
+          "slug": "the-standard-residences-bangtao",
+          "thumb": "the-standard-residences-bangtao-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "band",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {
+            "nac": 2
+          }
         }
       ]
     },
@@ -2364,7 +2665,7 @@
         {
           "name": "Botanica MontAzure — Phuket",
           "slug": "botanica-montazure",
-          "thumb": "botanica-montazure-hero",
+          "thumb": "a6a97b90-67de-474d-e652-e037b2610500",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2374,7 +2675,7 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
-            "ovw": "block",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
@@ -2401,7 +2702,34 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
-            "ovw": "block",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "flag": "🇹🇭",
+      "region": "Khlong Tan Nuea",
+      "rows": [
+        {
+          "name": "Culture Thonglor — Bangkok",
+          "slug": "culture-thonglor",
+          "thumb": "7f69062e-16dc-46d9-babc-de64ba8d3100",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
@@ -2428,7 +2756,53 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
-            "ovw": "block",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "flag": "🇹🇭",
+      "region": "Phra Khanong",
+      "rows": [
+        {
+          "name": "Ideo Sukhumvit-Rama 4 — Bangkok",
+          "slug": "ideo-sukhumvit-rama-4",
+          "thumb": "11a5c0c0-575e-4a38-7ec4-0e33432b5700",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        },
+        {
+          "name": "Origin Residences Sukhumvit 48 — Bangkok",
+          "slug": "origin-residences-sukhumvit-48",
+          "thumb": "3385e5cd-8d5e-4f9b-9e26-d56b710f5200",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
@@ -2455,7 +2829,26 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
-            "ovw": "block",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        },
+        {
+          "name": "XT Phayathai — Bangkok",
+          "slug": "xt-phayathai",
+          "thumb": "51a20b15-e49f-491d-1877-0cc038d22000",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
@@ -2476,13 +2869,179 @@
           "st": {
             "id": "done",
             "fin": "done",
+            "nac": "band",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {
+            "nac": 2
+          }
+        }
+      ]
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "flag": "🇹🇭",
+      "region": "Si Sunthon",
+      "rows": [
+        {
+          "name": "Ayana Luxury Villas — Phuket",
+          "slug": "ayana-luxury-villas",
+          "thumb": "ayana-luxury-villas-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
             "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
             "img": "done",
             "geo": "done",
-            "ovw": "block",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Thailand",
+      "code": "TH",
+      "flag": "🇹🇭",
+      "region": "Thep Krasattri",
+      "rows": [
+        {
+          "name": "The Residence Prime — Phuket",
+          "slug": "the-residence-prime",
+          "thumb": "33c5940e-2f8e-4fa3-6ae4-1b4e70e84400",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "band",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {
+            "nac": 2
+          }
+        }
+      ]
+    },
+    {
+      "country": "Malaysia",
+      "code": "MY",
+      "flag": "🇲🇾",
+      "region": "Bukit Bintang",
+      "rows": [
+        {
+          "name": "Pavilion Square — Bukit Bintang, Kuala Lumpur (MM2H)",
+          "slug": "pavilion-square-klcc",
+          "thumb": "pavilion-square-klcc-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Malaysia",
+      "code": "MY",
+      "flag": "🇲🇾",
+      "region": "Dang Wangi",
+      "rows": [
+        {
+          "name": "Centrix The Station KLCC — Kuala Lumpur (MM2H)",
+          "slug": "centrix-the-station-klcc",
+          "thumb": "e43ab661-5cbf-487c-d513-0823541d9d00",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Malaysia",
+      "code": "MY",
+      "flag": "🇲🇾",
+      "region": "Jalan Ampang",
+      "rows": [
+        {
+          "name": "Oxley Towers KLCC — Kuala Lumpur (MM2H)",
+          "slug": "oxley-towers-klcc",
+          "thumb": "oxley-towers-klcc-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Malaysia",
+      "code": "MY",
+      "flag": "🇲🇾",
+      "region": "Jalan Ampang (KLCC fringe)",
+      "rows": [
+        {
+          "name": "Golden Crown Residence — Jalan Ampang, Kuala Lumpur (MM2H)",
+          "slug": "golden-crown-residence-klcc",
+          "thumb": "golden-crown-residence-klcc-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
@@ -2509,7 +3068,34 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
-            "ovw": "block",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "Malaysia",
+      "code": "MY",
+      "flag": "🇲🇾",
+      "region": "Setapak",
+      "rows": [
+        {
+          "name": "Curvo Residences — Setapak, Kuala Lumpur (MM2H)",
+          "slug": "curvo-residences-setapak",
+          "thumb": "372f3f54-86f0-41d6-f172-856c4f1d3000",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
@@ -2524,9 +3110,9 @@
       "region": "Business Bay",
       "rows": [
         {
-          "name": "🎬 DAMAC Towers by Paramount — Business Bay, Dubai (Golden Visa)",
+          "name": "DAMAC Towers by Paramount — Business Bay, Dubai (Golden Visa)",
           "slug": "damac-towers-paramount",
-          "thumb": "",
+          "thumb": "056ce46f-755d-49a0-a01f-7286b78fe200",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2534,9 +3120,9 @@
             "edit": "done",
             "json": "done",
             "cine": "done",
-            "img": "block",
+            "img": "done",
             "geo": "done",
-            "ovw": "block",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
@@ -2551,9 +3137,9 @@
       "region": "DAMAC Hills",
       "rows": [
         {
-          "name": "⛳ DAMAC Golf Greens — DAMAC Hills, Dubai (Golden Visa)",
+          "name": "DAMAC Golf Greens — DAMAC Hills, Dubai (Golden Visa)",
           "slug": "damac-golf-greens",
-          "thumb": "",
+          "thumb": "damac-golf-greens-hero",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2561,9 +3147,9 @@
             "edit": "done",
             "json": "done",
             "cine": "done",
-            "img": "block",
+            "img": "done",
             "geo": "done",
-            "ovw": "block",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
@@ -2578,9 +3164,9 @@
       "region": "Downtown Dubai",
       "rows": [
         {
-          "name": "⭐ Mercedes-Benz Places by Binghatti — Downtown Dubai (Golden Visa)",
+          "name": "Mercedes-Benz Places by Binghatti — Downtown Dubai (Golden Visa)",
           "slug": "binghatti-mercedes-benz-places",
-          "thumb": "",
+          "thumb": "088624e5-323c-4615-fad1-d9fb008d7600",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2588,9 +3174,9 @@
             "edit": "done",
             "json": "done",
             "cine": "done",
-            "img": "block",
+            "img": "done",
             "geo": "done",
-            "ovw": "block",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
@@ -2605,9 +3191,9 @@
       "region": "Nad Al Sheba (Meydan)",
       "rows": [
         {
-          "name": "🌟 Mercedes-Benz Places · Binghatti City — Nad Al Sheba, Dubai (Golden Visa)",
+          "name": "Mercedes-Benz Places · Binghatti City — Nad Al Sheba, Dubai (Golden Visa)",
           "slug": "binghatti-mercedes-benz-city",
-          "thumb": "",
+          "thumb": "binghatti-mercedes-benz-city-hero",
           "st": {
             "id": "done",
             "fin": "done",
@@ -2615,9 +3201,36 @@
             "edit": "done",
             "json": "done",
             "cine": "done",
-            "img": "block",
+            "img": "done",
             "geo": "done",
             "ovw": "block",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "UAE",
+      "code": "AE",
+      "flag": "🇦🇪",
+      "region": "Sheikh Zayed Road",
+      "rows": [
+        {
+          "name": "DAMAC Safa Gate — Sheikh Zayed Road, Dubai (Golden Visa)",
+          "slug": "damac-safa-gate",
+          "thumb": "8f7f9483-695b-4425-bda9-5e5cb585ab00",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",
@@ -2632,7 +3245,7 @@
       "region": "Sobha Hartland II",
       "rows": [
         {
-          "name": "🌳 Sobha Estates — Hartland II, Dubai (Golden Visa)",
+          "name": "Sobha Estates — Hartland II, Dubai (Golden Visa)",
           "slug": "sobha-estates-hartland-2",
           "thumb": "sobha-estates-hartland-2-hero",
           "st": {
@@ -2644,7 +3257,34 @@
             "cine": "done",
             "img": "done",
             "geo": "done",
-            "ovw": "block",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "GD",
+      "code": "GD",
+      "flag": "🏳️",
+      "region": "La Sagesse Beach",
+      "rows": [
+        {
+          "name": "InterContinental Grenada Resort — Grenada Citizenship (CBI)",
+          "slug": "intercontinental-grenada-resort",
+          "thumb": "intercontinental-grenada-resort-hero",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "done",
+            "geo": "done",
+            "ovw": "done",
             "qa": "done"
           },
           "note": "",

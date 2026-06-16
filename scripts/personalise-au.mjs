@@ -26,7 +26,7 @@ const DRY_RUN = /^(1|true|yes)$/i.test(process.env.DRY_RUN || '');
 const SAMPLE = (process.env.SAMPLE_SLUGS || '').split(/[\s,]+/).map(s => s.trim()).filter(Boolean);
 
 if (!NOTION_TOKEN) { console.error('NOTION_TOKEN env var is required'); process.exit(1); }
-const notion = new Client({ auth: NOTION_TOKEN });
+const notion = new Client({ auth: NOTION_TOKEN, notionVersion: '2022-06-28' });
 
 const cap = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
 const typeWord = { Condo: ['apartment', 'căn hộ'], Townhouse: ['townhouse', 'nhà phố'], Land: ['home', 'nhà'], 'Mixed-Use': ['residence', 'căn hộ'] };

@@ -336,23 +336,71 @@ async function scrapeBerkeleyPage(pageUrl, depth = 0) {
   return [...urls];
 }
 
-async function downloadUrl(url, destPath) {
-  let res = await fetch(url, { redirect: 'follow' });
-  // Some CDNs (Kiler GYO, Hyatt newsroom, etc.) hot-link-protect via Referer.
-  // Retry with a same-origin Referer + browser UA when blocked.
-  if (!res.ok && (res.status === 401 || res.status === 403)) {
+// ─── Stall guards ─────────────────────────────────────────────────────────
+// Node's fetch() has NO default timeout, so a CDN that accepts the connection
+// but never sends a body (or trickles it forever) hangs the whole serial batch
+// indefinitely — this froze two prior 24-listing runs at ~step 6 with no logs.
+// Bound every download end-to-end (header + body read under one abort signal),
+// and bound each listing so a single bad source fails over to the next.
+const DOWNLOAD_TIMEOUT_MS = Number(process.env.DOWNLOAD_TIMEOUT_MS || 45_000);
+// Backstop only — the 45s download timeout already kills the stalled-fetch that
+// caused the original infinite hangs, so this can be generous. 8 min was too
+// tight: it killed botanica-grand-avenue mid-extraction (3 brochures, 300+
+// JPEGs) AFTER --replace had deleted its old hero, leaving it image-less.
+const PER_LISTING_TIMEOUT_MS = Number(process.env.PER_LISTING_TIMEOUT_MS || 20 * 60_000);
+
+class TimeoutError extends Error {}
+
+// Race a promise against a wall-clock deadline. NB: the loser keeps running
+// (JS can't cancel an arbitrary promise) — callers that time out a whole
+// listing rely on the per-fetch AbortControllers below to free network work,
+// and on process.exit(0) at the end of main() to drop any orphaned timers.
+function withTimeout(promise, ms, label) {
+  let timer;
+  const guard = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new TimeoutError(`${label} timed out after ${ms}ms`)), ms);
+  });
+  return Promise.race([promise, guard]).finally(() => clearTimeout(timer));
+}
+
+// Fetch + fully read the body under a single abort signal, so a stalled body
+// stream is aborted too (not just a slow header phase). Returns { res, buf };
+// buf is null when res.ok is false so the caller can branch on status.
+async function fetchBufferWithTimeout(url, opts = {}, ms = DOWNLOAD_TIMEOUT_MS) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), ms);
+  try {
+    const res = await fetch(url, { ...opts, signal: ctrl.signal });
+    if (!res.ok) return { res, buf: null };
+    const buf = Buffer.from(await res.arrayBuffer());
+    return { res, buf };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// A realistic desktop-browser UA. Many marketing CDNs (Sansiri, Banyan,
+// ayana-luxury-villas, etc.) block non-browser clients outright — returning
+// 406/429/503 — so we send this on the FIRST attempt, not just on retry.
+const BROWSER_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+
+async function downloadUrl(url, destPath, timeoutMs = DOWNLOAD_TIMEOUT_MS) {
+  const baseHeaders = {
+    'User-Agent': BROWSER_UA,
+    'Accept': 'image/avif,image/webp,image/png,image/jpeg,*/*',
+  };
+  let { res, buf } = await fetchBufferWithTimeout(url, { redirect: 'follow', headers: baseHeaders }, timeoutMs);
+  // Some CDNs additionally hot-link-protect via Referer (Kiler GYO, Hyatt
+  // newsroom, etc.) or rate-limit/block (406/429/503). Retry once with a
+  // same-origin Referer added to the browser headers.
+  if (!res.ok && [401, 403, 406, 429, 503].includes(res.status)) {
     const origin = new URL(url).origin;
-    res = await fetch(url, {
+    ({ res, buf } = await fetchBufferWithTimeout(url, {
       redirect: 'follow',
-      headers: {
-        'Referer': origin + '/',
-        'User-Agent': 'Mozilla/5.0 (compatible; NAC-Listings-Sync/1.0)',
-        'Accept': 'image/avif,image/webp,image/png,image/jpeg,*/*',
-      },
-    });
+      headers: { ...baseHeaders, 'Referer': origin + '/' },
+    }, timeoutMs));
   }
   if (!res.ok) throw new Error(`download ${url} → HTTP ${res.status}`);
-  const buf = Buffer.from(await res.arrayBuffer());
   await fs.writeFile(destPath, buf);
   return destPath;
 }
@@ -558,13 +606,25 @@ async function filterAndRank(candidates) {
     && img.bytesPerPixel >= minBpxRelaxed;
 
   const strict = unique.filter(passStrict);
+  const strictHashes = new Set(strict.map(i => i.hash));
   let filtered = strict;
-  if (strict.length < 5) {
-    const strictHashes = new Set(strict.map(i => i.hash));
+  // Curated explicit-URL images (web-list) are admitted at the relaxed bar even
+  // when strict already has ≥5 candidates. Official marketing renders are often
+  // 1280px-wide — below the 1500px brochure floor — but they are real, intended
+  // shots a human supplied on purpose, so the strict Drive/PDF candidates must
+  // not crowd them out (and the first one becomes the manual hero below).
+  const curatedRelaxed = unique.filter(
+    i => i.src === 'web-list' && passRelaxed(i) && !strictHashes.has(i.hash)
+  );
+  if (curatedRelaxed.length) {
+    filtered = [...filtered, ...curatedRelaxed];
+    for (const h of curatedRelaxed) strictHashes.add(h.hash);
+  }
+  if (filtered.length < 5) {
     const relaxedExtras = unique
       .filter(passRelaxed)
       .filter(i => !strictHashes.has(i.hash));
-    filtered = [...strict, ...relaxedExtras];
+    filtered = [...filtered, ...relaxedExtras];
     console.log(`     ⚠ strict filter yielded ${strict.length}/5 — added ${relaxedExtras.length} relaxed candidate(s)`);
   }
   // Sort by pixel area DESC — bigger image wins within each classification bucket
@@ -637,7 +697,18 @@ function pickFinalFive(ranked) {
     return null;
   };
 
-  const hero = pickFrom(['aspirational', 'unclassified', 'overview', 'interior']);                   // 0
+  // Manual hero: an explicitly-curated image (web-list, from '📷 Image URLs JSON')
+  // always wins the hero slot, in listed order — lets a human set the headline
+  // shot directly when the auto-pick would be wrong (e.g. a brochure whose
+  // largest image is an aerial/masterplan, not a building render). No curated
+  // URLs → falls through to the normal class-priority pick, so Drive/Berkeley
+  // runs are unaffected.
+  const curatedHero = ranked
+    .filter(i => i.src === 'web-list' && typeof i.listIdx === 'number' && !used.has(i.hash))
+    .sort((a, b) => a.listIdx - b.listIdx)[0] || null;
+  let hero;
+  if (curatedHero) { used.add(curatedHero.hash); hero = curatedHero; }
+  else hero = pickFrom(['aspirational', 'unclassified', 'overview', 'interior']);     // 0
   const g1   = pickFrom(['aspirational', 'unclassified', 'overview', 'interior']);                   // 1 §05
   const g2   = pickFrom(['interior', 'unclassified', 'overview', 'aspirational']);                   // 2 §08
   const g3   = pickDiverse(['overview', 'unclassified', 'interior', 'aspirational'], hero);          // 3 §11 (diverse from hero)
@@ -650,32 +721,60 @@ function pickFinalFive(ranked) {
 // OAuth (user delegation) preferred — folders shared with a human Google
 // account "Just Work" without per-folder service-account adds. Falls back
 // to the service account JSON when OAuth isn't configured.
-function getDriveClient() {
-  // Service account first when its key is present: SA keys never expire, so the
-  // automation needs no periodic re-auth. User-delegated OAuth (GSC_OAUTH_*) is
-  // the fallback — its refresh token CAN expire/revoke (→ invalid_grant), so
-  // it's not used as the primary path. The GSC_OAUTH_* secrets stay in place
-  // (still consumed by seo-audit); they're just not preferred for Drive here.
+let _driveClientCache;
+async function getDriveClient() {
+  if (_driveClientCache) return _driveClientCache;
+  // PROBE each credential with a tiny call and use the first that
+  // authenticates. OAuth FIRST: user-delegated creds can read folders shared
+  // with the user (partner brochure folders) — the service account usually
+  // can't see "shared-with-me" content. If the OAuth refresh token is dead
+  // (invalid_grant) the probe fails and we transparently fall back to the SA,
+  // preserving prior behaviour. Cached for the run (auth doesn't change mid-run).
+  const candidates = [];
+  if (HAS_DRIVE_OAUTH) {
+    const auth = new google.auth.OAuth2(GSC_OAUTH_CLIENT_ID, GSC_OAUTH_CLIENT_SECRET);
+    auth.setCredentials({ refresh_token: GSC_OAUTH_REFRESH_TOKEN });
+    candidates.push({ drive: google.drive({ version: 'v3', auth }), via: 'oauth' });
+  }
   if (GOOGLE_SERVICE_ACCOUNT_JSON) {
     const credentials = JSON.parse(GOOGLE_SERVICE_ACCOUNT_JSON);
     const auth = new google.auth.GoogleAuth({
       credentials,
       scopes: ['https://www.googleapis.com/auth/drive.readonly'],
     });
-    return google.drive({ version: 'v3', auth });
+    candidates.push({ drive: google.drive({ version: 'v3', auth }), via: 'service-account' });
   }
-  if (HAS_DRIVE_OAUTH) {
-    const auth = new google.auth.OAuth2(GSC_OAUTH_CLIENT_ID, GSC_OAUTH_CLIENT_SECRET);
-    auth.setCredentials({ refresh_token: GSC_OAUTH_REFRESH_TOKEN });
-    return google.drive({ version: 'v3', auth });
+  if (!candidates.length) throw new Error('No Drive auth configured (need GOOGLE_SERVICE_ACCOUNT_JSON or GSC_OAUTH_*)');
+  let lastErr;
+  for (const c of candidates) {
+    try {
+      await c.drive.files.list({ pageSize: 1, fields: 'files(id)', supportsAllDrives: true, includeItemsFromAllDrives: true });
+      console.log(`  Drive auth: ${c.via}`);
+      _driveClientCache = c.drive;
+      return c.drive;
+    } catch (e) {
+      lastErr = e;
+      console.warn(`  Drive auth ${c.via} failed (${e.message?.split('\n')[0]}); trying next…`);
+    }
   }
-  throw new Error('No Drive auth configured (need GOOGLE_SERVICE_ACCOUNT_JSON or GSC_OAUTH_*)');
+  throw new Error(`No working Drive auth (last: ${lastErr?.message})`);
 }
 
 function parseFolderIdFromUrl(url) {
   if (!url) return null;
   const m = url.match(/folders\/([a-zA-Z0-9_-]+)/);
   return m ? m[1] : null;
+}
+
+// Parse a Drive *file* ID from a share URL (/file/d/<id>/view, /d/<id>,
+// ?id=<id>) or accept a bare ID. Used by the GS Source File route, which
+// targets ONE specific PDF inside a folder (e.g. several project brochures
+// loose in one shared folder, where a folder-wide scan would cross-contaminate).
+function parseFileIdFromUrl(url) {
+  if (!url) return null;
+  const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (m) return m[1];
+  return /^[a-zA-Z0-9_-]{20,}$/.test(url.trim()) ? url.trim() : null;
 }
 
 // Files we never want to extract images from — these PDFs are present in
@@ -705,7 +804,7 @@ function isBrochurePdf({ name, size }) {
 }
 
 async function listPdfsInDriveFolder(folderId) {
-  const drive = getDriveClient();
+  const drive = await getDriveClient();
   // List subfolders + PDFs recursively (1 level deep is enough for the NAC setup)
   const top = await drive.files.list({
     q: `'${folderId}' in parents and (mimeType = 'application/pdf' or mimeType = 'application/vnd.google-apps.folder')`,
@@ -744,7 +843,7 @@ async function listPdfsInDriveFolder(folderId) {
 // only sees top-level PDFs and misses these. BFS with a scan cap so a huge
 // shared drive can't blow up. Returns [{ id, name, size }].
 async function listImagesInDriveFolder(folderId, maxDepth = 4) {
-  const drive = getDriveClient();
+  const drive = await getDriveClient();
   const images = [];
   let frontier = [{ id: folderId, depth: 0 }];
   let scanned = 0;
@@ -773,7 +872,7 @@ async function listImagesInDriveFolder(folderId, maxDepth = 4) {
 }
 
 async function downloadDrivePdf(fileId, destPath) {
-  const drive = getDriveClient();
+  const drive = await getDriveClient();
   const res = await drive.files.get({ fileId, alt: 'media' }, { responseType: 'arraybuffer' });
   await fs.writeFile(destPath, Buffer.from(res.data));
   return destPath;
@@ -816,6 +915,7 @@ async function fetchLiveProperties(includeNonLive = false) {
     regionCity: richText(page.properties['Region/City']),
     imageUrl: readUrl(page.properties['Image URL']),
     gsSourceFolder: readUrl(page.properties['GS Source Folder']),
+    gsSourceFile: readUrl(page.properties['GS Source File']),
     // Optional new fields for the Berkeley web route. Either one is enough.
     berkeleyPage: readUrl(page.properties['🌐 Berkeley Page URL']),
     imageUrlsJson: richText(page.properties['📷 Image URLs JSON']),
@@ -983,14 +1083,34 @@ async function processProperty(prop) {
       }
     }
     if (urlList.length) {
-      console.log(`  🔗 downloading ${urlList.length} explicit URL(s)`);
-      for (let i = 0; i < urlList.length; i++) {
-        const bumped = bumpBerkeleyUrl(urlList[i]);
-        const dest = path.join(workDir, `web-list-${i + 1}.jpg`);
+      // A curated URL can be a brochure PDF, not just an image. Marketing sites
+      // serve web-optimised renders (often <1500px → filtered out), whereas the
+      // official e-brochure carries the same renders at full 4MP. So a `.pdf`
+      // URL is downloaded and run through the SAME extractor as the Drive route.
+      const pdfUrls = urlList.filter(u => /\.pdf(\?|#|$)/i.test(u));
+      const imgUrls = urlList.filter(u => !/\.pdf(\?|#|$)/i.test(u));
+      if (imgUrls.length) {
+        console.log(`  🔗 downloading ${imgUrls.length} explicit image URL(s)`);
+        for (let i = 0; i < imgUrls.length; i++) {
+          const bumped = bumpBerkeleyUrl(imgUrls[i]);
+          const dest = path.join(workDir, `web-list-${i + 1}.jpg`);
+          try {
+            await downloadUrl(bumped, dest);
+            // listIdx preserves the curated order so pickFinalFive can use the
+            // first listed image as the (manually-chosen) hero.
+            candidates.push({ path: dest, src: 'web-list', srcRef: imgUrls[i], listIdx: i });
+          } catch (e) { /* skip individual URL failures */ }
+        }
+      }
+      for (let i = 0; i < pdfUrls.length; i++) {
+        const dest = path.join(workDir, `web-brochure-${i + 1}.pdf`);
         try {
-          await downloadUrl(bumped, dest);
-          candidates.push({ path: dest, src: 'web-list', srcRef: urlList[i] });
-        } catch (e) { /* skip individual URL failures */ }
+          console.log(`  📄 brochure PDF from URL: ${pdfUrls[i]}`);
+          await downloadUrl(pdfUrls[i], dest, 180_000); // brochures are large
+          const imgs = await extractImagesFromPdf(dest, workDir);
+          console.log(`     ${imgs.length} JPEG(s) extracted from brochure URL`);
+          candidates.push(...imgs.map(p => ({ path: p, src: 'web-pdf', srcRef: pdfUrls[i] })));
+        } catch (e) { console.warn(`     brochure URL failed: ${e.message}`); }
       }
     }
 
@@ -998,6 +1118,20 @@ async function processProperty(prop) {
     const pdfs = [];
     if (LOCAL_PDF) {
       pdfs.push({ path: LOCAL_PDF, name: path.basename(LOCAL_PDF) });
+    } else if (prop.gsSourceFile && (HAS_DRIVE_OAUTH || GOOGLE_SERVICE_ACCOUNT_JSON)) {
+      // Single-file route: extract from ONE specific PDF (avoids cross-
+      // contamination when several brochures live loose in one shared folder).
+      const fileId = parseFileIdFromUrl(prop.gsSourceFile);
+      if (fileId) {
+        console.log(`  📄 Drive file (GS Source File): ${fileId}`);
+        const dest = path.join(workDir, `source-${fileId}.pdf`);
+        try {
+          await downloadDrivePdf(fileId, dest);
+          pdfs.push({ path: dest, name: path.basename(dest) });
+        } catch (e) { console.warn(`     GS Source File download failed: ${e.message}`); }
+      } else {
+        console.warn(`     GS Source File set but no file ID parsed: ${prop.gsSourceFile}`);
+      }
     } else if (prop.gsSourceFolder && (HAS_DRIVE_OAUTH || GOOGLE_SERVICE_ACCOUNT_JSON)) {
       const folderId = parseFolderIdFromUrl(prop.gsSourceFolder);
       if (folderId) {
@@ -1150,12 +1284,17 @@ async function main() {
   console.log(`Processing ${properties.length} propert${properties.length === 1 ? 'y' : 'ies'}…`);
   for (const prop of properties) {
     try {
-      await processProperty(prop);
+      // Per-listing watchdog: if any source stalls past the deadline, abandon
+      // this listing and move on rather than freezing the entire batch.
+      await withTimeout(processProperty(prop), PER_LISTING_TIMEOUT_MS, `listing ${prop.slug}`);
     } catch (err) {
       console.error(`  ✗ ${prop.slug}: ${err.message}`);
     }
   }
   console.log('\nDone.');
+  // A timed-out listing leaves orphaned async work (Promise.race can't cancel
+  // it) that could keep the event loop alive; exit explicitly so the job ends.
+  process.exit(0);
 }
 
 main().catch(err => { console.error(err); process.exit(1); });

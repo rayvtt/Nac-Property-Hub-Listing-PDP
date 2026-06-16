@@ -1,0 +1,51 @@
+name: Strip Title Emojis
+
+# One-shot maintenance: remove leading emoji prefixes from listing titles
+# (Property Name + Name VI) across the whole Property Listings DB.
+# Fire via the "strip-title-emojis" token on the last trigger line, or manually.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Preview only (no writes)"
+        required: false
+        type: boolean
+        default: false
+  push:
+    branches: [main]
+    paths:
+      - ".github/triggers/**"
+
+concurrency:
+  group: strip-title-emojis-${{ github.run_id }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  strip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install npm deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+      - name: Strip emojis
+        working-directory: scripts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9' }}
+        run: |
+          LAST="$(tail -n1 "$GITHUB_WORKSPACE/.github/triggers/last-trigger.txt" 2>/dev/null || true)"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then node strip-title-emojis.mjs --dry-run; else node strip-title-emojis.mjs; fi
+          elif echo "$LAST" | grep -qi 'strip-title-emojis'; then
+            node strip-title-emojis.mjs
+          else
+            echo "No strip-title-emojis token on last trigger line — skipping."
+          fi

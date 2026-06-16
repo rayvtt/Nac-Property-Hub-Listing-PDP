@@ -1,0 +1,2 @@
+replace
+2026-06-15 — editorial-v6: single-line headline (shrink-to-fit, no wrap). Regenerate every listing's share card → Cloudflare + Notion covers + versioned Share Image URL.

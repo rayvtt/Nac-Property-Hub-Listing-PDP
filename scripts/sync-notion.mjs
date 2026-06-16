@@ -12,6 +12,11 @@ import { fileURLToPath } from 'node:url';
 import {
   completeStructuredData, resolveGeo, buildLlmsTxt, loadCache, saveCache,
 } from './seo-geo-llm.mjs';
+import { loadRates, toUSD, roundUSD } from './fx.mjs';
+
+// Live FX rates (USD→X), loaded once per run in main(). Money is displayed in
+// USD (converted live) while Notion keeps the brochure-local amounts as source.
+let FX = { rates: null };
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -26,7 +31,7 @@ if (!TOKEN) {
   process.exit(1);
 }
 
-const notion = new Client({ auth: TOKEN });
+const notion = new Client({ auth: TOKEN, notionVersion: '2022-06-28' });
 
 // ─── Notion → JS extraction ─────────────────────────────────────────────────
 
@@ -85,6 +90,8 @@ function extractProperty(page) {
     hubType: readSelect(p['🏨 Hub Type']),
     currency: readSelect(p['Currency']),
     purchasePrice: readNumber(p['Purchase Price']),
+    localCurrency: readSelect(p['Local Currency']),
+    localPrice: readNumber(p['Local Price']),
     yieldPct: pct(readNumber(p['Yield %'])),
     irrPct: pct(readNumber(p['IRR %'])),
     cocPct: pct(readNumber(p['Cash-on-Cash %'])),
@@ -117,6 +124,7 @@ function extractProperty(page) {
     cine3Vi: richText(p['🎬 Cine 3 VI']),
     cine3En: richText(p['🎬 Cine 3 EN']),
     heroImg: readUrl(p['Image URL']),
+    shareImg: readUrl(p['Share Image URL']),
     heroImgMobile: readUrl(p['Mobile Image URL']),
     galleryImg1: readUrl(p['🖼️ Image 1']),
     galleryImg2: readUrl(p['🖼️ Image 2']),
@@ -138,6 +146,7 @@ function extractProperty(page) {
     immigrationType: readSelect(p['🛂 Immigration Type']),
     investmentProgram: readSelect(p['Investment Program']),
     listingDate: p['Listing Date']?.date?.start || null,
+    spotlight: p['Spotlight?']?.checkbox === true,
     // prop.geo is resolved in main() (async geocode) and read by the completer
     geo: null,
   };
@@ -163,6 +172,38 @@ const CURRENCY_SYMBOLS = {
   JPY: '¥',  CHF: 'CHF ', CNY: '¥', SGD: 'S$', MYR: 'RM ', THB: '฿',
 };
 const currencySymbol = (code) => CURRENCY_SYMBOLS[code] || '$';
+
+// Currencies shown in their own denomination (familiar to a global audience).
+// Everything else (AED, THB, MYR, VND, CAD, JPY, …) is converted to USD.
+const KEEP_NATIVE = new Set(['USD', 'GBP', 'EUR', 'AUD']);
+const PROSE_SYMBOLS = { ...CURRENCY_SYMBOLS, VND: '₫' };
+const _SUF_MULT = { 'm': 1e6, 'k': 1e3, 'triệu': 1e6, 'tỷ': 1e9, 'nghìn': 1e3, 'nghin': 1e3, million: 1e6, billion: 1e9 };
+
+// Convert every amount written in the listing's own (non-major) currency inside a
+// prose string to USD — so Desc/NAC Note/Market read in USD like the cards do.
+// `lang` ('vi'|'en') disambiguates the thousands/decimal separator (VI: 12.100.000
+// / 12,1 triệu; EN: 12,100,000 / 12.1M). Currency CODES ("…/yr THB") and amounts in
+// any other currency are left untouched; matches only the source symbol so it's
+// idempotent ($ output never re-matches).
+function convertProseMoney(text, cur, fx, lang) {
+  if (!text || KEEP_NATIVE.has((cur || '').toUpperCase())) return text;
+  const sym = (PROSE_SYMBOLS[cur] || '').trim();
+  if (!sym || toUSD(1, cur, fx) == null) return text;
+  const symEsc = sym.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const N = '[\\d][\\d.,]*';
+  const SUF = '(?:\\s?(?:triệu|tỷ|nghìn|nghin|million|billion|M|K)(?![\\p{L}]))?';
+  const PERM2 = '(?:\\s?\\/\\s?m²|\\s?\\/\\s?m2|\\s?per\\s?m²|\\s?\\/\\s?sqm)?';
+  const re = new RegExp(`${symEsc}\\s?(${N})(${SUF})(?:\\s?[–-]\\s?(${N})(${SUF}))?(${PERM2})`, 'giu');
+  const parse = (s) => { s = s.trim(); s = lang === 'vi' ? s.replace(/\./g, '').replace(',', '.') : s.replace(/,/g, ''); return parseFloat(s); };
+  const mult = (s) => s ? (_SUF_MULT[s.toLowerCase().trim()] || 1) : 1;
+  const m2round = (n) => Math.round(n / 100) * 100;  // coarse → no daily-FX churn
+  return text.replace(re, (mm, n1, s1, n2, s2, perm2) => {
+    const perM2 = !!perm2, unit = perM2 ? '/m²' : '', fmt = perM2 ? (n => '$' + m2round(n).toLocaleString('en-US')) : (n => fmtMoneyShort(roundUSD(n), 'USD'));
+    const u1 = toUSD(parse(n1) * mult(s1 || s2), cur, fx); if (u1 == null) return mm;
+    if (n2) { const u2 = toUSD(parse(n2) * mult(s2 || s1), cur, fx); if (u2 != null) return `${fmt(u1)}–${fmt(u2)}${unit}`; }
+    return fmt(u1) + unit;
+  });
+}
 
 function fmtMoneyShort(n, currency) {
   if (n == null) return '';
@@ -254,7 +295,7 @@ function fmtUsd(n) { return '$' + Math.round(Number(n)).toLocaleString('en-US');
 // Residence Mix & Indicative Pricing — one card per unit-type band.
 // Band shape: { en, vi, from (USD number), units (int) }. Shows the entry
 // ("from") price; "from" is net of the 3-yr/4% sublease per the source sheet.
-function renderPriceBands(bands, currency) {
+function renderPriceBands(bands, currency, converted) {
   // Order bands smallest → largest: studio · 1BR · 2BR · 3BR · 4BR · penthouse.
   const rank = (b) => {
     const s = (b.en || '').toLowerCase();
@@ -263,11 +304,17 @@ function renderPriceBands(bands, currency) {
     const m = s.match(/(\d+)\s*bed/) || s.match(/\b(\d)\s*\+\s*1\b/);
     return m ? parseInt(m[1], 10) : 50;
   };
-  return [...bands].sort((a, b) => rank(a) - rank(b)).map(b => `
+  const rows = [...bands].sort((a, b) => rank(a) - rank(b)).map(b => `
             <tr>
               <td class="nac-band-type"><span data-vi>${esc(b.vi)}</span><span data-en>${esc(b.en)}</span></td>
               <td class="nac-band-price"><span class="nac-band-lead"><span data-vi>từ</span><span data-en>from</span></span>${fmtMoneyFull(b.from, currency)}</td>
             </tr>`).join('\n          ');
+  // Disclaimer only when the headline was converted (minor currency → USD): the
+  // table stays in the developer's local currency. For kept-native listings
+  // (USD/GBP/EUR/AUD) headline and table share one currency, so no note.
+  const note = converted ? `
+            <tr class="nac-band-note"><td colspan="2"><span data-vi="">** Bảng giá chủ đầu tư theo ${esc(currency)} · giá nổi bật quy đổi USD theo tỷ giá thời điểm</span><span data-en="">** Developer price list in ${esc(currency)} · headline figures converted to USD at the live rate</span></td></tr>` : '';
+  return rows + note;
 }
 
 // Market-context stat cards (§04 Market). Per-listing/per-city via Notion
@@ -339,7 +386,7 @@ function patchHeadSeo($, prop) {
   const cSlug = countrySlugFromName(prop.country);
   const canonical = `https://nomadassetcollective.com/property-hub-bat-dong-san/${cSlug}/${prop.slug}/`;
 
-  const price = fmtMoneyShort(prop.purchasePrice, prop.currency);
+  const price = fmtMoneyShort(prop._dispPrice != null ? prop._dispPrice : prop.purchasePrice, prop._dispCur || prop.currency);
   const yieldStr = prop.yieldPct != null ? `${fmt1(prop.yieldPct)}%` : '';
 
   // Build the canonical title: "Name — Tagline · Location · NAC-ID"
@@ -403,8 +450,63 @@ function patchHeadSeo($, prop) {
   });
 }
 
+// ─── Spotlight banners ──────────────────────────────────────────────────────
+// Running (marquee) ribbons — "Dự Án Nổi Bật ✦ Spotlight Listing" — layered over
+// the bottom edge of the hero image AND the bottom edge of the closing (§11)
+// image, only when the Notion `Spotlight?` checkbox is ticked. Translucent navy
+// band + NAC-orange ticker; seamless translateX(-50%) loop; pauses on hover. The
+// spotlight-only CSS lifts the hero scroll cue and the closing CTA above their
+// ribbons via :has(), so nothing is covered. ids: #nacsp-hero / #nacsp-end.
+const SPOTLIGHT_STYLE = `<style id="nac-spotlight-style">
+.nacsp-ov{position:absolute;left:0;right:0;bottom:0;z-index:6;overflow:hidden;padding:.6rem 0;background:linear-gradient(to top,rgba(10,16,30,.95),rgba(10,16,30,.74) 70%,rgba(10,16,30,.35));border-top:1px solid rgba(237,138,82,.5);pointer-events:none}
+.nacsp-ov .nacsp-track{display:flex;align-items:center;width:max-content;animation:nacsp-run 30s linear infinite;will-change:transform}
+.nacsp-ov:hover .nacsp-track{animation-play-state:paused}
+.nacsp-ov .nacsp-seq{display:flex;align-items:center;white-space:nowrap}
+.nacsp-ov .nacsp-word{font-family:var(--ff-mono,'IBM Plex Mono',monospace);font-size:.75rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;background:linear-gradient(90deg,#ed8a52,#f7b489,#d97c44);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 1.5rem}
+.nacsp-ov .nacsp-sep{color:rgba(237,138,82,.6);font-size:.82rem}
+@keyframes nacsp-run{to{transform:translateX(-50%)}}
+#nacsp-hero{top:0;bottom:auto;border-top:none;border-bottom:1px solid rgba(237,138,82,.5);background:linear-gradient(to bottom,rgba(10,16,30,.95),rgba(10,16,30,.74) 70%,rgba(10,16,30,.35))}
+#nac-img-3:has(#nacsp-end) .nac-cine-asp{bottom:2.7rem}
+@media(max-width:680px){.nacsp-ov{padding:.48rem 0}.nacsp-ov .nacsp-word{font-size:.63rem;letter-spacing:.22em;padding:0 1rem}#nac-img-3:has(#nacsp-end) .nac-cine-asp{bottom:2.3rem}}
+</style>`;
+const SPOTLIGHT_SEQ = Array(8).fill(
+  `<span class="nacsp-word">Dự Án Nổi Bật</span><span class="nacsp-sep">✦</span>` +
+  `<span class="nacsp-word">Spotlight Listing</span><span class="nacsp-sep">✦</span>`
+).join('');
+const spotlightBanner = (id) =>
+  `<aside id="${id}" class="nacsp-ov" role="note" aria-label="Spotlight Listing — Dự Án Nổi Bật">` +
+    `<div class="nacsp-track" aria-hidden="true">` +
+      `<div class="nacsp-seq">${SPOTLIGHT_SEQ}</div><div class="nacsp-seq">${SPOTLIGHT_SEQ}</div>` +
+    `</div>` +
+  `</aside>`;
+
 function patch(html, prop) {
   const $ = cheerio.load(html, { decodeEntities: false });
+
+  // ─── Live-FX money display ────────────────────────────────────────────────
+  // The hub shows every figure in USD (converted live); Notion keeps the
+  // brochure-local amounts as source. Source = Local Price/Currency when set,
+  // else the legacy Purchase Price/Currency. If a rate is missing, fall back to
+  // the local figure + local symbol (never emit a wrong USD number). The local
+  // price is also stamped onto the ROI block (data-local-*) so the dashboard's
+  // de-band fingerprint stays stable against daily rate wobble, and the Price
+  // Bands table is rendered in local currency as the disclaimer.
+  const srcCur = prop.localCurrency || prop.currency || 'USD';
+  const localPrice = prop.localPrice != null ? prop.localPrice : prop.purchasePrice;
+  // Display policy: keep the familiar majors (USD/GBP/EUR/AUD) in their own
+  // currency; convert everything else (AED/THB/MYR/VND/…) to USD for a global
+  // audience. Only attempt FX when the source currency isn't kept-native.
+  const _convert = !KEEP_NATIVE.has((srcCur || 'USD').toUpperCase());
+  const _up = _convert ? toUSD(localPrice, srcCur, FX) : null;
+  const _ur = _convert ? toUSD(prop.monthlyRent, srcCur, FX) : null;
+  prop._srcCur = srcCur;
+  prop._localPrice = localPrice;
+  prop._usdPrice = _up != null ? roundUSD(_up) : null;
+  prop._usdRent = _ur != null ? Math.round(_ur / 10) * 10 : null;
+  prop._dispPrice = prop._usdPrice != null ? prop._usdPrice : localPrice;
+  prop._dispRent = prop._usdRent != null ? prop._usdRent : prop.monthlyRent;
+  prop._dispCur = prop._usdPrice != null ? 'USD' : srcCur;
+  prop._dispRentCur = prop._usdRent != null ? 'USD' : srcCur;
 
   // Simple text fields — find every element with data-notion="key", set first
   // text node (preserves child elements like unit spans). Also updates
@@ -438,14 +540,14 @@ function patch(html, prop) {
     property_yoy_en: prop.propertyYoyEn,
     property_yoy_vi: prop.propertyYoyVi,
     nac_score: fmt0(prop.nacScore),
-    currency: prop.currency,
-    price_short: fmtMoneyShort(prop.purchasePrice, prop.currency),
-    price_full: fmtMoneyFull(prop.purchasePrice, prop.currency),
+    currency: prop._dispCur,
+    price_short: fmtMoneyShort(prop._dispPrice, prop._dispCur),
+    price_full: fmtMoneyFull(prop._dispPrice, prop._dispCur),
     yield_pct: fmt1(prop.yieldPct),
     irr_pct: fmt1(prop.irrPct),
     coc_pct: fmt1(prop.cocPct),
     payback: fmt1(prop.payback),
-    monthly_rent: fmtMoneyFull(prop.monthlyRent, prop.currency),
+    monthly_rent: fmtMoneyFull(prop._dispRent, prop._dispRentCur),
     yield_pct_unit: prop.yieldPct != null ? fmt1(prop.yieldPct) + '%' : null,
     irr_pct_unit: prop.irrPct != null ? fmt1(prop.irrPct) + '%' : null,
     coc_pct_unit: prop.cocPct != null ? fmt1(prop.cocPct) + '%' : null,
@@ -460,8 +562,14 @@ function patch(html, prop) {
       ? prop.investmentProgram
       : ((prop.immigrationType && prop.immigrationType !== 'None') ? prop.immigrationType : '—'),
   };
-  for (const [key, value] of Object.entries(textMap)) {
-    if (value == null || value === '') continue;
+  for (const [key, rawValue] of Object.entries(textMap)) {
+    if (rawValue == null || rawValue === '') continue;
+    // Convert in-prose amounts (Desc/NAC Note/Market/…) from the listing's own
+    // non-major currency to USD, using the field's language for number parsing.
+    const _lm = /_(vi|en)$/.exec(key);
+    const value = (_lm && typeof rawValue === 'string')
+      ? convertProseMoney(rawValue, prop._srcCur, FX, _lm[1])
+      : rawValue;
     $(`[data-notion="${key}"]`).each((_, el) => {
       const $el = $(el);
       setSmartText($el, value);
@@ -526,8 +634,10 @@ function patch(html, prop) {
     // Head SEO image URLs — og:image, twitter:image, schema.org JSON-LD `image`.
     // Selector-based (no markup change needed). When sync-images writes a new CF
     // URL to Notion, the next cron tick propagates it everywhere automatically.
-    $('meta[property="og:image"]').attr('content', prop.heroImg);
-    $('meta[name="twitter:image"]').attr('content', prop.heroImg);
+    // og/twitter image = the 5-photo share collage when built, else the hero.
+    const socialImg = prop.shareImg || prop.heroImg;
+    $('meta[property="og:image"]').attr('content', socialImg);
+    $('meta[name="twitter:image"]').attr('content', socialImg);
     $('script[type="application/ld+json"]').each((_, el) => {
       const $el = $(el);
       const txt = $el.text().trim();
@@ -547,6 +657,21 @@ function patch(html, prop) {
     if (!url) return;
     $(`[data-notion-bg="gallery_${i + 1}"]`).attr('style', `background-image:url('${url}')`);
   });
+
+  // Convert in-prose money inside the JSON-driven list items too (Features /
+  // Pros / Cons / Process), per field-language. No-op for major currencies.
+  // (Price Bands stay in local currency by design; per-metro Market Stats are
+  // sourced figures in their own currency, left untouched.)
+  const _convItems = (arr, viKeys, enKeys) => arr.map((o) => {
+    const n = { ...o };
+    for (const k of viKeys) if (typeof n[k] === 'string') n[k] = convertProseMoney(n[k], prop._srcCur, FX, 'vi');
+    for (const k of enKeys) if (typeof n[k] === 'string') n[k] = convertProseMoney(n[k], prop._srcCur, FX, 'en');
+    return n;
+  });
+  prop.features = _convItems(prop.features, ['vi'], ['en']);
+  prop.pros = _convItems(prop.pros, ['vi'], ['en']);
+  prop.cons = _convItems(prop.cons, ['vi'], ['en']);
+  prop.process = _convItems(prop.process, ['dur_vi', 'title_vi', 'body_vi'], ['dur_en', 'title_en', 'body_en']);
 
   // JSON-driven list containers
   if (prop.features.length) {
@@ -569,7 +694,7 @@ function patch(html, prop) {
   // Residence Mix & Indicative Pricing — only revealed when the listing has
   // band data (TR inventory). Stays hidden on every other listing.
   if (prop.priceBands && prop.priceBands.length) {
-    $(`[data-notion-list="price_bands"]`).html(renderPriceBands(prop.priceBands, prop.currency));
+    $(`[data-notion-list="price_bands"]`).html(renderPriceBands(prop.priceBands, prop._srcCur, prop._dispCur === 'USD'));
     $(`[data-notion-when="price_bands"]`).removeAttr('hidden');
   }
   // Per-city market-context stat cards. Only replaces the default cards when the
@@ -581,10 +706,28 @@ function patch(html, prop) {
   // ROI sim data attributes (on the section root)
   const roi = $('[data-notion-roi]');
   if (roi.length) {
-    if (prop.purchasePrice != null) roi.attr('data-price', String(Math.round(prop.purchasePrice)));
+    if (prop._dispPrice != null) roi.attr('data-price', String(Math.round(prop._dispPrice)));
     if (prop.yieldPct != null) roi.attr('data-yield', fmt1(prop.yieldPct));
     if (prop.irrPct != null) roi.attr('data-irr', fmt1(prop.irrPct));
-    if (prop.monthlyRent != null) roi.attr('data-rent', String(Math.round(prop.monthlyRent)));
+    if (prop._dispRent != null) roi.attr('data-rent', String(Math.round(prop._dispRent)));
+    // local source (stable across FX moves) — for the de-band fingerprint + audit
+    if (prop._localPrice != null) roi.attr('data-local-price', String(Math.round(prop._localPrice)));
+    roi.attr('data-local-cur', prop._srcCur);
+  }
+
+  // ─── Spotlight banners ──────────────────────────────────────────────────
+  // Injected only when the Notion `Spotlight?` checkbox is ticked. Idempotent:
+  // stripped first so un-ticking removes them on the next sync (the id list also
+  // clears the retired sticky-icon and midway-banner variants). Placement: a
+  // running ribbon layered over the bottom edge of the hero image and of the
+  // closing (§11) image.
+  $('#nac-spotlight, #nacsp-hero, #nacsp-end, #nac-spotlight-style').remove();
+  if (prop.spotlight) {
+    $('head').append(SPOTLIGHT_STYLE);
+    const hero = $('.nac-hero').first();
+    if (hero.length) hero.append(spotlightBanner('nacsp-hero'));
+    const closing = $('#nac-img-3').first();
+    if (closing.length) closing.append(spotlightBanner('nacsp-end'));
   }
 
   // ─── SEO / GEO / LLM structured data ────────────────────────────────────
@@ -619,6 +762,10 @@ async function main() {
   console.log('Fetching Live properties from Notion …');
   const properties = await fetchLiveProperties();
   console.log(`  ${properties.length} Live properties found`);
+
+  // Live USD FX rates (daily-cached). Money renders in USD; Notion stays local.
+  FX = await loadRates();
+  console.log(`  FX rates ${FX.rates ? 'loaded (' + FX.date + ')' : 'unavailable — money will show local currency'}`);
 
   // Geocode cache (City+District+Country → lat/lng). Loaded once, persisted at
   // the end so the next run is a pure cache hit (no Nominatim calls).
