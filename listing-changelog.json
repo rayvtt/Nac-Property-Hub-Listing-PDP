@@ -1,8 +1,8 @@
 {
- "generated": "2026-06-16T10:36:12.544Z",
+ "generated": "2026-06-16T10:41:52.401Z",
  "ledger": true,
  "windowDays": 3650,
- "count": 1529,
+ "count": 1531,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -20,6 +20,28 @@
   "dubai": "🇦🇪"
  },
  "entries": [
+  {
+   "ts": "2026-06-16T10:41:19Z",
+   "country": "vietnam",
+   "slug": "le-meridien-da-nang",
+   "name": "Le Méridien Đà Nẵng",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
+  {
+   "ts": "2026-06-16T10:41:19Z",
+   "country": "vietnam",
+   "slug": "maia-ho-tram",
+   "name": "Maia Resort Hồ Tràm",
+   "field": "listing",
+   "label": "Listing",
+   "kind": "event",
+   "from": null,
+   "to": "added"
+  },
   {
    "ts": "2026-06-16T09:59:00Z",
    "country": "grenada",
