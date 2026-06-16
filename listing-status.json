@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-13T08:28:06Z",
-  "reviewed": "2026-06-13",
-  "fingerprint": "8f57463073e5df10",
+  "generated": "2026-06-16T08:26:44Z",
+  "reviewed": "2026-06-16",
+  "fingerprint": "f1e1fa85db483991",
   "dims": [
     "id",
     "fin",
@@ -15,7 +15,7 @@
     "qa"
   ],
   "imgHash": "qse3Pw84PrZ2S0PQOTtixw",
-  "total": 123,
+  "total": 124,
   "countries": [
     {
       "code": "AU",
@@ -76,6 +76,12 @@
       "name": "UAE",
       "flag": "🇦🇪",
       "count": 6
+    },
+    {
+      "code": "GD",
+      "name": "GD",
+      "flag": "🏳️",
+      "count": 1
     }
   ],
   "groups": [
@@ -3192,6 +3198,33 @@
             "json": "done",
             "cine": "done",
             "img": "done",
+            "geo": "done",
+            "ovw": "done",
+            "qa": "done"
+          },
+          "note": "",
+          "dup": {}
+        }
+      ]
+    },
+    {
+      "country": "GD",
+      "code": "GD",
+      "flag": "🏳️",
+      "region": "La Sagesse Beach",
+      "rows": [
+        {
+          "name": "InterContinental Grenada Resort — Grenada Citizenship (CBI)",
+          "slug": "intercontinental-grenada-resort",
+          "thumb": "",
+          "st": {
+            "id": "done",
+            "fin": "done",
+            "nac": "done",
+            "edit": "done",
+            "json": "done",
+            "cine": "done",
+            "img": "block",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
