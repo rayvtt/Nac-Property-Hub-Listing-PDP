@@ -100,4 +100,11 @@ jobs:
             echo "trigger requested --trust-urls"
             ARGS="$ARGS --trust-urls"
           fi
+          # Backfill-only: fill still-empty gallery slots (e.g. the new 🖼️ Image
+          # 5) across all Live rows without re-rolling the hero / Image 1-4. Pair
+          # with "sync-images:only:<slug,...>" to scope to specific listings.
+          if echo "$LAST_TRIGGER" | grep -qi 'sync-images:fill-galleries'; then
+            echo "trigger requested --fill-galleries"
+            ARGS="$ARGS --fill-galleries"
+          fi
           node sync-images.mjs $ARGS
