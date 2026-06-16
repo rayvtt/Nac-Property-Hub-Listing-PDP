@@ -12,11 +12,12 @@
 //           extracted via pdfimages -png (CMYK-safe: avoids colour inversion)
 //   3. Filter candidates (landscape, ≥1500px wide, ≥150KB, ≥0.05 bytes/pixel —
 //      the bytes/pixel rule drops brochure design graphics like coloured waves)
-//   4. Dedupe by SHA-256, sort by pixel area DESC, take top 5
-//   5. Upload to Cloudflare Images with custom IDs (<slug>-hero, <slug>-1..4)
+//   4. Dedupe by SHA-256, sort by pixel area DESC, take top 6 (hero + 5 gallery)
+//   5. Upload to Cloudflare Images with custom IDs (<slug>-hero, <slug>-1..5)
 //   6. Write back the public-variant URLs to Notion:
-//      Image URL  → hero
-//      🖼️ Image 1-4 → gallery 1-4
+//      Image URL  → hero (+ Mobile Image URL → hero /mobile variant)
+//      🖼️ Image 1-5 → gallery 1-5
+//   Target ≥7 assets per listing: hero desktop + hero mobile + 5 gallery.
 //
 // Required env:
 //   CLOUDFLARE_API_TOKEN     — Cloudflare API token with `Cloudflare Images: Edit`
@@ -506,7 +507,7 @@ function classifyImage(srcRef) {
 
   // STOCK-LIFESTYLE — Berkeley's _lifestyleN paths are people-centric stock
   // photos (couples/families/selfies) that don't show the property. Excluded
-  // from every slot priority list in pickFinalFive so they never appear on PDPs.
+  // from every slot priority list in pickFinalImages so they never appear on PDPs.
   if (/_lifestyle\d+|\/lifestyle\d+|lifestyle\d+[-_]/.test(lc)) return 'stock-lifestyle';
 
   // ASPIRATIONAL — hero shots, terrace views, premium amenities
@@ -660,11 +661,13 @@ function diversityScore(a, b) {
   return score;
 }
 
-// Pick the final 5 images by classification → slot assignment.
+// Pick the final images by classification → slot assignment.
 // See classifyImage() for the slot-to-class mapping rationale.
 // Slot 3 (§11 ending) enforces visual diversity from slot 0 (hero) — picks
 // the candidate with the largest diversity score from each bucket.
-function pickFinalFive(ranked) {
+// Returns up to 6 (hero + 5 gallery); with the hero's mobile variant that is
+// the ≥7-asset-per-listing target (hero desktop + hero mobile + 5 gallery).
+function pickFinalImages(ranked) {
   // 'stock-lifestyle' is intentionally absent — those images get dropped here.
   const buckets = { aspirational: [], overview: [], interior: [], unclassified: [] };
   for (const img of ranked) {
@@ -713,8 +716,9 @@ function pickFinalFive(ranked) {
   const g2   = pickFrom(['interior', 'unclassified', 'overview', 'aspirational']);                   // 2 §08
   const g3   = pickDiverse(['overview', 'unclassified', 'interior', 'aspirational'], hero);          // 3 §11 (diverse from hero)
   const g4   = pickFrom(['unclassified', 'overview', 'interior', 'aspirational']);                   // 4 filler
+  const g5   = pickFrom(['unclassified', 'interior', 'overview', 'aspirational']);                   // 5 filler-2 (stored, ≥7-asset target)
 
-  return [hero, g1, g2, g3, g4].filter(img => img !== null);
+  return [hero, g1, g2, g3, g4, g5].filter(img => img !== null);
 }
 
 // ─── Google Drive ───────────────────────────────────────────────────────
@@ -1000,6 +1004,7 @@ async function updateNotionImages(pageId, urls) {
   if (urls[2]) props['🖼️ Image 2'] = { url: urls[2] };
   if (urls[3]) props['🖼️ Image 3'] = { url: urls[3] };
   if (urls[4]) props['🖼️ Image 4'] = { url: urls[4] };
+  if (urls[5]) props['🖼️ Image 5'] = { url: urls[5] };
   const update = { page_id: pageId, properties: props };
   // Also set the Notion page cover (banner) to the hero so the row is
   // visually identifiable in gallery/board views.
@@ -1096,7 +1101,7 @@ async function processProperty(prop) {
           const dest = path.join(workDir, `web-list-${i + 1}.jpg`);
           try {
             await downloadUrl(bumped, dest);
-            // listIdx preserves the curated order so pickFinalFive can use the
+            // listIdx preserves the curated order so pickFinalImages can use the
             // first listed image as the (manually-chosen) hero.
             candidates.push({ path: dest, src: 'web-list', srcRef: imgUrls[i], listIdx: i });
           } catch (e) { /* skip individual URL failures */ }
@@ -1204,25 +1209,32 @@ async function processProperty(prop) {
     console.log(`  → ${ranked.length} pass filter (≥${MIN_WIDTH}px, landscape, ≥${MIN_FILE_SIZE / 1000}KB, ≥${MIN_BYTES_PER_PIXEL} b/px)`);
     const byClass = ranked.reduce((acc, img) => { (acc[img.classification] ??= 0); acc[img.classification]++; return acc; }, {});
     console.log(`     by class: ${Object.entries(byClass).map(([k, v]) => `${k}=${v}`).join(', ')}`);
-    const top5 = pickFinalFive(ranked);
-    const slotLabels = ['hero (aspirational)', 'gallery_1 §05 (aspirational)', 'gallery_2 §08 (interior)', 'gallery_3 §11 (overview/ending)', 'gallery_4 (filler)'];
-    console.log(`  → final ${top5.length} selected:`);
-    for (let i = 0; i < top5.length; i++) {
-      const img = top5[i];
+    const picked = pickFinalImages(ranked);
+    const slotLabels = ['hero (aspirational)', 'gallery_1 §05 (aspirational)', 'gallery_2 §08 (interior)', 'gallery_3 §11 (overview/ending)', 'gallery_4 (filler)', 'gallery_5 (filler)'];
+    console.log(`  → final ${picked.length} selected:`);
+    for (let i = 0; i < picked.length; i++) {
+      const img = picked[i];
       console.log(`     [${slotLabels[i]}] [${img.src}/${img.classification}] ${img.width}x${img.height} (${(img.pixels / 1_000_000).toFixed(1)}MP), ${(img.size / 1024).toFixed(0)}KB`);
     }
 
-    if (!top5.length) {
+    if (!picked.length) {
       console.log('  ⤳ no usable images passed filter, skipping');
       return;
+    }
+    // Target: ≥7 assets per listing (hero desktop + hero mobile + 5 gallery).
+    // The hero's mobile variant is always produced, so 6 picked desktop images
+    // clears the bar. Warn (don't fail) when the source was too thin — a nudge
+    // to widen the source list, never a block on shipping what we have.
+    if (picked.length < 6) {
+      console.warn(`  ⚠ only ${picked.length} image(s) selected (+ mobile hero = ${picked.length + 1} assets) — below the ≥7-asset target; add more source URLs/renders for ${prop.slug}`);
     }
 
     // 4. Upload to Cloudflare Images
     const urls = [];
-    for (let i = 0; i < top5.length; i++) {
+    for (let i = 0; i < picked.length; i++) {
       const customId = i === 0 ? `${prop.slug}-hero` : `${prop.slug}-${i}`;
       console.log(`  ⬆ uploading as ${customId}…`);
-      const url = await uploadToCloudflareImages(top5[i].path, customId);
+      const url = await uploadToCloudflareImages(picked[i].path, customId);
       urls.push(url);
       console.log(`     → ${url}`);
     }
