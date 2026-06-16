@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-16T08:26:44Z",
+  "generated": "2026-06-16T09:20:00Z",
   "reviewed": "2026-06-16",
-  "fingerprint": "f1e1fa85db483991",
+  "fingerprint": "7473f3a457613ed3",
   "dims": [
     "id",
     "fin",
@@ -3216,7 +3216,7 @@
         {
           "name": "InterContinental Grenada Resort — Grenada Citizenship (CBI)",
           "slug": "intercontinental-grenada-resort",
-          "thumb": "",
+          "thumb": "intercontinental-grenada-resort-hero",
           "st": {
             "id": "done",
             "fin": "done",
@@ -3224,7 +3224,7 @@
             "edit": "done",
             "json": "done",
             "cine": "done",
-            "img": "block",
+            "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
