@@ -1,8 +1,8 @@
 {
- "generated": "2026-06-16T16:10:11.628Z",
+ "generated": "2026-06-16T19:04:51.403Z",
  "ledger": true,
  "windowDays": 3650,
- "count": 1531,
+ "count": 1532,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -20,6 +20,17 @@
   "dubai": "🇦🇪"
  },
  "entries": [
+  {
+   "ts": "2026-06-16T19:04:15Z",
+   "country": "turkey",
+   "slug": "sefakoy-residence-boulevard-istanbul",
+   "name": "Sefakoy Residence (Boulevard Sefaköy)",
+   "field": "gallery",
+   "label": "Gallery",
+   "kind": "set",
+   "from": "sefakoy-residence-boulevard-istanbul-1,sefakoy-resid…",
+   "to": "sefakoy-residence-boulevard-istanbul-1,sefakoy-resid…"
+  },
   {
    "ts": "2026-06-16T10:41:19Z",
    "country": "vietnam",
