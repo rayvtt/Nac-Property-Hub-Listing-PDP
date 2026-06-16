@@ -235,6 +235,12 @@ const BERKELEY_URLS_FILE = opt('--berkeley-urls');
 const DRY_RUN = flag('--dry-run');
 const KEEP_TMP = flag('--keep-tmp');
 const REPLACE = flag('--replace');
+// Backfill-only mode: re-pick from each listing's existing source but upload &
+// write ONLY the gallery slots that are still empty in Notion (today: 🖼️ Image
+// 5, added with the ≥7-asset bump). Never re-uploads or rewrites the hero or
+// Image 1-4, so an already-imaged listing cannot be degraded — used to fill the
+// new slot across all Live rows without re-rolling existing picks.
+const FILL_GALLERIES = flag('--fill-galleries') || /^(1|true|yes)$/i.test(process.env.FILL_GALLERIES || '');
 // When a curated, source-verified URL list is provided (e.g. official developer
 // renders), skip ONLY the bytes/pixel abstract-graphic heuristic — big, heavily
 // compressed architectural renders legitimately sit below 0.05 b/px. Width /
@@ -923,6 +929,9 @@ async function fetchLiveProperties(includeNonLive = false) {
     // Optional new fields for the Berkeley web route. Either one is enough.
     berkeleyPage: readUrl(page.properties['🌐 Berkeley Page URL']),
     imageUrlsJson: richText(page.properties['📷 Image URLs JSON']),
+    // Current gallery URLs — used by --fill-galleries to detect which slots are
+    // already populated so the backfill only writes the still-empty ones.
+    gallery: [1, 2, 3, 4, 5].map(n => readUrl(page.properties[`🖼️ Image ${n}`])),
   })).filter(p => p.slug);
 }
 
@@ -1020,7 +1029,16 @@ async function processProperty(prop) {
     || prop.imageUrl.includes('/wp-content/uploads/2026/05/');
   const isCloudflare = prop.imageUrl?.includes('imagedelivery.net');
 
-  if (isCloudflare && !REPLACE) {
+  // --fill-galleries: skip the listing only if its gallery is already full
+  // (every 🖼️ Image 1-5 set). Otherwise fall through and let the slot-5 (etc.)
+  // backfill run. Hero / Image 1-4 are never touched in this mode.
+  if (FILL_GALLERIES) {
+    const emptySlots = (prop.gallery || []).filter(u => !u).length;
+    if (!emptySlots) {
+      console.log('  ⤳ all gallery slots already filled — skipping');
+      return;
+    }
+  } else if (isCloudflare && !REPLACE) {
     // Already imaged — just make sure the Notion page cover is set (idempotent
     // backfill for rows imaged before cover support existed).
     try {
@@ -1030,8 +1048,7 @@ async function processProperty(prop) {
       console.log(`  ⤳ already on Cloudflare Images, skipping (cover update failed: ${e.message})`);
     }
     return;
-  }
-  if (!isPlaceholder && !REPLACE && !LOCAL_PDF) {
+  } else if (!isPlaceholder && !REPLACE && !LOCAL_PDF) {
     console.log(`  ⤳ Image URL is non-placeholder external (${prop.imageUrl}) — skipping`);
     return;
   }
@@ -1227,6 +1244,35 @@ async function processProperty(prop) {
     // to widen the source list, never a block on shipping what we have.
     if (picked.length < 6) {
       console.warn(`  ⚠ only ${picked.length} image(s) selected (+ mobile hero = ${picked.length + 1} assets) — below the ≥7-asset target; add more source URLs/renders for ${prop.slug}`);
+    }
+
+    // 4+5. Backfill-only path: upload & write ONLY the still-empty gallery slots
+    // (🖼️ Image N where Notion is blank), leaving the hero + filled slots exactly
+    // as they are. Cannot degrade an existing listing — it never re-uploads the
+    // hero or rewrites a populated slot.
+    if (FILL_GALLERIES) {
+      const props = {};
+      let wrote = 0;
+      for (let n = 1; n <= 5; n++) {              // 🖼️ Image N ↔ picked[n]
+        if (prop.gallery?.[n - 1]) continue;       // already filled → leave it
+        if (!picked[n]) continue;                  // source too thin for this slot
+        const customId = `${prop.slug}-${n}`;
+        console.log(`  ⬆ backfilling ${customId} (Image ${n})…`);
+        const url = await uploadToCloudflareImages(picked[n].path, customId);
+        props[`🖼️ Image ${n}`] = { url };
+        wrote++;
+        console.log(`     → ${url}`);
+      }
+      if (!wrote) {
+        console.log('  ⤳ no empty gallery slot could be filled from source — skipping');
+      } else if (!DRY_RUN) {
+        console.log(`  📝 updating Notion (${prop.pageId}) — ${wrote} gallery slot(s)…`);
+        await getNotion().pages.update({ page_id: prop.pageId, properties: props });
+        console.log(`     done`);
+      } else {
+        console.log(`  (--dry-run: would write ${wrote} gallery slot(s))`);
+      }
+      return;
     }
 
     // 4. Upload to Cloudflare Images
