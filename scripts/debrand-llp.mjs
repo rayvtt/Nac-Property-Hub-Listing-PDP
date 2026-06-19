@@ -406,9 +406,11 @@ function applyGeo(html, slug, sig) {
   out = out.replace(/("@type":\s*"GeoCoordinates",\s*"latitude":\s*")[^"]*("?,?\s*"longitude":\s*")[^"]*(")/,
     `$1${g.lat}$2${g.lng}$3`);
   // If RealEstateListing has no geo block at all, insert one after "address": {…}.
+  // Preserve the comma that separated address from the next field (p2) so the
+  // object stays valid: address{…},geo{…}<p2>nextField.
   if (!/"GeoCoordinates"/.test(out)) {
     out = out.replace(/("@type":\s*"RealEstateListing"[\s\S]*?"address":\s*\{[\s\S]*?\})(,?)/,
-      (m, p1) => `${p1},\n    "geo": { "@type": "GeoCoordinates", "latitude": "${g.lat}", "longitude": "${g.lng}" }`);
+      (m, p1, p2) => `${p1},\n    "geo": { "@type": "GeoCoordinates", "latitude": "${g.lat}", "longitude": "${g.lng}" }${p2}`);
   }
   return out;
 }
