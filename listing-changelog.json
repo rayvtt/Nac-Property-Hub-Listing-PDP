@@ -1,8 +1,8 @@
 {
- "generated": "2026-06-19T07:37:44.878Z",
+ "generated": "2026-06-19T10:59:30.170Z",
  "ledger": true,
  "windowDays": 3650,
- "count": 1655,
+ "count": 1675,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -20,6 +20,226 @@
   "dubai": "🇦🇪"
  },
  "entries": [
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "australia",
+   "slug": "88-livie-carlingford",
+   "name": "88 Livie",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "70",
+   "to": "72"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "turkey",
+   "slug": "bagcilar-garden-phase-2-istanbul",
+   "name": "Bağcılar Garden Phase II",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "77",
+   "to": "74"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "thailand",
+   "slug": "balco-villas",
+   "name": "Balco Villas by Origin",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "67",
+   "to": "73"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "thailand",
+   "slug": "botanica-four-seasons",
+   "name": "Botanica Four Seasons",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "66",
+   "to": "74"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "thailand",
+   "slug": "botanica-louvre",
+   "name": "Botanica Louvre",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "67",
+   "to": "75"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "greece",
+   "slug": "boulevard-residence-kallithea",
+   "name": "Boulevard",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "76",
+   "to": "77"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "australia",
+   "slug": "cosmopolitan-parramatta",
+   "name": "Cosmopolitan",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "73",
+   "to": "77"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "australia",
+   "slug": "danks-st-district-waterloo",
+   "name": "Danks St District",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "74",
+   "to": "71"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "turkey",
+   "slug": "elite-complex-istanbul",
+   "name": "Elite Complex",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "77",
+   "to": "75"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "turkey",
+   "slug": "horizon-park-istanbul",
+   "name": "Horizon Park",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "77",
+   "to": "76"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "greece",
+   "slug": "kifisia-suites-park-18",
+   "name": "Kifisia Suites",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "80",
+   "to": "79"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "australia",
+   "slug": "luxton-carlingford",
+   "name": "Luxton",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "70",
+   "to": "74"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "vietnam",
+   "slug": "maia-ho-tram",
+   "name": "Maia Resort Hồ Tràm",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "73",
+   "to": "75"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "turkey",
+   "slug": "marmara-pearl-istanbul",
+   "name": "Marmara Pearl",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "77",
+   "to": "73"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "greece",
+   "slug": "meridia-piraeus-athens",
+   "name": "Meridia",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "76",
+   "to": "80"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "australia",
+   "slug": "one-city-square-parramatta",
+   "name": "One City Square",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "73",
+   "to": "78"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "greece",
+   "slug": "opus-residence-kallithea",
+   "name": "Opus Residence",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "76",
+   "to": "75"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "greece",
+   "slug": "the-one-glyfada-athens",
+   "name": "The One",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "80",
+   "to": "78"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "thailand",
+   "slug": "the-residence-prime",
+   "name": "The Residence Prime",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "66",
+   "to": "72"
+  },
+  {
+   "ts": "2026-06-19T12:58:34+02:00",
+   "country": "thailand",
+   "slug": "the-standard-residences-bangtao",
+   "name": "The Standard Residences Bangtao",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "73",
+   "to": "77"
+  },
   {
    "ts": "2026-06-19T02:17:43Z",
    "country": "thailand",
