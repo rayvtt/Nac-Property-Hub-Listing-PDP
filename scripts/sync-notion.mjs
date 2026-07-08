@@ -46,6 +46,17 @@ function readNumber(prop) {
   return prop && typeof prop.number === 'number' ? prop.number : null;
 }
 
+// `Property ID` is a Notion auto-ID (unique_id: {prefix:"NAC", number:177}) — readNumber() sees null
+// for it, so property_id was NEVER synced and 115/126 PDPs shipped the template default "NAC-4"
+// (Nobu's ID, baked into the master). Read every shape the field has ever had.
+function readPropertyIdNumber(prop) {
+  if (!prop) return null;
+  if (typeof prop.number === 'number') return prop.number;                                  // plain number
+  if (prop.unique_id && typeof prop.unique_id.number === 'number') return prop.unique_id.number; // auto-ID
+  if (prop.formula && typeof prop.formula.number === 'number') return prop.formula.number;  // formula
+  return null;
+}
+
 function readSelect(prop) {
   return prop && prop.select ? prop.select.name : null;
 }
@@ -76,7 +87,7 @@ function readJsonField(prop) {
 
 function extractProperty(page) {
   const p = page.properties;
-  const propertyIdNum = readNumber(p['Property ID']);
+  const propertyIdNum = readPropertyIdNumber(p['Property ID']);
   return {
     slug: richText(p['🔗 Slug']),
     propertyId: propertyIdNum != null ? `NAC-${propertyIdNum}` : null,
