@@ -39,33 +39,43 @@ const round1 = (n) => (n == null ? null : Math.round(n * 10) / 10);
 const bandOf = (pos) => pos == null ? 'not-ranking' : pos <= 3 ? 'top-3' : pos <= 10 ? 'striking' : pos <= 20 ? 'page-2' : 'deep';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-// ─── GSC pull: query × page for one date window ─────────────────────────────
-async function gscWindow(sc, startDate, endDate) {
-  // Map: normalizedQuery → [{ page, position, impressions, clicks, ctr }]
-  const byQuery = new Map();
-  let startRow = 0;
-  while (true) {
-    let res;
-    try {
-      res = await sc.searchanalytics.query({
-        siteUrl: GSC_PROPERTY,
-        requestBody: { startDate, endDate, dimensions: ['query', 'page'], rowLimit: 25000, startRow },
-      });
-    } catch (err) {
-      const code = err.status || err.code;
-      throw new Error(`GSC query failed (${code}) for ${GSC_PROPERTY}: ${err.message?.split('\n')[0]}`);
+// ─── GSC pull: query × page for one date window, over 1+ properties ─────────
+// GSC_PROPERTY may be a single value or comma-separated (domain property OR a
+// pair of URL-prefix properties — main + blog). We iterate and MERGE; the page
+// URL's host is what distinguishes main vs blog downstream. Per-property errors
+// are collected (never thrown) so an expired token / one bad property degrades
+// gracefully instead of crashing the bi-weekly job.
+async function gscWindow(sc, properties, startDate, endDate) {
+  const byQuery = new Map(); // normalizedQuery → [{ page, position, impressions, clicks, ctr }]
+  let anyOk = false;
+  const errors = [];
+  for (const siteUrl of properties) {
+    let startRow = 0;
+    while (true) {
+      let res;
+      try {
+        res = await sc.searchanalytics.query({
+          siteUrl,
+          requestBody: { startDate, endDate, dimensions: ['query', 'page'], rowLimit: 25000, startRow },
+        });
+      } catch (err) {
+        const code = err.status || err.code;
+        errors.push(`${siteUrl} (${code}): ${err.message?.split('\n')[0]}`);
+        break; // skip this property, try the next
+      }
+      anyOk = true;
+      const rows = res.data.rows || [];
+      for (const r of rows) {
+        const [query, page] = r.keys;
+        const key = norm(query);
+        if (!byQuery.has(key)) byQuery.set(key, []);
+        byQuery.get(key).push({ page, position: r.position, impressions: r.impressions, clicks: r.clicks, ctr: r.ctr });
+      }
+      if (rows.length < 25000) break;
+      startRow += 25000;
     }
-    const rows = res.data.rows || [];
-    for (const r of rows) {
-      const [query, page] = r.keys;
-      const key = norm(query);
-      if (!byQuery.has(key)) byQuery.set(key, []);
-      byQuery.get(key).push({ page, position: r.position, impressions: r.impressions, clicks: r.clicks, ctr: r.ctr });
-    }
-    if (rows.length < 25000) break;
-    startRow += 25000;
   }
-  return byQuery;
+  return { byQuery, anyOk, errors };
 }
 
 // Best (lowest-position) NAC page for an exact keyword match in a window.
@@ -183,8 +193,18 @@ async function main() {
   const prevWin = { start: iso(new Date(today - 56 * day)), end: iso(new Date(today - 29 * day)) };
   console.log(`  window cur=${curWin.start}..${curWin.end}  prev=${prevWin.start}..${prevWin.end}`);
 
-  const cur = await gscWindow(sc, curWin.start, curWin.end);
-  const prev = await gscWindow(sc, prevWin.start, prevWin.end);
+  const properties = GSC_PROPERTY.split(',').map((s) => s.trim()).filter(Boolean);
+  console.log(`  properties: ${properties.join(', ')}`);
+  const curRes = await gscWindow(sc, properties, curWin.start, curWin.end);
+  if (!curRes.anyOk) {
+    console.error('  ✗ GSC returned no data for any property — the OAuth refresh token is likely expired/revoked.');
+    console.error('    Fix: run `node scripts/gsc-oauth-setup.mjs` locally and update the GSC_OAUTH_REFRESH_TOKEN repo secret.');
+    console.error('    Details: ' + (curRes.errors.join(' | ') || '(no error detail)'));
+    process.exit(0); // graceful — no snapshot this run, workflow stays green
+  }
+  const prevRes = await gscWindow(sc, properties, prevWin.start, prevWin.end);
+  const cur = curRes.byQuery;
+  const prev = prevRes.byQuery;
   console.log(`  GSC rows: cur=${cur.size} queries, prev=${prev.size} queries`);
 
   const results = [];
