@@ -1,0 +1,52 @@
+{
+  "_meta": {
+    "goal": "Google top-3 in Vietnam (gl=vn, hl=vi) for the immigration-by-investment keyword universe across nomadassetcollective.com + blog.nomadassetcollective.com",
+    "locale": { "gl": "vn", "hl": "vi" },
+    "gsc_property": "sc-domain:nomadassetcollective.com",
+    "bands": { "top-3": "<=3", "striking": "4-10", "page-2": "11-20", "deep": "21+", "not-ranking": "no impressions" },
+    "notes": "target_url null = content gap (no dedicated page yet — brief one on the listed surface). One canonical URL per keyword; do not create a second competing page. Refine/expand this list — it is the single human-owned input.",
+    "updated": "2026-06-05"
+  },
+  "keywords": [
+    { "kw": "đầu tư di trú", "cluster": "head", "intent": "commercial", "surface": "home", "priority": "P0", "target_url": "https://nomadassetcollective.com/" },
+    { "kw": "đầu tư định cư", "cluster": "head", "intent": "commercial", "surface": "home", "priority": "P0", "target_url": "https://nomadassetcollective.com/" },
+    { "kw": "di trú đầu tư", "cluster": "head", "intent": "commercial", "surface": "home", "priority": "P1", "target_url": "https://nomadassetcollective.com/" },
+    { "kw": "đầu tư quốc tịch", "cluster": "head", "intent": "commercial", "surface": "hub", "priority": "P0", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/" },
+    { "kw": "quốc tịch thứ hai", "cluster": "head", "intent": "commercial", "surface": "hub", "priority": "P1", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/" },
+    { "kw": "hộ chiếu thứ hai", "cluster": "head", "intent": "commercial", "surface": "hub", "priority": "P1", "target_url": null },
+    { "kw": "chương trình đầu tư định cư", "cluster": "head", "intent": "commercial", "surface": "hub", "priority": "P1", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/" },
+    { "kw": "thị thực vàng", "cluster": "head", "intent": "informational", "surface": "blog", "priority": "P1", "target_url": null },
+    { "kw": "golden visa là gì", "cluster": "head", "intent": "informational", "surface": "blog", "priority": "P2", "target_url": null },
+    { "kw": "định cư nước ngoài", "cluster": "head", "intent": "commercial", "surface": "hub", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/" },
+    { "kw": "đầu tư bất động sản định cư", "cluster": "head", "intent": "commercial", "surface": "hub", "priority": "P1", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/" },
+
+    { "kw": "eb-5", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P1", "target_url": null },
+    { "kw": "thẻ xanh mỹ", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P1", "target_url": null },
+    { "kw": "golden visa bồ đào nha", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P1", "target_url": "https://blog.nomadassetcollective.com/tai-sao-bo-dao-nha-van-la-lua-chon-hang-dau-chau-au/" },
+    { "kw": "định cư bồ đào nha", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P1", "target_url": "https://blog.nomadassetcollective.com/tai-sao-bo-dao-nha-van-la-lua-chon-hang-dau-chau-au/" },
+    { "kw": "golden visa hy lạp", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P1", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/greece/" },
+    { "kw": "định cư hy lạp", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P1", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/greece/" },
+    { "kw": "đầu tư định cư síp", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P1", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/cyprus/" },
+    { "kw": "quốc tịch síp", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/cyprus/" },
+    { "kw": "đầu tư định cư thổ nhĩ kỳ", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P1", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/turkey/" },
+    { "kw": "quốc tịch thổ nhĩ kỳ", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/turkey/" },
+    { "kw": "friendly nations visa panama", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/panama-friendly-nations-visa-2026-can-cu-chien-luoc-chau-my-cho-nha-dau-tu-viet-nam/" },
+    { "kw": "đầu tư định cư panama", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/panama/" },
+    { "kw": "quốc tịch antigua", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/antigua-barbuda-cbi-2026-quoc-tich-caribbean-day-du-va-lo-trinh-den-ho-chieu-manh/" },
+    { "kw": "quốc tịch caribbean", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/antigua-barbuda-cbi-2026-quoc-tich-caribbean-day-du-va-lo-trinh-den-ho-chieu-manh/" },
+    { "kw": "italy investor visa", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/italy-investor-visa-2026-cu-tru-eu-qua-dau-tu-sang-tao-va-kinh-doanh/" },
+    { "kw": "định cư ý", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/italy-investor-visa-2026-cu-tru-eu-qua-dau-tu-sang-tao-va-kinh-doanh/" },
+
+    { "kw": "đầu tư định cư châu âu", "cluster": "region", "intent": "commercial", "surface": "hub", "priority": "P0", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/" },
+    { "kw": "đầu tư định cư mỹ", "cluster": "region", "intent": "commercial", "surface": "blog", "priority": "P1", "target_url": null },
+    { "kw": "đầu tư định cư canada", "cluster": "region", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": null },
+    { "kw": "đầu tư định cư úc", "cluster": "region", "intent": "commercial", "surface": "clp", "priority": "P1", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/australia/" },
+    { "kw": "đầu tư định cư anh", "cluster": "country", "intent": "commercial", "surface": "clp", "priority": "P1", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/" },
+    { "kw": "đầu tư định cư dubai", "cluster": "country", "intent": "commercial", "surface": "clp", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/uae/" },
+    { "kw": "đầu tư định cư singapore", "cluster": "country", "intent": "commercial", "surface": "clp", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/singapore/" },
+
+    { "kw": "chi phí đầu tư định cư", "cluster": "money", "intent": "informational", "surface": "blog", "priority": "P1", "target_url": null },
+    { "kw": "đầu tư định cư cần bao nhiêu tiền", "cluster": "money", "intent": "informational", "surface": "blog", "priority": "P1", "target_url": null },
+    { "kw": "đầu tư định cư giá rẻ", "cluster": "money", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": null }
+  ]
+}
