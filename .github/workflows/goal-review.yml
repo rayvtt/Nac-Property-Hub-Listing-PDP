@@ -1,0 +1,71 @@
+name: SEO Goal → Bi-weekly Rank Review
+
+# Drives + tracks the VN immigration-investment ranking goal (top-3 on both
+# domains). Runs every ~2 weeks (1st & 15th), pulls GSC, snapshots rank, mirrors
+# to the 🎯 Rank Tracker + Goal Reviews Notion DBs, appends seo/goal-log.md.
+# Measurement + logging only — safe to run unattended.
+
+on:
+  schedule:
+    - cron: "0 9 1,15 * *"      # 09:00 UTC on the 1st and 15th ≈ every 2 weeks
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Print only, no writes (true/false)"
+        required: false
+        default: "false"
+  push:
+    branches: [main]
+    paths:
+      - ".github/triggers/goal-review.json"
+
+concurrency:
+  group: goal-review
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+      - name: Run goal review
+        working-directory: scripts
+        env:
+          GSC_OAUTH_CLIENT_ID: ${{ secrets.GSC_OAUTH_CLIENT_ID }}
+          GSC_OAUTH_CLIENT_SECRET: ${{ secrets.GSC_OAUTH_CLIENT_SECRET }}
+          GSC_OAUTH_REFRESH_TOKEN: ${{ secrets.GSC_OAUTH_REFRESH_TOKEN }}
+          GSC_PROPERTY: ${{ vars.GSC_PROPERTY || 'sc-domain:nomadassetcollective.com' }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          RANK_TRACKER_DB_ID: ${{ vars.RANK_TRACKER_DB_ID || '7913fbe44f6e4ae1a8d36239e26d9b45' }}
+          GOAL_REVIEWS_DB_ID: ${{ vars.GOAL_REVIEWS_DB_ID || '18771efb91ec436bb3016463ea385a07' }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
+        run: node goal-review.mjs
+      - name: Commit snapshot + log
+        run: |
+          git config user.name "nac-seo-bot"
+          git config user.email "nac-seo-bot@users.noreply.github.com"
+          git add seo/rank-snapshots seo/goal-log.md
+          if git diff --cached --quiet; then
+            echo "No snapshot/log changes to commit."
+            exit 0
+          fi
+          git commit -m "goal: bi-weekly rank snapshot + log"
+          for attempt in 1 2 3 4 5; do
+            if git push origin main; then echo "Pushed on attempt $attempt"; exit 0; fi
+            echo "Push attempt $attempt failed — rebasing"; git fetch origin main
+            if ! git rebase origin/main; then git rebase --abort; exit 1; fi
+            sleep $((attempt * 2))
+          done
+          echo "Push failed after 5 attempts"; exit 1
