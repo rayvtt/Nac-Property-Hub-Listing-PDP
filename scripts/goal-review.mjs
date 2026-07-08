@@ -32,7 +32,7 @@ const REVIEWS_DB = process.env.GOAL_REVIEWS_DB_ID || '18771efb91ec436bb3016463ea
 const NOTION_TOKEN = process.env.NOTION_TOKEN;
 const DRY = process.env.DRY_RUN === 'true';
 
-const notion = NOTION_TOKEN ? new Client({ auth: NOTION_TOKEN }) : null;
+const notion = NOTION_TOKEN ? new Client({ auth: NOTION_TOKEN, notionVersion: '2022-06-28' }) : null;
 const iso = (d) => d.toISOString().slice(0, 10);
 const norm = (s) => (s || '').toLowerCase().normalize('NFC').replace(/["“”]/g, '').replace(/\s+/g, ' ').trim();
 const round1 = (n) => (n == null ? null : Math.round(n * 10) / 10);
