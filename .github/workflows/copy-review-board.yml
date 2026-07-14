@@ -1,0 +1,55 @@
+name: Refresh Copy Review board
+
+# Snapshots the 🇻🇳 LLP VI Copy Review Notion queue + the MCC control row's
+# run log into copy-review.json, which copy-review.html (the MCC Copy Review
+# module, served on GitHub Pages) renders. Content-stable — commits only when
+# the snapshot actually changed.
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/triggers/**"
+      - "seo/llp-copy-reviewed.json"
+
+concurrency:
+  group: copy-review-board
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+
+      - name: Build snapshot
+        working-directory: scripts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: node build-copy-review.mjs
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet copy-review.json 2>/dev/null; then
+            echo "no change"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add copy-review.json
+          git commit -m "chore(copy-review): refresh board snapshot"
+          git push

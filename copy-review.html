@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>MCC · Copy Review — LLP Vietnamese Copy</title>
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b23; --panel2:#1c222c; --line:#262e3a;
+    --txt:#e8ecf2; --dim:#8b95a5; --orange:#ed8a52; --orange2:#d97c44;
+    --red:#e5636a; --amber:#e2a94f; --yellow:#d9c86a; --green:#5fb98a; --blue:#6aa5e2; --gray:#7a8494;
+    font-synthesis:none;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding:0 0 80px}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+  header{position:sticky;top:0;z-index:5;background:rgba(14,17,22,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  header .wrap{display:flex;align-items:center;gap:14px;padding-top:14px;padding-bottom:14px}
+  .mcc-badge{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--bg);background:var(--orange);border-radius:6px;padding:3px 8px}
+  h1{font-size:17px;font-weight:650}
+  .sub{color:var(--dim);font-size:12.5px;margin-left:auto;text-align:right}
+  .grid{display:grid;grid-template-columns:220px 1fr;gap:16px;margin-top:20px}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+  /* progress ring */
+  .ring-wrap{display:flex;flex-direction:column;align-items:center;gap:10px}
+  .ring{position:relative;width:150px;height:150px}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .track{stroke:var(--panel2)}
+  .ring .arc{stroke:var(--orange);stroke-linecap:round;transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
+  .ring .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring .num b{font-size:30px;font-weight:700}
+  .ring .num span{font-size:11px;color:var(--dim);letter-spacing:.06em}
+  .statline{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+  .chip{font-size:11.5px;font-weight:600;border-radius:99px;padding:3px 10px;border:1px solid var(--line);color:var(--dim)}
+  .chip b{color:var(--txt)}
+  /* findings */
+  .sec-h{display:flex;align-items:baseline;gap:10px;margin:26px 0 10px}
+  .sec-h h2{font-size:14px;font-weight:650;letter-spacing:.02em}
+  .sec-h .n{color:var(--dim);font-size:12.5px}
+  .finding{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+  .finding .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+  .sev{font-size:10.5px;font-weight:700;letter-spacing:.05em;border-radius:5px;padding:2px 7px;color:var(--bg)}
+  .sev.p0{background:var(--red)} .sev.p1{background:var(--amber)} .sev.p2{background:var(--yellow)}
+  .scope{font-size:10.5px;font-weight:600;border-radius:5px;padding:2px 7px;border:1px solid var(--line);color:var(--dim)}
+  .st{font-size:10.5px;font-weight:700;border-radius:5px;padding:2px 7px;margin-left:auto}
+  .st.Proposed{color:var(--yellow);border:1px solid var(--yellow)}
+  .st.Approved{color:var(--green);border:1px solid var(--green)}
+  .st.Applied{color:var(--blue);border:1px solid var(--blue)}
+  .st.Rejected{color:var(--gray);border:1px solid var(--gray)}
+  .finding h3{font-size:14px;font-weight:640;margin-bottom:2px}
+  .meta{font-size:12px;color:var(--dim);margin-bottom:8px}
+  .diff{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12.5px}
+  @media(max-width:680px){.diff{grid-template-columns:1fr}}
+  .diff>div{background:var(--panel2);border-radius:8px;padding:8px 10px;overflow-wrap:anywhere}
+  .diff .lbl{font-size:10px;letter-spacing:.1em;font-weight:700;color:var(--dim);display:block;margin-bottom:3px}
+  .diff .cur .lbl{color:var(--red)} .diff .sug .lbl{color:var(--green)}
+  .why{font-size:12px;color:var(--dim);margin-top:8px}
+  .acts{margin-top:10px;display:flex;gap:10px}
+  .acts a{font-size:12px;font-weight:600;color:var(--orange);text-decoration:none;border:1px solid var(--orange2);border-radius:8px;padding:5px 12px}
+  .acts a:hover{background:var(--orange);color:var(--bg)}
+  .acts a.ghost{color:var(--dim);border-color:var(--line)}
+  /* logs */
+  .logs{font:12px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--dim)}
+  .logs div{padding:7px 0;border-bottom:1px dashed var(--line)}
+  .logs div:last-child{border-bottom:none}
+  .logs .d{color:var(--orange)}
+  .empty{color:var(--dim);font-size:13px;padding:16px;text-align:center}
+  footer{margin-top:34px;color:var(--dim);font-size:11.5px;text-align:center}
+  footer a{color:var(--dim)}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <span class="mcc-badge">MCC</span>
+  <h1>Copy Review · LLP Vietnamese Copy</h1>
+  <div class="sub" id="sub">loading…</div>
+</div></header>
+
+<div class="wrap">
+  <div class="grid">
+    <div class="card ring-wrap">
+      <div class="ring">
+        <svg width="150" height="150" viewBox="0 0 150 150">
+          <circle class="track" cx="75" cy="75" r="64" fill="none" stroke-width="11"/>
+          <circle class="arc" id="arc" cx="75" cy="75" r="64" fill="none" stroke-width="11"
+                  stroke-dasharray="402" stroke-dashoffset="402"/>
+        </svg>
+        <div class="num"><b id="pct">–%</b><span id="frac">–/–</span></div>
+      </div>
+      <div style="font-size:12px;color:var(--dim)">listings reviewed</div>
+      <div class="statline" id="sevline"></div>
+    </div>
+    <div class="card">
+      <div class="sec-h" style="margin-top:0"><h2>Run log</h2><span class="n" id="mccStatus"></span></div>
+      <div class="logs" id="logs"><div class="empty">loading…</div></div>
+    </div>
+  </div>
+
+  <div class="sec-h"><h2>Awaiting your call</h2><span class="n" id="nProposed"></span></div>
+  <div id="proposed"></div>
+
+  <div class="sec-h"><h2>Resolved</h2><span class="n" id="nResolved"></span></div>
+  <div id="resolved"></div>
+
+  <footer>
+    Data refreshes every 15 min from the <a id="qLink" href="#" target="_blank" rel="noopener">🇻🇳 review queue</a>
+    · approvals happen on the Notion rows (Status → Approved / Rejected)
+    · control: <a id="mLink" href="#" target="_blank" rel="noopener">MCC Command Requests</a>
+  </footer>
+</div>
+
+<script>
+(async () => {
+  const $ = id => document.getElementById(id);
+  const esc = s => (s || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  let d;
+  try {
+    d = await (await fetch('copy-review.json?ts=' + Date.now(), {cache:'no-store'})).json();
+  } catch (e) {
+    $('sub').textContent = 'copy-review.json not found — first CI snapshot pending';
+    return;
+  }
+  const total = d.totalListings || 0, done = (d.reviewed || []).length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+  $('pct').textContent = pct + '%';
+  $('frac').textContent = done + ' / ' + total;
+  requestAnimationFrame(() => { $('arc').style.strokeDashoffset = String(402 * (1 - pct / 100)); });
+  $('sub').textContent = 'snapshot ' + (d.generated || '').replace('T', ' ').slice(0, 16) + ' UTC';
+  $('mccStatus').textContent = 'MCC request: ' + (d.mccStatus || '—');
+  $('qLink').href = d.links?.queue || '#';
+  $('mLink').href = d.links?.mccRow || '#';
+
+  const F = d.findings || [];
+  const open = F.filter(f => f.status === 'Proposed' || f.status === 'Approved');
+  const sev = k => open.filter(f => (f.severity || '').startsWith(k)).length;
+  $('sevline').innerHTML =
+    '<span class="chip">P0 <b>' + sev('P0') + '</b></span>' +
+    '<span class="chip">P1 <b>' + sev('P1') + '</b></span>' +
+    '<span class="chip">P2 <b>' + sev('P2') + '</b></span>' +
+    '<span class="chip">open <b>' + open.length + '</b></span>';
+
+  $('logs').innerHTML = (d.logs || []).slice().reverse().map(l => {
+    const m = l.match(/^(\[[^\]]+\])\s*(.*)$/s);
+    return '<div>' + (m ? '<span class="d">' + esc(m[1]) + '</span> ' + esc(m[2]) : esc(l)) + '</div>';
+  }).join('') || '<div class="empty">no log lines yet</div>';
+
+  const sevCls = s => s.startsWith('P0') ? 'p0' : s.startsWith('P1') ? 'p1' : 'p2';
+  const card = f =>
+    '<div class="finding">' +
+      '<div class="top">' +
+        '<span class="sev ' + sevCls(f.severity || 'P2') + '">' + esc(f.severity) + '</span>' +
+        '<span class="scope">' + esc(f.scope) + '</span>' +
+        (f.slug ? '<span class="scope">' + esc(f.slug) + '</span>' : '') +
+        '<span class="st ' + esc(f.status) + '">' + esc(f.status) + '</span>' +
+      '</div>' +
+      '<h3>' + esc(f.finding) + '</h3>' +
+      '<div class="meta">' + esc(f.field) + '</div>' +
+      '<div class="diff">' +
+        '<div class="cur"><span class="lbl">CURRENT</span>' + esc(f.current) + '</div>' +
+        '<div class="sug"><span class="lbl">SUGGESTED</span>' + esc(f.suggested) + '</div>' +
+      '</div>' +
+      (f.rationale ? '<div class="why">' + esc(f.rationale) + '</div>' : '') +
+      '<div class="acts">' +
+        '<a href="' + esc(f.notionUrl) + '" target="_blank" rel="noopener">Review in Notion →</a>' +
+        (f.listingUrl ? '<a class="ghost" href="' + esc(f.listingUrl) + '" target="_blank" rel="noopener">View listing</a>' : '') +
+      '</div>' +
+    '</div>';
+
+  const proposed = F.filter(f => f.status === 'Proposed');
+  const resolved = F.filter(f => f.status !== 'Proposed');
+  $('proposed').innerHTML = proposed.map(card).join('') || '<div class="empty">nothing waiting — queue is clear 🎉</div>';
+  $('resolved').innerHTML = resolved.map(card).join('') || '<div class="empty">none yet</div>';
+  $('nProposed').textContent = proposed.length + ' proposed';
+  $('nResolved').textContent = resolved.length + ' (approved · applied · rejected)';
+})();
+</script>
+</body>
+</html>
