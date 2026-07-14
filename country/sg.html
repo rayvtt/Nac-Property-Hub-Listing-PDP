@@ -11245,6 +11245,16 @@ body.cl-modal-open { overflow:hidden; }
     });
   });
 
+  // URL language routing (?lang=en|vi) — lets the homepage toolkit handoff and
+  // deep links open this page in the visitor's language (poster capture too)
+  try {
+    const qlang = new URLSearchParams(location.search).get('lang');
+    if (qlang === 'en' || qlang === 'vi') {
+      const qbtn = document.querySelector('[data-lang-set="' + qlang + '"]');
+      if (qbtn && !qbtn.classList.contains('on')) qbtn.click();
+    }
+  } catch (e) {}
+
   // ─── Theme toggle (light/dark, mirrors PDP) ───
   document.querySelectorAll('[data-theme-set]').forEach(btn => {
     btn.addEventListener('click', () => {
