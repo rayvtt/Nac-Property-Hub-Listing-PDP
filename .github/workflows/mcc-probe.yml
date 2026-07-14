@@ -1,0 +1,46 @@
+name: MCC probe (read-only)
+
+# One-shot, read-only probe: does the repo's CLOUDFLARE_API_TOKEN have Workers
+# scope? Lists worker script names and checks whether the command-center
+# (MCC cockpit) script content is readable. Prints NAMES + booleans only —
+# never prints or persists worker source (public repo, public logs).
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/triggers/mcc-probe.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: List workers + check MCC readability
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ vars.CLOUDFLARE_ACCOUNT_ID || '2adeb401a00c6f459573f25eabb790da' }}
+        run: |
+          list=$(curl -s -o /tmp/list.json -w "%{http_code}" \
+            -H "Authorization: Bearer $CF_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/workers/scripts")
+          echo "workers list HTTP: $list"
+          if [ "$list" = "200" ]; then
+            echo "script names:"
+            python3 -c "import json;[print(' -', s['id']) for s in json.load(open('/tmp/list.json'))['result']]"
+            for name in $(python3 -c "import json;print(' '.join(s['id'] for s in json.load(open('/tmp/list.json'))['result']))"); do
+              code=$(curl -s -o /tmp/content.js -w "%{http_code}" \
+                -H "Authorization: Bearer $CF_TOKEN" \
+                "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/workers/scripts/$name/content")
+              size=$(stat -c%s /tmp/content.js 2>/dev/null || echo 0)
+              hasbody=$(grep -c '</body>' /tmp/content.js 2>/dev/null || true)
+              rm -f /tmp/content.js
+              echo "  $name: content GET=$code size=${size}B has</body>=${hasbody}"
+            done
+          else
+            echo "token lacks Workers read scope (or wrong account)"
+            head -c 400 /tmp/list.json; echo
+          fi
