@@ -192,8 +192,23 @@ function tagChip(tags) {
   return { emoji: '⚡', vi: 'Phải biết', en: 'Must know' };
 }
 
-// assign a listing to one of the country's cities via match aliases
+// assign a listing to one of the country's cities via match aliases.
+// The metro-level `City` field is authoritative when set (groups suburbs
+// under their metro — e.g. Zetland/Parramatta → Sydney, Box Hill → Melbourne);
+// the suburb-level Region/City + District haystack is the fallback for rows
+// where `City` is still blank.
 function assignCity(listing, cities) {
+  const metro = norm(listing.city || '');
+  if (metro) {
+    for (const c of cities) {
+      const aliases = (c.match && c.match.length) ? c.match : [c.name];
+      if (metro === norm(c.name)) return c;
+      for (const a of aliases) {
+        const na = norm(a);
+        if (na && metro.includes(na)) return c;
+      }
+    }
+  }
   const hay = norm(`${listing.regionCity || ''} ${listing.district || ''}`);
   for (const c of cities) {
     const aliases = (c.match && c.match.length) ? c.match : [c.name];
@@ -1026,6 +1041,7 @@ async function fetchCountryListings(notion, countryNameEn) {
       heroImg: url(p['Image URL']),
       regionCity: rt(p['Region/City']),
       district: rt(p['📍 District']),
+      city: rt(p['City']),
       tags: ms(p['Tags']),
     };
   });
