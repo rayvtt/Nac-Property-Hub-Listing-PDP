@@ -1,0 +1,61 @@
+<!-- ══════════════════════════════════════════════════════════════════════
+     MCC module · 📝 Copy Review (LLP Vietnamese copy goal)
+     Drop-in section for the command-center dashboard. Self-contained:
+     no dependencies, no secrets — reads the public snapshot
+     https://rayvtt.github.io/Nac-Property-Hub-Listing-PDP/copy-review.json
+     (refreshed every 15 min by copy-review-board.yml; GH Pages sends
+     Access-Control-Allow-Origin:* so cross-origin fetch works anywhere).
+     Approvals stay in Notion; every finding deep-links to its row.
+     NOTE: deliberately written WITHOUT backtick/template-literal syntax and
+     without dollar-brace sequences, so it can be embedded inside a worker
+     template string safely. Keep it that way.
+     ══════════════════════════════════════════════════════════════════ -->
+<section id="mcc-copy-review" style="margin:18px 0;padding:16px 18px;background:#161b23;border:1px solid #262e3a;border-radius:14px;color:#e8ecf2;font:14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <strong style="font-size:14px">📝 Copy Review · LLP Vietnamese copy</strong>
+    <span id="mccr-frac" style="color:#8b95a5;font-size:12px">…</span>
+    <a href="https://rayvtt.github.io/Nac-Property-Hub-Listing-PDP/copy-review.html" target="_blank" rel="noopener"
+       style="margin-left:auto;font-size:12px;font-weight:600;color:#ed8a52;text-decoration:none;border:1px solid #d97c44;border-radius:8px;padding:4px 10px">Full board →</a>
+  </div>
+  <div style="height:6px;background:#1c222c;border-radius:99px;margin:10px 0 12px;overflow:hidden">
+    <div id="mccr-bar" style="height:100%;width:0%;background:#ed8a52;border-radius:99px;transition:width .6s"></div>
+  </div>
+  <div id="mccr-body" style="font-size:12.5px;color:#8b95a5">loading…</div>
+</section>
+<script>
+(function () {
+  var FEED = 'https://rayvtt.github.io/Nac-Property-Hub-Listing-PDP/copy-review.json';
+  function esc(s) { return String(s || '').replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  fetch(FEED + '?ts=' + Date.now(), { cache: 'no-store' })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      var total = d.totalListings || 0;
+      var done = (d.reviewed || []).length;
+      var pct = total ? Math.round(done / total * 100) : 0;
+      document.getElementById('mccr-frac').textContent = done + '/' + total + ' listings reviewed · ' + pct + '%';
+      document.getElementById('mccr-bar').style.width = pct + '%';
+      var open = (d.findings || []).filter(function (f) { return f.status === 'Proposed'; });
+      var html = '';
+      if (!open.length) {
+        html = '<div style="color:#5fb98a">Queue clear — no findings awaiting approval.</div>';
+      } else {
+        html = '<div style="margin-bottom:8px;color:#e8ecf2"><b>' + open.length + '</b> finding' + (open.length > 1 ? 's' : '') + ' awaiting approval:</div>';
+        open.slice(0, 5).forEach(function (f) {
+          var sevColor = (f.severity || '').indexOf('P0') === 0 ? '#e5636a' : (f.severity || '').indexOf('P1') === 0 ? '#e2a94f' : '#d9c86a';
+          html += '<div style="display:flex;gap:8px;align-items:baseline;padding:5px 0;border-top:1px dashed #262e3a">'
+            + '<span style="font-size:10px;font-weight:700;color:#0e1116;background:' + sevColor + ';border-radius:4px;padding:1px 6px;white-space:nowrap">' + esc((f.severity || '').split(' ')[0]) + '</span>'
+            + '<span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#e8ecf2">' + esc(f.finding) + '</span>'
+            + '<a href="' + esc(f.notionUrl) + '" target="_blank" rel="noopener" style="color:#ed8a52;font-size:11.5px;font-weight:600;text-decoration:none;white-space:nowrap">approve ↗</a>'
+            + '</div>';
+        });
+        if (open.length > 5) html += '<div style="padding-top:6px;color:#8b95a5">+' + (open.length - 5) + ' more on the full board</div>';
+      }
+      var last = (d.logs || []).slice(-1)[0] || '';
+      if (last) html += '<div style="margin-top:10px;font:11px/1.6 ui-monospace,Menlo,monospace;color:#8b95a5;border-top:1px solid #262e3a;padding-top:8px">' + esc(last) + '</div>';
+      document.getElementById('mccr-body').innerHTML = html;
+    })
+    .catch(function () {
+      document.getElementById('mccr-body').textContent = 'feed unavailable — see the full board';
+    });
+})();
+</script>

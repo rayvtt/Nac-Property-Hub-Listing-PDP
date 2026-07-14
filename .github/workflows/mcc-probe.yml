@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: List workers + check MCC readability
         env:
-          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_TOKEN: ${{ secrets.CF_WORKERS_TOKEN || secrets.CLOUDFLARE_API_TOKEN }}
           CF_ACCOUNT: ${{ vars.CLOUDFLARE_ACCOUNT_ID || '2adeb401a00c6f459573f25eabb790da' }}
         run: |
           list=$(curl -s -o /tmp/list.json -w "%{http_code}" \
