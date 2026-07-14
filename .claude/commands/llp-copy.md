@@ -50,11 +50,24 @@ findings; Ray approves; only then apply (via `apply` argument) to the
    finding `Applied`, log to MCC. Otherwise → review the next batch.
 1. **Pick the next batch** — 8–12 listings from `properties/*.html` not yet in
    `seo/llp-copy-reviewed.json` (alphabetical, `_template` excluded).
-2. **Review each listing's VI copy** — extract all Vietnamese text (body copy
-   AND `data-vi`/`data-stmt`/`data-ph-vi` attributes) and judge against the
-   rubric below. Read as a native editor, not a grep: whole sentences, in
-   context, against the listing's actual facts (city, asset class, program,
-   developer, tenure).
+2. **Review each listing's VI copy from the DB (source of truth)** — the copy
+   lives on the listing's row in the **🏠 NAC - Property Listings DB**
+   (data source `35848ec2-5e86-8074-b4b0-000bcbe88149`; Ray's curated field
+   view is **"Listing PDP (db)"**). Review every VI-bearing field:
+   `Name VI` · `🏷️ Tagline VI` · `Excerpt VI` · `📝 Desc VI` · `🌍 Market VI` ·
+   `💬 NAC Note VI` · `📜 Statement VI` · `✦ Brand Intro VI` ·
+   `🌏 Key Markets VI` · `🏖️ Beach VI` · `✈️ Airport VI` ·
+   `📈 Property YoY VI` · `🎬 Cine 1/2/3 VI` · `🔑 Handover VI` ·
+   `📣 Share Title VI` · and the `vi` strings inside `✅ Pros JSON` ·
+   `⚠️ Cons JSON` · `✨ Features JSON` · `🔄 Process JSON` ·
+   `📊 Market Stats JSON` · `💲 Price Bands JSON`. Fetch rows via
+   `notion-fetch`/`notion-query-data-sources`; use corpus-wide SQL `LIKE`
+   sweeps to check whether a newly-found defect pattern exists on OTHER rows
+   before filing (one sweep beats 126 reads — and it verifies the finding).
+   The rendered HTML is only the source for **template-wide** strings
+   (methodology, footer, CTA), which don't live in the DB. Read as a native
+   editor, not a grep: whole sentences, in context, against the listing's
+   actual facts (city, asset class, program, developer, tenure).
 3. **File findings** — one row per defect in the findings queue, Status
    `Proposed`. Template-wide defects (shared methodology/footer/CTA strings)
    get Scope `template-wide` and are filed ONCE — check the queue for an
