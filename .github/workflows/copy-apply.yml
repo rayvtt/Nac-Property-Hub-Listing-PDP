@@ -1,0 +1,47 @@
+# Copy Machine — apply sweeper.
+# Writes Approved rewrite rows from the 🇻🇳 LLP VI Copy Review DB onto the
+# matching listing's fields in the 🏠 Property Listings DB, then flips the
+# row to Applied. sync-notion.yml (*/5 cron) carries the change to HTML → WP.
+# The MCC cockpit applies at approve-click time; this is the backup path for
+# rows approved directly in Notion (and the retry path for failed applies).
+name: Copy Machine apply
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (report only, write nothing)"
+        default: "false"
+  push:
+    branches: [main]
+    paths:
+      - ".github/triggers/**"
+      - "scripts/copy-apply.mjs"
+
+concurrency:
+  group: copy-apply
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+      - name: Apply approved rewrites
+        working-directory: scripts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ vars.NOTION_DATABASE_ID || '35848ec25e86803283acc7ad989649c9' }}
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+        run: node copy-apply.mjs
