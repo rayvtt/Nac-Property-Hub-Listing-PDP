@@ -1,0 +1,1 @@
+2026-07-14T17:00Z — probe whether the repo CLOUDFLARE_API_TOKEN has Workers scope (read-only; needed to lift the Copy Review module into the MCC cockpit via CI, since the omnichannel repo is unreachable from this session)
