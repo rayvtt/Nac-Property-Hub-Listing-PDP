@@ -1,0 +1,127 @@
+{
+  "generated": "2026-07-14T16:45:00.000Z",
+  "goal": "LLP VI Copy Review — all Live LLPs (report-first)",
+  "mccStatus": "Running",
+  "totalListings": 126,
+  "reviewed": [
+    { "slug": "layan-verde", "date": "2026-06-16", "findings": 4 },
+    { "slug": "maia-ho-tram", "date": "2026-06-16", "findings": 2 },
+    { "slug": "le-meridien-da-nang", "date": "2026-06-16", "findings": 1 }
+  ],
+  "findings": [
+    {
+      "id": "39d48ec2-5e86-81f8-a038-e3d16bc9a9df",
+      "notionUrl": "https://app.notion.com/p/39d48ec25e8681f8a038e3d16bc9a9df",
+      "finding": "le-meridien-da-nang — diacritic typo 'chia sẽ' (× multiple fields)",
+      "slug": "le-meridien-da-nang",
+      "field": "Excerpt VI · ✅ Pros JSON · ✨ Features JSON · 💬 NAC Note VI · 🔄 Process JSON",
+      "severity": "P1 broken-VI",
+      "scope": "per-listing",
+      "status": "Proposed",
+      "current": "\"chương trình chia sẽ doanh thu cho thuê của Marriott\" — dấu ngã (ẽ, U+1EBD) typo",
+      "suggested": "\"chương trình chia sẻ doanh thu cho thuê của Marriott\" — dấu hỏi (ẻ, U+1EBB). Replace every occurrence in the listed fields.",
+      "rationale": "Same sẽ→sẻ (ngã→hỏi) spelling error as Maia, in five fields on this row.",
+      "listingUrl": "https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/le-meridien-da-nang/",
+      "created": "2026-06-16T00:00:07.000Z"
+    },
+    {
+      "id": "39d48ec2-5e86-8113-906d-d8b4b2a804bb",
+      "notionUrl": "https://app.notion.com/p/39d48ec25e868113906dd8b4b2a804bb",
+      "finding": "maia-ho-tram — 'Si Gòn' → 'Sài Gòn'",
+      "slug": "maia-ho-tram",
+      "field": "✅ Pros JSON",
+      "severity": "P1 broken-VI",
+      "scope": "per-listing",
+      "status": "Proposed",
+      "current": "điểm nghỉ cuối tuần của giới nhà giàu Si Gòn",
+      "suggested": "điểm nghỉ cuối tuần của giới nhà giàu Sài Gòn",
+      "rationale": "City name misspelled — missing diacritics/letter ('Sài Gòn').",
+      "listingUrl": "https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/maia-ho-tram/",
+      "created": "2026-06-16T00:00:06.000Z"
+    },
+    {
+      "id": "39d48ec2-5e86-81c5-8716-f32efc75633f",
+      "notionUrl": "https://app.notion.com/p/39d48ec25e8681c58716f32efc75633f",
+      "finding": "maia-ho-tram — diacritic typo 'chia sẽ' (× multiple fields)",
+      "slug": "maia-ho-tram",
+      "field": "Excerpt VI · ✅ Pros JSON · 💬 NAC Note VI · 📝 Desc VI",
+      "severity": "P1 broken-VI",
+      "scope": "per-listing",
+      "status": "Rejected",
+      "current": "\"chia sẽ doanh thu\" — written with dấu ngã (ẽ, U+1EBD), which is the typo",
+      "suggested": "\"chia sẻ doanh thu\" — dấu hỏi (ẻ, U+1EBB). Replace every occurrence in the listed fields.",
+      "rationale": "WITHDRAWN — corpus-wide SQL sweep of the Property Listings DB shows 'chia sẽ' occurs only on le-meridien-da-nang, not on maia-ho-tram (finding conflated the two rows). See the le-meridien-da-nang finding instead.",
+      "listingUrl": "https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/maia-ho-tram/",
+      "created": "2026-06-16T00:00:05.000Z"
+    },
+    {
+      "id": "39d48ec2-5e86-8115-a28e-e1b9794495dc",
+      "notionUrl": "https://app.notion.com/p/39d48ec25e868115a28ee1b9794495dc",
+      "finding": "Contact section — informal register ('nhé', 'emails', 'Q1 & Q2')",
+      "slug": "ALL (template)",
+      "field": "PDP template · contact/footer line",
+      "severity": "P2 style",
+      "scope": "template-wide",
+      "status": "Proposed",
+      "current": "Liên lạc NAC qua emails, WhatsApp hoặc trực tiếp tại văn phòng Q1 & Q2, TP.HCM nhé.",
+      "suggested": "Liên hệ NAC qua email, WhatsApp hoặc trực tiếp tại văn phòng Quận 1 & Quận 2, TP.HCM.",
+      "rationale": "Sentence-final 'nhé' is chat-register inside an investment memo; 'emails' carries an EN plural; 'Liên hệ' is the standard verb; district names spelled out reads more formal. Brand-voice call (the friendliness may be intentional) → awaiting approval.",
+      "listingUrl": null,
+      "created": "2026-06-16T00:00:04.000Z"
+    },
+    {
+      "id": "39d48ec2-5e86-81f8-a08a-cccf6a9f7de6",
+      "notionUrl": "https://app.notion.com/p/39d48ec25e8681f8a08acccf6a9f7de6",
+      "finding": "Methodology · Yield pillar — calque 'độ bền thu nhập'",
+      "slug": "ALL (template)",
+      "field": "ensure-nac-methodology.mjs · .nac-method-pillar-desc (Yield)",
+      "severity": "P2 style",
+      "scope": "template-wide",
+      "status": "Proposed",
+      "current": "Lợi suất cho thuê gộp/ròng, cash-on-cash, độ bền thu nhập.",
+      "suggested": "Lợi suất cho thuê gộp/ròng, cash-on-cash, tính ổn định của dòng thu nhập.",
+      "rationale": "'độ bền thu nhập' calques 'income durability'; Vietnamese finance writing says 'tính ổn định của dòng thu nhập'. Brand-voice call → awaiting approval.",
+      "listingUrl": null,
+      "created": "2026-06-16T00:00:03.000Z"
+    },
+    {
+      "id": "39d48ec2-5e86-8111-95f4-fb8a1efc2349",
+      "notionUrl": "https://app.notion.com/p/39d48ec25e86811195f4fb8a1efc2349",
+      "finding": "Methodology · Management pillar — translationese 'mức độ rảnh tay'",
+      "slug": "ALL (template)",
+      "field": "ensure-nac-methodology.mjs · .nac-method-pillar-desc (Management)",
+      "severity": "P2 style",
+      "scope": "template-wide",
+      "status": "Proposed",
+      "current": "Chất lượng chương trình cho thuê, mức độ rảnh tay, chuẩn dịch vụ.",
+      "suggested": "Chất lượng chương trình cho thuê, mức độ vận hành trọn gói, chuẩn dịch vụ.",
+      "rationale": "'rảnh tay' is a colloquial calque of 'hands-off' — off-register for an investment memo. 'vận hành trọn gói' says the same thing in the right register. Brand-voice call → awaiting approval.",
+      "listingUrl": null,
+      "created": "2026-06-16T00:00:02.000Z"
+    },
+    {
+      "id": "39d48ec2-5e86-81ce-b576-c272b516d153",
+      "notionUrl": "https://app.notion.com/p/39d48ec25e8681ceb576c272b516d153",
+      "finding": "Methodology · Location pillar — garbled calque 'Vi vị trí'",
+      "slug": "ALL (template)",
+      "field": "ensure-nac-methodology.mjs · .nac-method-pillar-desc (Location)",
+      "severity": "P1 broken-VI",
+      "scope": "template-wide",
+      "status": "Applied",
+      "current": "Vi vị trí, nền tảng thành phố, cung–cầu, quỹ đạo tăng trưởng.",
+      "suggested": "Vị trí vi mô, nền tảng thành phố, cung–cầu, quỹ đạo tăng trưởng.",
+      "rationale": "'Vi vị trí' is a broken machine calque of 'micro-location' — not Vietnamese. Shipped on every PDP + CLP. Objectively broken → fixed in code, PR #395.",
+      "listingUrl": null,
+      "created": "2026-06-16T00:00:01.000Z"
+    }
+  ],
+  "logs": [
+    "[2026-06-16] goal set · review queue DB created (🇻🇳 NAC - LLP VI Copy Review) · diagnosis from layan-verde: 1× garbled shared string (Vi vị trí — fix shipping), 2× template-wide calques + register issues queued, per-listing typos found in newest rows (chia sẽ / Si Gòn) · 0/126 listings reviewed",
+    "[2026-06-16] batch 1: layan-verde, maia-ho-tram, le-meridien-da-nang · 7 findings filed (4× P1 broken-VI, 3× P2 style; 1 already Applied) · template fix shipped: PR #395 corrects 'Vi vị trí'→'Vị trí vi mô' on all 139 pages → WP · 3/126 done",
+    "[2026-06-16] source-of-truth upgrade (PR #396): loop now reviews the VI fields on the 🏠 Property Listings rows ('Listing PDP (db)' view) instead of rendered HTML, with corpus-wide SQL sweeps per defect pattern · first sweep corrected batch 1: 'chia sẽ' = le-meridien-da-nang only (7 fields), 'Si Gòn' = maia-ho-tram only → the Maia 'chia sẽ' finding withdrawn (Rejected) · 3/126 done, 6 findings open"
+  ],
+  "links": {
+    "queue": "https://app.notion.com/p/95fb67b946c04c2896f9fd4a60e34367",
+    "mccRow": "https://app.notion.com/p/39d48ec25e86815f80aac39196754e6b"
+  }
+}
