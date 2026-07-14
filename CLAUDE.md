@@ -97,6 +97,32 @@ Templates and references:
 - Manual single-file run: `cd scripts && ANTHROPIC_API_KEY=... npm run titles -- <slug>` (no `<slug>` = all files).
 - Cost: ~$0.001/image with Haiku 4.5; a typical PDP has 3 cine blocks (≈$0.003 per scaffold).
 
+## Copy Machine — bilingual LLP copy rewrite loop
+
+The professional copy-generator pipeline over every Live LLP. `/llp-copy`
+finds defects; **`/copy-machine`** (`.claude/commands/copy-machine.md`)
+proposes full bespoke VI+EN rewrites, staged for Ray's approval.
+
+- **Queue**: the same 🇻🇳 NAC - LLP VI Copy Review DB
+  (`95fb67b946c04c2896f9fd4a60e34367`, data source
+  `2e085e5f-86c2-4168-8efb-4c7771a6fdf8`), separated by `Kind` = `rewrite`
+  (defect findings have `Kind` = `defect`/empty). Rewrite rows carry the full
+  bilingual pair: `Current`/`Current EN` → `Suggested`/`Suggested EN`, with
+  `Field` = a base field name from `scripts/copy-apply.mjs::FIELD_MAP`.
+- **Review UI**: the MCC cockpit's **Copy Machine** view
+  (`nac-marketing-cc.ray-vtt.workers.dev`, repo `nac-marketing-omnichannel`) —
+  side-by-side Current→Suggested table, per-row and per-listing approve.
+  Approve applies the copy to the 🏠 Property Listings DB instantly; the
+  sync-notion cron (≤5 min) then carries it to HTML → WP.
+- **Apply sweeper**: `scripts/copy-apply.mjs` + `.github/workflows/copy-apply.yml`
+  (cron */15) — backup applier for rows approved directly in Notion and retry
+  path for failed cockpit applies. Only touches `Kind=rewrite` rows; validates
+  field names, Statement «guillemets», and non-empty pairs before writing.
+- **Ledger**: `seo/copy-machine-reviewed.json` (separate from the /llp-copy
+  ledger) — which listings have had a rewrite pass.
+- **Cadence**: a daily Routine runs `/copy-machine` on the next ~10 listings
+  so Ray only spends 5–10 min/day approving in the cockpit.
+
 ## SEO / GEO / LLM scaffolding (auto, per listing)
 
 The PDP template ships a full SEO package in `<head>` — `RealEstateListing` +
