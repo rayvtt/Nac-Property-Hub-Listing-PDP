@@ -67,6 +67,14 @@ the 🏠 Property Listings DB; sync-notion carries it to HTML → WordPress.
    rewrite for the sake of it — Ray reviews every row; noise burns his 5-10
    minutes a day. Typical listing yields 3–8 rewrite rows, not 16.
 3. **Write the copy** — bespoke, professional, investment-memo register:
+   - **Read `.claude/commands/copy-write-vi.md` first, every run.** Correct
+     vocabulary is not enough — that skill is the difference between
+     Vietnamese that's grammatically valid and Vietnamese a native speaker
+     would actually write. Apply its 5 patterns (topic-fronting, native
+     connectives instead of English relative-clause chains, no modifier-
+     stacking before a noun, data folded into clauses instead of
+     parenthesized, textured closing tails) to every VI sentence — not just
+     vocabulary and facts.
    - VI is primary; EN is a transcreation, not a word-for-word translation.
    - Preserve every fact exactly (price, yield, tenure, program, distances).
      A wrong fact in current copy → file severity `P0` and put the corrected
@@ -101,5 +109,11 @@ the 🏠 Property Listings DB; sync-notion carries it to HTML → WordPress.
   machine-applying whole JSON blobs is a phase-2 item.
 - Batch ≤ 12; quality over speed. Every row must be approvable in one glance:
   clean Current → Suggested, one-line rationale.
+- **Run the `/copy-write-vi` self-test on every `suggestedVi` before filing** —
+  scan for its four red flags (a `mà`-chain off `khiến/làm cho`, a `cộng với X
+  đưa Y về mức` calque, 3+ stacked pre-noun modifiers, a parenthetical holding
+  2+ facts). Fix the architecture in place before the row goes to Ray; length
+  is not the test — a long, native-flowing sentence is fine, a long calqued
+  one is not.
 
 $ARGUMENTS

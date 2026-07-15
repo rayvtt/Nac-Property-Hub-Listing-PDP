@@ -84,7 +84,7 @@ findings; Ray approves; only then apply (via `apply` argument) to the
 |---|---|---|
 | **P0 wrong-fact** | VI copy contradicts the listing's data or overstates legally-distinct claims | `căn hộ` vs `biệt thự` mismatch with Hub Type; `sở hữu vĩnh viễn` (freehold) written on a 50-year-leasehold listing; wrong city/district; wrong program |
 | **P1 broken-VI** | Garbled or misspelled Vietnamese a native reader stumbles on | diacritic typos (`chia sẽ`→`chia sẻ`, `Si Gòn`→`Sài Gòn`); calques that aren't Vietnamese (`Vi vị trí`); broken grammar; untranslated EN fragments mid-sentence |
-| **P2 style** | Correct but unnatural / off-register for an investment memo | translationese (`mức độ rảnh tay`, `độ bền thu nhập`); informal particles (`nhé`) in formal sections; EN plural on VI nouns (`emails`); inconsistent terminology across pages |
+| **P2 style** | Correct but unnatural / off-register for an investment memo | translationese (`mức độ rảnh tay`, `độ bền thu nhập`); **English sentence architecture wearing Vietnamese words** — a `mà`-chain off `khiến/làm cho`, a `cộng với X đưa Y về mức` calque, 3+ modifiers stacked before one noun, a parenthetical fact-dump (see `/copy-write-vi`); informal particles (`nhé`) in formal sections; EN plural on VI nouns (`emails`); inconsistent terminology across pages |
 
 **Terminology glossary (one canonical VI term per concept — flag deviations):**
 freehold → `sở hữu vĩnh viễn` (only when genuinely freehold) · long-term
@@ -97,6 +97,11 @@ condotel → `condotel` (keep) · gross yield → `lợi suất gộp` · revenu
 
 - **Never fabricate**: a "suggested rewrite" must preserve the listing's facts
   exactly; if the fact itself looks wrong, that's a P0 finding, not a rewrite.
+- **Read `.claude/commands/copy-write-vi.md` before writing any `Suggested`
+  text.** A rewrite that's grammatically valid but keeps English sentence
+  architecture is not a fix — apply its 5 patterns (topic-fronting, native
+  connectives, no pre-noun modifier stacks, data folded into clauses, textured
+  closings) so the suggestion actually sounds native, not just spell-checked.
 - **Never edit HTML directly** — copy lives in Notion (per-listing) or in the
   template/inject scripts (template-wide); HTML is generated.
 - **Template-wide fixes ship as code PRs** (they're not brand-voice calls when
