@@ -498,7 +498,7 @@ function buildManagedSeoHead(country, ordered, total, titleText, descText, ogImg
         '@type': 'Organization',
         name: 'Nomad Asset Collective',
         url: `${ORIGIN}/`,
-        logo: `${ORIGIN}/wp-content/uploads/2026/05/nac-cover.png`,
+        logo: `${ORIGIN}/wp-content/uploads/2026/07/nac-logo-wordmark.png`,
       },
     },
     {
