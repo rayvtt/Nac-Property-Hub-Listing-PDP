@@ -103,6 +103,15 @@ The professional copy-generator pipeline over every Live LLP. `/llp-copy`
 finds defects; **`/copy-machine`** (`.claude/commands/copy-machine.md`)
 proposes full bespoke VI+EN rewrites, staged for Ray's approval.
 
+- **Native Vietnamese quality bar**: `/copy-write-vi` (`.claude/commands/
+  copy-write-vi.md`) — read before writing or verifying any VI sentence in
+  either loop. Fixes "grammatically correct but scattered" Vietnamese: correct
+  vocabulary assembled on English sentence architecture (relative-clause
+  chains, pre-noun modifier stacks, `combined with X brings Y` causal calques,
+  parenthesized fact-dumps) instead of native rhythm. Patterns distilled from
+  real premium Vietnamese property writing; also directly invocable to audit
+  any pasted VI passage.
+
 - **Queue**: the same 🇻🇳 NAC - LLP VI Copy Review DB
   (`95fb67b946c04c2896f9fd4a60e34367`, data source
   `2e085e5f-86c2-4168-8efb-4c7771a6fdf8`), separated by `Kind` = `rewrite`
