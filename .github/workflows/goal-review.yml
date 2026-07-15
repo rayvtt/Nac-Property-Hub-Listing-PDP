@@ -56,7 +56,11 @@ jobs:
         run: |
           git config user.name "nac-seo-bot"
           git config user.email "nac-seo-bot@users.noreply.github.com"
-          git add seo/rank-snapshots seo/goal-log.md seo/goal-status.json
+          # Failed runs produce only goal-status.json (no snapshot/log yet) —
+          # add each path independently so a missing one can't kill the commit.
+          for p in seo/goal-status.json seo/rank-snapshots seo/goal-log.md; do
+            git add "$p" 2>/dev/null || true
+          done
           if git diff --cached --quiet; then
             echo "No snapshot/log changes to commit."
             exit 0
