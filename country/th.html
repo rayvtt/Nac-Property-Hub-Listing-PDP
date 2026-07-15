@@ -1,40 +1,13 @@
-<!-- ============================================================
-  NAC COUNTRY LISTING PAGE — MASTER TEMPLATE
-  Snapshot: 2026-06-01  |  Source: country/vn.html
-  Usage: duplicate this file, rename to country/<slug>.html, then
-         replace country-level fields per NAC-CLP-DESIGN.md.
-
-  Country-level fields to swap (all also live in Notion DB
-  "🌍 NAC - Country Listings"):
-    • <title>, meta description, og:title, og:image, lang
-    • .cl-name (country name VI/EN)
-    • .cl-hero-tag (country tagline VI/EN)
-    • .cl-hero-chips (3 country-specific chips)
-    • .cl-plaque rows (Listings / Cities / Entry / Yield / YoY)
-    • .cl-intro-quote (editorial pull quote)
-    • .cl-atlas-text-title / .cl-atlas-text-lead
-    • .cl-atlas-pinlist (cities)
-    • .cl-map-coast `d="..."` (country SVG silhouette)
-    • .cl-pin-group positions + labels (city pins on map)
-    • .cl-coll-title / .cl-coll-lead
-    • .cl-coll-filter pills (one per city + All)
-    • Each .cl-card inside #cl-collection-track (per listing)
-    • .cl-compare .cl-tbl tbody rows (one per listing)
-    • .cl-asp-line (aspiration: "Sở hữu X. Sở hữu <Country>." pattern)
-    • .cl-hero-slides (top-N listings by price descending)
-
-  Do NOT change the structural CSS, JS, or the Hub icon — they are
-  identical across countries on purpose. Only swap content.
-============================================================ --><!DOCTYPE html><html lang="en" data-theme="light"><head>
+<!DOCTYPE html><html lang="vi" data-theme="light"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="referrer" content="no-referrer">
 
-<title>Thailand · NAC Property Collection</title>
+<title>Đầu tư định cư Thái Lan: Bất động sản hàng hiệu | NAC</title>
 <meta name="description" content="Branded residences across Thailand — 23 curated listings from NAC's Property Hub.">
 
 
-<meta property="og:title" content="Thailand · NAC Property Collection">
+<meta property="og:title" content="Đầu tư định cư Thái Lan: Bất động sản hàng hiệu | NAC">
 <meta property="og:description" content="Branded residences across Thailand — 23 curated listings from NAC's Property Hub.">
 <meta property="og:image" content="https://rayvtt.github.io/Nac-Property-Hub-Listing-PDP/og-images/clp-th.png">
 
@@ -10576,7 +10549,7 @@ body.cl-modal-open { overflow:hidden; }
 <meta property="og:locale:alternate" content="en_US">
 <meta property="og:site_name" content="Nomad Asset Collective">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Thailand · NAC Property Collection">
+<meta name="twitter:title" content="Đầu tư định cư Thái Lan: Bất động sản hàng hiệu | NAC">
 <meta name="twitter:description" content="Branded residences across Thailand — 23 curated listings from NAC's Property Hub.">
 <meta name="twitter:image" content="https://rayvtt.github.io/Nac-Property-Hub-Listing-PDP/og-images/clp-th.png">
 <link rel="canonical" href="https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/">
@@ -11246,8 +11219,8 @@ body.cl-modal-open { overflow:hidden; }
         <span><span data-vi="Quốc gia · Thái Lan">Quốc gia · Thái Lan</span><span data-en="Country · Thailand">Country · Thailand</span></span>
         <span class="live"><span data-vi="23 dự án Live">23 dự án Live</span><span data-en="23 listings live">23 listings live</span></span>
       </div>
-      <h1 class="cl-name"><span data-vi="Thái Lan">Thái Lan</span><span data-en="Thailand">Thailand</span></h1>
-      <p class="cl-hero-tag"><span data-vi="<strong>Visa Đặc Quyền Thái Lan</strong> — căn hộ condo Bangkok branded và biệt thự biển Phuket, sở hữu condo vĩnh viễn, định cư LTR 10 năm, miễn thuế thu nhập nước ngoài."><strong>Visa Đặc Quyền Thái Lan</strong> — căn hộ condo Bangkok branded và biệt thự biển Phuket, sở hữu condo vĩnh viễn, định cư LTR 10 năm, miễn thuế thu nhập nước ngoài.</span><span data-en="<strong>Thailand Privilege &amp; LTR</strong> — Bangkok branded condos and Phuket beachfront villas, freehold strata, 10-year LTR residency, foreign income tax-exempt."><strong>Thailand Privilege &amp; LTR</strong> — Bangkok branded condos and Phuket beachfront villas, freehold strata, 10-year LTR residency, foreign income tax-exempt.</span></p>
+      <div class="cl-name"><span data-vi="Thái Lan">Thái Lan</span><span data-en="Thailand">Thailand</span></div>
+      <h1 class="cl-hero-tag"><span data-vi="<strong>Visa Đặc Quyền Thái Lan</strong> — căn hộ condo Bangkok branded và biệt thự biển Phuket, sở hữu condo vĩnh viễn, định cư LTR 10 năm, miễn thuế thu nhập nước ngoài."><strong>Visa Đặc Quyền Thái Lan</strong> — căn hộ condo Bangkok branded và biệt thự biển Phuket, sở hữu condo vĩnh viễn, định cư LTR 10 năm, miễn thuế thu nhập nước ngoài.</span><span data-en="<strong>Thailand Privilege &amp; LTR</strong> — Bangkok branded condos and Phuket beachfront villas, freehold strata, 10-year LTR residency, foreign income tax-exempt."><strong>Thailand Privilege &amp; LTR</strong> — Bangkok branded condos and Phuket beachfront villas, freehold strata, 10-year LTR residency, foreign income tax-exempt.</span></h1>
       <div class="cl-hero-chips">        <span class="cl-chip"><span data-vi="🛂 Thailand Privilege Visa">🛂 Thailand Privilege Visa</span><span data-en="🛂 Thailand Privilege Visa">🛂 Thailand Privilege Visa</span></span>
         <span class="cl-chip"><span data-vi="💸 Miễn thuế thu nhập nước ngoài">💸 Miễn thuế thu nhập nước ngoài</span><span data-en="💸 No tax on foreign income">💸 No tax on foreign income</span></span>
         <span class="cl-chip"><span data-vi="🏖️ Freehold condo · 49% quota">🏖️ Freehold condo · 49% quota</span><span data-en="🏖️ Freehold condo · 49% foreign quota">🏖️ Freehold condo · 49% foreign quota</span></span></div>

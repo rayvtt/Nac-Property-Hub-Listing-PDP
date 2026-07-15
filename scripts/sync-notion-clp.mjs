@@ -432,10 +432,56 @@ function listingToJsonLd(l, position) {
   return { '@type': 'ListItem', position, item };
 }
 
-function buildManagedSeoHead(country, ordered, total, descText, ogImg) {
+// ── Keyword-targeted CLP titles (P0-B, 2026-07) ─────────────────────────────
+// Every CLP <title> + meta description leads with its tracked commercial
+// keyword from seo/goal-keywords.json (the "đầu tư định cư <country>" family)
+// instead of the old brand-only "<Country> · NAC Property Collection" — the
+// CLP is the primary commercial-intent surface and the keyword was absent
+// from title/H1 entirely. Keyed by the Country DB `Slug` (country/<slug>.html).
+// Placeholders: {n} = live listing count · {cities} = up to 3 live city names
+// (from the Notion body, so they stay accurate as listings move).
+// Unmapped future countries fall back to the same composed pattern.
+const CLP_SEO = {
+  ae: { title: 'Đầu tư định cư Dubai: Bất động sản & Golden Visa UAE | NAC',
+        desc: 'Đầu tư định cư Dubai (UAE Golden Visa) qua bất động sản hàng hiệu: {n} dự án chọn lọc — giá, lợi suất, pháp lý và lộ trình thị thực vàng từ NAC.' },
+  au: { title: 'Đầu tư định cư Úc: Bất động sản Sydney & Melbourne | NAC',
+        desc: 'Đầu tư định cư Úc qua bất động sản hàng hiệu: {n} dự án chọn lọc tại {cities} — giá, lợi suất, pháp lý và chiến lược đầu tư Úc từ NAC Property Hub.' },
+  cy: { title: 'Đầu tư định cư Síp: Bất động sản & Quốc tịch Síp | NAC',
+        desc: 'Đầu tư định cư Síp (Cyprus RBI) qua bất động sản: {n} dự án hàng hiệu tại {cities} — giá, lợi suất, pháp lý và lộ trình thường trú EU từ NAC.' },
+  gr: { title: 'Định cư Hy Lạp: Golden Visa & Bất động sản Hy Lạp | NAC',
+        desc: 'Định cư Hy Lạp với Golden Visa qua bất động sản: {n} dự án hàng hiệu tại {cities} — giá, lợi suất, pháp lý và lộ trình thường trú EU từ NAC.' },
+  my: { title: 'Đầu tư định cư Malaysia (MM2H): Bất động sản hàng hiệu | NAC',
+        desc: 'Đầu tư định cư Malaysia (MM2H) qua bất động sản hàng hiệu: {n} dự án chọn lọc tại {cities} — giá, lợi suất, pháp lý và lộ trình visa từ NAC.' },
+  pa: { title: 'Đầu tư định cư Panama: Bất động sản & Visa Panama | NAC',
+        desc: 'Đầu tư định cư Panama qua bất động sản hàng hiệu: {n} dự án chọn lọc tại {cities} — giá, lợi suất, pháp lý và lộ trình Friendly Nations Visa từ NAC.' },
+  sg: { title: 'Đầu tư định cư Singapore: Bất động sản hàng hiệu | NAC',
+        desc: 'Đầu tư định cư Singapore qua bất động sản hàng hiệu: {n} dự án chọn lọc — giá, lợi suất, pháp lý và lộ trình cư trú từ NAC Property Hub.' },
+  th: { title: 'Đầu tư định cư Thái Lan: Bất động sản hàng hiệu | NAC',
+        desc: 'Đầu tư định cư Thái Lan qua bất động sản hàng hiệu: {n} dự án chọn lọc tại {cities} — giá, lợi suất, pháp lý và lộ trình visa LTR từ NAC.' },
+  tr: { title: 'Đầu tư định cư Thổ Nhĩ Kỳ: Bất động sản & Quốc tịch | NAC',
+        desc: 'Đầu tư định cư Thổ Nhĩ Kỳ qua bất động sản: {n} dự án hàng hiệu tại {cities} — giá, lợi suất, pháp lý và lộ trình quốc tịch (CBI) từ NAC.' },
+  uk: { title: 'Đầu tư định cư Anh: Bất động sản hàng hiệu London | NAC',
+        desc: 'Đầu tư định cư Anh qua bất động sản hàng hiệu: {n} dự án chọn lọc tại {cities} — giá, lợi suất, pháp lý và chiến lược đầu tư UK từ NAC Property Hub.' },
+  vn: { title: 'Bất động sản hàng hiệu Việt Nam: Đà Nẵng, Hồ Tràm, TP.HCM | NAC',
+        desc: 'Bất động sản hàng hiệu Việt Nam: {n} dự án chọn lọc tại {cities} — giá, lợi suất và thẩm định NAC Score từ NAC Property Hub.' },
+};
+
+function clpSeoText(country, total, usedCities = []) {
+  const seo = CLP_SEO[country.slug] || {
+    title: `Đầu tư định cư ${country.nameVi}: Bất động sản hàng hiệu | NAC`,
+    desc: `Đầu tư định cư ${country.nameVi} qua bất động sản hàng hiệu: {n} dự án chọn lọc — giá, lợi suất, pháp lý và lộ trình định cư từ NAC Property Hub.`,
+  };
+  const cities = usedCities.slice(0, 3).map((c) => c.name).join(', ');
+  const fill = (s) => s
+    .replace('{n}', total > 0 ? String(total) : 'các')
+    .replace(' tại {cities}', cities ? ` tại ${cities}` : '')
+    .replace('{cities}', cities || country.nameVi);
+  return { titleText: seo.title, descText: fill(seo.desc) };
+}
+
+function buildManagedSeoHead(country, ordered, total, titleText, descText, ogImg) {
   const canonical = clpCanonical(country);
   const enCanonical = canonical.replace(`${ORIGIN}${HUB_PATH}/`, `${ORIGIN}/en${HUB_PATH}/`);
-  const titleText = `${country.nameEn} · NAC Property Collection`;
 
   const graph = [
     {
@@ -520,6 +566,15 @@ function applyModel(html, model, { globalStats } = {}) {
   const $ = cheerio.load(html, { decodeEntities: false });
   const { country, body, listings } = model;
 
+  // P0-B guard: never let top-of-file authoring comments ship. WP's sanitizer
+  // mangles the comment markers on save, so a literal "<title>" inside the
+  // template's dev comment became the page's real (garbage) title on every
+  // live CLP. Root-level comments only — comments inside <body> are content.
+  $.root().contents().each((_, node) => { if (node.type === 'comment') $(node).remove(); });
+
+  // CLPs are Vietnamese-primary (VI keywords, vi_VN og:locale) — declare it.
+  $('html').attr('lang', 'vi');
+
   // order: premium first (purchase price desc), stable by name
   const ordered = [...listings].sort((a, b) =>
     (b.purchasePrice ?? 0) - (a.purchasePrice ?? 0) || a.nameEn.localeCompare(b.nameEn));
@@ -535,14 +590,11 @@ function applyModel(html, model, { globalStats } = {}) {
   const total = ordered.length;
   const cityCount = usedCities.length;
 
-  // ── title + meta (page head) ──────────────────────────────────────
-  const titleText = `${country.nameEn} · NAC Property Collection`;
+  // ── title + meta (page head) — keyword-targeted, see CLP_SEO above ─
+  const { titleText, descText } = clpSeoText(country, total, usedCities);
   $('title').text(titleText);
   $('meta[property="og:title"]').attr('content', titleText);
   $('meta[name="twitter:title"]').attr('content', titleText);
-  const descText = total > 0
-    ? `Branded residences across ${country.nameEn} — ${total} curated listing${total === 1 ? '' : 's'} from NAC's Property Hub.`
-    : `Branded residences across ${country.nameEn} — curated listings from NAC's Property Hub.`;
   $('meta[name="description"]').attr('content', descText);
   $('meta[property="og:description"]').attr('content', descText);
   $('meta[name="twitter:description"]').attr('content', descText);
@@ -561,7 +613,7 @@ function applyModel(html, model, { globalStats } = {}) {
   // Strip any prior managed tags, then inject a fresh listing-aware block so
   // every CLP gets a complete, country-specific SEO/GEO header on every sync.
   stripManagedSeoHead($);
-  $('head').append('\n' + buildManagedSeoHead(country, ordered, total, descText, ogImg) + '\n');
+  $('head').append('\n' + buildManagedSeoHead(country, ordered, total, titleText, descText, ogImg) + '\n');
 
   // ── editorial scalars ─────────────────────────────────────────────
   setBi($, '.cl-name', { vi: country.nameVi, en: country.nameEn });

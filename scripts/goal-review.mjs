@@ -25,6 +25,7 @@ const ROOT = path.resolve(__dirname, '..');
 const KEYWORDS_FILE = path.join(ROOT, 'seo', 'goal-keywords.json');
 const SNAP_DIR = path.join(ROOT, 'seo', 'rank-snapshots');
 const LOG_FILE = path.join(ROOT, 'seo', 'goal-log.md');
+const STATUS_FILE = path.join(ROOT, 'seo', 'goal-status.json');
 
 const GSC_PROPERTY = process.env.GSC_PROPERTY || 'sc-domain:nomadassetcollective.com';
 const RANK_DB = process.env.RANK_TRACKER_DB_ID || '7913fbe44f6e4ae1a8d36239e26d9b45';
@@ -167,6 +168,36 @@ async function logReview(review) {
   });
 }
 
+// ─── Run-status file ─────────────────────────────────────────────────────────
+// seo/goal-status.json is written on EVERY run — success OR failure — and
+// committed by the workflow, so the MCC SEO view (reading it via public raw)
+// can show GSC token health + the rank trend without any GitHub/Google auth.
+async function writeStatus(patch) {
+  if (DRY) return;
+  const history = [];
+  try {
+    const files = (await fs.readdir(SNAP_DIR)).filter((f) => f.endsWith('.json')).sort();
+    for (const f of files) {
+      try {
+        const s = JSON.parse(await fs.readFile(path.join(SNAP_DIR, f), 'utf8'));
+        const h = s.headline || {};
+        history.push({
+          date: s.date, tracked: h.tracked ?? null, top3: h['top-3'] ?? 0,
+          striking: h.striking ?? 0, page2: h['page-2'] ?? 0, deep: h.deep ?? 0,
+          notRanking: h['not-ranking'] ?? 0, avgPosition: h.avgPosition ?? null,
+        });
+      } catch { /* skip corrupt snapshot */ }
+    }
+  } catch { /* no snapshots yet */ }
+  const status = {
+    updatedAt: new Date().toISOString(), property: GSC_PROPERTY,
+    ok: false, tokenHealth: 'error', error: null,
+    latest: history.length ? history[history.length - 1] : null, history,
+    ...patch,
+  };
+  await fs.writeFile(STATUS_FILE, JSON.stringify(status, null, 2) + '\n', 'utf8');
+}
+
 // ─── Main ───────────────────────────────────────────────────────────────────
 async function main() {
   console.log(`/goal review  ${DRY ? '(DRY RUN)' : '(LIVE)'}  property=${GSC_PROPERTY}`);
@@ -180,6 +211,7 @@ async function main() {
   const refreshToken = process.env.GSC_OAUTH_REFRESH_TOKEN;
   if (!clientId || !clientSecret || !refreshToken) {
     console.error('  ✗ GSC OAuth secrets missing — cannot measure rank. Exiting 0 (no snapshot).');
+    await writeStatus({ ok: false, tokenHealth: 'missing', error: 'GSC OAuth secrets missing' });
     process.exit(0);
   }
   const oauth2 = new google.auth.OAuth2(clientId, clientSecret);
@@ -200,6 +232,12 @@ async function main() {
     console.error('  ✗ GSC returned no data for any property — the OAuth refresh token is likely expired/revoked.');
     console.error('    Fix: run `node scripts/gsc-oauth-setup.mjs` locally and update the GSC_OAUTH_REFRESH_TOKEN repo secret.');
     console.error('    Details: ' + (curRes.errors.join(' | ') || '(no error detail)'));
+    const errStr = curRes.errors.join(' | ') || 'GSC returned no data for any property';
+    await writeStatus({
+      ok: false,
+      tokenHealth: /invalid_grant/i.test(errStr) ? 'invalid_grant' : 'error',
+      error: errStr,
+    });
     process.exit(0); // graceful — no snapshot this run, workflow stays green
   }
   const prevRes = await gscWindow(sc, properties, prevWin.start, prevWin.end);
@@ -308,6 +346,8 @@ async function main() {
     const out = idx > -1 ? head.slice(0, idx + marker.length) + md + head.slice(idx + marker.length) : head + md;
     await fs.writeFile(LOG_FILE, out, 'utf8');
   }
+
+  await writeStatus({ ok: true, tokenHealth: 'ok' });
 
   console.log(`\nHeadline: top-3=${counts['top-3']} striking=${counts.striking} page-2=${counts['page-2']} deep=${counts.deep} not-ranking=${counts['not-ranking']}  avgPos=${round1(avgPosition) ?? '—'}`);
   console.log(`Gainers: ${moversStr}`);

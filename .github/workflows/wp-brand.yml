@@ -1,0 +1,36 @@
+name: WP Brand Setup (favicon + logo)
+
+# One-shot (re-runnable) brand plumbing for Google Search — see P0-C in
+# SEO-GEO-GOAL-HANDOFF.md. Uploads the NAC wordmark + a rendered 512×512 site
+# icon to the main site's media library and sets the WP Site Icon via REST.
+# Idempotent: re-runs reuse the existing media attachments.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/triggers/wp-brand.json"
+
+concurrency:
+  group: wp-brand
+  cancel-in-progress: false
+
+jobs:
+  brand:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install deps
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+      - name: Upload logo + set site icon
+        working-directory: scripts
+        env:
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          WP_USER: ${{ vars.WP_USER || 'admin_web' }}
+        run: node wp-brand-setup.mjs
