@@ -1,4 +1,4 @@
 {
   "_comment": "Touch/commit this file on main to fire wp-brand.yml (favicon + logo upload) on demand. Idempotent — re-runs reuse existing media.",
-  "fired": "2026-07-15T00:00:00Z-seed"
+  "fired": "2026-07-15T-p0c-first-run"
 }
