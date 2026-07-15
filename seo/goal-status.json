@@ -1,0 +1,9 @@
+{
+  "updatedAt": "2026-07-15T00:00:00.000Z",
+  "property": "sc-domain:nomadassetcollective.com",
+  "ok": false,
+  "tokenHealth": "invalid_grant",
+  "error": "Seed status — GSC refresh token expired/revoked (invalid_grant). Re-mint via scripts/gsc-oauth-setup.mjs and update the GSC_OAUTH_REFRESH_TOKEN repo secret; goal-review.yml overwrites this file on every run.",
+  "latest": null,
+  "history": []
+}

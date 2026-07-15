@@ -10,6 +10,10 @@ on:
         description: "Print tasks but do not write to Notion (default: true for safety)"
         required: false
         default: "true"
+  push:
+    branches: [main]
+    paths:
+      - ".github/triggers/seo-audit.json"   # MCC "Run audit" button (live run)
 
 concurrency:
   # Own group (bi-monthly schedule; out-of-band of the */5 swarm). TODO: port
