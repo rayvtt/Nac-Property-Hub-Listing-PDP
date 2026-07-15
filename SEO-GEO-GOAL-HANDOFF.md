@@ -3,7 +3,13 @@
 **Purpose:** carry the SEO/GEO ranking initiative into a new session that has broader access.
 Read this top-to-bottom, do the **Transfer checklist** first, then work the **Open P0s**.
 
-_Last updated: 2026-07-08 (compiled at end of the prior session)._
+_Last updated: 2026-07-15 (P0-B + P0-C code + MCC SEO module SHIPPED this session; only the GSC token re-mint [P0-A] remains — it needs Ray's browser)._
+
+## ✅ Shipped 2026-07-15 (this session — PR #402 here, MCC PR #12, Hub PR #289)
+
+- **P0-B done (option 1B), verified live**: dev comment deleted from all `country/*.html` (it was parsed as the real `<title>` on WP); `sync-notion-clp.mjs` strips root comments on every sync + composes keyword-targeted `<title>`/meta description per country (`CLP_SEO` map, "đầu tư định cư …" family); `.cl-hero-tag` is now the `<h1>` and every Live country's Notion Hero Tagline was rewritten to lead with its tracked keyword; `<html lang="vi">`.
+- **P0-C**: `wp-brand.yml` uploaded the wordmark + a rendered 512×512 icon to main-site media (`/wp-content/uploads/2026/07/nac-logo-wordmark.png`, `…/nac-site-icon-512.png`); `Organization.logo` now points at the wordmark on hub + Homepage V2 + CLP publisher block. **Remaining (WP-admin clicks, this WP doesn't expose `site_icon` over REST):** Customizer → Site Identity → Site Icon → pick `nac-site-icon-512.png`; Rank Math Knowledge Graph on main + blog; Google Business Profile.
+- **MCC SEO module live** (`data-view="seo"` in the cockpit): rank panel from `seo/goal-status.json` + snapshots (public raw), 🚀 SEO Tasks queue with inline approve/snooze, Run buttons (goal-review / seo-apply / seo-audit → trigger-file commits; needs Worker secret `GH_SEO_TOKEN`, fine-grained PAT on this repo with Contents RW), GSC token-health badge. `goal-review.mjs` now writes `seo/goal-status.json` on every run; `seo-audit.yml` gained the `.github/triggers/seo-audit.json` trigger.
 
 ---
 
