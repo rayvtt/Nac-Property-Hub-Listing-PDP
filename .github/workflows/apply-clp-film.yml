@@ -1,0 +1,36 @@
+name: Apply CLP film playlist (from ?edit=1 manager)
+
+on:
+  workflow_dispatch:
+    inputs:
+      file:
+        description: 'country page path, e.g. country/gr.html'
+        required: true
+      clips:
+        description: 'JSON array of {u,l}'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Patch the #clpFilm block
+        env:
+          FILE: ${{ inputs.file }}
+          CLIPS: ${{ inputs.clips }}
+        run: node scripts/apply-clp-film.mjs
+      - name: Commit
+        run: |
+          if git diff --quiet -- country/; then echo "No change."; exit 0; fi
+          git config user.name "nac-clp-film"
+          git config user.email "actions@github.com"
+          git add country/
+          git commit -m "content: CLP film playlist edit (?edit=1 manager)"
+          git push
