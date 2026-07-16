@@ -1,0 +1,38 @@
+name: Upload CLP landmark films to WP
+
+on:
+  push:
+    paths:
+      - '.github/workflows/upload-clp-film.yml'
+      - 'scripts/upload-clp-film.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: clp-film-upload
+  cancel-in-progress: false
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Upload clips + write playlists
+        env:
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        run: node scripts/upload-clp-film.mjs
+      - name: Commit if playlists changed
+        run: |
+          if git diff --quiet -- country/; then echo "No change."; exit 0; fi
+          git config user.name "nac-clp-film"
+          git config user.email "actions@github.com"
+          git add country/
+          git commit -m "content: CLP landmark film playlists (WP-hosted clips)"
+          git push
