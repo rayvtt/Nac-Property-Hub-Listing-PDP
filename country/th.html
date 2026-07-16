@@ -11644,6 +11644,12 @@ body.cl-modal-open { overflow:hidden; }
 .clp-film{position:absolute;inset:0;z-index:0;overflow:hidden;display:none}
 .cl-hero.filmed .clp-film{display:block}
 .cl-hero.filmed .cl-hero-slide{opacity:0 !important;transition:opacity 1.2s}
+/* land on the film, not the photos: 'filming' hides the slides the moment a
+   playlist exists (dark base while the first clip loads); playback failure
+   removes it and the photo rotator returns */
+.cl-hero.filming{background:#050d24}
+.cl-hero.filming .cl-hero-slide{opacity:0 !important}
+.cl-hero.filming .clp-film{display:block}
 .clp-film video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.6s ease}
 .clp-film video.on{opacity:1;animation:clpKen 10s ease forwards}
 @keyframes clpKen{from{transform:scale(1)}to{transform:scale(1.07)}}
@@ -11682,9 +11688,10 @@ body.cl-modal-open { overflow:hidden; }
       hero.classList.add("filmed");
       vids.forEach(function(o){ o.classList.toggle("on", o === v); });
       if (cap) cap.textContent = c.l || "";
-    }).catch(function(){ if (!started) hero.classList.remove("filmed"); });
+    }).catch(function(){ if (!started) { hero.classList.remove("filmed"); hero.classList.remove("filming"); } });
   }
   if (clips.length && !(navigator.connection && navigator.connection.saveData)) {
+    hero.classList.add("filming");
     next();
     setInterval(next, 10000);
   }
