@@ -59,12 +59,12 @@ const COUNTRIES = [
   {
     file: new URL('../country/vn.html', import.meta.url).pathname,
     clips: [
-      { name: 'nac-clp-vn-halong',     l: 'Vịnh Hạ Long',                 src: 'https://assets.mixkit.co/videos/44916/44916-720.mp4' },
-      { name: 'nac-clp-vn-halong-2',   l: 'Kỳ quan Vịnh Hạ Long',         src: 'https://assets.mixkit.co/videos/44915/44915-720.mp4' },
-      { name: 'nac-clp-vn-sailing',    l: 'Du thuyền Vịnh Hạ Long',       src: 'https://assets.mixkit.co/videos/22612/22612-720.mp4' },
-      { name: 'nac-clp-vn-beach',      l: 'Biển Việt Nam',                src: 'https://assets.mixkit.co/videos/20204/20204-720.mp4' },
-      { name: 'nac-clp-vn-city',       l: 'Nhịp sống đô thị Việt Nam',    src: 'https://assets.mixkit.co/videos/46034/46034-720.mp4' },
-      { name: 'nac-clp-vn-hanoi',      l: 'Hà Nội về đêm',                src: 'https://assets.mixkit.co/videos/27383/27383-720.mp4' },
+      { name: 'nac-clp-vn-beach-central', l: 'Biển Nha Trang – Đà Nẵng',      src: 'https://assets.mixkit.co/videos/20204/20204-720.mp4' },
+      { name: 'nac-clp-vn-terraces',      l: 'Ruộng bậc thang Tây Bắc',        src: 'https://assets.mixkit.co/videos/36771/36771-720.mp4' },
+      { name: 'nac-clp-vn-mountains',     l: 'Núi rừng & đồng lúa',            src: 'https://assets.mixkit.co/videos/11277/11277-720.mp4' },
+      { name: 'nac-clp-vn-paddies',       l: 'Ruộng lúa Việt Nam',             src: 'https://assets.mixkit.co/videos/16132/16132-720.mp4' },
+      { name: 'nac-clp-vn-saigon',        l: 'Sài Gòn hối hả',                 src: 'https://assets.mixkit.co/videos/20201/20201-720.mp4' },
+      { name: 'nac-clp-vn-saigon-night',  l: 'Phố đêm Sài Gòn',                src: 'https://assets.mixkit.co/videos/20203/20203-720.mp4' },
     ],
   },
   {
