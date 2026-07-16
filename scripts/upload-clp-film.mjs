@@ -174,3 +174,25 @@ for (const c of COUNTRIES) {
   if (json !== m[2]) { html = html.replace(re, `$1${json}$3`); writeFileSync(c.file, html); console.log(`${c.file}: playlist written (${out.length} clips).`); }
   else console.log(`${c.file}: already current.`);
 }
+
+// ── prune: delete any nac-clp-* VIDEO on WP media that no manifest references
+// (old clips from swapped-out playlists). Slug+mime guarded.
+const keep = new Set();
+for (const c of COUNTRIES) for (const clip of c.clips) keep.add(clip.name);
+let deleted = 0;
+for (let page = 1; page <= 5; page++) {
+  const r = await wp(`/media?search=nac-clp&per_page=100&page=${page}`);
+  if (!r.ok) break;
+  const arr = await r.json().catch(() => []);
+  if (!Array.isArray(arr) || !arr.length) break;
+  for (const m of arr) {
+    const slug = m.slug || '';
+    if (!slug.startsWith('nac-clp-') || !(m.mime_type || '').startsWith('video')) continue;
+    if (keep.has(slug)) continue;
+    const d = await wp(`/media/${m.id}?force=true`, { method: 'DELETE' });
+    if (d.ok) { deleted++; console.log(`- pruned: ${slug} (#${m.id})`); }
+    else console.error(`! prune failed: ${slug} -> ${d.status}`);
+  }
+  if (arr.length < 100) break;
+}
+console.log(`Prune: removed ${deleted} unreferenced clip(s).`);
