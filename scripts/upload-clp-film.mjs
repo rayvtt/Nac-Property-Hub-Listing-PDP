@@ -23,6 +23,116 @@ const COUNTRIES = [
       { name: 'nac-clp-gr-village',    l: 'Làng biển đảo Hy Lạp',         src: 'https://assets.mixkit.co/videos/7792/7792-720.mp4' },
     ],
   },
+  {
+    file: new URL('../country/tr.html', import.meta.url).pathname,
+    clips: [
+      { name: 'nac-clp-tr-mosque',     l: 'Thánh đường Istanbul',         src: 'https://assets.mixkit.co/videos/35445/35445-720.mp4' },
+      { name: 'nac-clp-tr-bosphorus',  l: 'Hoàng hôn cầu Bosphorus',      src: 'https://assets.mixkit.co/videos/11004/11004-720.mp4' },
+      { name: 'nac-clp-tr-skyline',    l: 'Đường chân trời Istanbul',     src: 'https://assets.mixkit.co/videos/29026/29026-720.mp4' },
+      { name: 'nac-clp-tr-cappadocia', l: 'Khinh khí cầu Cappadocia',     src: 'https://assets.mixkit.co/videos/12977/12977-720.mp4' },
+      { name: 'nac-clp-tr-coast',      l: 'Bờ biển Istanbul',             src: 'https://assets.mixkit.co/videos/11995/11995-720.mp4' },
+      { name: 'nac-clp-tr-waterways',  l: 'Eo biển Bosphorus',            src: 'https://assets.mixkit.co/videos/44906/44906-720.mp4' },
+    ],
+  },
+  {
+    file: new URL('../country/ae.html', import.meta.url).pathname,
+    clips: [
+      { name: 'nac-clp-ae-burj',       l: 'Burj Khalifa — Dubai',         src: 'https://assets.mixkit.co/videos/31033/31033-720.mp4' },
+      { name: 'nac-clp-ae-palm',       l: 'Palm Jumeirah',                src: 'https://assets.mixkit.co/videos/30985/30985-720.mp4' },
+      { name: 'nac-clp-ae-downtown',   l: 'Downtown Dubai — từ trên cao', src: 'https://assets.mixkit.co/videos/30991/30991-720.mp4' },
+      { name: 'nac-clp-ae-marina',     l: 'Dubai Marina',                 src: 'https://assets.mixkit.co/videos/20207/20207-720.mp4' },
+      { name: 'nac-clp-ae-beach',      l: 'Bãi biển Dubai',               src: 'https://assets.mixkit.co/videos/31005/31005-720.mp4' },
+      { name: 'nac-clp-ae-burj-night', l: 'Burj Khalifa về đêm',          src: 'https://assets.mixkit.co/videos/39451/39451-720.mp4' },
+    ],
+  },
+  {
+    file: new URL('../country/uk.html', import.meta.url).pathname,
+    clips: [
+      { name: 'nac-clp-uk-bigben',     l: 'Big Ben — London',             src: 'https://assets.mixkit.co/videos/33823/33823-720.mp4' },
+      { name: 'nac-clp-uk-towerbridge',l: 'Tower Bridge — từ trên cao',   src: 'https://assets.mixkit.co/videos/26852/26852-720.mp4' },
+      { name: 'nac-clp-uk-londoneye',  l: 'London Eye',                   src: 'https://assets.mixkit.co/videos/4150/4150-720.mp4' },
+      { name: 'nac-clp-uk-aerial',     l: 'Bay qua London',               src: 'https://assets.mixkit.co/videos/26853/26853-720.mp4' },
+      { name: 'nac-clp-uk-thames',     l: 'Sông Thames — London',         src: 'https://assets.mixkit.co/videos/26857/26857-720.mp4' },
+      { name: 'nac-clp-uk-sunset',     l: 'Hoàng hôn Tower Bridge',       src: 'https://assets.mixkit.co/videos/4457/4457-720.mp4' },
+    ],
+  },
+  {
+    file: new URL('../country/vn.html', import.meta.url).pathname,
+    clips: [
+      { name: 'nac-clp-vn-halong',     l: 'Vịnh Hạ Long',                 src: 'https://assets.mixkit.co/videos/44916/44916-720.mp4' },
+      { name: 'nac-clp-vn-halong-2',   l: 'Kỳ quan Vịnh Hạ Long',         src: 'https://assets.mixkit.co/videos/44915/44915-720.mp4' },
+      { name: 'nac-clp-vn-sailing',    l: 'Du thuyền Vịnh Hạ Long',       src: 'https://assets.mixkit.co/videos/22612/22612-720.mp4' },
+      { name: 'nac-clp-vn-beach',      l: 'Biển Việt Nam',                src: 'https://assets.mixkit.co/videos/20204/20204-720.mp4' },
+      { name: 'nac-clp-vn-city',       l: 'Nhịp sống đô thị Việt Nam',    src: 'https://assets.mixkit.co/videos/46034/46034-720.mp4' },
+      { name: 'nac-clp-vn-hanoi',      l: 'Hà Nội về đêm',                src: 'https://assets.mixkit.co/videos/27383/27383-720.mp4' },
+    ],
+  },
+  {
+    file: new URL('../country/th.html', import.meta.url).pathname,
+    clips: [
+      { name: 'nac-clp-th-temple',     l: 'Đền cổ Thái Lan',              src: 'https://assets.mixkit.co/videos/11072/11072-720.mp4' },
+      { name: 'nac-clp-th-bangkok',    l: 'Bangkok hoàng hôn',            src: 'https://assets.mixkit.co/videos/21916/21916-720.mp4' },
+      { name: 'nac-clp-th-night',      l: 'Bangkok về đêm',               src: 'https://assets.mixkit.co/videos/27770/27770-720.mp4' },
+      { name: 'nac-clp-th-phuket',     l: 'Hoàng hôn Phuket',             src: 'https://assets.mixkit.co/videos/6872/6872-720.mp4' },
+      { name: 'nac-clp-th-beach',      l: 'Biển nhiệt đới Thái Lan',      src: 'https://assets.mixkit.co/videos/7060/7060-720.mp4' },
+      { name: 'nac-clp-th-market',     l: 'Chợ nổi Thái Lan',             src: 'https://assets.mixkit.co/videos/11302/11302-720.mp4' },
+    ],
+  },
+  {
+    file: new URL('../country/my.html', import.meta.url).pathname,
+    clips: [
+      { name: 'nac-clp-my-skyline',    l: 'Kuala Lumpur — toàn cảnh',     src: 'https://assets.mixkit.co/videos/30180/30180-720.mp4' },
+      { name: 'nac-clp-my-petronas',   l: 'Tháp đôi Petronas',            src: 'https://assets.mixkit.co/videos/20133/20133-720.mp4' },
+      { name: 'nac-clp-my-petronas-n', l: 'Tháp đôi Petronas về đêm',     src: 'https://assets.mixkit.co/videos/20122/20122-720.mp4' },
+      { name: 'nac-clp-my-dusk',       l: 'Kuala Lumpur — ngày sang đêm', src: 'https://assets.mixkit.co/videos/30988/30988-720.mp4' },
+      { name: 'nac-clp-my-fromtop',    l: 'Kuala Lumpur — từ trên cao',   src: 'https://assets.mixkit.co/videos/39442/39442-720.mp4' },
+      { name: 'nac-clp-my-night',      l: 'Kuala Lumpur về đêm',          src: 'https://assets.mixkit.co/videos/20183/20183-720.mp4' },
+    ],
+  },
+  {
+    file: new URL('../country/sg.html', import.meta.url).pathname,
+    clips: [
+      { name: 'nac-clp-sg-marinabay',  l: 'Marina Bay về đêm',            src: 'https://assets.mixkit.co/videos/30966/30966-720.mp4' },
+      { name: 'nac-clp-sg-gardens',    l: 'Gardens by the Bay',           src: 'https://assets.mixkit.co/videos/20177/20177-720.mp4' },
+      { name: 'nac-clp-sg-esplanade',  l: 'Esplanade — Singapore',        src: 'https://assets.mixkit.co/videos/20174/20174-720.mp4' },
+      { name: 'nac-clp-sg-bay',        l: 'Vịnh Marina — Singapore',      src: 'https://assets.mixkit.co/videos/31084/31084-720.mp4' },
+      { name: 'nac-clp-sg-fromtop',    l: 'Singapore — từ trên cao',      src: 'https://assets.mixkit.co/videos/11289/11289-720.mp4' },
+      { name: 'nac-clp-sg-flyer',      l: 'Singapore Flyer',              src: 'https://assets.mixkit.co/videos/30967/30967-720.mp4' },
+    ],
+  },
+  {
+    file: new URL('../country/au.html', import.meta.url).pathname,
+    clips: [
+      { name: 'nac-clp-au-sydney',     l: 'Sydney — trung tâm thành phố', src: 'https://assets.mixkit.co/videos/11001/11001-720.mp4' },
+      { name: 'nac-clp-au-brisbane',   l: 'Đường chân trời Brisbane',     src: 'https://assets.mixkit.co/videos/10984/10984-720.mp4' },
+      { name: 'nac-clp-au-goldcoast',  l: 'Cung đường ven biển Úc',       src: 'https://assets.mixkit.co/videos/21014/21014-720.mp4' },
+      { name: 'nac-clp-au-kangaroo',   l: 'Kangaroo — biểu tượng Úc',     src: 'https://assets.mixkit.co/videos/11111/11111-720.mp4' },
+      { name: 'nac-clp-au-pinklake',   l: 'Hồ hồng nước Úc',              src: 'https://assets.mixkit.co/videos/11192/11192-720.mp4' },
+      { name: 'nac-clp-au-koala',      l: 'Koala — nước Úc',              src: 'https://assets.mixkit.co/videos/11066/11066-720.mp4' },
+    ],
+  },
+  {
+    file: new URL('../country/cy.html', import.meta.url).pathname,
+    clips: [
+      { name: 'nac-clp-cy-villas',     l: 'Biệt thự ven Địa Trung Hải',   src: 'https://assets.mixkit.co/videos/8675/8675-720.mp4' },
+      { name: 'nac-clp-cy-cityscape',  l: 'Thành phố Địa Trung Hải',      src: 'https://assets.mixkit.co/videos/15102/15102-720.mp4' },
+      { name: 'nac-clp-cy-water',      l: 'Làn nước Địa Trung Hải',       src: 'https://assets.mixkit.co/videos/44912/44912-720.mp4' },
+      { name: 'nac-clp-cy-pier',       l: 'Cầu tàu Địa Trung Hải',        src: 'https://assets.mixkit.co/videos/11318/11318-720.mp4' },
+      { name: 'nac-clp-cy-sun',        l: 'Nắng Địa Trung Hải',           src: 'https://assets.mixkit.co/videos/25988/25988-720.mp4' },
+      { name: 'nac-clp-cy-aerial',     l: 'Địa Trung Hải — từ trên cao',  src: 'https://assets.mixkit.co/videos/49218/49218-720.mp4' },
+    ],
+  },
+  {
+    file: new URL('../country/pa.html', import.meta.url).pathname,
+    clips: [
+      { name: 'nac-clp-pa-coast',      l: 'Bờ biển Caribbean',            src: 'https://assets.mixkit.co/videos/25266/25266-720.mp4' },
+      { name: 'nac-clp-pa-sea',        l: 'Biển Caribbean',               src: 'https://assets.mixkit.co/videos/25293/25293-720.mp4' },
+      { name: 'nac-clp-pa-aerial',     l: 'Bãi biển nhiệt đới — từ trên cao', src: 'https://assets.mixkit.co/videos/1573/1573-720.mp4' },
+      { name: 'nac-clp-pa-paradise',   l: 'Thiên đường biển nhiệt đới',   src: 'https://assets.mixkit.co/videos/7205/7205-720.mp4' },
+      { name: 'nac-clp-pa-waves',      l: 'Sóng biển nhiệt đới',          src: 'https://assets.mixkit.co/videos/16498/16498-720.mp4' },
+      { name: 'nac-clp-pa-jungle',     l: 'Biển & rừng nhiệt đới',        src: 'https://assets.mixkit.co/videos/11017/11017-720.mp4' },
+    ],
+  },
 ];
 
 async function wp(path, init = {}) {

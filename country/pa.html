@@ -11353,6 +11353,115 @@ body.cl-modal-open { overflow:hidden; }
 
 <!-- ═══ HERO ═══ -->
 <section class="cl-hero" id="cl-hero">
+
+<!-- landmark film — crossfading country-landmark montage over the hero.
+     Playlist lives in #clpFilm (filled by scripts/upload-clp-film.mjs with
+     WP-hosted clips; editable live via ?edit=1 → film manager). The photo
+     slides below remain the automatic fallback if video can't play. -->
+<style>
+.clp-film{position:absolute;inset:0;z-index:0;overflow:hidden;display:none}
+.cl-hero.filmed .clp-film{display:block}
+.cl-hero.filmed .cl-hero-slide{opacity:0 !important;transition:opacity 1.2s}
+.clp-film video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.6s ease}
+.clp-film video.on{opacity:1;animation:clpKen 10s ease forwards}
+@keyframes clpKen{from{transform:scale(1)}to{transform:scale(1.07)}}
+.clp-film::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(4,10,28,.8) 0%,rgba(4,10,28,.4) 45%,rgba(4,10,28,.3) 100%)}
+.clp-film-cap{position:absolute;right:18px;bottom:14px;z-index:2;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:rgba(255,255,255,.78)}
+#clpFilmMgr{position:fixed;left:14px;bottom:14px;z-index:9999;background:#fff;color:#0b1024;border-radius:14px;box-shadow:0 18px 50px rgba(0,3,14,.35);padding:14px;width:310px;font:12px/1.5 system-ui,sans-serif}
+#clpFilmMgr h4{font-size:12.5px;margin:0 0 8px}
+#clpFilmMgr .row{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid #eee}
+#clpFilmMgr .row span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#clpFilmMgr button{border:0;background:#f2f4fb;border-radius:6px;padding:2px 8px;cursor:pointer;font-size:11px}
+#clpFilmMgr input{width:100%;margin-top:6px;padding:5px 8px;border:1px solid #ddd;border-radius:7px;font-size:11px;box-sizing:border-box}
+#clpFilmMgr .save{margin-top:8px;background:#F4622A;color:#fff;width:100%;padding:7px 0;border-radius:8px;font-weight:700}
+#clpFilmMgr .msg{font-size:10.5px;color:#4f5872;margin-top:5px;word-break:break-word}
+</style>
+<div class="clp-film" id="clpFilmWrap" aria-hidden="true"><video muted="" playsinline="" preload="auto"></video><video muted="" playsinline="" preload="auto"></video><div class="clp-film-cap" id="clpFilmCap"></div></div>
+<script type="application/json" id="clpFilm">[]</script>
+<script>
+(function(){
+  var hero = document.getElementById("cl-hero");
+  var wrap = document.getElementById("clpFilmWrap");
+  if (!hero || !wrap) return;
+  var clips = [];
+  try { clips = JSON.parse(document.getElementById("clpFilm").textContent) || []; } catch(e) {}
+  var vids = wrap.querySelectorAll("video");
+  var cap = document.getElementById("clpFilmCap");
+  var idx = -1, cur = 0, started = false;
+  function next(){
+    if (!clips.length) return;
+    idx = (idx + 1) % clips.length;
+    cur = 1 - cur;
+    var v = vids[cur], c = clips[idx];
+    v.src = c.u;
+    var p = v.play();
+    if (p && p.then) p.then(function(){
+      started = true;
+      hero.classList.add("filmed");
+      vids.forEach(function(o){ o.classList.toggle("on", o === v); });
+      if (cap) cap.textContent = c.l || "";
+    }).catch(function(){ if (!started) hero.classList.remove("filmed"); });
+  }
+  if (clips.length && !(navigator.connection && navigator.connection.saveData)) {
+    next();
+    setInterval(next, 10000);
+  }
+  /* ?edit=1 — film manager: reorder / remove / add clips, Save dispatches
+     apply-clp-film.yml via the GitHub API (PAT in localStorage nac_gh_token,
+     same key as the homepage editor; PAT must include this repo). */
+  if (new URLSearchParams(location.search).get("edit") !== "1") return;
+  var list = clips.map(function(c){ return { u: c.u, l: c.l || "" }; });
+  var box = document.createElement("div");
+  box.id = "clpFilmMgr";
+  document.body.appendChild(box);
+  function render(){
+    box.innerHTML = "<h4>🎬 Landmark film — " + list.length + " clip</h4><div id=cfRows></div>" +
+      "<input id=cfUrl placeholder='https://…mp4 (WP media URL)'><input id=cfLbl placeholder='Nhãn / label'>" +
+      "<button class=save id=cfAdd type=button>＋ Thêm clip</button>" +
+      "<button class=save id=cfSave type=button>Lưu &amp; xuất bản</button><div class=msg id=cfMsg></div>";
+    var rows = box.querySelector("#cfRows");
+    list.forEach(function(c, i){
+      var r = document.createElement("div");
+      r.className = "row";
+      r.innerHTML = "<span></span><button data-a=up>↑</button><button data-a=dn>↓</button><button data-a=x>✕</button>";
+      r.querySelector("span").textContent = (i + 1) + ". " + (c.l || c.u.split("/").pop());
+      r.querySelectorAll("button").forEach(function(b){
+        b.addEventListener("click", function(){
+          var a = b.getAttribute("data-a");
+          if (a === "x") list.splice(i, 1);
+          if (a === "up" && i > 0) { list.splice(i - 1, 0, list.splice(i, 1)[0]); }
+          if (a === "dn" && i < list.length - 1) { list.splice(i + 1, 0, list.splice(i, 1)[0]); }
+          render();
+        });
+      });
+      rows.appendChild(r);
+    });
+    box.querySelector("#cfAdd").addEventListener("click", function(){
+      var u = box.querySelector("#cfUrl").value.trim();
+      if (u.indexOf("https://") !== 0) { box.querySelector("#cfMsg").textContent = "URL phải là https"; return; }
+      list.push({ u: u, l: box.querySelector("#cfLbl").value.trim() });
+      render();
+    });
+    box.querySelector("#cfSave").addEventListener("click", function(){
+      var tok = "";
+      try { tok = localStorage.getItem("nac_gh_token") || ""; } catch(e) {}
+      if (!tok) { tok = prompt("GitHub fine-grained PAT (Actions: write, repo Nac-Property-Hub-Listing-PDP):") || ""; try { if (tok) localStorage.setItem("nac_gh_token", tok); } catch(e) {} }
+      if (!tok) return;
+      var msg = box.querySelector("#cfMsg");
+      msg.textContent = "Đang gửi…";
+      fetch("https://api.github.com/repos/rayvtt/Nac-Property-Hub-Listing-PDP/actions/workflows/apply-clp-film.yml/dispatches", {
+        method: "POST",
+        headers: { Authorization: "Bearer " + tok, Accept: "application/vnd.github+json", "Content-Type": "application/json" },
+        body: JSON.stringify({ ref: "main", inputs: { file: "country/pa.html", clips: JSON.stringify(list) } })
+      }).then(function(r){
+        msg.textContent = r.status === 204 ? "✓ Đã gửi — live sau ~2 phút" : "Lỗi " + r.status + " (kiểm tra PAT có quyền Actions:write cho repo PDP)";
+      }).catch(function(){ msg.textContent = "Lỗi mạng"; });
+    });
+  }
+  render();
+})();
+</script>
+
   <div class="cl-hero-slides" id="cl-hero-slides">      <div class="cl-hero-slide on" data-name-vi="Pullman Panama - Phức Hợp Khách Sạn &amp; Casino " data-name-en="Pullman Panama City " data-price="$320K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/panama/pullman-panama-city/" style="background-image:url('https://nomadassetcollective.com/wp-content/uploads/2026/05/pullman2.jpg')"></div>
       <div class="cl-hero-slide" data-name-vi="Santa Maria - Căn Hộ Cao Cấp tại Mũi Đảo Panama City" data-name-en="Santa Maria Luxury Apartments — Panama City" data-price="$300K" data-url="https://nomadassetcollective.com/property-hub-bat-dong-san/panama/santa-maria-panama/" style="background-image:url('https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/santa-maria-panama-hero/public')"></div></div>
   <div class="cl-hero-veil"></div>
