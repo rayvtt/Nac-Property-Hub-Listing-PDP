@@ -59,7 +59,7 @@ const COUNTRIES = [
   {
     file: new URL('../country/vn.html', import.meta.url).pathname,
     clips: [
-      { name: 'nac-clp-vn-beach-central', l: 'Biển Nha Trang – Đà Nẵng',      src: 'https://assets.mixkit.co/videos/20204/20204-720.mp4' },
+      { name: 'nac-clp-vn-danang',        l: 'Biển Đà Nẵng – Nha Trang',      src: 'https://assets.mixkit.co/videos/51500/51500-720.mp4' },
       { name: 'nac-clp-vn-terraces',      l: 'Ruộng bậc thang Tây Bắc',        src: 'https://assets.mixkit.co/videos/36771/36771-720.mp4' },
       { name: 'nac-clp-vn-mountains',     l: 'Núi rừng & đồng lúa',            src: 'https://assets.mixkit.co/videos/11277/11277-720.mp4' },
       { name: 'nac-clp-vn-paddies',       l: 'Ruộng lúa Việt Nam',             src: 'https://assets.mixkit.co/videos/16132/16132-720.mp4' },
