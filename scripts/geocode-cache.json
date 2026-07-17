@@ -530,5 +530,23 @@
   "Hồ Tràm, Bà Rịa–Vũng Tàu, Vietnam": {
     "lat": 10.4863509,
     "lng": 107.4542812
+  },
+  "Fortress Gardens — Tigné Point, Sliema, Tigné Point, Sliema, Malta": null,
+  "Tigné Point, Tigné Point, Sliema, Malta": null,
+  "Tigné Point, Sliema, Malta": {
+    "lat": 35.9076335,
+    "lng": 14.5106248
+  },
+  "Portomaso — St Julian's, St Julian's, Malta, Malta": null,
+  "Portomaso, St Julian's, Malta, Malta": null,
+  "St Julian's, Malta, Malta": {
+    "lat": 35.9030761,
+    "lng": 14.4733745
+  },
+  "The Ibragg Project — Swieqi, Ibragg, Swieqi, Malta": null,
+  "Ibragg, Ibragg, Swieqi, Malta": null,
+  "Ibragg, Swieqi, Malta": {
+    "lat": 35.9217557,
+    "lng": 14.4748789
   }
 }
