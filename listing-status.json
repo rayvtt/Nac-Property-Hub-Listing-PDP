@@ -1,7 +1,7 @@
 {
-  "generated": "2026-07-18T05:49:52Z",
+  "generated": "2026-07-18T06:18:17Z",
   "reviewed": "2026-07-18",
-  "fingerprint": "53e3e38cb90a883e",
+  "fingerprint": "0ebe9b0e63af2041",
   "dims": [
     "id",
     "fin",
@@ -134,16 +134,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 2
-          }
+          "dup": {}
         },
         {
           "name": "Duncan House — Arncliffe",
@@ -155,16 +153,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 2
-          }
+          "dup": {}
         }
       ]
     },
@@ -373,16 +369,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "band",
             "qa": "block"
           },
           "note": "no real project at the address — do NOT flip Live; retire or hold",
-          "dup": {
-            "cine": 3
-          }
+          "dup": {}
         },
         {
           "name": "325 Station St — Box Hill South",
@@ -394,16 +388,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 3
-          }
+          "dup": {}
         },
         {
           "name": "34 Birdwood St — Box Hill South",
@@ -415,16 +407,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 3
-          }
+          "dup": {}
         }
       ]
     },
@@ -444,16 +434,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "band",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 3
-          }
+          "dup": {}
         },
         {
           "name": "Genesis — Burwood",
@@ -465,16 +453,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 3
-          }
+          "dup": {}
         },
         {
           "name": "Victoria Place — Burwood",
@@ -486,16 +472,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "band",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 3
-          }
+          "dup": {}
         }
       ]
     },
@@ -515,16 +499,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 2
-          }
+          "dup": {}
         },
         {
           "name": "Live — Caringbah",
@@ -536,16 +518,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "band",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 2
-          }
+          "dup": {}
         }
       ]
     },
@@ -562,20 +542,17 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 2,
-            "cine": 4
-          }
+          "dup": {}
         },
         {
           "name": "Homeland Residences — Carlingford",
@@ -587,16 +564,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 4
-          }
+          "dup": {}
         },
         {
           "name": "Luxton — Carlingford",
@@ -605,20 +580,17 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 2,
-            "cine": 4
-          }
+          "dup": {}
         },
         {
           "name": "The Carling — Carlingford",
@@ -630,16 +602,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 4
-          }
+          "dup": {}
         }
       ]
     },
@@ -786,16 +756,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 3
-          }
+          "dup": {}
         },
         {
           "name": "The Macquarie Collection — Macquarie Park",
@@ -807,16 +775,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 3
-          }
+          "dup": {}
         },
         {
           "name": "Trilogy — Macquarie Park",
@@ -828,16 +794,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 3
-          }
+          "dup": {}
         }
       ]
     },
@@ -884,16 +848,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 2
-          }
+          "dup": {}
         },
         {
           "name": "West Side Place — Melbourne CBD",
@@ -905,16 +867,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 2
-          }
+          "dup": {}
         }
       ]
     },
@@ -934,16 +894,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 2
-          }
+          "dup": {}
         },
         {
           "name": "Serendipity — North Sydney",
@@ -955,16 +913,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 2
-          }
+          "dup": {}
         }
       ]
     },
@@ -1011,16 +967,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 4
-          }
+          "dup": {}
         },
         {
           "name": "Cosmopolitan — Parramatta",
@@ -1029,20 +983,17 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 2,
-            "cine": 4
-          }
+          "dup": {}
         },
         {
           "name": "One City Square — Parramatta",
@@ -1051,20 +1002,17 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 2,
-            "cine": 4
-          }
+          "dup": {}
         },
         {
           "name": "Paramount On Parkes — Parramatta",
@@ -1076,16 +1024,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 4
-          }
+          "dup": {}
         }
       ]
     },
@@ -1105,16 +1051,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 2
-          }
+          "dup": {}
         },
         {
           "name": "R.Evolution — South Melbourne",
@@ -1126,16 +1070,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 2
-          }
+          "dup": {}
         }
       ]
     },
@@ -1255,16 +1197,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 3
-          }
+          "dup": {}
         },
         {
           "name": "Luna — Zetland",
@@ -1276,16 +1216,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 3
-          }
+          "dup": {}
         },
         {
           "name": "The Avenues — Zetland",
@@ -1297,16 +1235,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 3
-          }
+          "dup": {}
         }
       ]
     },
@@ -1377,20 +1313,17 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 2,
-            "cine": 6
-          }
+          "dup": {}
         }
       ]
     },
@@ -1407,20 +1340,17 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 4,
-            "cine": 6
-          }
+          "dup": {}
         },
         {
           "name": "Izi Lux — Athens (Golden Visa)",
@@ -1432,7 +1362,7 @@
             "nac": "band",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
@@ -1440,8 +1370,7 @@
           },
           "note": "",
           "dup": {
-            "nac": 4,
-            "cine": 6
+            "nac": 3
           }
         },
         {
@@ -1454,7 +1383,7 @@
             "nac": "band",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
@@ -1462,8 +1391,7 @@
           },
           "note": "",
           "dup": {
-            "nac": 4,
-            "cine": 6
+            "nac": 3
           }
         }
       ]
@@ -1481,10 +1409,10 @@
           "st": {
             "id": "done",
             "fin": "band",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
@@ -1492,9 +1420,7 @@
           },
           "note": "",
           "dup": {
-            "fin": 2,
-            "nac": 2,
-            "cine": 6
+            "fin": 2
           }
         }
       ]
@@ -1515,7 +1441,7 @@
             "nac": "band",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
@@ -1524,8 +1450,7 @@
           "note": "",
           "dup": {
             "fin": 2,
-            "nac": 4,
-            "cine": 6
+            "nac": 3
           }
         }
       ]
@@ -1608,20 +1533,17 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 5,
-            "cine": 6
-          }
+          "dup": {}
         }
       ]
     },
@@ -1692,20 +1614,17 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 5,
-            "cine": 6
-          }
+          "dup": {}
         },
         {
           "name": "Horizon Park — Istanbul (CBI)",
@@ -1714,20 +1633,17 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 5,
-            "cine": 6
-          }
+          "dup": {}
         },
         {
           "name": "Marmara Pearl — Istanbul (CBI)",
@@ -1736,20 +1652,17 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 5,
-            "cine": 6
-          }
+          "dup": {}
         }
       ]
     },
@@ -1769,16 +1682,14 @@
             "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "cine": 6
-          }
+          "dup": {}
         }
       ]
     },
@@ -1849,20 +1760,17 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
-            "cine": "band",
+            "cine": "done",
             "img": "done",
             "geo": "done",
             "ovw": "done",
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 5,
-            "cine": 6
-          }
+          "dup": {}
         }
       ]
     },
@@ -2257,7 +2165,7 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -2267,9 +2175,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 2
-          }
+          "dup": {}
         }
       ]
     },
@@ -2505,7 +2411,7 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -2515,9 +2421,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 2
-          }
+          "dup": {}
         },
         {
           "name": "Botanica Grand Avenue — Phuket",
@@ -2545,7 +2449,7 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -2555,9 +2459,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 2
-          }
+          "dup": {}
         },
         {
           "name": "Laguna Phuket — Banyan Tree & Angsana Residences",
@@ -2642,7 +2544,7 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -2652,9 +2554,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 2
-          }
+          "dup": {}
         }
       ]
     },
@@ -2871,7 +2771,7 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -2881,9 +2781,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 2
-          }
+          "dup": {}
         }
       ]
     },
@@ -2927,7 +2825,7 @@
           "st": {
             "id": "done",
             "fin": "done",
-            "nac": "band",
+            "nac": "done",
             "edit": "done",
             "json": "done",
             "cine": "done",
@@ -2937,9 +2835,7 @@
             "qa": "done"
           },
           "note": "",
-          "dup": {
-            "nac": 2
-          }
+          "dup": {}
         }
       ]
     },
