@@ -1,8 +1,8 @@
 {
- "generated": "2026-07-21T07:13:46.019Z",
+ "generated": "2026-07-21T08:28:40.952Z",
  "ledger": true,
  "windowDays": 3650,
- "count": 16282,
+ "count": 16299,
  "flags": {
   "greece": "🇬🇷",
   "turkey": "🇹🇷",
@@ -20,6 +20,193 @@
   "dubai": "🇦🇪"
  },
  "entries": [
+  {
+   "ts": "2026-07-21T07:15:16Z",
+   "country": "australia",
+   "slug": "88-livie-carlingford",
+   "name": "88 Livie",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "70",
+   "to": "72"
+  },
+  {
+   "ts": "2026-07-21T07:15:16Z",
+   "country": "turkey",
+   "slug": "bagcilar-garden-phase-2-istanbul",
+   "name": "Bağcılar Garden Phase II",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "77",
+   "to": "74"
+  },
+  {
+   "ts": "2026-07-21T07:15:16Z",
+   "country": "thailand",
+   "slug": "balco-villas",
+   "name": "Balco Villas by Origin",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "67",
+   "to": "73"
+  },
+  {
+   "ts": "2026-07-21T07:15:16Z",
+   "country": "thailand",
+   "slug": "botanica-four-seasons",
+   "name": "Botanica Four Seasons",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "66",
+   "to": "74"
+  },
+  {
+   "ts": "2026-07-21T07:15:16Z",
+   "country": "thailand",
+   "slug": "botanica-louvre",
+   "name": "Botanica Louvre",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "67",
+   "to": "75"
+  },
+  {
+   "ts": "2026-07-21T07:15:16Z",
+   "country": "greece",
+   "slug": "boulevard-residence-kallithea",
+   "name": "Boulevard",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "76",
+   "to": "77"
+  },
+  {
+   "ts": "2026-07-21T07:15:16Z",
+   "country": "australia",
+   "slug": "cosmopolitan-parramatta",
+   "name": "Cosmopolitan",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "73",
+   "to": "77"
+  },
+  {
+   "ts": "2026-07-21T07:15:16Z",
+   "country": "turkey",
+   "slug": "elite-complex-istanbul",
+   "name": "Elite Complex",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "77",
+   "to": "75"
+  },
+  {
+   "ts": "2026-07-21T07:15:16Z",
+   "country": "turkey",
+   "slug": "horizon-park-istanbul",
+   "name": "Horizon Park",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "77",
+   "to": "76"
+  },
+  {
+   "ts": "2026-07-21T07:15:16Z",
+   "country": "greece",
+   "slug": "kifisia-suites-park-18",
+   "name": "Kifisia Suites",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "80",
+   "to": "79"
+  },
+  {
+   "ts": "2026-07-21T07:15:16Z",
+   "country": "australia",
+   "slug": "luxton-carlingford",
+   "name": "Luxton",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "70",
+   "to": "74"
+  },
+  {
+   "ts": "2026-07-21T07:15:16Z",
+   "country": "vietnam",
+   "slug": "maia-ho-tram",
+   "name": "Maia Resort Hồ Tràm",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "73",
+   "to": "75"
+  },
+  {
+   "ts": "2026-07-21T07:15:16Z",
+   "country": "turkey",
+   "slug": "marmara-pearl-istanbul",
+   "name": "Marmara Pearl",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "77",
+   "to": "73"
+  },
+  {
+   "ts": "2026-07-21T07:15:16Z",
+   "country": "australia",
+   "slug": "one-city-square-parramatta",
+   "name": "One City Square",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "73",
+   "to": "78"
+  },
+  {
+   "ts": "2026-07-21T07:15:16Z",
+   "country": "greece",
+   "slug": "the-one-glyfada-athens",
+   "name": "The One",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "80",
+   "to": "78"
+  },
+  {
+   "ts": "2026-07-21T07:15:16Z",
+   "country": "thailand",
+   "slug": "the-residence-prime",
+   "name": "The Residence Prime",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "66",
+   "to": "72"
+  },
+  {
+   "ts": "2026-07-21T07:15:16Z",
+   "country": "thailand",
+   "slug": "the-standard-residences-bangtao",
+   "name": "The Standard Residences Bangtao",
+   "field": "score",
+   "label": "NAC Score",
+   "kind": "num",
+   "from": "73",
+   "to": "77"
+  },
   {
    "ts": "2026-07-21T07:05:05Z",
    "country": "australia",
