@@ -13,7 +13,8 @@
     "sync:clp": "node sync-notion-clp.mjs",
     "create:wp-clp": "node create-wp-clp-page.mjs",
     "titles": "node generate-cine-titles.mjs",
-    "images": "node sync-images.mjs"
+    "images": "node sync-images.mjs",
+    "shotlist": "node gen-shotlist.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.40.0",
