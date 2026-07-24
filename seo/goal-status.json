@@ -1,9 +1,29 @@
 {
-  "updatedAt": "2026-07-15T14:36:08.122Z",
+  "updatedAt": "2026-07-24T10:35:42.677Z",
   "property": "https://nomadassetcollective.com/,https://blog.nomadassetcollective.com/",
-  "ok": false,
-  "tokenHealth": "invalid_grant",
-  "error": "https://nomadassetcollective.com/ (400): invalid_grant | https://blog.nomadassetcollective.com/ (400): invalid_grant",
-  "latest": null,
-  "history": []
+  "ok": true,
+  "tokenHealth": "ok",
+  "error": null,
+  "latest": {
+    "date": "2026-07-24",
+    "tracked": 37,
+    "top3": 0,
+    "striking": 0,
+    "page2": 0,
+    "deep": 0,
+    "notRanking": 37,
+    "avgPosition": null
+  },
+  "history": [
+    {
+      "date": "2026-07-24",
+      "tracked": 37,
+      "top3": 0,
+      "striking": 0,
+      "page2": 0,
+      "deep": 0,
+      "notRanking": 37,
+      "avgPosition": null
+    }
+  ]
 }

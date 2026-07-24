@@ -1,0 +1,691 @@
+{
+  "date": "2026-07-24",
+  "property": "https://nomadassetcollective.com/,https://blog.nomadassetcollective.com/",
+  "window": {
+    "cur": {
+      "start": "2026-06-26",
+      "end": "2026-07-23"
+    },
+    "prev": {
+      "start": "2026-05-29",
+      "end": "2026-06-25"
+    }
+  },
+  "headline": {
+    "tracked": 37,
+    "top-3": 0,
+    "striking": 0,
+    "page-2": 0,
+    "deep": 0,
+    "not-ranking": 37,
+    "avgPosition": null
+  },
+  "keywords": [
+    {
+      "kw": "đầu tư di trú",
+      "cluster": "head",
+      "surface": "home",
+      "priority": "P0",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "đầu tư định cư",
+      "cluster": "head",
+      "surface": "home",
+      "priority": "P0",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "di trú đầu tư",
+      "cluster": "head",
+      "surface": "home",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "đầu tư quốc tịch",
+      "cluster": "head",
+      "surface": "hub",
+      "priority": "P0",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "quốc tịch thứ hai",
+      "cluster": "head",
+      "surface": "hub",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "hộ chiếu thứ hai",
+      "cluster": "head",
+      "surface": "hub",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "chương trình đầu tư định cư",
+      "cluster": "head",
+      "surface": "hub",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "thị thực vàng",
+      "cluster": "head",
+      "surface": "blog",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "golden visa là gì",
+      "cluster": "head",
+      "surface": "blog",
+      "priority": "P2",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "định cư nước ngoài",
+      "cluster": "head",
+      "surface": "hub",
+      "priority": "P2",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "đầu tư bất động sản định cư",
+      "cluster": "head",
+      "surface": "hub",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "eb-5",
+      "cluster": "program",
+      "surface": "blog",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "thẻ xanh mỹ",
+      "cluster": "program",
+      "surface": "blog",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "golden visa bồ đào nha",
+      "cluster": "program",
+      "surface": "blog",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "định cư bồ đào nha",
+      "cluster": "program",
+      "surface": "blog",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "golden visa hy lạp",
+      "cluster": "program",
+      "surface": "clp",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "định cư hy lạp",
+      "cluster": "program",
+      "surface": "clp",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "đầu tư định cư síp",
+      "cluster": "program",
+      "surface": "clp",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "quốc tịch síp",
+      "cluster": "program",
+      "surface": "clp",
+      "priority": "P2",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "đầu tư định cư thổ nhĩ kỳ",
+      "cluster": "program",
+      "surface": "clp",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "quốc tịch thổ nhĩ kỳ",
+      "cluster": "program",
+      "surface": "clp",
+      "priority": "P2",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "friendly nations visa panama",
+      "cluster": "program",
+      "surface": "blog",
+      "priority": "P2",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "đầu tư định cư panama",
+      "cluster": "program",
+      "surface": "clp",
+      "priority": "P2",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "quốc tịch antigua",
+      "cluster": "program",
+      "surface": "blog",
+      "priority": "P2",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "quốc tịch caribbean",
+      "cluster": "program",
+      "surface": "blog",
+      "priority": "P2",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "italy investor visa",
+      "cluster": "program",
+      "surface": "blog",
+      "priority": "P2",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "định cư ý",
+      "cluster": "program",
+      "surface": "blog",
+      "priority": "P2",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "đầu tư định cư châu âu",
+      "cluster": "region",
+      "surface": "hub",
+      "priority": "P0",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "đầu tư định cư mỹ",
+      "cluster": "region",
+      "surface": "blog",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "đầu tư định cư canada",
+      "cluster": "region",
+      "surface": "blog",
+      "priority": "P2",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "đầu tư định cư úc",
+      "cluster": "region",
+      "surface": "clp",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "đầu tư định cư anh",
+      "cluster": "country",
+      "surface": "clp",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "đầu tư định cư dubai",
+      "cluster": "country",
+      "surface": "clp",
+      "priority": "P2",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "đầu tư định cư singapore",
+      "cluster": "country",
+      "surface": "clp",
+      "priority": "P2",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "chi phí đầu tư định cư",
+      "cluster": "money",
+      "surface": "blog",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "đầu tư định cư cần bao nhiêu tiền",
+      "cluster": "money",
+      "surface": "blog",
+      "priority": "P1",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    },
+    {
+      "kw": "đầu tư định cư giá rẻ",
+      "cluster": "money",
+      "surface": "blog",
+      "priority": "P2",
+      "domain": "none",
+      "band": "not-ranking",
+      "position": null,
+      "prevPosition": null,
+      "delta": null,
+      "impressions": 0,
+      "clicks": 0,
+      "url": null,
+      "contains": {
+        "count": 0,
+        "bestPos": null
+      }
+    }
+  ]
+}
