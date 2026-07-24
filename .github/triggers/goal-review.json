@@ -1,4 +1,4 @@
 {
   "_comment": "Touch/commit this file on main to fire goal-review.yml on demand (in addition to the 1st/15th cron). Seeds/refreshes the rank snapshot + Notion Rank Tracker.",
-  "fired": "2026-07-24T-notion-connections-verify"
+  "fired": "2026-07-24T-clean-run-post-outage"
 }
