@@ -15,18 +15,23 @@ worker already runs Stream (`cfUploadVideo` / `/hero-upload`), so ③ reuses it.
 
 ---
 
-## ① Pre-visit — shot-list generator ✅ SHIPPED
+## ① Pre-visit — film portal + shot-list generator ✅ SHIPPED
 
 - Script: `scripts/gen-shotlist.mjs` · command: `/shotlist` · docs: `shotlist/README.md`.
-- Reads a listing's real data (Notion Property Listings DB, or `properties/<slug>.html`
-  offline) and emits a bilingual VI+EN sectioned filming script.
+- Reads each listing's real data (committed `properties/*.html`; per-slug `.md`
+  can use Notion when `NOTION_TOKEN` is set) and emits a bilingual VI+EN sectioned
+  filming script.
 - **Amenities** section only lists facilities the property actually has (matched
   from `✨ Features JSON`); **Unit models** = one block per `💲 Price Bands JSON`
   type. Waterfront / Tower-Bridge context auto-detected. ★ = banner candidate.
-- Outputs `shotlist/<slug>.md` + a phone-friendly `shotlist/<slug>.html`
-  checklist (VI/EN toggle, progress ring, on-device tick state) served on GitHub
-  Pages, + `shotlist/index.html` trip pack for multi-listing runs.
-- Clip-naming convention baked into every list: `<slug>__<ID>.mp4`.
+- **The portal `shotlist/index.html`** is the single bookmarkable URL — every
+  listing inlined so it works **offline on-site**. Three stages: **Prepare/Browse**
+  (search + country filter, ★ into *My Trip*) → **Trip** → **Read** (on-site
+  screen: VI/EN toggle, progress ring, tap-to-tick shots saved per device).
+  Rebuilt from every `properties/*.html` on each run, so new listings appear
+  automatically. Served on GitHub Pages at `…/shotlist/`.
+- Optional `shotlist/<slug>.md` per named slug / `--city` match for Notion paste.
+- Clip-naming convention baked into every script: `<slug>__<ID>.mp4`.
 
 ## ② On-site — filming
 

@@ -133,9 +133,11 @@ async function fetchFromNotion(slug) {
     nameVi: rich(p['Name VI']),
     regionCity: rich(p['Region/City']),
     district: rich(p['📍 District']),
+    country: sel(p['Country']),
     tagline: rich(p['🏷️ Tagline EN']),
     brand: rich(p['✦ Brand']),
     hubType: sel(p['🏨 Hub Type']),
+    heroImg: (p['Image URL'] && (p['Image URL'].url || rich(p['Image URL']))) || '',
     features: json(p['✨ Features JSON']),   // [{icon,vi,en}]
     bands: json(p['💲 Price Bands JSON']),   // [{en,vi,from,units}]
     source: 'notion',
@@ -163,15 +165,19 @@ async function fetchFromHtml(slug) {
     const $e = $(e);
     bands.push({ vi: $e.find('[data-vi]').text().trim(), en: $e.find('[data-en]').text().trim() });
   });
+  const heroStyle = $('[data-notion-bg="hero_img"]').attr('style') || '';
+  const heroImg = (heroStyle.match(/background-image:\s*url\(['"]?([^'")]+)/) || [])[1] || '';
   return {
     slug,
     name: t('property_name_en'),
     nameVi: t('property_name_vi'),
     regionCity: t('region_city'),
     district: t('district'),
+    country: t('country'),
     tagline: t('tagline_en'),
     brand: t('brand'),
     hubType: '',
+    heroImg,
     features, bands,
     source: 'html',
   };
@@ -324,89 +330,257 @@ function toMarkdown(data, sections) {
   return L.join('\n');
 }
 
-const escH = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+// Build one portal entry {meta + sections} for the inlined dataset.
+function portalEntry(data, sections) {
+  const city = data.regionCity || data.district || '';
+  return {
+    slug: data.slug,
+    name: data.name || data.slug,
+    nameVi: data.nameVi || '',
+    city,
+    country: data.country || '',
+    thumb: data.heroImg || '',
+    shots: totalShots(sections),
+    secs: totalSecs(sections),
+    sections: sections.map(s => ({
+      id: s.id, vi: s.vi, en: s.en, note_vi: s.note_vi || '', note_en: s.note_en || '',
+      shots: s.shots.map(x => ({
+        id: x.id, vi: x.vi, en: x.en, move_vi: x.move_vi, move_en: x.move_en,
+        secs: x.secs, why_vi: x.why_vi, why_en: x.why_en, hero: !!x.hero,
+      })),
+    })),
+  };
+}
 
-function toHtml(data, sections) {
-  const rows = sections.map(s => {
-    const items = s.shots.map(x => `
-      <label class="sh${x.hero ? ' hero' : ''}" data-secs="${x.secs}">
-        <input type="checkbox" data-id="${x.id}">
-        <span class="id">${x.id}${x.hero ? ' ★' : ''}</span>
-        <span class="txt"><b class="en">${escH(x.en)}</b><b class="vi">${escH(x.vi)}</b>
-          <small class="en">${escH(x.move_en)} · ~${x.secs}s · ${escH(x.why_en)}</small>
-          <small class="vi">${escH(x.move_vi)} · ~${x.secs}s · ${escH(x.why_vi)}</small></span>
-      </label>`).join('');
-    return `<section class="grp"><h2>§${s.id} · <span class="en">${escH(s.en)}</span><span class="vi">${escH(s.vi)}</span></h2>${
-      s.note_en ? `<p class="note"><span class="en">${escH(s.note_en)}</span><span class="vi">${escH(s.note_vi)}</span></p>` : ''
-    }${items}</section>`;
-  }).join('');
-  const loc = escH([data.district, data.regionCity].filter(Boolean).join(' · '));
+// The whole portal is one self-contained page: all listings inlined (works
+// offline on-site), three stages — Prepare (browse) → Trip → Read.
+function buildPortal(entries) {
+  const json = JSON.stringify({ listings: entries }).replace(/</g, '\\u003c');
   return `<!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="robots" content="noindex">
-<title>Shot list · ${escH(data.name || data.slug)}</title>
+<meta name="robots" content="noindex"><title>NAC Film Scripts — site-visit portal</title>
 <style>
 :root{--nac:#1800ad;--org:#F4622A;--ink:#12121a;--mut:#6b6b78;--line:#e7e7ee;--bg:#f6f6fb;--card:#fff}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);padding-bottom:40px}
-.top{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.86);backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0)/3)}
-.ttl{font-weight:800;font-size:18px;letter-spacing:-.01em;margin:0 0 2px}
-.sub{color:var(--mut);font-size:13px}
-.bar{display:flex;align-items:center;gap:12px;margin-top:10px}
-.ring{--p:0;width:44px;height:44px;border-radius:50%;flex:0 0 44px;background:conic-gradient(var(--org) calc(var(--p)*1%),var(--line) 0);display:grid;place-items:center}
-.ring::after{content:attr(data-p);width:34px;height:34px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:11px;font-weight:700}
-.meta{flex:1;font-size:12.5px;color:var(--mut)}
-.lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;font-weight:700;font-size:12px}
-.lang button{border:0;background:var(--card);color:var(--mut);padding:7px 12px;min-height:34px}
+html,body{margin:0}
+body{font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);padding-bottom:calc(30px + env(safe-area-inset-bottom,0))}
+.top{position:sticky;top:0;z-index:9;background:rgba(255,255,255,.9);backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--line);padding:11px 14px calc(9px + env(safe-area-inset-top,0)/4)}
+.top .r1{display:flex;align-items:center;gap:10px}
+.brand{font-weight:800;font-size:16px;letter-spacing:-.01em;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand small{color:var(--mut);font-weight:600}
+.lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;font-weight:700;font-size:12px;flex:0 0 auto}
+.lang button{border:0;background:var(--card);color:var(--mut);padding:7px 11px;min-height:34px}
 .lang button.on{background:var(--nac);color:#fff}
-.grp{margin:18px 16px 0}
-.grp h2{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--nac);margin:0 0 8px;font-weight:800}
-.note{margin:0 0 10px;font-size:12.5px;color:var(--mut);font-style:italic}
+.tripbtn{border:1px solid var(--line);background:var(--card);border-radius:999px;font-weight:700;font-size:12.5px;padding:7px 12px;min-height:34px;color:var(--ink);display:inline-flex;align-items:center;gap:5px}
+.tripbtn b{background:var(--org);color:#fff;border-radius:999px;font-size:11px;padding:1px 6px;min-width:18px;text-align:center}
+.tripbtn.on{background:var(--nac);color:#fff;border-color:var(--nac)}
+.search{margin-top:9px;width:100%;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:11px 12px;font-size:15px;min-height:44px}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:9px 2px 1px;-webkit-overflow-scrolling:touch}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--mut);border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:700;min-height:32px}
+.chip.on{background:var(--nac);color:#fff;border-color:var(--nac)}
+.wrap{padding:14px}
+.grid{display:grid;gap:11px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;cursor:pointer;position:relative}
+.card .th{aspect-ratio:16/10;background:#e9e9f1 center/cover no-repeat;position:relative}
+.card .star{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(0,0,0,.42);color:#fff;font-size:16px;display:grid;place-items:center;backdrop-filter:blur(4px)}
+.card .star.on{background:var(--org)}
+.card .bd{padding:11px 12px 12px}
+.card .nm{font-weight:700;font-size:15px;letter-spacing:-.01em;display:block}
+.card .lo{color:var(--mut);font-size:12.5px;margin-top:2px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .mt{color:var(--mut);font-size:12px;margin-top:7px;display:flex;gap:8px;align-items:center}
+.pill{background:#eef0ff;color:var(--nac);border-radius:999px;font-weight:700;font-size:11px;padding:2px 8px}
+.empty{color:var(--mut);text-align:center;padding:50px 20px;font-size:14.5px}
+.tlist{display:flex;flex-direction:column;gap:9px}
+.trow{display:flex;align-items:center;gap:11px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;cursor:pointer}
+.trow .tth{width:64px;height:44px;flex:0 0 64px;border-radius:9px;background:#e9e9f1 center/cover no-repeat}
+.trow .ti{flex:1;min-width:0}
+.trow .ti b{display:block;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trow .ti small{color:var(--mut);font-size:12px}
+.trow .rm{border:0;background:transparent;color:var(--mut);font-size:20px;padding:4px 8px}
+.sum{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin-bottom:12px;display:flex;gap:16px;align-items:center}
+.sum b{font-size:22px;font-weight:800;color:var(--nac)}
+.sum span{color:var(--mut);font-size:12.5px}
+.btnrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:11px;font-weight:700;font-size:13px;padding:9px 13px;min-height:40px;color:var(--ink)}
+.btn.pri{background:var(--nac);color:#fff;border-color:var(--nac)}
+/* read view */
+.rhead{display:flex;align-items:center;gap:11px;margin-bottom:6px}
+.back{border:1px solid var(--line);background:var(--card);border-radius:10px;min-width:40px;min-height:40px;font-size:17px}
+.rtitle{flex:1;min-width:0}
+.rtitle .rt{font-weight:800;font-size:17px;letter-spacing:-.01em;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rtitle .rl{color:var(--mut);font-size:12.5px}
+.rbar{display:flex;align-items:center;gap:12px;margin:8px 0 4px}
+.ring{--p:0;width:46px;height:46px;border-radius:50%;flex:0 0 46px;background:conic-gradient(var(--org) calc(var(--p)*1%),var(--line) 0);display:grid;place-items:center}
+.ring::after{content:attr(data-p);width:36px;height:36px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:11px;font-weight:800}
+.rmeta{flex:1;font-size:12.5px;color:var(--mut)}
+.grp{margin:18px 0 0}
+.grp h2{font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--nac);margin:0 0 8px;font-weight:800}
+.gnote{margin:0 0 10px;font-size:12.5px;color:var(--mut);font-style:italic}
 .sh{display:flex;align-items:flex-start;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px;min-height:52px;cursor:pointer}
 .sh.hero{border-color:var(--org);box-shadow:0 0 0 1px var(--org) inset}
 .sh input{width:24px;height:24px;flex:0 0 24px;margin:1px 0 0;accent-color:var(--org)}
-.sh .id{font-weight:800;font-size:12px;color:var(--nac);flex:0 0 34px;padding-top:2px}
+.sh .id{font-weight:800;font-size:12px;color:var(--nac);flex:0 0 36px;padding-top:2px}
 .sh.hero .id{color:var(--org)}
 .sh .txt{flex:1;min-width:0}
-.sh .txt b{display:block;font-weight:650;font-size:15px}
-.sh .txt small{display:block;color:var(--mut);font-size:12.5px;margin-top:2px}
-.sh input:checked ~ .txt b{text-decoration:line-through;color:var(--mut)}
-.sh input:checked ~ .txt{opacity:.6}
-.vi{display:none}
-body.vi .en{display:none}body.vi .vi{display:block}
-body.vi .lang small.en,body:not(.vi) small.vi{display:none}
-.foot{margin:22px 16px 0;color:var(--mut);font-size:12px;text-align:center}
+.sh .txt b{font-weight:650;font-size:15px}
+.sh .txt small{color:var(--mut);font-size:12.5px;margin-top:2px}
+.sh.done .txt b{text-decoration:line-through;color:var(--mut)}
+.sh.done .txt{opacity:.6}
+.foot{margin:22px 0 0;color:var(--mut);font-size:12px;text-align:center}
+.hide{display:none!important}
+/* language toggle — active lang inline everywhere; block for the stacked shot text */
+.vis-en,.vis-vi{display:none}
+body:not(.vi) .vis-en{display:inline}
+body.vi .vis-vi{display:inline}
+body:not(.vi) .sh .txt .vis-en,body.vi .sh .txt .vis-vi{display:block}
+@media(max-width:640px){.grid{grid-template-columns:1fr 1fr;gap:9px}.card .nm{font-size:13.5px}.card .bd{padding:9px 10px 10px}.wrap{padding:12px}}
+@media(max-width:380px){.grid{grid-template-columns:1fr}}
 </style></head><body>
 <div class="top">
-  <div class="ttl">🎬 ${escH(data.name || data.slug)}</div>
-  <div class="sub">${loc || '&nbsp;'}</div>
-  <div class="bar">
-    <div class="ring" id="ring" data-p="0%"></div>
-    <div class="meta"><span id="done">0</span>/${totalShots(sections)} shots · ~${totalSecs(sections)}s footage · ★ = banner candidate</div>
-    <div class="lang"><button id="bEn" class="on">EN</button><button id="bVi">VI</button></div>
+  <div class="r1">
+    <div class="brand">🎬 NAC Film Scripts <small id="crumb"></small></div>
+    <button class="tripbtn" id="tripBtn" data-act="go-trip">🎒 <b id="tripN">0</b></button>
+    <div class="lang"><button id="bEn" class="on" data-act="lang" data-l="en">EN</button><button id="bVi" data-act="lang" data-l="vi">VI</button></div>
+  </div>
+  <div id="filters">
+    <input class="search" id="q" placeholder="Search property, city, country…" autocomplete="off">
+    <div class="chips" id="chips"></div>
   </div>
 </div>
-${rows}
-<p class="foot">Clip naming: <code>${escH(data.slug)}__&lt;ID&gt;.mp4</code> · ticks saved on this device · shoot ★ shots landscape 16:9</p>
+<div class="wrap" id="app"></div>
+<script id="D" type="application/json">${json}</script>
 <script>
-var KEY='shotlist:'+${JSON.stringify(data.slug)};
-var boxes=[].slice.call(document.querySelectorAll('input[type=checkbox]'));
-var saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
-function upd(){var d=0;boxes.forEach(function(b){if(b.checked)d++});
-  var pct=boxes.length?Math.round(d/boxes.length*100):0;
-  var r=document.getElementById('ring');r.style.setProperty('--p',pct);r.setAttribute('data-p',pct+'%');
-  document.getElementById('done').textContent=d;
-  var s={};boxes.forEach(function(b){if(b.checked)s[b.dataset.id]=1});
-  try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
-boxes.forEach(function(b){if(saved[b.dataset.id])b.checked=true;b.addEventListener('change',upd)});
-function setLang(vi){document.body.classList.toggle('vi',vi);
+var DATA=JSON.parse(document.getElementById('D').textContent).listings;
+var BY={};DATA.forEach(function(l){BY[l.slug]=l});
+var app=document.getElementById('app'),crumb=document.getElementById('crumb'),filters=document.getElementById('filters');
+var state={v:'browse',slug:'',q:'',c:'All'};
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function LS(k,d){try{var v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}
+function SS(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function getTrip(){return LS('sl:trip',[])}
+function setTrip(a){SS('sl:trip',a);paintTripN()}
+function inTrip(s){return getTrip().indexOf(s)>=0}
+function toggleTrip(s){var t=getTrip(),i=t.indexOf(s);if(i>=0)t.splice(i,1);else t.push(s);setTrip(t)}
+function ticks(s){return LS('sl:ticks:'+s,{})}
+function paintTripN(){document.getElementById('tripN').textContent=getTrip().length}
+function countries(){var m={};DATA.forEach(function(l){if(l.country)m[l.country]=(m[l.country]||0)+1});return Object.keys(m).sort()}
+function nm(l){return document.body.classList.contains('vi')&&l.nameVi?l.nameVi:l.name}
+
+function renderChips(){
+  var cs=countries(),h='<button class="chip'+(state.c==='All'?' on':'')+'" data-act="chip" data-c="All">All ('+DATA.length+')</button>';
+  cs.forEach(function(c){h+='<button class="chip'+(state.c===c?' on':'')+'" data-act="chip" data-c="'+esc(c)+'">'+esc(c)+'</button>'});
+  document.getElementById('chips').innerHTML=cs.length?h:'';
+}
+function match(l){
+  if(state.c!=='All'&&l.country!==state.c)return false;
+  if(!state.q)return true;
+  var q=state.q.toLowerCase();
+  return (l.name+' '+l.nameVi+' '+l.city+' '+l.country+' '+l.slug).toLowerCase().indexOf(q)>=0;
+}
+function renderBrowse(){
+  filters.classList.remove('hide');crumb.textContent='';
+  var list=DATA.filter(match).sort(function(a,b){return a.name.localeCompare(b.name)});
+  if(!list.length){app.innerHTML='<div class="empty">No properties match.</div>';return}
+  var h='<div class="grid">';
+  list.forEach(function(l){
+    var th=l.thumb?' style="background-image:url('+esc(l.thumb)+')"':'';
+    h+='<div class="card" data-act="open" data-slug="'+esc(l.slug)+'">'
+      +'<div class="th"'+th+'><button class="star'+(inTrip(l.slug)?' on':'')+'" data-act="star" data-slug="'+esc(l.slug)+'">'+(inTrip(l.slug)?'★':'☆')+'</button></div>'
+      +'<div class="bd"><span class="nm">'+esc(nm(l))+'</span><span class="lo">'+esc(l.city||'')+'</span>'
+      +'<span class="mt"><span class="pill">'+l.shots+' shots</span> ~'+l.secs+'s</span></div></div>';
+  });
+  app.innerHTML=h+'</div>';
+}
+function renderTrip(){
+  filters.classList.add('hide');crumb.innerHTML='· <span class="vis-en">My trip</span><span class="vis-vi">Chuyến của tôi</span>';
+  var t=getTrip().map(function(s){return BY[s]}).filter(Boolean);
+  if(!t.length){app.innerHTML='<div class="empty"><span class="vis-en">No properties in your trip yet.<br>Star properties in Browse to prep them.</span><span class="vis-vi">Chưa có địa điểm nào.<br>Bấm ★ ở phần Duyệt để chuẩn bị.</span><div class="btnrow" style="justify-content:center"><button class="btn pri" data-act="go-browse">Browse properties</button></div></div>';return}
+  var sh=t.reduce(function(a,l){return a+l.shots},0),se=t.reduce(function(a,l){return a+l.secs},0);
+  var h='<div class="sum"><div><b>'+t.length+'</b><br><span><span class="vis-en">stops</span><span class="vis-vi">điểm</span></span></div>'
+    +'<div><b>'+sh+'</b><br><span>shots</span></div><div><b>~'+se+'s</b><br><span><span class="vis-en">footage</span><span class="vis-vi">thời lượng</span></span></div></div>';
+  h+='<div class="tlist">';
+  t.forEach(function(l){
+    var th=l.thumb?' style="background-image:url('+esc(l.thumb)+')"':'';
+    h+='<div class="trow" data-act="open" data-slug="'+esc(l.slug)+'"><div class="tth"'+th+'></div>'
+      +'<div class="ti"><b>'+esc(nm(l))+'</b><small>'+esc(l.city||'')+' · '+l.shots+' shots</small></div>'
+      +'<button class="rm" data-act="star" data-slug="'+esc(l.slug)+'">✕</button></div>';
+  });
+  h+='</div><div class="btnrow"><button class="btn" data-act="go-browse">+ Add more</button></div>';
+  app.innerHTML=h;
+}
+function renderRead(){
+  filters.classList.add('hide');
+  var l=BY[state.slug];if(!l){state.v='browse';return render()}
+  crumb.textContent='';
+  var tk=ticks(l.slug),done=0;
+  l.sections.forEach(function(s){s.shots.forEach(function(x){if(tk[x.id])done++})});
+  var pct=l.shots?Math.round(done/l.shots*100):0;
+  var h='<div class="rhead"><button class="back" data-act="go-browse">‹</button>'
+    +'<div class="rtitle"><span class="rt">'+esc(nm(l))+'</span><span class="rl">'+esc(l.city||'')+'</span></div>'
+    +(inTrip(l.slug)?'':'<button class="btn" data-act="star" data-slug="'+esc(l.slug)+'">🎒 Add</button>')+'</div>'
+    +'<div class="rbar"><div class="ring" id="ring" data-p="'+pct+'%" style="--p:'+pct+'"></div>'
+    +'<div class="rmeta"><span id="rdone">'+done+'</span>/'+l.shots+' shots · ~'+l.secs+'s · ★ = banner candidate</div></div>';
+  l.sections.forEach(function(s){
+    h+='<section class="grp"><h2>§'+s.id+' · <span class="vis-en">'+esc(s.en)+'</span><span class="vis-vi">'+esc(s.vi)+'</span></h2>';
+    if(s.note_en)h+='<p class="gnote"><span class="vis-en">'+esc(s.note_en)+'</span><span class="vis-vi">'+esc(s.note_vi)+'</span></p>';
+    s.shots.forEach(function(x){
+      var on=tk[x.id];
+      h+='<label class="sh'+(x.hero?' hero':'')+(on?' done':'')+'" data-id="'+x.id+'">'
+        +'<input type="checkbox" data-id="'+x.id+'"'+(on?' checked':'')+'>'
+        +'<span class="id">'+x.id+(x.hero?' ★':'')+'</span>'
+        +'<span class="txt"><b class="vis-en">'+esc(x.en)+'</b><b class="vis-vi">'+esc(x.vi)+'</b>'
+        +'<small class="vis-en">'+esc(x.move_en)+' · ~'+x.secs+'s · '+esc(x.why_en)+'</small>'
+        +'<small class="vis-vi">'+esc(x.move_vi)+' · ~'+x.secs+'s · '+esc(x.why_vi)+'</small></span></label>';
+    });
+    h+='</section>';
+  });
+  h+='<p class="foot">Clip naming: <code>'+esc(l.slug)+'__&lt;ID&gt;.mp4</code> · ticks saved on this device</p>';
+  app.innerHTML=h;
+}
+function render(){
+  if(state.v==='browse')renderBrowse();
+  else if(state.v==='trip')renderTrip();
+  else if(state.v==='read')renderRead();
+  document.getElementById('tripBtn').classList.toggle('on',state.v==='trip');
+  window.scrollTo(0,0);
+}
+function nav(v,slug){state.v=v;state.slug=slug||'';
+  var h='#/'+v+(slug?'/'+slug:'');if(location.hash!==h)location.hash=h;render()}
+function fromHash(){
+  var p=(location.hash||'').replace(/^#\\//,'').split('/');
+  if(p[0]==='read'&&p[1]){state.v='read';state.slug=decodeURIComponent(p[1])}
+  else if(p[0]==='trip'){state.v='trip'}
+  else{state.v='browse'}
+  render();
+}
+document.addEventListener('click',function(e){
+  var t=e.target.closest('[data-act]');if(!t)return;var a=t.dataset.act;
+  if(a==='lang'){setLangMode(t.dataset.l==='vi');return}
+  if(a==='chip'){state.c=t.dataset.c;renderChips();renderBrowse();return}
+  if(a==='star'){e.preventDefault();e.stopPropagation();toggleTrip(t.dataset.slug);render();renderChips();return}
+  if(a==='open'){nav('read',t.dataset.slug);return}
+  if(a==='go-trip'){nav('trip');return}
+  if(a==='go-browse'){nav('browse');return}
+});
+document.addEventListener('change',function(e){
+  var b=e.target;if(b.type!=='checkbox')return;
+  var l=BY[state.slug];if(!l)return;
+  var tk=ticks(l.slug);if(b.checked)tk[b.dataset.id]=1;else delete tk[b.dataset.id];
+  SS('sl:ticks:'+l.slug,tk);
+  b.closest('.sh').classList.toggle('done',b.checked);
+  var done=0;l.sections.forEach(function(s){s.shots.forEach(function(x){if(tk[x.id])done++})});
+  var pct=l.shots?Math.round(done/l.shots*100):0,r=document.getElementById('ring');
+  if(r){r.style.setProperty('--p',pct);r.setAttribute('data-p',pct+'%')}
+  var d=document.getElementById('rdone');if(d)d.textContent=done;
+});
+document.getElementById('q').addEventListener('input',function(){state.q=this.value;renderBrowse()});
+window.addEventListener('hashchange',fromHash);
+function setLangMode(vi){document.body.classList.toggle('vi',vi);
   document.getElementById('bVi').classList.toggle('on',vi);
   document.getElementById('bEn').classList.toggle('on',!vi);
-  try{localStorage.setItem('shotlist:lang',vi?'vi':'en')}catch(e){}}
-document.getElementById('bVi').addEventListener('click',function(){setLang(true)});
-document.getElementById('bEn').addEventListener('click',function(){setLang(false)});
-setLang((function(){try{return localStorage.getItem('shotlist:lang')==='vi'}catch(e){return false}})());
-upd();
+  SS('sl:lang',vi?'vi':'en');render()}
+setLangMode(LS('sl:lang','en')==='vi');
+paintTripN();renderChips();fromHash();
 </script></body></html>`;
 }
 
@@ -422,59 +596,41 @@ async function cityMatch(slug, city) {
   return `${d.slug} ${d.regionCity} ${d.district} ${d.name}`.toLowerCase().includes(city);
 }
 
-async function resolveSlugs() {
-  if (positional.length) return positional;
-  const all = await allSlugs();
-  if (cityFilter) {
-    const out = [];
-    for (const s of all) if (await cityMatch(s, cityFilter)) out.push(s);
-    return out;
-  }
-  if (flags.has('--all')) return all;
-  return [];
-}
-
-// ─── Trip-pack index ────────────────────────────────────────────────────────────
-function tripIndex(entries) {
-  const cards = entries.map(e => `<a class="c" href="${escH(e.slug)}.html">
-    <b>${escH(e.name || e.slug)}</b><small>${escH([e.district, e.regionCity].filter(Boolean).join(' · '))}</small>
-    <small>${e.shots} shots · ~${e.secs}s</small></a>`).join('');
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
-<title>Site-visit shot lists</title><style>
-body{margin:0;font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f6f6fb;color:#12121a;padding:20px}
-h1{font-size:20px;margin:4px 4px 16px}
-.g{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
-.c{display:block;background:#fff;border:1px solid #e7e7ee;border-radius:14px;padding:14px;text-decoration:none;color:inherit}
-.c b{display:block;font-size:15px;margin-bottom:4px}.c small{display:block;color:#6b6b78;font-size:12.5px}
-@media(max-width:640px){.g{grid-template-columns:1fr}}
-</style></head><body><h1>🎬 Site-visit shot lists (${entries.length})</h1><div class="g">${cards}</div></body></html>`;
-}
 
 // ─── Main ───────────────────────────────────────────────────────────────────────
+// Always rebuilds the portal (shotlist/index.html) from EVERY committed listing,
+// so on-site you can reach any script — even ones added since the last trip.
+// Additionally writes a markdown script (Notion-paste) for any explicitly named
+// slugs / --city matches. The portal scan parses the committed HTML (fast,
+// offline); --md uses Notion when a token is present for the richer unit data.
 async function main() {
-  const slugs = await resolveSlugs();
-  if (!slugs.length) {
-    console.error('Usage: node gen-shotlist.mjs <slug...> | --city <name> | --all  [--from-html]');
-    process.exit(1);
-  }
   await fs.mkdir(OUT_DIR, { recursive: true });
+  const all = await allSlugs();
+
   const entries = [];
-  for (const slug of slugs) {
+  for (const slug of all) {
+    const data = await fetchFromHtml(slug);
+    if (!data || !data.name) continue;              // skip stubs with no title
+    entries.push(portalEntry(data, buildSections(data)));
+  }
+  entries.sort((a, b) => a.name.localeCompare(b.name));
+  await fs.writeFile(path.join(OUT_DIR, 'index.html'), buildPortal(entries));
+  const totShots = entries.reduce((a, e) => a + e.shots, 0);
+  console.log(`  ✓ portal → shotlist/index.html · ${entries.length} listings · ${totShots} shots inlined`);
+
+  // Optional per-slug markdown scripts
+  let mdSlugs = positional.slice();
+  if (!mdSlugs.length && cityFilter) {
+    for (const s of all) if (await cityMatch(s, cityFilter)) mdSlugs.push(s);
+  }
+  for (const slug of mdSlugs) {
     const data = await loadListing(slug);
     if (!data) { console.warn(`  ⚠ ${slug}: no data (not in Notion or properties/)`); continue; }
     const sections = buildSections(data);
     await fs.writeFile(path.join(OUT_DIR, `${slug}.md`), toMarkdown(data, sections));
-    await fs.writeFile(path.join(OUT_DIR, `${slug}.html`), toHtml(data, sections));
-    entries.push({ slug, name: data.name, regionCity: data.regionCity, district: data.district,
-      shots: totalShots(sections), secs: totalSecs(sections) });
-    console.log(`  ✓ ${slug} — ${totalShots(sections)} shots (~${totalSecs(sections)}s), src=${data.source} → shotlist/${slug}.html`);
+    console.log(`  ✓ ${slug} — ${totalShots(sections)} shots (~${totalSecs(sections)}s), src=${data.source} → shotlist/${slug}.md`);
   }
-  if (entries.length > 1) {
-    await fs.writeFile(path.join(OUT_DIR, 'index.html'), tripIndex(entries));
-    console.log(`  ✓ trip pack → shotlist/index.html (${entries.length} listings)`);
-  }
-  console.log(`\nDone. ${entries.length} shot list(s) in shotlist/`);
+  console.log(`\nDone. Portal + ${mdSlugs.length} markdown script(s) in shotlist/`);
 }
 
 main().catch(e => { console.error(e); process.exit(1); });
