@@ -449,10 +449,18 @@ body{font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-seri
 .line{margin-top:8px;font-size:14px;border-left:3px solid var(--line);padding-left:9px}
 .line .lb{font-weight:800;font-size:10px;letter-spacing:.05em;color:var(--mut);display:block;text-transform:uppercase}
 .line.oncam{border-left-color:var(--org)}.line.vo{border-left-color:var(--nac)}
-.clip{margin-top:9px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.clip .cv{font-size:11px;color:var(--mut);font-family:ui-monospace,Menlo,monospace;background:#f4f4fa;border-radius:6px;padding:2px 6px}
-.clip input{flex:1;min-width:120px;border:1px solid var(--line);border-radius:9px;padding:7px 9px;font-size:13px;min-height:36px;width:auto;height:auto;accent-color:auto}
-.clip .ok{color:#128a3e;font-weight:700;font-size:12px}
+.cap{margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.cap .cv{font-size:11px;color:var(--mut);font-family:ui-monospace,Menlo,monospace;background:#f4f4fa;border-radius:6px;padding:3px 7px}
+.capbtn{display:inline-flex;align-items:center;gap:6px;background:var(--org);color:#fff;border-radius:10px;font-weight:700;font-size:13px;padding:9px 13px;min-height:40px;cursor:pointer}
+.capbtn input{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+.takes{margin-top:7px;display:flex;flex-direction:column;gap:6px}
+.take{display:flex;align-items:center;gap:8px;background:#f7f7fc;border:1px solid var(--line);border-radius:10px;padding:7px 9px;font-size:12.5px}
+.take .tn{flex:1;min-width:0;font-family:ui-monospace,Menlo,monospace;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.take .ok{color:#128a3e;font-weight:700;white-space:nowrap}
+.take .up{color:var(--nac);font-weight:700;white-space:nowrap}
+.take .er{color:#c0392b;font-weight:700;white-space:nowrap}
+.take .tx{border:0;background:transparent;color:var(--mut);font-size:15px;padding:0 2px;cursor:pointer}
+.seccount{font-weight:700;font-size:10.5px;color:var(--org);margin-left:6px;background:#ffe9e0;border-radius:999px;padding:1px 7px}
 .wrapbtns{display:flex;gap:8px;margin:16px 0 0;flex-wrap:wrap}
 .hide{display:none!important}
 /* language toggle — active lang inline everywhere; block for the stacked shot text */
@@ -547,12 +555,49 @@ function readHead(l){
 // script Done store: explicit local overrides keyed by shot number; seeds from Notion "done"
 function sdone(slug){return LS('sl:sdone:'+slug,{})}
 function effDone(slug,sh){var st=sdone(slug);return st[sh.n]!==undefined?!!st[sh.n]:!!sh.done}
-function clips(slug){return LS('sl:clip:'+slug,{})}
 function scriptDoneCount(l){var n=0;l.script.sections.forEach(function(s){s.shots.forEach(function(sh){if(effDone(l.slug,sh))n++})});return n}
 function langPick(o){if(!o)return '';var vi=document.body.classList.contains('vi');return (vi?(o.vi||o.en):(o.en||o.vi))||''}
+// ── on-the-go clip capture ──
+function secCode(name){var w=(name||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().split(' ');return (w[0]||'sec').slice(0,10)}
+function clipStore(slug){return LS('sl:clips:'+slug,{})}
+function shotTakes(slug,n){var o=clipStore(slug);return o[n]||[]}
+function totalClips(slug){var o=clipStore(slug),c=0;for(var k in o)c+=(o[k]||[]).length;return c}
+function workerUrl(){var w=LS('sl:worker','')||'';while(w.slice(-1)==='/')w=w.slice(0,-1);return w}
+function takesHtml(slug,n){
+  return shotTakes(slug,n).map(function(t,i){
+    var st=t.up==='done'?'<span class="ok">✓ '+(t.url?'up':'saved')+'</span>':(t.up==='uploading'?'<span class="up">↑…</span>':(t.up==='err'?'<span class="er">! retry</span>':'<span class="ok">● saved</span>'));
+    return '<div class="take"><span class="tn">'+esc(t.name)+'</span>'+st+'<button class="tx" data-act="delclip" data-n="'+n+'" data-i="'+i+'">✕</button></div>';
+  }).join('');
+}
+function updSecCounts(l){var o=clipStore(l.slug);l.script.sections.forEach(function(s,si){
+  var c=0;s.shots.forEach(function(sh){c+=(o[sh.n]||[]).length});
+  var el=document.getElementById('sc-'+si);if(el)el.textContent=c?('🎬 '+c):'';});}
+function reTakes(n){var el=document.getElementById('tk-'+n);if(el)el.innerHTML=takesHtml(state.slug,n);
+  var l=BY[state.slug];if(l&&l.script)updSecCounts(l);}
+function uploadClip(w,file,name){
+  return fetch(w+'/reel-clip?name='+encodeURIComponent(name),{headers:{'x-cc-key':LS('sl:cckey','')||''}})
+    .then(function(r){if(!r.ok)throw 0;return r.json()})
+    .then(function(j){if(!j||!j.uploadURL)throw 0;var fd=new FormData();fd.append('file',file,name);
+      return fetch(j.uploadURL,{method:'POST',body:fd}).then(function(u){if(!u.ok)throw 0;return {uid:j.uid,url:j.playback||''}})});
+}
+function addClip(n,sec,file){
+  var slug=state.slug,o=clipStore(slug);if(!o[n])o[n]=[];
+  var name=slug+'__'+sec+'-s'+n+'-t'+(o[n].length+1)+'.mp4';
+  var rec={name:name,size:file.size,ts:Date.now(),up:'saved'};o[n].push(rec);SS('sl:clips:'+slug,o);reTakes(n);
+  var w=workerUrl();
+  if(w){rec.up='uploading';SS('sl:clips:'+slug,o);reTakes(n);
+    uploadClip(w,file,name).then(function(res){rec.up='done';rec.url=res.url;rec.uid=res.uid;SS('sl:clips:'+slug,o);reTakes(n)})
+      .catch(function(){rec.up='err';SS('sl:clips:'+slug,o);reTakes(n)});}
+}
+function clipManifest(l){
+  var o=clipStore(l.slug),lines=['CLIP MANIFEST — '+nm(l)+' · Script #'+l.script.scriptNo,'Total clips: '+totalClips(l.slug),''];
+  l.script.sections.forEach(function(s){lines.push('['+s.name+']');
+    s.shots.forEach(function(sh){(o[sh.n]||[]).forEach(function(t){lines.push('  '+t.name+(t.url?'  '+t.url:''))})});lines.push('')});
+  return lines.join('\\n');
+}
 
 function renderScript(l){
-  var sc=l.script,cl=clips(l.slug);
+  var sc=l.script;
   var done=scriptDoneCount(l),pct=sc.total?Math.round(done/sc.total*100):0;
   var fs=sc.filmingStatus,fsc=fs==='Filmed'||fs==='Ready to Post'?'go':(fs==='Edited'?'go':'film');
   var h=readHead(l);
@@ -568,27 +613,31 @@ function renderScript(l){
     +'</div></div>';
   h+='<div class="rbar"><div class="ring" id="ring" data-p="'+pct+'%" style="--p:'+pct+'"></div>'
     +'<div class="rmeta"><span id="rdone">'+done+'</span>/'+sc.total+' shots filmed · tap to tick as you shoot</div></div>';
-  sc.sections.forEach(function(s){
-    h+='<section class="grp"><h2>'+esc(s.name)+'</h2>';
+  sc.sections.forEach(function(s,si){
+    var code=secCode(s.name);
+    h+='<section class="grp"><h2>'+esc(s.name)+'<span class="seccount" id="sc-'+si+'"></span></h2>';
     if(s.note)h+='<p class="gnote">'+esc(s.note)+'</p>';
     s.shots.forEach(function(sh){
-      var on=effDone(l.slug,sh),conv=esc(l.slug)+'__'+(sh.n||'x')+'.mp4',cv=cl[sh.n]||'';
+      var on=effDone(l.slug,sh);
       h+='<div class="scut'+(on?' done':'')+'">'
         +'<input type="checkbox" data-sn="'+sh.n+'"'+(on?' checked':'')+'>'
         +'<div class="body"><div class="hd"><span class="num">'+(sh.n?sh.n+'.':'')+'</span><span class="snm">'+esc(sh.name)+'</span></div>';
       if(sh.direction)h+='<div class="dir">🎥 '+esc(sh.direction)+'</div>';
       var oc=langPick(sh.oncam);if(oc)h+='<div class="line oncam"><span class="lb">🎙️ On-cam'+(sh.oncam.secs?' · ~'+sh.oncam.secs+'s':'')+'</span>'+esc(oc)+'</div>';
       var vo=langPick(sh.vo);if(vo)h+='<div class="line vo"><span class="lb">🔊 VO'+(sh.vo.secs?' · ~'+sh.vo.secs+'s':'')+'</span>'+esc(vo)+'</div>';
-      h+='<div class="clip"><span class="cv">'+conv+'</span>'
-        +'<input type="url" placeholder="paste clip link (Drive/CF)…" data-clip="'+sh.n+'" value="'+esc(cv)+'">'
-        +(cv?'<span class="ok">✓ clip</span>':'')+'</div>';
+      h+='<div class="cap"><span class="cv">'+esc(l.slug)+'__'+esc(code)+'-s'+sh.n+'</span>'
+        +'<label class="capbtn">🎬 Add clip<input type="file" accept="video/*" data-cap="'+sh.n+'" data-sec="'+esc(code)+'"></label></div>'
+        +'<div class="takes" id="tk-'+sh.n+'">'+takesHtml(l.slug,sh.n)+'</div>';
       h+='</div></div>';
     });
     h+='</section>';
   });
-  h+='<div class="wrapbtns"><button class="btn pri" data-act="report">📋 Copy filming report</button></div>';
-  h+='<p class="foot">Ticks &amp; clip links saved on this device · report hands off to post-edit</p>';
+  h+='<div class="wrapbtns"><button class="btn pri" data-act="report">📋 Filming report</button>'
+    +'<button class="btn" data-act="manifest">🎞️ Clip manifest</button>'
+    +'<button class="btn" data-act="setup">⚙︎ Upload</button></div>';
+  h+='<p class="foot">Tap 🎬 Add clip on each shot to drop in iPhone footage · auto-named per section · saved on this device</p>';
   app.innerHTML=h;
+  updSecCounts(l);
 }
 function renderIdeas(l){
   var tk=ticks(l.slug),done=0;
@@ -622,14 +671,14 @@ function renderRead(){
   else renderIdeas(l);
 }
 function buildReport(l){
-  var sc=l.script,cl=clips(l.slug),lines=[];
+  var sc=l.script,o=clipStore(l.slug),lines=[];
   lines.push('FILMING REPORT — '+nm(l)+' · Script #'+sc.scriptNo);
-  lines.push(scriptDoneCount(l)+'/'+sc.total+' shots filmed · '+(sc.platforms||[]).join('+')+' · ~'+sc.durationSec+'s');
+  lines.push(scriptDoneCount(l)+'/'+sc.total+' shots filmed · '+totalClips(l.slug)+' clips · '+(sc.platforms||[]).join('+')+' · ~'+sc.durationSec+'s');
   lines.push('');
   sc.sections.forEach(function(s){
     lines.push('['+s.name+']');
     s.shots.forEach(function(sh){
-      var mark=effDone(l.slug,sh)?'[x]':'[ ]',link=cl[sh.n]?'  → '+cl[sh.n]:'';
+      var nt=(o[sh.n]||[]).length,mark=effDone(l.slug,sh)?'[x]':'[ ]',link=nt?'  ('+nt+' clip'+(nt>1?'s':'')+')':'';
       lines.push('  '+mark+' '+(sh.n?sh.n+'. ':'')+sh.name+link);
     });
   });
@@ -672,9 +721,18 @@ document.addEventListener('click',function(e){
   if(a==='go-browse'){nav('browse');return}
   if(a==='tab'){state.tab=t.dataset.t;renderRead();return}
   if(a==='report'){var l=BY[state.slug];if(l&&l.script)copyText(buildReport(l),t);return}
+  if(a==='manifest'){var l2=BY[state.slug];if(l2&&l2.script)copyText(clipManifest(l2),t);return}
+  if(a==='delclip'){var o=clipStore(state.slug),n=t.dataset.n;if(o[n]){o[n].splice(+t.dataset.i,1);if(!o[n].length)delete o[n];SS('sl:clips:'+state.slug,o)}reTakes(n);return}
+  if(a==='setup'){var cur=LS('sl:worker','')||'';var v=prompt('Cloudflare upload worker URL (blank = log clips locally only):',cur);
+    if(v===null)return;SS('sl:worker',(v||'').trim());
+    if((v||'').trim()){var ck=prompt('Cockpit access key (x-cc-key):',LS('sl:cckey','')||'');if(ck!==null)SS('sl:cckey',(ck||'').trim());alert('Uploads ON — clips go to Cloudflare Stream.')}
+    else alert('Uploads off — clips logged on this device.');return}
 });
 document.addEventListener('change',function(e){
   var b=e.target,l=BY[state.slug];if(!l)return;
+  if(b.type==='file'&&b.dataset.cap!==undefined){             // iPhone clip capture
+    var f=b.files;if(f&&f.length){for(var i=0;i<f.length;i++)addClip(b.dataset.cap,b.dataset.sec,f[i])}b.value='';return;
+  }
   if(b.type==='checkbox'&&b.dataset.id!==undefined){          // shot-ideas tick
     var tk=ticks(l.slug);if(b.checked)tk[b.dataset.id]=1;else delete tk[b.dataset.id];
     SS('sl:ticks:'+l.slug,tk);b.closest('.sh').classList.toggle('done',b.checked);
@@ -683,13 +741,6 @@ document.addEventListener('change',function(e){
   if(b.type==='checkbox'&&b.dataset.sn!==undefined){          // script Done tick
     var st=sdone(l.slug);st[b.dataset.sn]=b.checked;SS('sl:sdone:'+l.slug,st);
     b.closest('.scut').classList.toggle('done',b.checked);updRing(scriptDoneCount(l),l.script.total);return;
-  }
-  if(b.dataset.clip!==undefined){                             // drop-in clip link
-    var cs=clips(l.slug),v=(b.value||'').trim();
-    if(v)cs[b.dataset.clip]=v;else delete cs[b.dataset.clip];SS('sl:clip:'+l.slug,cs);
-    var wrap=b.closest('.clip'),ok=wrap.querySelector('.ok');
-    if(v){if(!ok){ok=document.createElement('span');ok.className='ok';wrap.appendChild(ok)}ok.textContent='✓ clip'}
-    else if(ok)ok.parentNode.removeChild(ok);
   }
 });
 document.getElementById('q').addEventListener('input',function(){state.q=this.value;renderBrowse()});

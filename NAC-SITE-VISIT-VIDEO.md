@@ -47,6 +47,30 @@ DB — per shot: `Shot`, `Section`, `Direction (EN)`, `ON-CAM option`, `VO optio
 
 ---
 
+## ② Ingest — drop iPhone clips on the go ✅ SHIPPED *(uploads pending worker deploy)*
+
+Built for filming solo, walking the site on an iPhone. On each script shot the
+Read screen has a **🎬 Add clip** button (`<input type=file accept=video/*>` →
+iOS offers *Record / Photo Library*). Each dropped clip is:
+- **auto-named per section** — `<slug>__<section>-s<shot>-t<take>.mp4`
+  (e.g. `london-dock-wapping-london__intro-s4-t1.mp4`); multiple takes per shot supported;
+- **grouped + counted per section** (🎬 badge on each section header);
+- saved on-device (offline); removable; and rolled into **🎞️ Clip manifest**
+  (section-grouped list of names + URLs) + the **📋 Filming report** for the editor.
+
+**Upload wiring:** with a worker URL set (portal **⚙︎ Upload**), each clip uploads
+**straight from the iPhone to Cloudflare Stream** via a one-time *direct-creator-upload*
+URL minted by the worker — the big file never proxies through the worker.
+- Worker endpoint: `GET /reel-clip?name=…` in `nac-marketing-omnichannel/command-center/worker.js`
+  → `reelClipUpload()` → CF `stream/direct_upload` → `{uploadURL, uid, playback, thumbnail}`.
+  CC_KEY-gated + CORS (`*`) like the sibling `/hero-upload`. Reuses `CF_STREAM_TOKEN`/`CF_ACCOUNT_ID`.
+- **To activate:** deploy the worker (land `command-center/**` on the deploy branch), then in the
+  portal tap **⚙︎ Upload** → paste `https://nac-marketing-cc.ray-vtt.workers.dev` + the cockpit key.
+  Until then the portal runs in **organizer mode** (clips logged + named + manifest, no upload) — no
+  breakage. Needs a real-device smoke test (iPhone Safari → Stream) before relying on it.
+
+---
+
 ### The portal — Prepare → Trip → Read
 
 `shotlist/index.html` (command `/shotlist`, script `scripts/gen-shotlist.mjs`) is
