@@ -1,0 +1,59 @@
+name: Build Film Portal
+
+# Refreshes the site-visit film portal (shotlist/index.html) + reel scripts.
+# 1) pull-reels.mjs --from-notion → shotlist/scripts.json (best-effort; needs NOTION_TOKEN)
+# 2) gen-shotlist.mjs → rebuilds the portal from every properties/*.html + scripts.json
+# Commits only when the output actually changes (content-stable).
+on:
+  push:
+    branches: [main]
+    paths:
+      - "properties/*.html"
+      - "scripts/gen-shotlist.mjs"
+      - "scripts/pull-reels.mjs"
+      - "scripts/reels-source.json"
+      - ".github/triggers/**"
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: build-film-portal
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: Install script deps
+        working-directory: scripts
+        run: npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+      - name: Refresh reel scripts from Notion (best-effort)
+        working-directory: scripts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: |
+          if [ -n "$NOTION_TOKEN" ]; then
+            node pull-reels.mjs --from-notion || echo "notion pull failed — using committed reels-source.json"
+          fi
+          node pull-reels.mjs   # build scripts.json from source (committed or freshly pulled)
+      - name: Rebuild portal
+        working-directory: scripts
+        run: node gen-shotlist.mjs
+      - name: Commit if changed
+        run: |
+          if ! git diff --quiet -- shotlist/ scripts/reels-source.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add shotlist/ scripts/reels-source.json
+            git commit -m "chore(portal): refresh film portal + reel scripts"
+            git push
+          else
+            echo "no portal changes"
+          fi

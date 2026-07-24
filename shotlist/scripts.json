@@ -1,0 +1,454 @@
+{
+  "reels": [
+    {
+      "scriptNo": "021",
+      "slug": "london-dock-wapping-london",
+      "postName": "NAC Script #021 — London Dock (Berkeley): On-Site Property Tour — Wapping, London",
+      "status": "Ready for Filming",
+      "filmingStatus": "Not Filmed",
+      "platforms": [
+        "TikTok",
+        "Instagram"
+      ],
+      "durationSec": 120,
+      "hookType": "POV",
+      "postUrl": null,
+      "reelUrl": "https://app.notion.com/3a748ec25e868109bffccde4f7749e58",
+      "checklistUrl": "https://app.notion.com/p/8fc8a3a30c5c450ebeebe07aad065a7c",
+      "total": 20,
+      "doneCount": 4,
+      "sections": [
+        {
+          "name": "Intro & Amenities",
+          "note": "",
+          "shots": [
+            {
+              "n": 1,
+              "name": "Arrival Square",
+              "note": false,
+              "section": "Intro & Amenities",
+              "direction": "Wide shot of piazza + water feature (tripod/gimbal, slow pan), then close-up of water feature + low-angle architecture shot",
+              "oncam": {
+                "secs": 18,
+                "vi": "\"Hôm nay Ray dẫn mọi người đi xem trực tiếp một dự án NAC đang hợp tác — London Dock của Berkeley, ngay Wapping. Cách Tower Bridge chỉ vài phút đi bộ. Đây là bảy hecta rưỡi cảnh quan — ngay giữa Zone 1 London.\"",
+                "en": "Today Ray's taking you to see a project NAC is partnering on — Berkeley's London Dock, right in Wapping. A few minutes' walk from Tower Bridge. This is 7.5 acres of landscaping, right in Zone 1 London.",
+                "raw": "~18s\n\n🇻🇳 \"Hôm nay Ray dẫn mọi người đi xem trực tiếp một dự án NAC đang hợp tác — London Dock của Berkeley, ngay Wapping. Cách Tower Bridge chỉ vài phút đi bộ. Đây là bảy hecta rưỡi cảnh quan — ngay giữa Zone 1 London.\"\n\n🇬🇧 Today Ray's taking you to see a project NAC is partnering on — Berkeley's London Dock, right in Wapping. A few minutes' walk from Tower Bridge. This is 7.5 acres of landscaping, right in Zone 1 London."
+              },
+              "vo": {
+                "secs": 10,
+                "vi": "\"Water feature chạy suốt cả ngày, ngay giữa quảng trường. Bảy hecta rưỡi cảnh quan, ngay giữa Zone 1 London.\"",
+                "en": "The water feature runs all day, right in the middle of the square. 7.5 acres of landscaping, right in Zone 1 London.",
+                "raw": "~10s\n\n🇻🇳 \"Water feature chạy suốt cả ngày, ngay giữa quảng trường. Bảy hecta rưỡi cảnh quan, ngay giữa Zone 1 London.\"\n\n🇬🇧 The water feature runs all day, right in the middle of the square. 7.5 acres of landscaping, right in Zone 1 London."
+              },
+              "done": false
+            },
+            {
+              "n": 2,
+              "name": "Riverside Path",
+              "note": false,
+              "section": "Intro & Amenities",
+              "direction": "Walking shot along riverside path (gimbal trailing/side) + cutaway of Tower Bridge/City skyline if visible; optional b-roll of old Wapping streets",
+              "oncam": {
+                "secs": 15,
+                "vi": "\"Ray hay đi bộ đoạn này — chỉ vài phút là tới City hoặc Canary Wharf.\"",
+                "en": "Ray walks this stretch often — just a few minutes to the City or Canary Wharf.",
+                "raw": "~15s\n\n🇻🇳 \"Ray hay đi bộ đoạn này — chỉ vài phút là tới City hoặc Canary Wharf.\"\n\n🇬🇧 Ray walks this stretch often — just a few minutes to the City or Canary Wharf."
+              },
+              "vo": {
+                "secs": 7,
+                "vi": "\"Đi bộ dọc sông vài phút là tới City hoặc Canary Wharf.\"",
+                "en": "Walking along the river, a few minutes gets you to the City or Canary Wharf.",
+                "raw": "~7s\n\n🇻🇳 \"Đi bộ dọc sông vài phút là tới City hoặc Canary Wharf.\"\n\n🇬🇧 Walking along the river, a few minutes gets you to the City or Canary Wharf."
+              },
+              "done": false
+            },
+            {
+              "n": 3,
+              "name": "Mauretania Lounge",
+              "note": false,
+              "section": "Intro & Amenities",
+              "direction": "Establishing shot + aquarium detail, then co-working area; cutaway of bar/dining/Grand Staircase (confirm indoor filming permission first)",
+              "oncam": {
+                "secs": 20,
+                "vi": "\"Đây là Mauretania Lounge — không gian chung dành cho cư dân. Lấy cảm hứng từ những chuyến du thuyền thời hoàng kim. Có khu làm việc chung. Có bar riêng. Có phòng ăn riêng. Nếu làm việc từ xa như Ray — đây đúng kiểu không gian lý tưởng.\"",
+                "en": "This is Mauretania Lounge — a shared space for residents, inspired by golden-age ocean liners. Co-working area, private bar, private dining room. If you work remotely like Ray, this is exactly the kind of ideal space.",
+                "raw": "~20s\n\n🇻🇳 \"Đây là Mauretania Lounge — không gian chung dành cho cư dân. Lấy cảm hứng từ những chuyến du thuyền thời hoàng kim. Có khu làm việc chung. Có bar riêng. Có phòng ăn riêng. Nếu làm việc từ xa như Ray — đây đúng kiểu không gian lý tưởng.\"\n\n🇬🇧 This is Mauretania Lounge — a shared space for residents, inspired by golden-age ocean liners. Co-working area, private bar, private dining room. If you work remotely like Ray, this is exactly the kind of ideal space."
+              },
+              "vo": {
+                "secs": 10,
+                "vi": "\"Mauretania Lounge — không gian chung lấy cảm hứng từ du thuyền thời hoàng kim. Có co-working, bar riêng, phòng ăn riêng.\"",
+                "en": "Mauretania Lounge — a shared space inspired by golden-age ocean liners. Co-working, a private bar, a private dining room.",
+                "raw": "~10s\n\n🇻🇳 \"Mauretania Lounge — không gian chung lấy cảm hứng từ du thuyền thời hoàng kim. Có co-working, bar riêng, phòng ăn riêng.\"\n\n🇬🇧 Mauretania Lounge — a shared space inspired by golden-age ocean liners. Co-working, a private bar, a private dining room."
+              },
+              "done": false
+            },
+            {
+              "n": 4,
+              "name": "The Club",
+              "note": false,
+              "section": "Intro & Amenities",
+              "direction": "⚠️ Confirm on-site: pool/gym/screening room filmable. Quick montage: pool → gym → squash court → virtual golf room → screening room (2–3s/shot) + cutaway of concierge desk",
+              "oncam": {
+                "secs": 18,
+                "vi": "\"Còn đây là The Club — chỗ Ray hay ghé sau giờ làm. Hồ bơi, gym, sân squash, cả phòng chiếu phim riêng luôn.\"",
+                "en": "And this is The Club — where Ray often drops by after work. Pool, gym, squash court, even a private screening room.",
+                "raw": "~18s\n\n🇻🇳 \"Còn đây là The Club — chỗ Ray hay ghé sau giờ làm. Hồ bơi, gym, sân squash, cả phòng chiếu phim riêng luôn.\"\n\n🇬🇧 And this is The Club — where Ray often drops by after work. Pool, gym, squash court, even a private screening room."
+              },
+              "vo": {
+                "secs": 10,
+                "vi": "\"Hồ bơi, gym, sân squash, phòng tập golf ảo, phòng chiếu phim riêng — concierge 24 trên 24.\"",
+                "en": "Pool, gym, squash court, virtual golf room, private screening room — concierge around the clock.",
+                "raw": "~10s\n\n🇻🇳 \"Hồ bơi, gym, sân squash, phòng tập golf ảo, phòng chiếu phim riêng — concierge 24 trên 24.\"\n\n🇬🇧 Pool, gym, squash court, virtual golf room, private screening room — concierge around the clock."
+              },
+              "done": false
+            },
+            {
+              "n": 5,
+              "name": "Transition → Unit Tours",
+              "note": false,
+              "section": "Intro & Amenities",
+              "direction": "Bridge line before cutting to the 2BR/3BR sections below — walk toward the residential block as you say this",
+              "oncam": {
+                "secs": 10,
+                "vi": "\"Giờ Ray dẫn mọi người vào xem căn hộ mẫu luôn nhé.\"",
+                "en": "Now let's go take a look inside a show apartment.",
+                "raw": "~10s\n\n🇻🇳 \"Giờ Ray dẫn mọi người vào xem căn hộ mẫu luôn nhé.\"\n\n🇬🇧 Now let's go take a look inside a show apartment."
+              },
+              "vo": {
+                "secs": 6,
+                "vi": "\"Và đây là lúc mình vào xem căn hộ mẫu.\"",
+                "en": "And here's where we head inside a show apartment.",
+                "raw": "~6s\n\n🇻🇳 \"Và đây là lúc mình vào xem căn hộ mẫu.\"\n\n🇬🇧 And here's where we head inside a show apartment."
+              },
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "2BR Tour",
+          "note": "",
+          "shots": [
+            {
+              "n": 6,
+              "name": "Entrance / Opener (2BR)",
+              "note": false,
+              "section": "2BR Tour",
+              "direction": "Stand right at the entrance, look straight at camera before moving into the panning shots",
+              "oncam": {
+                "secs": 18,
+                "vi": "\"Đây là căn 2 phòng ngủ tại London Dock — cũng chính là căn Ray đang ở. Ray sẽ dẫn mọi người đi một vòng — từ phòng khách, phòng ngủ master, tủ quần áo, đến bếp — để thấy rõ từng góc thực tế, không chỉnh sửa gì thêm.\"",
+                "en": "This is a 2-bedroom unit at London Dock — actually the one Ray lives in. Ray will take you around — living room, master bedroom, wardrobe, kitchen — nothing staged.",
+                "raw": "~18s\n\n🇻🇳 \"Đây là căn 2 phòng ngủ tại London Dock — cũng chính là căn Ray đang ở. Ray sẽ dẫn mọi người đi một vòng — từ phòng khách, phòng ngủ master, tủ quần áo, đến bếp — để thấy rõ từng góc thực tế, không chỉnh sửa gì thêm.\"\n\n🇬🇧 This is a 2-bedroom unit at London Dock — actually the one Ray lives in. Ray will take you around — living room, master bedroom, wardrobe, kitchen — nothing staged."
+              },
+              "vo": {
+                "secs": 8,
+                "vi": "\"Căn 2 phòng ngủ tại London Dock — phòng khách mở, ánh sáng tự nhiên vào rất tốt.\"",
+                "en": "A 2-bedroom unit — open living room, great natural light.",
+                "raw": "~8s\n\n🇻🇳 \"Căn 2 phòng ngủ tại London Dock — phòng khách mở, ánh sáng tự nhiên vào rất tốt.\"\n\n🇬🇧 A 2-bedroom unit — open living room, great natural light."
+              },
+              "done": false
+            },
+            {
+              "n": 7,
+              "name": "Living Room Detail (2BR)",
+              "note": false,
+              "section": "2BR Tour",
+              "direction": "Close-up of sofa/dining table, pan out to window/balcony for the view",
+              "oncam": {
+                "secs": 12,
+                "vi": "\"Nội thất đi kèm luôn theo tiêu chuẩn Berkeley — không phải tự mua thêm gì cả.\"",
+                "en": "Furniture comes included, to Berkeley's standard.",
+                "raw": "~12s\n\n🇻🇳 \"Nội thất đi kèm luôn theo tiêu chuẩn Berkeley — không phải tự mua thêm gì cả.\"\n\n🇬🇧 Furniture comes included, to Berkeley's standard."
+              },
+              "vo": {
+                "secs": 6,
+                "vi": "\"Nội thất theo phong cách tối giản, đồ đi kèm luôn theo tiêu chuẩn Berkeley.\"",
+                "en": "Minimalist furnishing, all included.",
+                "raw": "~6s\n\n🇻🇳 \"Nội thất theo phong cách tối giản, đồ đi kèm luôn theo tiêu chuẩn Berkeley.\"\n\n🇬🇧 Minimalist furnishing, all included."
+              },
+              "done": true
+            },
+            {
+              "n": 8,
+              "name": "Master Bedroom (2BR)",
+              "note": false,
+              "section": "2BR Tour",
+              "direction": "Open the door and step in, wide shot of bed + window, then close-up details",
+              "oncam": {
+                "secs": 15,
+                "vi": "\"Phòng ngủ master — có phòng tắm riêng đi kèm, rộng hơn mặt bằng chung ở London.\"",
+                "en": "Master bedroom — ensuite bathroom, larger than typical.",
+                "raw": "~15s\n\n🇻🇳 \"Phòng ngủ master — có phòng tắm riêng đi kèm, rộng hơn mặt bằng chung ở London.\"\n\n🇬🇧 Master bedroom — ensuite bathroom, larger than typical."
+              },
+              "vo": {
+                "secs": 6,
+                "vi": "\"Phòng ngủ master, có phòng tắm riêng.\"",
+                "en": "Master bedroom, with an ensuite.",
+                "raw": "~6s\n\n🇻🇳 \"Phòng ngủ master, có phòng tắm riêng.\"\n\n🇬🇧 Master bedroom, with an ensuite."
+              },
+              "done": true
+            },
+            {
+              "n": 9,
+              "name": "Wardrobe (2BR)",
+              "note": false,
+              "section": "2BR Tour",
+              "direction": "Open the wardrobe, shoot vertically along its height to show the full storage space",
+              "oncam": {
+                "secs": 12,
+                "vi": "\"Tủ quần áo âm tường, thiết kế sẵn — điều mà nhiều căn hộ London không có.\"",
+                "en": "Built-in wardrobe — many London flats don't have this.",
+                "raw": "~12s\n\n🇻🇳 \"Tủ quần áo âm tường, thiết kế sẵn — điều mà nhiều căn hộ London không có.\"\n\n🇬🇧 Built-in wardrobe — many London flats don't have this."
+              },
+              "vo": {
+                "secs": 5,
+                "vi": "\"Tủ âm tường, thiết kế sẵn.\"",
+                "en": "Built-in wardrobe.",
+                "raw": "~5s\n\n🇻🇳 \"Tủ âm tường, thiết kế sẵn.\"\n\n🇬🇧 Built-in wardrobe."
+              },
+              "done": true
+            },
+            {
+              "n": 10,
+              "name": "Kitchen / Laundry (2BR)",
+              "note": false,
+              "section": "2BR Tour",
+              "direction": "Built-in kitchen + appliances, or a shot of the separate washer/dryer",
+              "oncam": {
+                "secs": 14,
+                "vi": "\"Bếp đầy đủ thiết bị âm tủ, có cả máy giặt sấy riêng — tiện cho ai ở dài hạn như Ray.\"",
+                "en": "Fully fitted kitchen, plus washer/dryer — convenient for long-term stays.",
+                "raw": "~14s\n\n🇻🇳 \"Bếp đầy đủ thiết bị âm tủ, có cả máy giặt sấy riêng — tiện cho ai ở dài hạn như Ray.\"\n\n🇬🇧 Fully fitted kitchen, plus washer/dryer — convenient for long-term stays."
+              },
+              "vo": {
+                "secs": 6,
+                "vi": "\"Bếp đầy đủ thiết bị, có máy giặt sấy riêng.\"",
+                "en": "Fully equipped kitchen, own washer/dryer.",
+                "raw": "~6s\n\n🇻🇳 \"Bếp đầy đủ thiết bị, có máy giặt sấy riêng.\"\n\n🇬🇧 Fully equipped kitchen, own washer/dryer."
+              },
+              "done": true
+            }
+          ]
+        },
+        {
+          "name": "3BR Tour",
+          "note": "shots 6–10 reused from 2BR Tour",
+          "shots": [
+            {
+              "n": 11,
+              "name": "Opener (3BR)",
+              "note": false,
+              "section": "3BR Tour",
+              "direction": "Stand right at the entrance of the show apartment, look straight at camera",
+              "oncam": {
+                "secs": 18,
+                "vi": "\"Còn đây là căn 3 phòng ngủ tại London Dock — dành cho gia đình cần thêm không gian, hoặc muốn có hẳn một phòng làm việc riêng.\"",
+                "en": "A 3-bedroom unit — for families needing more space, or a home office.",
+                "raw": "~18s\n\n🇻🇳 \"Còn đây là căn 3 phòng ngủ tại London Dock — dành cho gia đình cần thêm không gian, hoặc muốn có hẳn một phòng làm việc riêng.\"\n\n🇬🇧 A 3-bedroom unit — for families needing more space, or a home office."
+              },
+              "vo": {
+                "secs": 8,
+                "vi": "\"Căn 3 phòng ngủ tại London Dock — dành cho gia đình cần thêm không gian.\"",
+                "en": "A 3-bedroom unit — for families needing more space.",
+                "raw": "~8s\n\n🇻🇳 \"Căn 3 phòng ngủ tại London Dock — dành cho gia đình cần thêm không gian.\"\n\n🇬🇧 A 3-bedroom unit — for families needing more space."
+              },
+              "done": false
+            },
+            {
+              "n": 12,
+              "name": "Secondary Bedroom (3BR)",
+              "note": false,
+              "section": "3BR Tour",
+              "direction": "Same approach as the master bedroom shot — wide, then detail",
+              "oncam": {
+                "secs": 12,
+                "vi": "\"Đây là phòng ngủ phụ — đủ rộng để làm phòng khách, hoặc phòng làm việc riêng.\"",
+                "en": "Secondary bedroom — big enough for a guest room or home office.",
+                "raw": "~12s\n\n🇻🇳 \"Đây là phòng ngủ phụ — đủ rộng để làm phòng khách, hoặc phòng làm việc riêng.\"\n\n🇬🇧 Secondary bedroom — big enough for a guest room or home office."
+              },
+              "vo": {
+                "secs": 5,
+                "vi": "\"Phòng ngủ phụ — vẫn đủ rộng cho khách hoặc làm phòng làm việc.\"",
+                "en": "Secondary bedroom — still spacious.",
+                "raw": "~5s\n\n🇻🇳 \"Phòng ngủ phụ — vẫn đủ rộng cho khách hoặc làm phòng làm việc.\"\n\n🇬🇧 Secondary bedroom — still spacious."
+              },
+              "done": false
+            },
+            {
+              "n": 13,
+              "name": "Shared Family / Living Space (3BR)",
+              "note": false,
+              "section": "3BR Tour",
+              "direction": "Wide pan of the extra living/family area, if the unit has one",
+              "oncam": {
+                "secs": 12,
+                "vi": "\"Và đây là không gian sinh hoạt chung — phù hợp cho gia đình nhiều thế hệ ở cùng.\"",
+                "en": "Shared living space — great for multi-generational families.",
+                "raw": "~12s\n\n🇻🇳 \"Và đây là không gian sinh hoạt chung — phù hợp cho gia đình nhiều thế hệ ở cùng.\"\n\n🇬🇧 Shared living space — great for multi-generational families."
+              },
+              "vo": {
+                "secs": 5,
+                "vi": "\"Có thêm không gian sinh hoạt chung — phù hợp cho gia đình nhiều thế hệ.\"",
+                "en": "Extra shared living space.",
+                "raw": "~5s\n\n🇻🇳 \"Có thêm không gian sinh hoạt chung — phù hợp cho gia đình nhiều thế hệ.\"\n\n🇬🇧 Extra shared living space."
+              },
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "Interview",
+          "note": "",
+          "shots": [
+            {
+              "n": 14,
+              "name": "Q1 — Brand",
+              "note": false,
+              "section": "Interview",
+              "direction": "Purpose: brand credibility, opens the interview",
+              "oncam": {
+                "secs": null,
+                "vi": "",
+                "en": "\"Berkeley has built over 35,000 homes across London — what makes London Dock different from your other developments?",
+                "raw": "🇬🇧 \"Berkeley has built over 35,000 homes across London — what makes London Dock different from your other developments?\""
+              },
+              "vo": {
+                "secs": null,
+                "vi": "Berkeley đã xây hơn 35.000 căn nhà tại London — điều gì khiến London Dock khác biệt so với các dự án khác?",
+                "en": "",
+                "raw": "🇻🇳 Berkeley đã xây hơn 35.000 căn nhà tại London — điều gì khiến London Dock khác biệt so với các dự án khác?"
+              },
+              "done": false
+            },
+            {
+              "n": 15,
+              "name": "Q2 — Location",
+              "note": false,
+              "section": "Interview",
+              "direction": "Purpose: location/liquidity soundbite",
+              "oncam": {
+                "secs": null,
+                "vi": "",
+                "en": "\"Why is Zone 1 Wapping such a compelling location for overseas investors right now?",
+                "raw": "🇬🇧 \"Why is Zone 1 Wapping such a compelling location for overseas investors right now?\""
+              },
+              "vo": {
+                "secs": null,
+                "vi": "Vì sao Zone 1 Wapping là vị trí đáng chú ý cho nhà đầu tư nước ngoài vào lúc này?",
+                "en": "",
+                "raw": "🇻🇳 Vì sao Zone 1 Wapping là vị trí đáng chú ý cho nhà đầu tư nước ngoài vào lúc này?"
+              },
+              "done": false
+            },
+            {
+              "n": 16,
+              "name": "Q3 — Buyer Profile",
+              "note": false,
+              "section": "Interview",
+              "direction": "Purpose: Berkeley's view on Asian/Vietnamese buyers",
+              "oncam": {
+                "secs": null,
+                "vi": "",
+                "en": "\"What do international buyers — especially from Asia — care about most when they consider London Dock?",
+                "raw": "🇬🇧 \"What do international buyers — especially from Asia — care about most when they consider London Dock?\""
+              },
+              "vo": {
+                "secs": null,
+                "vi": "Khách quốc tế, đặc biệt từ châu Á, quan tâm điều gì nhất khi tìm hiểu London Dock?",
+                "en": "",
+                "raw": "🇻🇳 Khách quốc tế, đặc biệt từ châu Á, quan tâm điều gì nhất khi tìm hiểu London Dock?"
+              },
+              "done": false
+            },
+            {
+              "n": 17,
+              "name": "Q4 — Process",
+              "note": false,
+              "section": "Interview",
+              "direction": "Purpose: standalone educational content",
+              "oncam": {
+                "secs": null,
+                "vi": "",
+                "en": "\"For someone buying property in the UK for the first time as a foreign investor, what should they know about the process?",
+                "raw": "🇬🇧 \"For someone buying property in the UK for the first time as a foreign investor, what should they know about the process?\""
+              },
+              "vo": {
+                "secs": null,
+                "vi": "Với nhà đầu tư nước ngoài lần đầu mua bất động sản tại Anh, họ cần biết gì về quy trình mua?",
+                "en": "",
+                "raw": "🇻🇳 Với nhà đầu tư nước ngoài lần đầu mua bất động sản tại Anh, họ cần biết gì về quy trình mua?"
+              },
+              "done": false
+            },
+            {
+              "n": 18,
+              "name": "Q5 — Lifestyle",
+              "note": false,
+              "section": "Interview",
+              "direction": "Purpose: authentic detail, matches Ray's insider tone",
+              "oncam": {
+                "secs": null,
+                "vi": "",
+                "en": "\"What's something residents actually experience day-to-day, that people might not get from photos or a brochure?",
+                "raw": "🇬🇧 \"What's something residents actually experience day-to-day, that people might not get from photos or a brochure?\""
+              },
+              "vo": {
+                "secs": null,
+                "vi": "Điều gì cư dân thực sự trải nghiệm mỗi ngày ở đây mà hình ảnh hay brochure không thể hiện được?",
+                "en": "",
+                "raw": "🇻🇳 Điều gì cư dân thực sự trải nghiệm mỗi ngày ở đây mà hình ảnh hay brochure không thể hiện được?"
+              },
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "Closing & CTA",
+          "note": "",
+          "shots": [
+            {
+              "n": 19,
+              "name": "Private Garden — Message",
+              "note": false,
+              "section": "Closing & CTA",
+              "direction": "Sit or stand calmly in a quiet corner, speak straight to camera",
+              "oncam": {
+                "secs": 18,
+                "vi": "\"Thật ra Ray không tới đây để khoe. Ray muốn cho mọi người thấy thực tế dự án — trước khi ai đó quyết định tìm hiểu đầu tư. Với NAC, tụi mình luôn ưu tiên cho khách xem tận nơi — trước khi nói chuyện con số.\"",
+                "en": "Honestly, Ray's not here to show off. Ray wants to show people the real project — before anyone decides to look into investing. At NAC, we always prioritize letting clients see it in person before talking numbers.",
+                "raw": "~18s\n\n🇻🇳 \"Thật ra Ray không tới đây để khoe. Ray muốn cho mọi người thấy thực tế dự án — trước khi ai đó quyết định tìm hiểu đầu tư. Với NAC, tụi mình luôn ưu tiên cho khách xem tận nơi — trước khi nói chuyện con số.\"\n\n🇬🇧 Honestly, Ray's not here to show off. Ray wants to show people the real project — before anyone decides to look into investing. At NAC, we always prioritize letting clients see it in person before talking numbers."
+              },
+              "vo": {
+                "secs": 10,
+                "vi": "\"Ray không tới đây để khoe — chỉ muốn cho mọi người thấy thực tế trước khi tìm hiểu đầu tư.\"",
+                "en": "Ray's not here to show off — just wants to show the real thing before anyone looks into investing.",
+                "raw": "~10s\n\n🇻🇳 \"Ray không tới đây để khoe — chỉ muốn cho mọi người thấy thực tế trước khi tìm hiểu đầu tư.\"\n\n🇬🇧 Ray's not here to show off — just wants to show the real thing before anyone looks into investing."
+              },
+              "done": false
+            },
+            {
+              "n": 20,
+              "name": "Private Garden — CTA",
+              "note": false,
+              "section": "Closing & CTA",
+              "direction": "Look straight at camera, add text overlay of the keyword",
+              "oncam": {
+                "secs": 15,
+                "vi": "\"Nếu bạn đang tìm một tài sản Bảng Anh, ngay Zone 1 London — nhắn '[KEYWORD]' cho Ray. NAC sẽ gửi bạn thông tin chi tiết — giá, chính sách, và pháp lý cho nhà đầu tư nước ngoài.\"",
+                "en": "If you're looking for a GBP asset right in Zone 1 London — DM '[KEYWORD]' to Ray. NAC will send full details — pricing, terms, legal info for overseas investors.",
+                "raw": "~15s\n\n🇻🇳 \"Nếu bạn đang tìm một tài sản Bảng Anh, ngay Zone 1 London — nhắn '[KEYWORD]' cho Ray. NAC sẽ gửi bạn thông tin chi tiết — giá, chính sách, và pháp lý cho nhà đầu tư nước ngoài.\"\n\n🇬🇧 If you're looking for a GBP asset right in Zone 1 London — DM '[KEYWORD]' to Ray. NAC will send full details — pricing, terms, legal info for overseas investors."
+              },
+              "vo": {
+                "secs": 6,
+                "vi": "\"Nhắn '[KEYWORD]' để NAC gửi thông tin chi tiết về London Dock.\"",
+                "en": "DM '[KEYWORD]' and NAC will send the full details on London Dock.",
+                "raw": "~6s\n\n🇻🇳 \"Nhắn '[KEYWORD]' để NAC gửi thông tin chi tiết về London Dock.\"\n\n🇬🇧 DM '[KEYWORD]' and NAC will send the full details on London Dock."
+              },
+              "done": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

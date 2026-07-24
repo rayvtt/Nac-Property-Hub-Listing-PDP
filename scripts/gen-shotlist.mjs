@@ -427,6 +427,33 @@ body{font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-seri
 .sh.done .txt b{text-decoration:line-through;color:var(--mut)}
 .sh.done .txt{opacity:.6}
 .foot{margin:22px 0 0;color:var(--mut);font-size:12px;text-align:center}
+/* script view (Notion reel) */
+.scriptbadge{display:inline-flex;align-items:center;gap:5px;background:#eef0ff;color:var(--nac);border-radius:999px;font-weight:700;font-size:10.5px;padding:2px 7px;margin-top:6px}
+.stbanner{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin:8px 0 4px}
+.stbanner .stline{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.stat{border-radius:999px;font-weight:700;font-size:11px;padding:3px 9px;background:#f0f0f6;color:var(--mut)}
+.stat.go{background:#e7f7ec;color:#128a3e}.stat.warn{background:#fff2e6;color:#b5590f}.stat.film{background:#ffe9e0;color:var(--org)}
+.stbanner a{color:var(--nac);font-weight:700;font-size:12px;text-decoration:none}
+.tabs{display:flex;gap:6px;margin:10px 0 2px}
+.tab{flex:1;border:1px solid var(--line);background:var(--card);border-radius:11px;font-weight:700;font-size:13px;padding:9px;min-height:40px;color:var(--mut)}
+.tab.on{background:var(--nac);color:#fff;border-color:var(--nac)}
+.scut{display:flex;align-items:flex-start;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px}
+.scut.done{opacity:.62}
+.scut input{width:24px;height:24px;flex:0 0 24px;margin:1px 0 0;accent-color:var(--org)}
+.scut .body{flex:1;min-width:0}
+.scut .hd{display:flex;align-items:baseline;gap:8px}
+.scut .num{font-weight:800;font-size:12px;color:var(--nac);flex:0 0 auto}
+.scut .snm{font-weight:700;font-size:15px}
+.scut.done .snm{text-decoration:line-through;color:var(--mut)}
+.scut .dir{color:var(--mut);font-size:12.5px;margin-top:4px;font-style:italic}
+.line{margin-top:8px;font-size:14px;border-left:3px solid var(--line);padding-left:9px}
+.line .lb{font-weight:800;font-size:10px;letter-spacing:.05em;color:var(--mut);display:block;text-transform:uppercase}
+.line.oncam{border-left-color:var(--org)}.line.vo{border-left-color:var(--nac)}
+.clip{margin-top:9px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.clip .cv{font-size:11px;color:var(--mut);font-family:ui-monospace,Menlo,monospace;background:#f4f4fa;border-radius:6px;padding:2px 6px}
+.clip input{flex:1;min-width:120px;border:1px solid var(--line);border-radius:9px;padding:7px 9px;font-size:13px;min-height:36px;width:auto;height:auto;accent-color:auto}
+.clip .ok{color:#128a3e;font-weight:700;font-size:12px}
+.wrapbtns{display:flex;gap:8px;margin:16px 0 0;flex-wrap:wrap}
 .hide{display:none!important}
 /* language toggle — active lang inline everywhere; block for the stacked shot text */
 .vis-en,.vis-vi{display:none}
@@ -453,7 +480,7 @@ body:not(.vi) .sh .txt .vis-en,body.vi .sh .txt .vis-vi{display:block}
 var DATA=JSON.parse(document.getElementById('D').textContent).listings;
 var BY={};DATA.forEach(function(l){BY[l.slug]=l});
 var app=document.getElementById('app'),crumb=document.getElementById('crumb'),filters=document.getElementById('filters');
-var state={v:'browse',slug:'',q:'',c:'All'};
+var state={v:'browse',slug:'',q:'',c:'All',tab:'script'};
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function LS(k,d){try{var v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}
 function SS(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
@@ -484,10 +511,11 @@ function renderBrowse(){
   var h='<div class="grid">';
   list.forEach(function(l){
     var th=l.thumb?' style="background-image:url('+esc(l.thumb)+')"':'';
+    var badge=l.script?'<span class="scriptbadge">📋 #'+esc(l.script.scriptNo)+' · '+esc(l.script.status)+'</span>':'';
     h+='<div class="card" data-act="open" data-slug="'+esc(l.slug)+'">'
       +'<div class="th"'+th+'><button class="star'+(inTrip(l.slug)?' on':'')+'" data-act="star" data-slug="'+esc(l.slug)+'">'+(inTrip(l.slug)?'★':'☆')+'</button></div>'
       +'<div class="bd"><span class="nm">'+esc(nm(l))+'</span><span class="lo">'+esc(l.city||'')+'</span>'
-      +'<span class="mt"><span class="pill">'+l.shots+' shots</span> ~'+l.secs+'s</span></div></div>';
+      +'<span class="mt"><span class="pill">'+l.shots+' shots</span> ~'+l.secs+'s</span>'+badge+'</div></div>';
   });
   app.innerHTML=h+'</div>';
 }
@@ -508,16 +536,65 @@ function renderTrip(){
   h+='</div><div class="btnrow"><button class="btn" data-act="go-browse">+ Add more</button></div>';
   app.innerHTML=h;
 }
-function renderRead(){
-  filters.classList.add('hide');
-  var l=BY[state.slug];if(!l){state.v='browse';return render()}
-  crumb.textContent='';
+function readHead(l){
+  var tabs=l.script?('<div class="tabs">'
+    +'<button class="tab'+(state.tab!=='ideas'?' on':'')+'" data-act="tab" data-t="script">📋 Script #'+esc(l.script.scriptNo)+'</button>'
+    +'<button class="tab'+(state.tab==='ideas'?' on':'')+'" data-act="tab" data-t="ideas">🎥 Shot ideas</button></div>'):'';
+  return '<div class="rhead"><button class="back" data-act="go-browse">‹</button>'
+    +'<div class="rtitle"><span class="rt">'+esc(nm(l))+'</span><span class="rl">'+esc(l.city||'')+'</span></div>'
+    +(inTrip(l.slug)?'':'<button class="btn" data-act="star" data-slug="'+esc(l.slug)+'">🎒 Add</button>')+'</div>'+tabs;
+}
+// script Done store: explicit local overrides keyed by shot number; seeds from Notion "done"
+function sdone(slug){return LS('sl:sdone:'+slug,{})}
+function effDone(slug,sh){var st=sdone(slug);return st[sh.n]!==undefined?!!st[sh.n]:!!sh.done}
+function clips(slug){return LS('sl:clip:'+slug,{})}
+function scriptDoneCount(l){var n=0;l.script.sections.forEach(function(s){s.shots.forEach(function(sh){if(effDone(l.slug,sh))n++})});return n}
+function langPick(o){if(!o)return '';var vi=document.body.classList.contains('vi');return (vi?(o.vi||o.en):(o.en||o.vi))||''}
+
+function renderScript(l){
+  var sc=l.script,cl=clips(l.slug);
+  var done=scriptDoneCount(l),pct=sc.total?Math.round(done/sc.total*100):0;
+  var fs=sc.filmingStatus,fsc=fs==='Filmed'||fs==='Ready to Post'?'go':(fs==='Edited'?'go':'film');
+  var h=readHead(l);
+  h+='<div class="stbanner"><div class="stline">'
+    +'<span class="stat go">'+esc(sc.status)+'</span>'
+    +'<span class="stat '+fsc+'">🎬 '+esc(sc.filmingStatus)+'</span>'
+    +(sc.platforms||[]).map(function(p){return '<span class="stat">'+esc(p)+'</span>'}).join('')
+    +(sc.durationSec?'<span class="stat">~'+sc.durationSec+'s</span>':'')
+    +(sc.hookType?'<span class="stat">Hook: '+esc(sc.hookType)+'</span>':'')
+    +'</div><div class="stline" style="margin-top:8px">'
+    +(sc.reelUrl?'<a href="'+esc(sc.reelUrl)+'" target="_blank" rel="noopener">↗ Reel in Notion</a>':'')
+    +(sc.checklistUrl?'&nbsp;·&nbsp;<a href="'+esc(sc.checklistUrl)+'" target="_blank" rel="noopener">↗ Shot checklist</a>':'')
+    +'</div></div>';
+  h+='<div class="rbar"><div class="ring" id="ring" data-p="'+pct+'%" style="--p:'+pct+'"></div>'
+    +'<div class="rmeta"><span id="rdone">'+done+'</span>/'+sc.total+' shots filmed · tap to tick as you shoot</div></div>';
+  sc.sections.forEach(function(s){
+    h+='<section class="grp"><h2>'+esc(s.name)+'</h2>';
+    if(s.note)h+='<p class="gnote">'+esc(s.note)+'</p>';
+    s.shots.forEach(function(sh){
+      var on=effDone(l.slug,sh),conv=esc(l.slug)+'__'+(sh.n||'x')+'.mp4',cv=cl[sh.n]||'';
+      h+='<div class="scut'+(on?' done':'')+'">'
+        +'<input type="checkbox" data-sn="'+sh.n+'"'+(on?' checked':'')+'>'
+        +'<div class="body"><div class="hd"><span class="num">'+(sh.n?sh.n+'.':'')+'</span><span class="snm">'+esc(sh.name)+'</span></div>';
+      if(sh.direction)h+='<div class="dir">🎥 '+esc(sh.direction)+'</div>';
+      var oc=langPick(sh.oncam);if(oc)h+='<div class="line oncam"><span class="lb">🎙️ On-cam'+(sh.oncam.secs?' · ~'+sh.oncam.secs+'s':'')+'</span>'+esc(oc)+'</div>';
+      var vo=langPick(sh.vo);if(vo)h+='<div class="line vo"><span class="lb">🔊 VO'+(sh.vo.secs?' · ~'+sh.vo.secs+'s':'')+'</span>'+esc(vo)+'</div>';
+      h+='<div class="clip"><span class="cv">'+conv+'</span>'
+        +'<input type="url" placeholder="paste clip link (Drive/CF)…" data-clip="'+sh.n+'" value="'+esc(cv)+'">'
+        +(cv?'<span class="ok">✓ clip</span>':'')+'</div>';
+      h+='</div></div>';
+    });
+    h+='</section>';
+  });
+  h+='<div class="wrapbtns"><button class="btn pri" data-act="report">📋 Copy filming report</button></div>';
+  h+='<p class="foot">Ticks &amp; clip links saved on this device · report hands off to post-edit</p>';
+  app.innerHTML=h;
+}
+function renderIdeas(l){
   var tk=ticks(l.slug),done=0;
   l.sections.forEach(function(s){s.shots.forEach(function(x){if(tk[x.id])done++})});
   var pct=l.shots?Math.round(done/l.shots*100):0;
-  var h='<div class="rhead"><button class="back" data-act="go-browse">‹</button>'
-    +'<div class="rtitle"><span class="rt">'+esc(nm(l))+'</span><span class="rl">'+esc(l.city||'')+'</span></div>'
-    +(inTrip(l.slug)?'':'<button class="btn" data-act="star" data-slug="'+esc(l.slug)+'">🎒 Add</button>')+'</div>'
+  var h=readHead(l)
     +'<div class="rbar"><div class="ring" id="ring" data-p="'+pct+'%" style="--p:'+pct+'"></div>'
     +'<div class="rmeta"><span id="rdone">'+done+'</span>/'+l.shots+' shots · ~'+l.secs+'s · ★ = banner candidate</div></div>';
   l.sections.forEach(function(s){
@@ -537,6 +614,29 @@ function renderRead(){
   h+='<p class="foot">Clip naming: <code>'+esc(l.slug)+'__&lt;ID&gt;.mp4</code> · ticks saved on this device</p>';
   app.innerHTML=h;
 }
+function renderRead(){
+  filters.classList.add('hide');
+  var l=BY[state.slug];if(!l){state.v='browse';return render()}
+  crumb.textContent='';
+  if(l.script && state.tab!=='ideas')renderScript(l);
+  else renderIdeas(l);
+}
+function buildReport(l){
+  var sc=l.script,cl=clips(l.slug),lines=[];
+  lines.push('FILMING REPORT — '+nm(l)+' · Script #'+sc.scriptNo);
+  lines.push(scriptDoneCount(l)+'/'+sc.total+' shots filmed · '+(sc.platforms||[]).join('+')+' · ~'+sc.durationSec+'s');
+  lines.push('');
+  sc.sections.forEach(function(s){
+    lines.push('['+s.name+']');
+    s.shots.forEach(function(sh){
+      var mark=effDone(l.slug,sh)?'[x]':'[ ]',link=cl[sh.n]?'  → '+cl[sh.n]:'';
+      lines.push('  '+mark+' '+(sh.n?sh.n+'. ':'')+sh.name+link);
+    });
+  });
+  var missing=[];sc.sections.forEach(function(s){s.shots.forEach(function(sh){if(!effDone(l.slug,sh))missing.push(sh.n)})});
+  lines.push('');lines.push('Still to shoot: '+(missing.length?missing.join(', '):'none — wrapped ✅'));
+  return lines.join('\\n');
+}
 function render(){
   if(state.v==='browse')renderBrowse();
   else if(state.v==='trip')renderTrip();
@@ -544,14 +644,23 @@ function render(){
   document.getElementById('tripBtn').classList.toggle('on',state.v==='trip');
   window.scrollTo(0,0);
 }
-function nav(v,slug){state.v=v;state.slug=slug||'';
+function defaultTab(slug){return (BY[slug]&&BY[slug].script)?'script':'ideas'}
+function nav(v,slug){state.v=v;state.slug=slug||'';if(v==='read')state.tab=defaultTab(slug);
   var h='#/'+v+(slug?'/'+slug:'');if(location.hash!==h)location.hash=h;render()}
 function fromHash(){
   var p=(location.hash||'').replace(/^#\\//,'').split('/');
-  if(p[0]==='read'&&p[1]){state.v='read';state.slug=decodeURIComponent(p[1])}
+  if(p[0]==='read'&&p[1]){state.v='read';state.slug=decodeURIComponent(p[1]);state.tab=defaultTab(state.slug)}
   else if(p[0]==='trip'){state.v='trip'}
   else{state.v='browse'}
   render();
+}
+function updRing(done,total){var pct=total?Math.round(done/total*100):0,r=document.getElementById('ring');
+  if(r){r.style.setProperty('--p',pct);r.setAttribute('data-p',pct+'%')}
+  var d=document.getElementById('rdone');if(d)d.textContent=done;}
+function copyText(txt,btn){
+  function ok(){if(btn){var o=btn.textContent;btn.textContent='✓ Copied';setTimeout(function(){btn.textContent=o},1500)}}
+  try{navigator.clipboard.writeText(txt).then(ok,function(){fallback()})}catch(e){fallback()}
+  function fallback(){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(ta)}
 }
 document.addEventListener('click',function(e){
   var t=e.target.closest('[data-act]');if(!t)return;var a=t.dataset.act;
@@ -561,17 +670,27 @@ document.addEventListener('click',function(e){
   if(a==='open'){nav('read',t.dataset.slug);return}
   if(a==='go-trip'){nav('trip');return}
   if(a==='go-browse'){nav('browse');return}
+  if(a==='tab'){state.tab=t.dataset.t;renderRead();return}
+  if(a==='report'){var l=BY[state.slug];if(l&&l.script)copyText(buildReport(l),t);return}
 });
 document.addEventListener('change',function(e){
-  var b=e.target;if(b.type!=='checkbox')return;
-  var l=BY[state.slug];if(!l)return;
-  var tk=ticks(l.slug);if(b.checked)tk[b.dataset.id]=1;else delete tk[b.dataset.id];
-  SS('sl:ticks:'+l.slug,tk);
-  b.closest('.sh').classList.toggle('done',b.checked);
-  var done=0;l.sections.forEach(function(s){s.shots.forEach(function(x){if(tk[x.id])done++})});
-  var pct=l.shots?Math.round(done/l.shots*100):0,r=document.getElementById('ring');
-  if(r){r.style.setProperty('--p',pct);r.setAttribute('data-p',pct+'%')}
-  var d=document.getElementById('rdone');if(d)d.textContent=done;
+  var b=e.target,l=BY[state.slug];if(!l)return;
+  if(b.type==='checkbox'&&b.dataset.id!==undefined){          // shot-ideas tick
+    var tk=ticks(l.slug);if(b.checked)tk[b.dataset.id]=1;else delete tk[b.dataset.id];
+    SS('sl:ticks:'+l.slug,tk);b.closest('.sh').classList.toggle('done',b.checked);
+    var d=0;l.sections.forEach(function(s){s.shots.forEach(function(x){if(tk[x.id])d++})});updRing(d,l.shots);return;
+  }
+  if(b.type==='checkbox'&&b.dataset.sn!==undefined){          // script Done tick
+    var st=sdone(l.slug);st[b.dataset.sn]=b.checked;SS('sl:sdone:'+l.slug,st);
+    b.closest('.scut').classList.toggle('done',b.checked);updRing(scriptDoneCount(l),l.script.total);return;
+  }
+  if(b.dataset.clip!==undefined){                             // drop-in clip link
+    var cs=clips(l.slug),v=(b.value||'').trim();
+    if(v)cs[b.dataset.clip]=v;else delete cs[b.dataset.clip];SS('sl:clip:'+l.slug,cs);
+    var wrap=b.closest('.clip'),ok=wrap.querySelector('.ok');
+    if(v){if(!ok){ok=document.createElement('span');ok.className='ok';wrap.appendChild(ok)}ok.textContent='✓ clip'}
+    else if(ok)ok.parentNode.removeChild(ok);
+  }
 });
 document.getElementById('q').addEventListener('input',function(){state.q=this.value;renderBrowse()});
 window.addEventListener('hashchange',fromHash);
@@ -607,16 +726,26 @@ async function main() {
   await fs.mkdir(OUT_DIR, { recursive: true });
   const all = await allSlugs();
 
+  // Notion reel scripts (from pull-reels.mjs → shotlist/scripts.json), keyed by slug
+  let reelBySlug = {};
+  try {
+    const sj = JSON.parse(await fs.readFile(path.join(OUT_DIR, 'scripts.json'), 'utf8'));
+    for (const r of (sj.reels || [])) if (r.slug) reelBySlug[r.slug] = r;
+  } catch { /* no scripts.json yet — portal falls back to derived shot ideas */ }
+
   const entries = [];
   for (const slug of all) {
     const data = await fetchFromHtml(slug);
     if (!data || !data.name) continue;              // skip stubs with no title
-    entries.push(portalEntry(data, buildSections(data)));
+    const entry = portalEntry(data, buildSections(data));
+    if (reelBySlug[slug]) entry.script = reelBySlug[slug];   // real Notion reel script
+    entries.push(entry);
   }
   entries.sort((a, b) => a.name.localeCompare(b.name));
   await fs.writeFile(path.join(OUT_DIR, 'index.html'), buildPortal(entries));
   const totShots = entries.reduce((a, e) => a + e.shots, 0);
-  console.log(`  ✓ portal → shotlist/index.html · ${entries.length} listings · ${totShots} shots inlined`);
+  const scripted = entries.filter((e) => e.script).length;
+  console.log(`  ✓ portal → shotlist/index.html · ${entries.length} listings · ${totShots} shots inlined · ${scripted} Notion script(s)`);
 
   // Optional per-slug markdown scripts
   let mdSlugs = positional.slice();

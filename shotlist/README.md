@@ -9,11 +9,18 @@ the site-visit video workstream — see [`../NAC-SITE-VISIT-VIDEO.md`](../NAC-SI
 on-site** (no signal needed after it loads). Three stages:
 
 1. **Prepare / Browse** — search + country filter over every property; tap ★ to
-   add a stop to *My Trip* (saved on your device).
+   add a stop to *My Trip* (saved on your device). A 📋 badge marks listings that
+   have a real reel script (from the Notion 🎬 Reels DB).
 2. **Trip** — your prepared stops with total shots + footage; tap to open.
-3. **Read** — the on-site screen for one property: bilingual VI/EN toggle,
-   progress ring, tap each shot to tick it off (ticks saved per device). ★ shots
-   are hero / banner-video candidates.
+3. **Read** — the on-site screen. When the listing has a Notion reel script it
+   opens the **📋 Script** tab (status banner, per-shot Direction · ON-CAM · VO,
+   Done tick seeded from Notion, per-shot clip drop-in, and a **Copy filming
+   report** button). Otherwise it shows **🎥 Shot ideas** (auto-derived). VI/EN
+   toggle + progress ring throughout; ticks & clip links saved per device.
+
+Reel scripts come from `scripts/pull-reels.mjs` (`--from-notion` in CI, else the
+committed `scripts/reels-source.json`) → `shotlist/scripts.json`, which the portal
+inlines. `.github/workflows/build-film-portal.yml` keeps it fresh.
 
 Live URL (once merged to `main`):
 `https://rayvtt.github.io/Nac-Property-Hub-Listing-PDP/shotlist/`

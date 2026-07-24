@@ -1,43 +1,69 @@
 # NAC Site-Visit Video Workstream
 
-Turn a filming trip into live banner videos on every LLP, with the MCC tracking
-who has video and who doesn't — as streamlined as the image pipeline.
+Turn a filming trip into published reels + live banner videos on every LLP —
+managed end-to-end on the 🎬 **NAC - Reels - allthingsTikTok** Notion DB.
 
 ```
-① PRE-VISIT          ② ON-SITE         ③ UPLOAD              ④ AUTO-ATTACH        ⑤ MONITOR
-   /shotlist   ──►    film to     ──►   MCC drag-drop   ──►   sync-notion cron ──► MCC board +
-   (VI+EN script)     the list          → Cloudflare Stream   injects <video>      listing-status
-                                         → writes Notion       into hero            (vid dimension)
+⓪ SCRIPT           ① FILM              ② INGEST            ③ POST-EDIT        ④ PUBLISH
+  Claude Chat  ──►  portal reads   ──►  drop clips     ──►  editor cuts   ──►  social (reel) +
+  → Reels DB        the script          per shot/angle      final video        LLP hero banner
+  (child shot        (tick Done,         (→ Drive/CF)        (Editing →         (Scheduled →
+   checklist)         on-site)                                Ready to Post)     Published)
 ```
 
-The only genuinely new piece is Cloudflare **Stream** on the LLP side; the MCC
-worker already runs Stream (`cfUploadVideo` / `/hero-upload`), so ③ reuses it.
+**The Reels DB is the production spine.** Its two status fields ARE the pipeline:
+- `Status`: `Post Idea → Draft → Ready for Review → Ready for Filming → Filming → Editing → Scheduled → Published`
+- `Filming Status`: `Not Filmed → Filmed → Edited → Ready to Post`
+
+Each reel row (e.g. *Script #021 — London Dock*) owns a child **Shot Checklist**
+DB — per shot: `Shot`, `Section`, `Direction (EN)`, `ON-CAM option`, `VO option`,
+`Done`. The film portal is the **field companion** that reads those scripts.
 
 ---
 
-## ① Pre-visit — film portal + shot-list generator ✅ SHIPPED
+## ⓪ Script — authored in Claude Chat, lands in the Reels DB ✅ CONNECTED
 
-- Script: `scripts/gen-shotlist.mjs` · command: `/shotlist` · docs: `shotlist/README.md`.
-- Reads each listing's real data (committed `properties/*.html`; per-slug `.md`
-  can use Notion when `NOTION_TOKEN` is set) and emits a bilingual VI+EN sectioned
-  filming script.
-- **Amenities** section only lists facilities the property actually has (matched
-  from `✨ Features JSON`); **Unit models** = one block per `💲 Price Bands JSON`
-  type. Waterfront / Tower-Bridge context auto-detected. ★ = banner candidate.
-- **The portal `shotlist/index.html`** is the single bookmarkable URL — every
-  listing inlined so it works **offline on-site**. Three stages: **Prepare/Browse**
-  (search + country filter, ★ into *My Trip*) → **Trip** → **Read** (on-site
-  screen: VI/EN toggle, progress ring, tap-to-tick shots saved per device).
-  Rebuilt from every `properties/*.html` on each run, so new listings appear
-  automatically. Served on GitHub Pages at `…/shotlist/`.
-- Optional `shotlist/<slug>.md` per named slug / `--city` match for Notion paste.
-- Clip-naming convention baked into every script: `<slug>__<ID>.mp4`.
+- Claude Chat writes the bespoke reel script into the Reels DB
+  (`32e48ec25e86804aaa56cdcb7389fd75`) + its child Shot Checklist.
+- `scripts/pull-reels.mjs` bridges it into the portal:
+  `--from-notion` (CI, needs `NOTION_TOKEN`) pulls every reel + child checklist →
+  `scripts/reels-source.json`; the default build transforms that → `shotlist/scripts.json`
+  (parses ON-CAM/VO into `{secs, vi, en}`, groups by Section, seeds `Done`, maps
+  the reel to a listing slug). Committed `reels-source.json` = offline source of truth.
+- `.github/workflows/build-film-portal.yml` runs pull-reels + gen-shotlist on
+  push/cron so new scripts flow into the portal automatically.
 
-## ② On-site — filming
+## ① Film — the portal reads the real script on-site ✅ SHIPPED
 
-Film against the checklist (open on phone), ticking shots off. Name clips
-`<slug>__<shot-id>.mp4` so ③ can auto-route. Shoot ★ shots landscape 16:9,
-steady, 10–20s — those are the banner-video candidates.
+- The portal's **Read** screen shows the actual Notion reel when one exists (tab
+  **📋 Script #NNN**), else the derived **🎥 Shot ideas**. The script view has:
+  the reel status banner (Status · Filming Status · platforms · duration · hook +
+  links to the Notion reel & checklist), a progress ring seeded from Notion `Done`,
+  and per shot: **Direction**, bilingual **ON-CAM** + **VO** lines (respects the
+  VI/EN toggle), a **Done** tick, and a **clip drop-in** (paste the clip link;
+  filename convention `<slug>__<n>.mp4`). All ticks/clips saved on-device (offline).
+- **📋 Copy filming report** at wrap → a plain-text checklist (done/total, clip
+  links per shot, what's still to shoot) to hand to the editor.
+
+---
+
+### The portal — Prepare → Trip → Read
+
+`shotlist/index.html` (command `/shotlist`, script `scripts/gen-shotlist.mjs`) is
+the single bookmarkable, **offline** URL. **Prepare/Browse** (search + country
+filter, ★ into *My Trip*, a 📋 badge on listings that have a reel script) →
+**Trip** → **Read**. When a listing has no Notion reel yet, the Read screen falls
+back to the auto-derived **🎥 Shot ideas** (amenities from `✨ Features JSON`,
+unit blocks from `💲 Price Bands JSON`, ★ = banner candidate) + a per-slug
+`shotlist/<slug>.md` for Notion paste. Served on GitHub Pages at `…/shotlist/`.
+
+---
+
+## LLP banner-video track (parallel output) — ⟨TODO⟩
+
+The same footage feeds a **second** output besides the social reel: a muted-loop
+**banner video on the listing's LLP hero**, tracked in the MCC. This is the
+original phase ③–⑤ plan and is still to build.
 
 ## ③ Upload — MCC cockpit "📹 Site-Visit Videos" view  ⟨TODO — nac-marketing-omnichannel⟩
 
