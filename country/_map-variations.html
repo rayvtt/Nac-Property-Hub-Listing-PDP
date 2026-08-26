@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Thailand map — variations</title>
+<link rel="stylesheet" href="_lib/leaflet.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0f1a36; --gold:#c4922c; --gold-2:#e8bf72; --gold-soft:rgba(196,146,44,.12);
+    --surface:#ffffff; --surface-2:#f6f4ee; --line:#e7e2d6; --muted:#5c6478;
+    --ff-display:'Cormorant Garamond',serif; --ff-body:'Inter',sans-serif; --ff-mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--surface-2);color:var(--ink);font-family:var(--ff-body);padding:2.5rem clamp(1rem,4vw,4rem)}
+  .head{max-width:1100px;margin:0 auto 2rem}
+  .head .ey{font-family:var(--ff-mono);font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+  .head h1{font-family:var(--ff-display);font-weight:400;font-size:clamp(1.8rem,3.6vw,2.6rem);margin:.5rem 0 .4rem}
+  .head p{color:var(--muted);max-width:60ch;font-size:.95rem;line-height:1.6;margin:0}
+  .var{max-width:1100px;margin:0 auto 3.2rem;background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 10px 40px rgba(15,26,54,.06)}
+  .var-h{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;padding:1.3rem 1.6rem;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .var-h .n{font-family:var(--ff-mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);background:var(--gold-soft);padding:.35rem .7rem;border-radius:999px}
+  .var-h .t{font-family:var(--ff-display);font-style:italic;font-size:1.5rem;font-weight:500}
+  .var-h .d{color:var(--muted);font-size:.82rem;flex:1 1 100%;margin-top:.2rem}
+  .map{width:100%;height:460px;background:var(--surface-2)}
+  @media(max-width:680px){ .map{height:380px} }
+
+  /* custom pins */
+  .pin{position:relative;transform:translate(-9px,-9px);pointer-events:none}
+  .pin .dot{display:block;width:18px;height:18px;border-radius:50%;border:3px solid var(--gold);background:#fff;box-shadow:0 0 0 6px rgba(196,146,44,.18),0 2px 8px rgba(0,0,0,.25)}
+  .pin.dark .dot{background:#0b1120;box-shadow:0 0 0 6px rgba(232,191,114,.22),0 0 14px rgba(232,191,114,.55)}
+  .pin .lbl{position:absolute;left:26px;top:-4px;white-space:nowrap;pointer-events:auto}
+  .pin .lbl b{display:block;font-family:var(--ff-display);font-style:italic;font-weight:600;font-size:1.15rem;color:var(--ink);text-shadow:0 1px 6px rgba(255,255,255,.9)}
+  .pin.dark .lbl b{color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.9)}
+  .pin .ap{display:inline-block;margin-top:2px;font-family:var(--ff-mono);font-size:.56rem;letter-spacing:.08em;color:var(--gold);background:var(--gold-soft);padding:.2rem .5rem;border-radius:999px;text-transform:uppercase}
+  .pin.dark .ap{color:var(--gold-2);background:rgba(232,191,114,.15)}
+  /* airport glyph pin (variation 3) */
+  .apin{transform:translate(-8px,-8px);color:var(--gold);pointer-events:none}
+  .apin svg{filter:drop-shadow(0 1px 4px rgba(0,0,0,.5))}
+  .apin .aplbl{position:absolute;left:18px;top:-2px;white-space:nowrap;font-family:var(--ff-mono);font-size:.55rem;letter-spacing:.06em;color:#fff;background:rgba(15,26,54,.82);padding:.2rem .45rem;border-radius:6px}
+  .leaflet-container{font-family:var(--ff-body)}
+  .conn-lbl{font-family:var(--ff-mono);font-size:.56rem;letter-spacing:.06em;color:var(--gold-2);background:rgba(15,26,54,.85);padding:.18rem .45rem;border-radius:6px;white-space:nowrap;border:1px solid rgba(232,191,114,.4)}
+</style>
+</head>
+<body>
+  <div class="head">
+    <div class="ey">CLP map · redesign preview</div>
+    <h1>Thailand — “where is the city” map, three ways</h1>
+    <p>Real interactive maps (drag/zoom). Each city shows its nearest international airport as the distance. Pick a direction and I'll build it into the CLP template, then roll it out to the other countries.</p>
+  </div>
+
+  <div class="var">
+    <div class="var-h"><span class="n">Variation 1</span><span class="t">Light &amp; minimal</span>
+      <span class="d">Clean cartographic base (CARTO Positron), whole country in view, gold city pins with an airport chip. Sits closest to the current gold/serif look.</span></div>
+    <div class="map" id="map1"></div>
+  </div>
+
+  <div class="var">
+    <div class="var-h"><span class="n">Variation 2</span><span class="t">Night &amp; dramatic</span>
+      <span class="d">Dark base (CARTO Dark Matter), glowing gold pins — matches the dark hero at the top of the page.</span></div>
+    <div class="map" id="map2"></div>
+  </div>
+
+  <div class="var">
+    <div class="var-h"><span class="n">Variation 3</span><span class="t">Satellite</span>
+      <span class="d">Esri satellite imagery — real coastline, islands and terrain (striking for a coastal country). Same white-on-imagery city pins with the airport chip.</span></div>
+    <div class="map" id="map3"></div>
+  </div>
+
+<script src="_lib/leaflet.js"></script>
+<script>
+  var CITIES = [
+    { name:'Bangkok', lat:13.7563, lng:100.5018,
+      ap:{ code:'BKK', name:'Suvarnabhumi', lat:13.6900, lng:100.7501, km:30, min:'35-45' } },
+    { name:'Phuket', lat:7.8804, lng:98.3923,
+      ap:{ code:'HKT', name:'Phuket Intl', lat:8.1132, lng:98.3169, km:32, min:'~40' } }
+  ];
+  var TILES = {
+    light:{ url:'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', opts:{ subdomains:'abcd', maxZoom:19, attribution:'&copy; OpenStreetMap &copy; CARTO' } },
+    dark:{ url:'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', opts:{ subdomains:'abcd', maxZoom:19, attribution:'&copy; OpenStreetMap &copy; CARTO' } },
+    sat:{ url:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', opts:{ maxZoom:19, attribution:'Imagery &copy; Esri' } }
+  };
+  function cityPin(c, dark){
+    return L.divIcon({ className:'', iconSize:[0,0], iconAnchor:[0,0], html:
+      '<div class="pin'+(dark?' dark':'')+'">'+
+        '<span class="dot"></span>'+
+        '<div class="lbl"><b>'+c.name+'</b>'+
+          '<span class="ap">&#9992; '+c.ap.code+' &middot; '+c.ap.km+' km &middot; '+c.ap.min+' min</span></div>'+
+      '</div>' });
+  }
+  function airportPin(c){
+    return L.divIcon({ className:'', iconSize:[0,0], iconAnchor:[0,0], html:
+      '<div class="apin"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5A1.5 1.5 0 0 0 11.5 2 1.5 1.5 0 0 0 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>'+
+        '<span class="aplbl">'+c.ap.code+' &middot; '+c.ap.km+'km &middot; '+c.ap.min+'min</span></div>' });
+  }
+  function build(id, tile, dark, connectors){
+    var t = TILES[tile];
+    var m = L.map(id, { zoomControl:true, scrollWheelZoom:false, attributionControl:true });
+    L.tileLayer(t.url, t.opts).addTo(m);
+    CITIES.forEach(function(c){
+      L.marker([c.lat,c.lng], { icon:cityPin(c,dark), interactive:false, keyboard:false }).addTo(m);
+      if (connectors){
+        L.marker([c.ap.lat,c.ap.lng], { icon:airportPin(c), interactive:false, keyboard:false }).addTo(m);
+        L.polyline([[c.lat,c.lng],[c.ap.lat,c.ap.lng]], { color:'#e8bf72', weight:2, dashArray:'3 5', opacity:.9 }).addTo(m);
+      }
+    });
+    var pts = [];
+    CITIES.forEach(function(c){ pts.push([c.lat,c.lng]); if(connectors) pts.push([c.ap.lat,c.ap.lng]); });
+    m.fitBounds(L.latLngBounds(pts).pad(0.55));
+    setTimeout(function(){ m.invalidateSize(); }, 200);
+    return m;
+  }
+  build('map1','light',false,false);
+  build('map2','dark',true,false);
+  build('map3','sat',true,false);
+</script>
+</body>
+</html>
