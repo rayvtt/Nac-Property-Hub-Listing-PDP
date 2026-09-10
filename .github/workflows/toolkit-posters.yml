@@ -1,0 +1,57 @@
+name: Capture toolkit posters
+
+# Screenshots the NAC homepage's tool pages with a real browser and commits the
+# JPGs into this repo, so GitHub Pages serves them WAF-free at
+#   https://rayvtt.github.io/Nac-Property-Hub-Listing-PDP/toolkit-posters/<slug>.jpg
+# The homepage (private NAC---Property-Hub repo) points its toolkit tiles there.
+# No secret needed: a real browser clears the site WAF's JS challenge, and the
+# runner's GITHUB_TOKEN commits the results. Weekly cron keeps them current.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/toolkit-posters.yml'
+      - 'scripts/capture-toolkit-posters.mjs'
+  schedule:
+    - cron: '0 2 * * 1' # Mondays 02:00 UTC — refresh the previews weekly
+  workflow_dispatch:
+
+concurrency:
+  group: toolkit-posters
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright Chromium
+        run: |
+          npm init -y > /dev/null
+          npm i playwright > /dev/null
+          npx playwright install --with-deps chromium
+
+      - name: Capture posters
+        run: node scripts/capture-toolkit-posters.mjs
+
+      - name: Commit refreshed posters
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add toolkit-posters/
+          if git diff --staged --quiet; then
+            echo "No poster changes."
+          else
+            git commit -m "Toolkit posters: refresh tool screenshots [skip ci]"
+            git push
+          fi
