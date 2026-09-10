@@ -1,13 +1,13 @@
-name: SEO Goal → Bi-weekly Rank Review
+name: SEO Goal → Weekly Rank Review
 
 # Drives + tracks the VN immigration-investment ranking goal (top-3 on both
-# domains). Runs every ~2 weeks (1st & 15th), pulls GSC, snapshots rank, mirrors
+# domains). Runs weekly (every Monday 09:00 UTC), pulls GSC, snapshots rank, mirrors
 # to the 🎯 Rank Tracker + Goal Reviews Notion DBs, appends seo/goal-log.md.
 # Measurement + logging only — safe to run unattended.
 
 on:
   schedule:
-    - cron: "0 9 1,15 * *"      # 09:00 UTC on the 1st and 15th ≈ every 2 weeks
+    - cron: "0 9 * * 1"        # 09:00 UTC every Monday (weekly)
   workflow_dispatch:
     inputs:
       dry_run:
@@ -65,7 +65,7 @@ jobs:
             echo "No snapshot/log changes to commit."
             exit 0
           fi
-          git commit -m "goal: bi-weekly rank snapshot + log"
+          git commit -m "goal: weekly rank snapshot + log"
           for attempt in 1 2 3 4 5; do
             if git push origin main; then echo "Pushed on attempt $attempt"; exit 0; fi
             echo "Push attempt $attempt failed — rebasing"; git fetch origin main
