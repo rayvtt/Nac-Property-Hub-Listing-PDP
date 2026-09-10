@@ -51,7 +51,18 @@ jobs:
           git add toolkit-posters/
           if git diff --staged --quiet; then
             echo "No poster changes."
-          else
-            git commit -m "Toolkit posters: refresh tool screenshots [skip ci]"
-            git push
+            exit 0
           fi
+          git commit -m "Toolkit posters: refresh tool screenshots [skip ci]"
+          # This repo's crons push to main constantly, so the first push often
+          # loses the race ("fetch first"). Rebase onto the latest main and retry.
+          for i in 1 2 3 4 5 6; do
+            if git push origin HEAD:main; then
+              echo "pushed on attempt $i"; exit 0
+            fi
+            echo "push race — rebase + retry ($i)"
+            git pull --rebase --autostash origin main || true
+            sleep $((RANDOM % 6 + 3))
+          done
+          echo "ERROR: could not push posters after retries" >&2
+          exit 1
