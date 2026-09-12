@@ -2,6 +2,16 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-09-12 (midday run) — EB-5/US pillar drafted; correction on 09-10 entry
+
+**Correction:** the 2026-09-10 entry below claims the "Thị thực vàng (Golden Visa)" pillar was "kicked off... as a review draft." That did not happen — checked today: zero rows created in NAC - Site CMS since 2026-09-01, and SEO Task 1518 (Golden Visa explainer) is still untouched at Status=New since 2026-07-24. Treating that item as still fully queued, not shipped. No new snapshot measurement this run (rank data is the 28-day window from 2026-09-01; next scheduled remeasurement is 2026-09-14) — no keyword has moved out of top-3 to defend (all 37 tracked keywords are still `not-ranking` per that snapshot).
+
+**Shipped this run:** SEO Task **1516** (US/EB-5 pillar, Impact 90, the highest-impact untouched item) — full bilingual VI+EN article drafted and filed in NAC - Site CMS (Status=Idea, Reviewed by NAC?=Waiting to Review): [draft](https://app.notion.com/p/3d948ec25e8681dca0f7e2813530239a). Targets `eb-5` · `thẻ xanh mỹ` · `đầu tư định cư mỹ` (all previously content gaps, target_url=null). Framed as an independent EB-5 explainer + comparison into NAC's real programs (Golden Visa Greece/Portugal, Cyprus, Türkiye CBI, St Kitts, Panama) — NAC does not sell EB-5. Exactly 1 H1 per language (avoids repeating the 12-H1 defect found elsewhere today). 5 `[VERIFY]` flags left inline for Ray on time-sensitive EB-5 figures (RIA 2027 inflation adjustment, Regional Center reauthorization status, VN visa-bulletin queue, I-526E/I-829 processing times, current USCIS fees) — nothing time-sensitive was guessed. SEO Task 1516 moved New → Approved with the draft link. `target_url` in `seo/goal-keywords.json` left `null` until the article actually publishes (not live yet).
+
+**Consolidation plan (Task 1521, cannibalization) — still blocked on Ray, untouched this run:** an earlier run today (commits `81b0dfa`/`9c31f2e` on this branch) produced `seo/consolidation-plan-2026-09.md` + `seo/redirects-residences-citizenships.txt`, diagnosing 20 broken `/residences/`+`/citizenships/` duplicate URLs all serving one Greece article, plus a 12-H1 defect in that source article. The plan doc explicitly asks for Ray's go before anything changes. Per the standing guardrail ("DRAFTS ONLY, nothing published/301'd without Ray's go") this run did **not** push the H1 fix live even though it needs no WP-admin access — a live, already-indexed article shouldn't be edited on a routine's own initiative without an explicit go, so it stays queued alongside the 301s/CPT-noindex (Ray's WP admin) as one combined decision. No PR was open for this branch's `81b0dfa`/`9c31f2e` commits as of this run either.
+
+**Next:** measurement Mon 2026-09-14 (per the weekly-remeasurement cadence set 09-10) · continue advancing the remaining queued pillars (Second-passport P1/85, Cost P1/78, Canada P2/55) in priority order on subsequent runs · consolidation-plan decision still awaiting Ray.
+
 ## 2026-09-10 — Weekly activities RESTART
 
 **Root cause of the 7-week flatline:** measurement ran clean every cycle (07-24 → 09-01, all **0/37** not-ranking, avg position —), but **all 6 tasks queued on 07-24 are still `New` — nothing shipped.** Rankings can't move while briefs sit unexecuted and the structural blockers stand.
