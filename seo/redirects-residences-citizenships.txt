@@ -1,0 +1,32 @@
+# NAC — 301 redirects: retire broken /residences/ + /citizenships/ duplicates (2026-09-12)
+# All 20 URLs currently serve the same "Greece Golden Visa" article. Retire -> canonical.
+#
+# METHOD A (recommended, WordPress): Rank Math -> Redirections -> Add New, per row below
+#   Source URL (exact) -> Destination -> 301.  Or use the Redirection plugin's CSV import.
+# METHOD B (Apache/LiteSpeed .htaccess): paste the Redirect 301 lines below, ABOVE the
+#   "# BEGIN WordPress" block so they run before WP's rewrite. (Not for Nginx.)
+#
+# ---- Apache .htaccess block ----
+Redirect 301 /residences/chuong-trinh-hy-lap-golden-visa/ https://nomadassetcollective.com/property-hub-bat-dong-san/greece/
+Redirect 301 /residences/malaysia-residency/ https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/
+Redirect 301 /residences/malta-residence/ https://nomadassetcollective.com/brochures/chuong-trinh-malta-thuong-tru-nhan-rbi/
+Redirect 301 /residences/portugal-residence/ https://nomadassetcollective.com/brochures/chuong-trinh-bo-dao-nha-golden-visa/
+Redirect 301 /residences/italy-residence/ https://nomadassetcollective.com/brochures/chuong-trinh-y-italy-rbi-qua-dau-tu-bds/
+Redirect 301 /residences/hungary-residence/ https://nomadassetcollective.com/property-hub-bat-dong-san/
+Redirect 301 /residences/574/ https://nomadassetcollective.com/property-hub-bat-dong-san/
+Redirect 301 /citizenships/turkey-citizenship/ https://nomadassetcollective.com/property-hub-bat-dong-san/turkey/
+Redirect 301 /citizenships/st-kitts-and-nevis-citizenship/ https://nomadassetcollective.com/brochures/chuong-trinh-si-kitts-nevis-quoc-tich/
+Redirect 301 /citizenships/antigua-barbuda-citizenship/ https://nomadassetcollective.com/brochures/chuong-trinh-antigua-barbuda-cbi/
+Redirect 301 /citizenships/malta-citizenship/ https://nomadassetcollective.com/brochures/chuong-trinh-malta-thuong-tru-nhan-rbi/
+Redirect 301 /citizenships/malta-citizenship-2/ https://nomadassetcollective.com/brochures/chuong-trinh-malta-thuong-tru-nhan-rbi/
+Redirect 301 /citizenships/saint-lucia-citizenship/ https://nomadassetcollective.com/property-hub-bat-dong-san/
+Redirect 301 /citizenships/grenada-citizenship/ https://nomadassetcollective.com/property-hub-bat-dong-san/
+Redirect 301 /citizenships/dominica-citizenship/ https://nomadassetcollective.com/property-hub-bat-dong-san/
+Redirect 301 /citizenships/vanuatu-citizenship/ https://nomadassetcollective.com/property-hub-bat-dong-san/
+Redirect 301 /citizenships/571/ https://nomadassetcollective.com/property-hub-bat-dong-san/
+Redirect 301 /citizenships/572/ https://nomadassetcollective.com/property-hub-bat-dong-san/
+Redirect 301 /residences/ https://nomadassetcollective.com/property-hub-bat-dong-san/
+Redirect 301 /citizenships/ https://nomadassetcollective.com/property-hub-bat-dong-san/
+# ---- end ----
+# After redirects are live: Rank Math -> Titles & Meta -> set the residence / citizenship /
+# compare post types to noindex + exclude from sitemap, and delete/unpublish the 18 stub posts.
