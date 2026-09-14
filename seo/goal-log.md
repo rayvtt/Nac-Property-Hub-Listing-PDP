@@ -2,6 +2,14 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-09-14 — Goal review
+
+- **Tracked**: 37  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 37
+- **Avg position** (ranked set): —
+- **Gainers**: —
+- **Regressions**: —
+- **Content gaps** (no page yet): hộ chiếu thứ hai, thị thực vàng, golden visa là gì, eb-5, thẻ xanh mỹ, đầu tư định cư mỹ, đầu tư định cư canada, chi phí đầu tư định cư, đầu tư định cư cần bao nhiêu tiền, đầu tư định cư giá rẻ
+- **Quick wins** (striking 4–10, one push to top-3): —
 ## 2026-09-14 — Execution tick: Second-passport pillar drafted; EB-5 mislabel corrected
 
 **De-dup check first:** git log since midnight (both repos) + 🚀 SEO Tasks + NAC Site CMS all clean — no run had touched anything yet today. Rank snapshot is still 2026-09-01 (0/37 top-3) — no fresher GSC pull exists, so nothing to defend since nothing is in top-3 to fall out of.
