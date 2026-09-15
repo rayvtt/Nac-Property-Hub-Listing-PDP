@@ -2,6 +2,27 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-09-15 — Execution tick: Cost pillar drafted; Saint Lucia data conflict found and fixed
+
+**De-dup check first:** `git log --since=midnight` on both repos, `goal-log.md`, and 🚀 SEO Tasks were all clean going into this run — no earlier run today had touched anything. Latest rank snapshot is still 2026-09-14 (0/37 top-3, all not-ranking) — no fresher GSC pull exists. **No regressions to defend** (nothing is in top-3 to fall out of).
+
+**Shipped this run:**
+- **SEO-1519 → drafted and filed.** Full bilingual (VI ≈2,180 / EN ≈2,010 words) cost-comparison pillar "Đầu tư định cư cần bao nhiêu tiền?" via `content-blog-writer`, covering 23 verified programmes in a single comparison table sorted by ascending threshold (Panama reforestation from $80K up to Singapore GIP at SGD 10M). Every figure traced to 🔀 So Sánh Data / 🔖 Brochures Meta-data / 🏠 Property Listings (data stamp 23/07/2026); 6 source conflicts (Panama, Greece, Malta, Portugal, Türkiye, St Kitts) resolved in favour of the newer figure and explained in-article, matching the pattern the Golden Visa and Second-Passport pillars set. Excluded: Spain (closed programme), Vanuatu/Jordan/Egypt (no sourced figure), Malta's all-in total and Malaysia's Silver/Gold tier (component figures don't reconcile — omitted rather than guessed). One open `[VERIFY]` remains (Australia NIV 858 — So Sánh's own row is internally inconsistent between `minCost` and `feeInit`/`feeTotal1`).
+  - Filed as a **draft** in NAC Site CMS: https://app.notion.com/p/3dc48ec25e86815a9dbec52085180379 (`Status=Idea`, `Reviewed by NAC?=Waiting to Review`, `Published?=Not started` — nothing published).
+  - This is the **third and final item in the current content queue** — Golden Visa (09-13), Second-Passport (09-14), and now the cost pillar are all drafted and awaiting Ray's review.
+  - SEO-1519 updated with a note + CMS link + commit link; `Status` left at `New` (editorial drafts don't flip to `Applied` — that's auto-fixes only).
+  - Campaign record: `nac-marketing-omnichannel/campaigns/2026-09-cost-pillar/` (`campaign.md` + `article.md`), commits `6832094` + `e77b943` on `claude/blissful-noether-ajdiu9`, confirmed on remote.
+
+**Data-integrity catch (worth flagging even though nothing is live):** while sourcing Saint Lucia's CBI threshold for the cost pillar, found it disagreed with the already-filed Second-Passport pillar (SEO-1517, filed 09-14) — that draft used US$100,000, sourced from a Property Listings *entry price* (NAC-72) rather than the programme's actual investment threshold. Queried 🔀 So Sánh Data's `Caribbean` row live via SQL and confirmed the real figure is **US$240,000**. Corrected SEO-1517's CMS draft in place (VI + EN: table row, short-answer line, FAQ) so the two sibling pillars no longer contradict each other, and annotated both SEO-1517 and SEO-1519 with the correction trail. Both pages remain pre-publish (Idea/Waiting to Review) — no live-site impact, but this would have shipped two contradicting figures side by side had it gone to review unfixed.
+
+**Indexation check:** nothing new in the last 14 days is published/indexable — Golden Visa (09-13), Second-Passport (09-14), and the cost pillar (today) are all draft-only.
+
+**Still BLOCKED ON RAY, now day 3:**
+1. **Consolidation plan H1 fix + 301s** (`seo/consolidation-plan-2026-09.md`) — task #1521 (the cannibalization finding) remains `Approved` for *drafting the plan only*; the two actual action tasks (#761 Snoozed, #1461 New) are still not approved for execution. No comments on any of these tasks. **Not auto-applied this run**, per the plan's own "nothing changes live until you say go."
+2. **EB-5 pillar's 5 `[VERIFY]` items** (SEO-1516, unchanged since 09-12) — needs Ray's confirmation before it can move past draft.
+
+**Next:** the content queue (Golden Visa, Second-Passport, Cost pillar) is now fully drafted — nothing left to advance until Ray reviews at least one. Next run should re-check whether any have moved past `Waiting to Review`, and otherwise fall back to an indexation/on-page audit or expanding `seo/goal-keywords.json`. Ask Ray directly (again) on the H1-fix go/no-go and the EB-5 verify items — both now sitting 3 days.
+
 ## 2026-09-14 — Goal review
 
 - **Tracked**: 37  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 37
