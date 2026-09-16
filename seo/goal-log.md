@@ -2,6 +2,29 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-09-16 — Execution tick: Canada pillar drafted; H1-fix blocker root-caused (not a Notion edit)
+
+**De-dup check first:** `git log --since=midnight` clean in both repos; 🚀 SEO Tasks and NAC Site CMS showed nothing touched yet today. Rank snapshot is still 2026-09-14 (0/37 top-3) — no fresher GSC pull; nothing to defend since nothing is in top-3 to fall out of.
+
+**Blocked item re-investigated (task #1461 / #1521, 4 days blocked):** the 09-12 consolidation plan assumed Claude could fix the Greece article's 12-H1 defect "via the CMS pipeline, no WP admin needed." Live-probed the article's actual HTML and cross-checked against the Notion source: all 12 mis-rendered headings are ordinary Heading_2 blocks in Notion — identical in type to sibling headings that render correctly as `<h2>` on the same page. So this isn't a Notion heading-level mistake; some render step outside Notion (WP theme or a Notion→WP sync/plugin) promotes headings matching a numbered "N. " prefix to `<h1>`, and that code isn't present in any of the 5 repos accessible from this session. **Not executable as a pure content edit** — corrected task #1461's and #1521's notes accordingly and flagged the decision Ray needs (where that render step actually lives, or a green light to test stripping the numbering as an unverified workaround). No live change made.
+
+**Shipped this run:**
+- **SEO-1520 (Canada pillar) → drafted, verified, and filed.** Delegated the bilingual VI+EN draft to `content-blog-writer`, which came back tool-limited (no WebSearch/Notion/git in that sub-session) — completed the remaining required steps directly: live-verified against `ircc.canada.ca`, filed to NAC Site CMS, updated the SEO task, committed and pushed the campaign record.
+  - **Caught a real error before filing**: the sub-agent's draft (and the original SEO-1520 brief) assumed the Start-up Visa was still open. Live IRCC check found the opposite — SUV stopped issuing new commitment certificates 31/12/2025 and closed to new filings entirely 30/06/2026 (narrow transition window only), with an unspecified replacement pilot announced. Rewrote the article (both languages) before filing to lead with PNP entrepreneur streams as the route genuinely open in 2026, not SUV.
+  - Filed as a **draft**: https://app.notion.com/p/3dd48ec25e868141b899fa9f31a7675a (`Status=Idea`, `Reviewed by NAC?=Waiting to Review`, `Published?=Not started`).
+  - 12 `[VERIFY]` items left open (bilingually) — mostly per-province PNP thresholds, genuinely volatile and correctly left unstated rather than guessed.
+  - Campaign record: `nac-marketing-omnichannel/campaigns/2026-09-canada-investment-migration/`, commit `d344143` on `claude/blissful-noether-86ngth` (pushed).
+  - This was the last un-shipped item in the 07-24 content queue (EB-5/second-passport/Golden Visa/cost-pillar all already drafted; EB-5 additionally has 5 VERIFY items blocking it).
+
+**Indexation check:** nothing shipped in the last 14 days is published — Golden Visa (09-13), second-passport (09-14), cost-pillar (09-15) and Canada (today) are all still Idea/draft-only in NAC Site CMS.
+
+**Still BLOCKED ON RAY:**
+1. Consolidation-plan 301s + CPT noindex (WP admin, unchanged).
+2. **New**: where the blog's Notion→HTML render step actually lives (needed before the 12-H1 fix can be executed at all) — see above.
+3. EB-5 pillar's 5 `[VERIFY]` items (unchanged from 09-14).
+
+**Next:** the P1 content queue from 07-24 is now fully drafted; next run should either expand `goal-keywords.json` / run an indexation-and-on-page audit, or advance the Canada pillar's `[VERIFY]` closure once Ray weighs in on scope. Content queue is otherwise exhausted until Ray unblocks the structural item.
+
 ## 2026-09-14 — Goal review
 
 - **Tracked**: 37  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 37
