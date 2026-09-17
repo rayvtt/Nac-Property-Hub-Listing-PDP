@@ -5,7 +5,7 @@
     "gsc_property": "sc-domain:nomadassetcollective.com",
     "bands": { "top-3": "<=3", "striking": "4-10", "page-2": "11-20", "deep": "21+", "not-ranking": "no impressions" },
     "notes": "target_url null = content gap (no dedicated page yet — brief one on the listed surface). One canonical URL per keyword; do not create a second competing page. Refine/expand this list — it is the single human-owned input.",
-    "updated": "2026-06-05"
+    "updated": "2026-09-17"
   },
   "keywords": [
     { "kw": "đầu tư di trú", "cluster": "head", "intent": "commercial", "surface": "home", "priority": "P0", "target_url": "https://nomadassetcollective.com/" },
@@ -36,6 +36,16 @@
     { "kw": "quốc tịch caribbean", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/antigua-barbuda-cbi-2026-quoc-tich-caribbean-day-du-va-lo-trinh-den-ho-chieu-manh/" },
     { "kw": "italy investor visa", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/italy-investor-visa-2026-cu-tru-eu-qua-dau-tu-sang-tao-va-kinh-doanh/" },
     { "kw": "định cư ý", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/italy-investor-visa-2026-cu-tru-eu-qua-dau-tu-sang-tao-va-kinh-doanh/" },
+    { "kw": "mm2h là gì", "cluster": "program", "intent": "informational", "surface": "clp", "priority": "P1", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/" },
+    { "kw": "định cư malaysia", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/" },
+    { "kw": "định cư malta", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malta/" },
+    { "kw": "malta mprp", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malta/" },
+    { "kw": "định cư thái lan", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/" },
+    { "kw": "thái lan ltr visa", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/" },
+    { "kw": "golden visa new zealand", "cluster": "program", "intent": "commercial", "surface": "brochure", "priority": "P2", "target_url": "https://nomadassetcollective.com/brochures/chuong-trinh-new-zealand-rbi-dau-tu-di-tru/" },
+    { "kw": "đầu tư định cư new zealand", "cluster": "program", "intent": "commercial", "surface": "brochure", "priority": "P2", "target_url": "https://nomadassetcollective.com/brochures/chuong-trinh-new-zealand-rbi-dau-tu-di-tru/" },
+    { "kw": "quốc tịch st kitts và nevis", "cluster": "program", "intent": "commercial", "surface": "brochure", "priority": "P2", "target_url": "https://nomadassetcollective.com/brochures/chuong-trinh-si-kitts-nevis-quoc-tich/" },
+    { "kw": "định cư montenegro", "cluster": "program", "intent": "commercial", "surface": "brochure", "priority": "P2", "target_url": "https://nomadassetcollective.com/brochures/chuong-trinh-montenengro-rbi-qua-dau-tu-bds/" },
 
     { "kw": "đầu tư định cư châu âu", "cluster": "region", "intent": "commercial", "surface": "hub", "priority": "P0", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/" },
     { "kw": "đầu tư định cư mỹ", "cluster": "region", "intent": "commercial", "surface": "blog", "priority": "P1", "target_url": null },

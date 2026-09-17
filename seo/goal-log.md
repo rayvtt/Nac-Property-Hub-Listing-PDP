@@ -2,6 +2,36 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-09-17 — Execution tick: goal-keywords.json expanded (37→47); content queue confirmed exhausted, all blockers unchanged
+
+**De-dup check first:** `git log --since=midnight` clean in both repos (last commits were 05:02 UTC auto-syncs, unrelated). 🚀 SEO Tasks, NAC Site CMS, and 🎯 Goal Reviews all show nothing touched today before this run. Rank snapshot `seo/rank-snapshots/2026-09-14.json` was re-fetched by the cron (file timestamp 09-17 05:01) but the data is byte-identical to what was already logged on 09-16 — same 28-day window (2026-08-17→09-13), same headline `{tracked:37, top-3:0, striking:0, page-2:0, deep:0, not-ranking:37}`. **Nothing to defend** — nothing was in top-3 to fall out of, and no fresher GSC pull exists yet.
+
+**Content queue re-verified, genuinely exhausted:** double-checked the 09-16 claim that all 5 pillars (EB-5, second-passport, Golden Visa, cost-pillar, Canada) are drafted — the cost-pillar draft ("Đầu tư định cư cần bao nhiêu tiền?", https://app.notion.com/p/3dc48ec25e86815a9dbec52085180379) was the one I couldn't immediately confirm existed; verified directly in NAC Site CMS that it's real (full bilingual body, filed 09-15, `Status=Idea`). All 5 are `Idea`/`Waiting to Review`/`Not started` — untouched by Ray since filing. Nothing to re-draft.
+
+**Auto-Applicable queue checked, genuinely empty:** the "idle since 2026-05-20" meta-description (×12) and schema.org (×4) tasks that looked stale are **not** stuck in a broken pipeline — none of them are `Status=Approved` (the `seo-apply.yml` daily-cron filter). They're `Snoozed` (the original rows) or `New` (May-20 duplicates of the same rows — a duplicate-row generation bug from that day's audit run, worth a separate cleanup pass but not a ranking blocker). The 8× "No H1 on hub page" tasks that also looked idle ARE `Approved` but `Auto-Applicable=false` by design (structural fix, needs human eyeball) — working as intended, not a bug. **Nothing was runnable via `seo-apply` this run** — no task exists at `Status=Approved AND Auto-Applicable=true`.
+
+**Consolidation-plan / H1-fix blocker re-checked, confirmed genuinely external:** re-examined whether the Notion→WP blog render step (the thing promoting numbered in-body headings to `<h1>`) might live in `nac-marketing-omnichannel/scripts/cms-scheduler` — the one accessible-repo candidate not fully ruled out on 09-16. Read `publish.mjs` directly: it's explicitly disabled (a no-op since a 2026-06-07 mass-mispublish incident) and defers to "the live Notion→WP sync," which isn't implemented in this repo either. Confirmed: the render step genuinely isn't in any of the 5 accessible repos. Task #1461 still needs Ray's answer on where it lives (or a go-ahead to test the "strip numbering" workaround).
+
+**Shipped this run — fallback per the playbook ("queue empty → expand goal-keywords.json"):** added **10 new keywords** for 5 live programs that had zero tracking despite having real, live canonical pages — a pure coverage gap, not manufactured filler:
+- Malaysia MM2H: `mm2h là gì` (P1, informational), `định cư malaysia` (P2) → CLP `/property-hub-bat-dong-san/malaysia/`
+- Malta MPRP: `định cư malta`, `malta mprp` (P2 each) → CLP `/property-hub-bat-dong-san/malta/` — deliberately did **not** add "quốc tịch malta": NAC's Malta brochure is the MPRP *residency* program, not the separate, much-harder-vetted MEIN citizenship route, so a citizenship-intent keyword would mistarget the page
+- Thailand LTR: `định cư thái lan`, `thái lan ltr visa` (P2 each) → CLP `/property-hub-bat-dong-san/thailand/` — checked the brochure title first; it's the LTR (Long-Term Resident) visa, not the separate Thailand Elite membership scheme, so used "ltr visa" not "elite visa"
+- New Zealand Active Investor Plus: `golden visa new zealand`, `đầu tư định cư new zealand` (P2 each) → brochure (no CLP exists for NZ)
+- St Kitts & Nevis CBI: `quốc tịch st kitts và nevis` (P2) → brochure (no CLP)
+- Montenegro RBI: `định cư montenegro` (P2) → brochure (no CLP)
+
+All 6 target URLs live-verified (curl, 200 OK) before committing. `_meta.updated` bumped to 2026-09-17. Total tracked keywords: 37 → **47**. Committed + pushed to `claude/serene-fermat-u20tsu`.
+
+**Indexation check:** nothing shipped in the last 14 days is published — the 5 content-queue drafts (09-12 through 09-16) remain Idea/draft-only, nothing new to check.
+
+**Still BLOCKED ON RAY (unchanged):**
+1. Consolidation-plan 301s + CPT noindex (WP admin).
+2. Where the blog's Notion→HTML render step actually lives (re-confirmed not in any of the 5 accessible repos this run) — needed before the 12-H1 fix (#1461) can execute at all.
+3. EB-5 pillar's 5 `[VERIFY]` items (unchanged).
+4. The 5 content-queue drafts + none of the 16 idle SEO Tasks have had a Ray decision.
+
+**Next:** the keyword universe now covers 14 of NAC's 18 live country programs (still gapped: UAE has only a generic "đầu tư định cư dubai" hub keyword — fine, already covered; Spain is a closed/legacy program, deliberately not tracked; Nauru and Australia's brochure specifically are low-priority/already covered via the hub CLP keyword). Next run: either the duplicate-row Notion cleanup (12+4 stale May-20 rows cluttering the SEO Tasks triage — low priority, doesn't block ranking), or keep pinging Ray on the 3 blockers above since content + keyword-expansion levers are now both exhausted for this cycle.
+
 ## 2026-09-16 — Execution tick: Canada pillar drafted; H1-fix blocker root-caused (not a Notion edit)
 
 **De-dup check first:** `git log --since=midnight` clean in both repos; 🚀 SEO Tasks and NAC Site CMS showed nothing touched yet today. Rank snapshot is still 2026-09-14 (0/37 top-3) — no fresher GSC pull; nothing to defend since nothing is in top-3 to fall out of.
