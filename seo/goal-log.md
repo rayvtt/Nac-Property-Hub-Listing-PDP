@@ -2,6 +2,31 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-09-18 — Execution tick: Property Hub page's own title/H1/meta miss every mapped keyword (SEO-1522)
+
+**De-dup check first:** `git log --since=midnight` clean in both repos (last commits were 01:14 UTC auto-syncs, unrelated content pipelines). 🚀 SEO Tasks, NAC Site CMS, and 🎯 Goal Reviews all showed nothing touched today before this run. Rank snapshot is still `seo/rank-snapshots/2026-09-14.json` (re-fetched by cron at 05:01 UTC but byte-identical — `tracked:37`, still measured against the pre-expansion keyword set) — no fresher GSC pull exists. **Nothing to defend** — nothing is in top-3 to fall out of.
+
+**Content queue + Auto-Applicable queue re-confirmed exhausted (no change since 09-17):** all 5 pillars (Golden Visa #1518, second-passport #1517, EB-5 #1516, cost-pillar #1519, Canada #1520) remain Idea/Waiting to Review in NAC Site CMS, untouched by Ray. Zero tasks at `Status=Approved AND Auto-Applicable=true`. Consolidation-plan blockers (#1521 cannibalization plan — Ray's WP admin for the 301s/CPT noindex; #1461 blog 12-H1 fix — render step location still unknown, confirmed not present in any of the 5 accessible repos) unchanged.
+
+**Shipped this run — new finding, not a duplicate (checked existing tasks #1437/#1438/#739/#740 first, all about length/count, none about keyword-intent match):** live-audited `https://nomadassetcollective.com/property-hub-bat-dong-san/` — the designated `surface=hub` landing page for **7 tracked keywords** (2× P0: `đầu tư quốc tịch`, `đầu tư định cư châu âu`; plus `quốc tịch thứ hai`, `chương trình đầu tư định cư`, `định cư nước ngoài`, `đầu tư bất động sản định cư`, `hộ chiếu thứ hai`). Raw `curl` confirmed:
+- `<title>` = "NAC Property Hub — Danh mục đầu tư bất động sản toàn cầu" — matches none of the 7 phrases exactly.
+- Meta description — same, no exact-phrase match.
+- 3× `<h1>` still live (NAC / Danh Mục BĐS & Công Cụ Đầu Tư / NAC Lister — Thêm BĐS Vào Hub) — the existing #1438/#740 defect (Approved, never applied) is confirmed still unfixed today, and it compounds the intent-match problem since Google can't tell which H1 is primary.
+
+Queued **SEO-1522** (🚀 SEO Tasks, P0, Impact 88, Category=Meta, `Auto-Applicable=false`) with a drafted VI title + meta description + H1 rewrite that works the P0/P1 phrases in naturally. Deliberately **not** auto-applied: this exact page is in `scripts/seo-apply.mjs`'s default `LOCKED` list (`nac-residence-index`) — excluded from the cheerio/WP-REST auto-rewrite pipeline by design (hand-maintained flagship SPA). Flagged it as the highest-leverage lever currently available that is **not** gated on Ray's WP admin access, since the fix ships through the `rayvtt/NAC---Property-Hub` repo's own PR→auto-merge flow (edits `NAC-PROPERTY-HUB.html` directly, syncs to WP on merge) rather than through WP admin or the inaccessible blog render pipeline — worth prioritizing over further content drafts now that all 5 queued pillars are drafted and awaiting review.
+
+**Directional (non-GSC) signal, logged as context only, not a ranking claim:** a plain web search for "đầu tư định cư" and for the bare domain surfaced zero `nomadassetcollective.com` results, while several VN competitors (Arton Capital, BSOP, SI Group, dautuquocte.org) ranked prominently. Consistent with the near-zero-impressions GSC state already on file; not itself GSC data, so not written into the rank tracker.
+
+**Indexation check:** nothing shipped in the last 14 days is published — the 5 content-queue drafts (09-12 through 09-16) remain Idea/draft-only; today's task queue entry doesn't touch a live page either (draft-only proposed fix).
+
+**Still BLOCKED ON RAY (unchanged):**
+1. Consolidation-plan 301s + CPT noindex (WP admin, unchanged).
+2. Where the blog's Notion→HTML render step actually lives (needed before the 12-H1 fix can execute) — unchanged.
+3. EB-5 pillar's 5 `[VERIFY]` items — unchanged.
+4. The 5 content-queue drafts + the idle SEO Tasks — no Ray decision yet on any of them.
+
+**Next:** either land SEO-1522 directly (title/meta/H1 rewrite in `NAC-PROPERTY-HUB.html`, PR + auto-merge — doesn't need Ray's WP admin) on a future run once it's had a look, or run the same live-audit pass against the other already-indexed, non-locked surfaces (country CLPs) to see if the same keyword-intent mismatch exists there too — that's the next genuinely new lever once this one is actioned.
+
 ## 2026-09-17 — Execution tick: goal-keywords.json expanded (37→47); content queue confirmed exhausted, all blockers unchanged
 
 **De-dup check first:** `git log --since=midnight` clean in both repos (last commits were 05:02 UTC auto-syncs, unrelated). 🚀 SEO Tasks, NAC Site CMS, and 🎯 Goal Reviews all show nothing touched today before this run. Rank snapshot `seo/rank-snapshots/2026-09-14.json` was re-fetched by the cron (file timestamp 09-17 05:01) but the data is byte-identical to what was already logged on 09-16 — same 28-day window (2026-08-17→09-13), same headline `{tracked:37, top-3:0, striking:0, page-2:0, deep:0, not-ranking:37}`. **Nothing to defend** — nothing was in top-3 to fall out of, and no fresher GSC pull exists yet.
