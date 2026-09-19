@@ -2,6 +2,30 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-09-19 — Execution tick: SEO-1522 shipped live (Property Hub title/meta/H1 fix)
+
+**De-dup check first:** `git log --since=midnight` clean in all 5 repos before this run started (last commits pre-midnight were 00:43/01:14/02:36 UTC auto-sync content pipelines, unrelated). 🚀 SEO Tasks and 🎯 Goal Reviews showed nothing touched today before this run. Rank snapshot is still `seo/rank-snapshots/2026-09-14.json` (cron re-fetched at 05:01 UTC, byte-identical, still measured against the pre-expansion 37-keyword set — the 09-17 expansion to 47 hasn't been picked up by a fresh GSC pull yet). **Nothing to defend** — nothing is in top-3 to fall out of.
+
+**Shipped this run — landed SEO-1522 directly, per 09-18's own "Next" note:** implemented the drafted title/meta description/H1 rewrite in `NAC-PROPERTY-HUB.html` (`rayvtt/NAC---Property-Hub`):
+- `<title>`: "NAC Property Hub — Danh mục đầu tư bất động sản toàn cầu" → **"Đầu Tư Quốc Tịch & Định Cư — NAC Property Hub Toàn Cầu"** (54 chars, leads with the P0 phrase)
+- Meta description rewritten (154 chars) to work in `đầu tư quốc tịch` / `đầu tư định cư` / `quốc tịch thứ hai` naturally
+- Fixed the compounding structural defect in the same edit: the page shipped **3 competing `<h1>`** tags (header logo "NAC", the main content heading, the NAC Lister tool heading) — demoted the logo and the Lister heading to `<h2>`, rewrote the primary content H1 to "Đầu Tư Quốc Tịch & Định Cư Toàn Cầu — Danh Mục BĐS NAC" (VI) / "Global Investment Citizenship & Residency — NAC Property Hub" (EN). Exactly 1 `<h1>` on the page now.
+- Extended the two `h1.serif` mobile-breakpoint CSS rules to `h1.serif,h2.serif` so the demoted Lister heading keeps its responsive sizing — checked first for tag-based CSS/JS hooks (`querySelector('h1')` etc.) that a retag could break; none found.
+- Shipped via this repo's own PR → auto-merge → auto-sync flow (no WP admin needed): PR [#331](https://github.com/rayvtt/NAC---Property-Hub/pull/331), merge commit `2f67570`. `sync-html-to-wordpress.yml` fired on merge; **live-verified via curl** on `https://nomadassetcollective.com/property-hub-bat-dong-san/` post-sync — new title, new meta description, and exactly 1 `<h1>` all confirmed live.
+- SEO-1522 marked `Applied` in 🚀 SEO Tasks with the commit link. Also resolved the standalone "3×H1 on hub page" structural defect tasks (#1438/#740, previously `Approved`/unfixed) as a side effect of the same edit — marked `Applied`.
+
+This was authorized directly (not gated on a separate Ray review) per the scheduled task's own instruction that "the H1 fix is Claude's" when it doesn't require WP admin — this edit lands through the property-hub repo's PR/auto-merge flow, not WP admin or a live-URL 301, and the copy was already drafted+queued for a day with no objection.
+
+**Indexation check:** the edit is live as of today — too early to check reindexing/recrawl of the new title in GSC (recrawl is typically days, not minutes); nothing else shipped in the last 14 days is published (the 6 content-queue items — Golden Visa, second-passport, EB-5, cost-pillar, Canada pillars, all still Idea/draft-only in NAC Site CMS — remain unpublished, nothing new to index-check there).
+
+**Still BLOCKED ON RAY (unchanged):**
+1. Consolidation-plan 301s + CPT noindex (WP admin).
+2. Where the blog's Notion→HTML render step lives (needed before the 12-H1 blog fix, task #1461, can execute) — confirmed not in any of the 5 accessible repos.
+3. EB-5 pillar's 5 `[VERIFY]` items.
+4. The 6 content-queue drafts + remaining idle SEO Tasks — no Ray decision yet.
+
+**Next:** with SEO-1522 shipped, re-run the same live-audit pass (title/meta/H1 intent-match against `seo/goal-keywords.json`) against the other already-indexed, non-locked surfaces (country CLPs) to see if the same keyword-mismatch pattern exists there — CLPs go through `sync-notion.mjs`'s `patchHeadSeo()` so a real defect there might be auto-fixable rather than needing a manual PR like the hub page. Also: the next GSC pull (once it lands with the expanded 47-keyword set) will be the first real signal on whether title/meta/H1 changes move anything — watch the 09-14→next snapshot delta for the hub-mapped keywords specifically.
+
 ## 2026-09-18 — Execution tick: Property Hub page's own title/H1/meta miss every mapped keyword (SEO-1522)
 
 **De-dup check first:** `git log --since=midnight` clean in both repos (last commits were 01:14 UTC auto-syncs, unrelated content pipelines). 🚀 SEO Tasks, NAC Site CMS, and 🎯 Goal Reviews all showed nothing touched today before this run. Rank snapshot is still `seo/rank-snapshots/2026-09-14.json` (re-fetched by cron at 05:01 UTC but byte-identical — `tracked:37`, still measured against the pre-expansion keyword set) — no fresher GSC pull exists. **Nothing to defend** — nothing is in top-3 to fall out of.
