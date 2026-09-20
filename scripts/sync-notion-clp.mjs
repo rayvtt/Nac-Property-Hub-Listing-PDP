@@ -464,6 +464,8 @@ const CLP_SEO = {
         desc: 'Đầu tư định cư Anh qua bất động sản hàng hiệu: {n} dự án chọn lọc tại {cities} — giá, lợi suất, pháp lý và chiến lược đầu tư UK từ NAC Property Hub.' },
   vn: { title: 'Bất động sản hàng hiệu Việt Nam: Đà Nẵng, Hồ Tràm, TP.HCM | NAC',
         desc: 'Bất động sản hàng hiệu Việt Nam: {n} dự án chọn lọc tại {cities} — giá, lợi suất và thẩm định NAC Score từ NAC Property Hub.' },
+  malta: { title: 'Đầu tư định cư Malta (MPRP): Bất động sản hàng hiệu | NAC',
+        desc: 'Đầu tư định cư Malta (MPRP) qua bất động sản hàng hiệu: {n} dự án chọn lọc — giá, lợi suất, pháp lý và lộ trình định cư từ NAC Property Hub.' },
 };
 
 function clpSeoText(country, total, usedCities = []) {
