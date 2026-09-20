@@ -2,6 +2,25 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-09-20 — Execution tick: Malta CLP meta fix shipped; found a live redirect bug hiding it (P0, blocked on Ray)
+
+**De-dup check first:** `git log --since=midnight` clean in all 5 repos before this run started (last commits pre-midnight were unrelated content-pipeline auto-syncs at 00:xx–02:xx UTC). 🚀 SEO Tasks and 🎯 Goal Reviews confirmed clean via SQL query (`Last Edited`/`Created` = today) — nothing touched today before this run. Rank snapshot is still `seo/rank-snapshots/2026-09-14.json` (tracked:37, unchanged) — no fresher GSC pull exists. **Nothing to defend** — nothing is in top-3 to fall out of. Content queue re-checked via SQL: all 5 pillar drafts (Canada, cost-pillar, second-passport, Golden Visa, EB-5) still `Status=Idea`/`Reviewed by NAC?=Waiting to Review`, unchanged since 09-19 — no Ray decision yet, nothing to re-draft. Zero tasks at `Status=Approved AND Auto-Applicable=true`.
+
+**Shipped this run — continuing 09-19's "Next" note (audit CLP title/meta/H1 vs `seo/goal-keywords.json`):** live-audited every CLP-mapped keyword (17 across 11 country pages) against its landing page's actual `<title>`/meta description/H1. Found `country/malta.html` had **no entry** in `scripts/sync-notion-clp.mjs`'s `CLP_SEO` map, so it fell back to the generic pattern with zero mention of MPRP anywhere (title/meta/og/twitter/JSON-LD) — missing the tracked `malta mprp` keyword entirely, unlike every other mapped country. Added a `malta` entry mirroring the `my.html` (MM2H) pattern and hand-patched the live `country/malta.html` (4 occurrences each of title + description) so it shipped immediately instead of waiting on the next Notion CLP sync. Shipped via [PR #432](https://github.com/rayvtt/Nac-Property-Hub-Listing-PDP/pull/432) (squash-merged, commit `dd25365`), no WP admin needed. Confirmed correct on GitHub Pages (`rayvtt.github.io/.../country/malta.html`) post-merge.
+
+**New P0 finding while verifying live — the fix above currently has ZERO effect on the ranking domain:** `curl`'d the live URL to confirm the fix and found `https://nomadassetcollective.com/property-hub-bat-dong-san/malta/` returns **HTTP 301 → `/property-hub-bat-dong-san/malaysia/`** (header `x-redirect-by: redirection`, i.e. a WP Redirection-plugin rule). The Malta Country Listings DB row is fully correct on our side — `Hub Status=Live`, `🆔 WP Page ID=2966`, `🔗 Country URL=.../malta/`, `📤 Last Synced=2026-09-20` — so the real WP page exists and is synced correctly; an errant redirect rule is sitting in front of it. Spot-checked 5 other CLPs (cyprus/thailand/greece/turkey/panama/malaysia itself) — all resolve 200 directly, so this is Malta-specific, not systemic. Filed as a new P0 task (Impact 95, Category=Technical, Auto-Applicable=false — WP admin/Redirection-plugin territory, same class of blocker as the consolidation-plan 301s). This means no Malta-specific keyword can rank to its own URL while the rule stands, and traffic/crawl signal for it currently pools on the Malaysia page instead.
+
+**Indexation check:** nothing shipped in the last 14 days besides today's Malta meta fix — too early to check reindexing, and moot until the redirect above is cleared. The 5 content-queue drafts remain unpublished.
+
+**Still BLOCKED ON RAY (updated):**
+1. **NEW, highest priority:** Malta CLP redirect bug above — WP admin, Redirection plugin.
+2. Consolidation-plan 301s + CPT noindex (WP admin, unchanged).
+3. Where the blog's Notion→HTML render step lives (needed before the 12-H1 blog fix, task #1461) — confirmed not in any of the 5 accessible repos.
+4. EB-5 pillar's 5 `[VERIFY]` items.
+5. The 5 content-queue drafts + remaining idle SEO Tasks — no Ray decision yet.
+
+**Next:** once the Malta redirect is cleared, live-verify the MPRP title/meta actually serves and watch for the first GSC signal on `malta mprp` / `định cư malta`. Otherwise: finish the CLP intent-match audit against the remaining P1 keywords not yet spot-checked in detail (Turkey's `quốc tịch thổ nhĩ kỳ`, Greece's `golden visa hy lạp` — both close but not exact-phrase matches in title, lower priority than the Malta redirect), or keep escalating the 5 blockers above.
+
 ## 2026-09-19 — Execution tick: SEO-1522 shipped live (Property Hub title/meta/H1 fix)
 
 **De-dup check first:** `git log --since=midnight` clean in all 5 repos before this run started (last commits pre-midnight were 00:43/01:14/02:36 UTC auto-sync content pipelines, unrelated). 🚀 SEO Tasks and 🎯 Goal Reviews showed nothing touched today before this run. Rank snapshot is still `seo/rank-snapshots/2026-09-14.json` (cron re-fetched at 05:01 UTC, byte-identical, still measured against the pre-expansion 37-keyword set — the 09-17 expansion to 47 hasn't been picked up by a fresh GSC pull yet). **Nothing to defend** — nothing is in top-3 to fall out of.
