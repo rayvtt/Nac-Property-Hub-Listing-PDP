@@ -30623,6 +30623,12 @@ src="https://www.facebook.com/tr?id=38882033478076563&amp;ev=PageView&amp;noscri
     hero.classList.add("filming");
     next();
     setInterval(next, 10000);
+    // Mobile browsers (esp. iOS, and any device in Low Power Mode) block muted
+    // autoplay until the first user gesture — start/retry the film on first touch/scroll.
+    var kickFilm = function(){ if (!started) { hero.classList.add("filming"); next(); } };
+    ["touchstart","pointerdown","scroll","click"].forEach(function(ev){
+      window.addEventListener(ev, function onKick(){ window.removeEventListener(ev, onKick); kickFilm(); }, { once:true, passive:true });
+    });
   }
   /* ?edit=1 — film manager: reorder / remove / add clips, Save dispatches
      apply-clp-film.yml via the GitHub API (PAT in localStorage nac_gh_token,
