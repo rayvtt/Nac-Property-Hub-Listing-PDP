@@ -42,14 +42,27 @@ slug checked within the last 14 days.
   `Purchase Price`, `Currency`, `🏗️ Stage`, `🔑 Handover EN/VI`, `⏳ Units Left`,
   `Spotlight?`, `📷 Image URLs JSON`, `Partner`, `✦ Brand`. **Never write these
   from this command** — the Worker writes on Log.
-- **Ledger**: `seo/listing-pulse-checked.json` (repo root). Shape:
+- **Worker API** (the canonical control surface — the daily Routine runs with no
+  repo and no connectors, so everything goes through the MCC Worker at
+  `https://nac-marketing-cc.ray-vtt.workers.dev`, authed with the agent token
+  from `GET /agents` → `agentToken`, or the CC key header):
+  - `GET /listing-pulse?pick=10` → today's batch (stalest-first, risk-bumped),
+    each with `slug · name · country · listingUrl · sourceUrl · price · currency ·
+    stage · handoverEn/Vi · unitsLeft · brand · partner · lastChecked`.
+  - `POST /listing-pulse {action:"propose", slug, kind, field, current, proposed,
+    sourceUrl, evidence, confidence, country, listingUrl}` → one Proposed row
+    (an open row for the same slug + field is refreshed, never duplicated).
+  - `POST /listing-pulse {action:"checked", items:[{slug, result, changes}]}` →
+    the ledger. `POST {action:"digest"}` → the Google Chat card (Worker holds
+    the webhook). `GET /listing-pulse` → queue + digest + coverage (what MCC shows).
+- **Ledger**: Worker KV (`PG_TELEMETRY` → `pulse:ledger`), shape:
   ```json
   { "listings": { "<slug>": { "checked": "YYYY-MM-DD", "result": "verified|changed|source-proposed|no-source", "changes": 0 } },
     "days":     { "YYYY-MM-DD": { "checked": ["slug", …], "changed": 0, "verified": 0, "sourceProposed": 0, "noSource": 0 } } }
   ```
-  Read first; write after each batch; commit via feature branch → PR →
-  squash-merge (never direct to main). The MCC digest card reads this file from
-  the repo's public raw URL, so **Verified goes here only — never as a Notion row.**
+  `seo/listing-pulse-checked.json` (repo root) is an optional mirror for
+  offline audits — the Worker copy is canonical. **Verified goes to the ledger
+  only — never as a Notion row.**
 
 ## What to do each run
 
@@ -85,14 +98,12 @@ slug checked within the last 14 days.
    - Same → file **nothing**; record `verified` in the ledger.
    - Page unreachable / no longer the project → file a `Kind=source` row
      proposing a corrected URL (or `no-source`), and note it in the digest.
-4. **Ledger + digest** — write every listing's outcome to `listings[slug]` and
-   the day's totals to `days[today]`; commit. Then post the digest to Google
-   Chat via the `NOTIFY_WEBHOOK` URL (cardsV2, same shape as
-   `nac-marketing-omnichannel/scripts/notify.mjs`): header `📡 Listing Pulse ·
-   <date>`, one line per changed listing (`slug · Kind · Current → Proposed`),
-   and the totals `N checked · N changed · N verified · N source URLs to
-   confirm`. If the webhook isn't available in the session, skip — the MCC
-   digest card is the fallback, never the absence of a record.
+4. **Ledger + digest** — one `checked` call with every listing's outcome
+   (`items[]`), then `{action:"digest"}`: the Worker posts the Google Chat card
+   (header `📡 Listing Pulse · <date>`, one row per changed listing `slug · Kind ·
+   Current → Proposed`, the source URLs to confirm, and the totals `N checked ·
+   N changed · N verified · N source URLs`). A `skipped` answer means no
+   webhook is set — the MCC view is the record, never the absence of one.
 5. **Report** — batch, what changed, what needs a source-URL confirmation, ledger
    coverage (how many Live slugs are within 14 days), anything Ray must know.
 
