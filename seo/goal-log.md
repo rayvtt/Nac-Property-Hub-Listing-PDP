@@ -2,6 +2,14 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-09-21 — Goal review
+
+- **Tracked**: 47  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 47
+- **Avg position** (ranked set): —
+- **Gainers**: —
+- **Regressions**: —
+- **Content gaps** (no page yet): hộ chiếu thứ hai, thị thực vàng, golden visa là gì, eb-5, thẻ xanh mỹ, đầu tư định cư mỹ, đầu tư định cư canada, chi phí đầu tư định cư, đầu tư định cư cần bao nhiêu tiền, đầu tư định cư giá rẻ
+- **Quick wins** (striking 4–10, one push to top-3): —
 ## 2026-09-21 — Execution tick: Greece + Turkey CLP meta-description exact-phrase fix shipped
 
 **De-dup check first:** `git log --since=midnight` clean (last commits pre-midnight were unrelated content-pipeline auto-syncs). 🚀 SEO Tasks and 🎯 Goal Reviews confirmed nothing touched today before this run. Rank snapshot is still `seo/rank-snapshots/2026-09-14.json` (tracked:37, unchanged) — no fresher GSC pull exists. **Nothing to defend** — nothing is in top-3 to fall out of. Content queue re-checked: all 5 pillar drafts (Canada, cost-pillar, second-passport, Golden Visa, EB-5) still Idea/Waiting to Review, unchanged since 09-19 — no Ray decision yet. Zero tasks at Status=Approved AND Auto-Applicable=true. The Malta redirect P0 (task #1524, filed 09-20) is still untouched — Ray hasn't acted on it.
