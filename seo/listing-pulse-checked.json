@@ -1,0 +1,5 @@
+{
+  "_doc": "Listing Pulse ledger. listings[slug] = last check; days[YYYY-MM-DD] = that day's batch digest. Read by /listing-pulse (rotation) and by the MCC worker (digest card) via the repo's public raw URL. Verified/no-change is recorded HERE only — never as a Notion row.",
+  "listings": {},
+  "days": {}
+}
