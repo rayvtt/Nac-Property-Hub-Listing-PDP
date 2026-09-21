@@ -36166,6 +36166,192 @@ src="https://www.facebook.com/tr?id=38882033478076563&amp;ev=PageView&amp;noscri
   </div>
 </section>
 
+
+<style>
+/* ─── EXPLORE OTHER MARKETS — rolling destinations rail (mirrors the homepage
+   country marquee, in the CLP design system). Cards link to each country CLP. ─── */
+.clx{padding:5rem 0 5.5rem;background:var(--surface-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden}
+.clx-inner{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
+.clx-head{text-align:center;margin-bottom:2.6rem}
+.clx-eye{font-family:var(--ff-mono);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem}
+.clx-title{font-family:var(--ff-display);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--display);line-height:1.08}
+.clx-title em{color:var(--gold);font-weight:500;font-style:italic}
+.clx-sub{font-family:var(--ff-body);font-size:.92rem;color:var(--muted);margin-top:.7rem}
+.clx-railwrap{position:relative;margin-top:.5rem;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+.clx-rail{display:flex;gap:18px;overflow-x:auto;overflow-y:hidden;padding:6px var(--pad) 10px;scroll-behavior:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;cursor:grab}
+.clx-rail::-webkit-scrollbar{display:none}
+.clx-rail.grabbing{cursor:grabbing}
+.clx-dc{position:relative;flex:0 0 auto;width:236px;aspect-ratio:3/4;border-radius:16px;overflow:hidden;text-decoration:none;background:var(--display);box-shadow:var(--shadow-md);border:1px solid var(--line);transition:transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .4s ease}
+.clx-dc:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.clx-dc>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.clx-dc:hover>img{transform:scale(1.07)}
+.clx-shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,10,26,.94) 0%,rgba(6,10,26,.66) 34%,rgba(6,10,26,.14) 64%,rgba(6,10,26,.28) 100%)}
+.clx-collab{position:absolute;top:13px;left:14px;right:14px;display:flex;align-items:center;gap:7px;z-index:2}
+.clx-collab .clx-pass{height:22px;width:auto;filter:brightness(0) invert(1) drop-shadow(0 1px 4px rgba(0,0,0,.5))}
+.clx-collab i{font-style:normal;color:rgba(255,255,255,.7);font-size:.8rem;font-weight:300}
+.clx-collab .clx-brand{height:20px;width:auto;max-width:88px;object-fit:contain;filter:brightness(0) invert(1) drop-shadow(0 1px 4px rgba(0,0,0,.55))}
+.clx-collab .clx-brandtxt{font-family:var(--ff-display);font-size:.9rem;font-weight:600;letter-spacing:.5px;color:#fff;text-shadow:0 1px 5px rgba(0,0,0,.6)}
+.clx-body{position:absolute;left:16px;right:16px;bottom:15px;z-index:2;color:#fff}
+.clx-name{font-family:var(--ff-display);font-size:1.5rem;font-weight:600;font-style:italic;line-height:1.02}
+.clx-meta{font-family:var(--ff-mono);font-size:.6rem;letter-spacing:.03em;color:rgba(255,255,255,.82);margin-top:.35rem}
+.clx-cta{display:inline-block;margin-top:.6rem;font-family:var(--ff-mono);font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:var(--gold-2);border-bottom:1px solid transparent;transition:border-color .2s ease,letter-spacing .2s ease}
+.clx-dc:hover .clx-cta{border-bottom-color:var(--gold-2);letter-spacing:.16em}
+@media(max-width:680px){.clx{padding:3.6rem 0 4rem}.clx-dc{width:200px}.clx-name{font-size:1.35rem}}
+@media(prefers-reduced-motion:reduce){.clx-dc,.clx-dc>img{transition:none}}
+</style>
+
+<!-- ═══ EXPLORE OTHER MARKETS (rolling destinations rail) ═══ -->
+<section class="clx" id="clx-explore" data-current="vn">
+  <div class="clx-inner">
+    <div class="clx-head reveal">
+      <div class="clx-eye">§ <span data-vi="Khám phá thêm">Khám phá thêm</span><span data-en="Explore more">Explore more</span></div>
+      <h2 class="clx-title"><span data-vi="Còn <em>mười thị trường</em> nữa.">Còn <em>mười thị trường</em> nữa.</span><span data-en="Ten more <em>markets</em>.">Ten more <em>markets</em>.</span></h2>
+      <p class="clx-sub"><span data-vi="Mỗi quốc gia là một market brief riêng — chạm để mở.">Mỗi quốc gia là một market brief riêng — chạm để mở.</span><span data-en="Each country is its own market brief — tap to open.">Each country is its own market brief — tap to open.</span></p>
+    </div>
+  </div>
+  <div class="clx-railwrap"><div class="clx-rail" id="clxRail"></div></div>
+</section>
+
+<script>
+(function(){
+  var COUNTRIES = [
+    { iso:"au", vi:"Úc", en:"Australia", n:49, from:"A$486K",
+      img:"https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/640-melbourne-cbd-1/public",
+      url:"https://nomadassetcollective.com/property-hub-bat-dong-san/australia/" },
+    { iso:"th", vi:"Thái Lan", en:"Thailand", n:23, from:"฿2.5M",
+      img:"https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/ayana-luxury-villas-hero/public",
+      brand:{ txt:"Ayana" },
+      url:"https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/" },
+    { iso:"tr", vi:"Thổ Nhĩ Kỳ", en:"Türkiye", n:11, from:"$400K",
+      img:"https://nomadassetcollective.com/wp-content/uploads/2026/05/W6-scaled.jpg",
+      brand:{ logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/W_Hotels_logo.svg/330px-W_Hotels_logo.svg.png", h:30 },
+      url:"https://nomadassetcollective.com/property-hub-bat-dong-san/turkey/" },
+    { iso:"gr", vi:"Hy Lạp", en:"Greece", n:9, from:"€250K",
+      img:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/The_windmills_in_Mykonos%2C_Greece_-_50661524068.jpg/1920px-The_windmills_in_Mykonos%2C_Greece_-_50661524068.jpg",
+      url:"https://nomadassetcollective.com/property-hub-bat-dong-san/greece/" },
+    { iso:"vn", vi:"Việt Nam", en:"Vietnam", n:8, from:"$118K",
+      img:"https://nomadassetcollective.com/wp-content/uploads/2026/05/nobu.webp",
+      brand:{ txt:"Nobu" },
+      url:"https://nomadassetcollective.com/property-hub-bat-dong-san/vietnam/" },
+    { iso:"my", vi:"Malaysia", en:"Malaysia", n:6, from:"RM 564K",
+      img:"https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/conlay-signature-suites-klcc-hero/public",
+      url:"https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/" },
+    { iso:"uk", vi:"Anh Quốc", en:"United Kingdom", n:5, from:"£500K",
+      img:"https://nomadassetcollective.com/wp-content/uploads/2026/05/london-dock-4.jpg",
+      brand:{ logo:"https://upload.wikimedia.org/wikipedia/en/thumb/0/08/Berkeley_Group_Holdings_logo.svg/330px-Berkeley_Group_Holdings_logo.svg.png", h:24 },
+      url:"https://nomadassetcollective.com/property-hub-bat-dong-san/uk/" },
+    { iso:"ae", vi:"Dubai (UAE)", en:"Dubai (UAE)", n:5, from:"AED 1.1M",
+      img:"https://imagedelivery.net/qse3Pw84PrZ2S0PQOTtixw/8f7f9483-695b-4425-bda9-5e5cb585ab00/public",
+      brand:{ logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Damac_logo.svg/330px-Damac_logo.svg.png", h:15 },
+      url:"https://nomadassetcollective.com/property-hub-bat-dong-san/uae/" },
+    { iso:"cy", vi:"Đảo Síp", en:"Cyprus", n:3, from:"€230K",
+      img:"https://nomadassetcollective.com/wp-content/uploads/2026/05/limassol-delmar-1.webp",
+      brand:{ txt:"Leptos" },
+      url:"https://nomadassetcollective.com/property-hub-bat-dong-san/cyprus/" },
+    { iso:"pa", vi:"Panama", en:"Panama", n:2, from:"$300K",
+      img:"https://nomadassetcollective.com/wp-content/uploads/2026/05/pullman2.jpg",
+      brand:{ logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Pullman_logo_2013.svg/330px-Pullman_logo_2013.svg.png", h:18 },
+      url:"https://nomadassetcollective.com/property-hub-bat-dong-san/panama/" },
+    { iso:"sg", vi:"Singapore", en:"Singapore", n:1, from:"$1.2M",
+      img:"https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=900&q=80",
+      url:"https://nomadassetcollective.com/property-hub-bat-dong-san/singapore/" }
+  ];
+  var sec = document.getElementById("clx-explore");
+  var rail = document.getElementById("clxRail");
+  if (!sec || !rail) return;
+  var current = sec.getAttribute("data-current") || "";
+  if (!current) {
+    // template / unknown: derive from the path so a card never links to its own page
+    COUNTRIES.forEach(function(c){ if (location.pathname.indexOf("/" + c.iso + "/") >= 0 || location.pathname.indexOf("/" + c.url.split("/").filter(Boolean).pop() + "/") >= 0) current = c.iso; });
+  }
+  function lang(){ return document.body.getAttribute("data-lang") === "en" ? "en" : "vi"; }
+  var list = COUNTRIES.filter(function(c){ return c.iso !== current; });
+  function projects(n){ return lang() === "en" ? (n + " curated " + (n > 1 ? "projects" : "project")) : (n + " dự án tuyển chọn"); }
+  function fromLbl(v){ return (lang() === "en" ? "from " : "từ ") + v; }
+  function build(){
+    rail.innerHTML = "";
+    var copies = [list, list]; // duplicate for a seamless auto-scroll loop
+    copies.forEach(function(dupList, di){
+      dupList.forEach(function(c){
+        var a = document.createElement("a");
+        a.className = "clx-dc" + (di ? " clx-dup" : "");
+        a.href = c.url + (c.url.indexOf("?") >= 0 ? "&" : "?") + "lang=" + lang();
+        a.target = "_blank"; a.rel = "noopener";
+        a.setAttribute("aria-label", (lang() === "en" ? c.en : c.vi) + " market brief");
+        var name = lang() === "en" ? c.en : c.vi;
+        var collab = "<div class='clx-collab'><img class='clx-pass' src='https://nomadassetcollective.com/wp-content/uploads/2026/04/OTG-Passport-Icons-1.png' alt='NAC' loading='lazy'>";
+        if (c.brand) {
+          collab += "<i>×</i>";
+          if (c.brand.logo) collab += "<img class='clx-brand' src='" + c.brand.logo + "' alt='' loading='lazy'" + (c.brand.h ? " style='height:" + c.brand.h + "px'" : "") + ">";
+          else collab += "<span class='clx-brandtxt'>" + c.brand.txt + "</span>";
+        }
+        collab += "</div>";
+        a.innerHTML =
+          "<img src='" + c.img + "' alt='" + name + "' loading='lazy'>" +
+          "<div class='clx-shade'></div>" + collab +
+          "<div class='clx-body'>" +
+            "<div class='clx-name'>" + name + "</div>" +
+            "<div class='clx-meta'>" + projects(c.n) + " · " + fromLbl(c.from) + "</div>" +
+            "<span class='clx-cta'>" + (lang() === "en" ? "Open the market brief →" : "Mở Market Brief →") + "</span>" +
+          "</div>";
+        rail.appendChild(a);
+      });
+    });
+  }
+  build();
+  document.querySelectorAll("[data-lang-set]").forEach(function(b){ b.addEventListener("click", function(){ setTimeout(build, 0); }); });
+
+  /* auto-advance + free manual scroll/drag (mirrors the homepage rail) */
+  var SPEED = 1.2, paused = false, resumeAt = 0;
+  function isMobile(){ return window.matchMedia("(max-width:900px)").matches; }
+  function half(){ return rail.scrollWidth / 2; }
+  function tick(now){
+    if (!isMobile() && !paused && now >= resumeAt && rail.scrollWidth > rail.clientWidth + 4) {
+      rail.scrollLeft += SPEED;
+      var h = half();
+      if (rail.scrollLeft >= h) rail.scrollLeft -= h;
+    }
+    requestAnimationFrame(tick);
+  }
+  function nudge(ms){ resumeAt = performance.now() + (ms || 1500); }
+  sec.addEventListener("mouseenter", function(){ paused = true; });
+  sec.addEventListener("mouseleave", function(){ paused = false; });
+  rail.addEventListener("wheel", function(){ nudge(1400); }, { passive: true });
+  rail.addEventListener("touchstart", function(){ nudge(2500); }, { passive: true });
+  var down = false, sx = 0, sl = 0, moved = false, navGuard = false;
+  rail.addEventListener("pointerdown", function(e){
+    if (e.pointerType === "mouse") { down = true; moved = false; navGuard = false; sx = e.clientX; sl = rail.scrollLeft; paused = true; rail.classList.add("grabbing"); }
+  });
+  window.addEventListener("pointermove", function(e){
+    if (!down) return;
+    var dx = e.clientX - sx;
+    if (Math.abs(dx) > 3) moved = true;
+    rail.scrollLeft = sl - dx;
+    var h = half();
+    if (rail.scrollLeft >= h) { rail.scrollLeft -= h; sl -= h; }
+    else if (rail.scrollLeft <= 0) { rail.scrollLeft += h; sl += h; }
+  });
+  window.addEventListener("pointerup", function(e){
+    if (!down) return;
+    down = false; rail.classList.remove("grabbing"); paused = false; nudge(1200);
+    if (!moved) {
+      var hit = document.elementFromPoint(e.clientX, e.clientY);
+      var card = hit && hit.closest ? hit.closest("a.clx-dc") : null;
+      var href = card && card.getAttribute("href");
+      if (href) {
+        navGuard = true;
+        var win = null;
+        try { win = window.open(href, "_blank"); } catch (err) {}
+        if (win && !win.closed) { try { win.opener = null; } catch (err) {} }
+        else { window.location.href = href; }
+      }
+    }
+  });
+  rail.addEventListener("click", function(e){ if (moved || navGuard) { e.preventDefault(); e.stopPropagation(); moved = false; navGuard = false; } }, true);
+  requestAnimationFrame(tick);
+})();
+</script>
+
 <!-- ═══ COMPARE TABLE ═══ -->
 <section class="cl-compare" id="compare">
   <div class="cl-compare-inner">
