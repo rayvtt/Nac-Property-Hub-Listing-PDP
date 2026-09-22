@@ -2,6 +2,30 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-09-22 — Execution tick: brochure meta-description audit (NZ · St Kitts · Montenegro) shipped
+
+**De-dup check first:** `git log --since=midnight` across all 5 repos showed only routine content-pipeline auto-syncs (Notion sync, CLP sync, PDP scaffold) — no goal-review or SEO-fix commits yet today. 🚀 SEO Tasks and 🎯 Goal Reviews confirmed via Notion query: nothing created/edited today before this run. Zero tasks at `Status=Approved AND Auto-Applicable=true`. Rank snapshot is `seo/rank-snapshots/2026-09-21.json` (fetched 05:01 UTC today, byte-consistent with the 09-21 log entry: tracked 47, still all not-ranking, avg position null) — no fresher GSC pull exists this run. **Nothing to defend** — nothing is in top-3 to fall out of. The 5 content-queue pillar drafts (Golden Visa, EB-5, second-passport, cost, Canada) remain `Status=Idea`/Waiting to Review in NAC Site CMS, unchanged — no Ray decision yet, nothing to re-draft.
+
+**Shipped this run — the last un-audited surface, per 09-21's own "Next" note:** live-audited the 4 brochure-mapped keywords in `seo/goal-keywords.json` (`golden visa new zealand` / `đầu tư định cư new zealand` / `quốc tịch st kitts và nevis` / `định cư montenegro`, all P2) against their brochures in `NAC-Program-Brochures`:
+- **St Kitts & Nevis brochure had NO `<meta name="description">` tag at all** — confirmed by grepping the full `<head>` (also zero og:/twitter:/JSON-LD, but cross-checking Montenegro and the Cyprus master template showed the whole 16-brochure family lacks og/twitter/JSON-LD by design, so that part is out of scope — the missing *description* tag specifically is the real, family-inconsistent gap). Added one covering the exact phrase `quốc tịch st kitts và nevis`, built from real facts already in the page body (1984 launch — oldest CBI program, 157+ visa-free countries, 60–90 day processing, no residency requirement) — no fabricated figures.
+- **New Zealand brochure**: meta description (static tag + the `setLang` toggle's VI branch) already read naturally close to `golden visa new zealand` but was missing `đầu tư định cư new zealand` entirely — added the phrase without touching the existing wording.
+- **Montenegro brochure**: meta description used "cư trú" throughout but never the tracked `định cư montenegro` phrase — reworded the opening clause to lead with it, kept every existing fact (RBI, 1-year temporary residence, no legal minimum investment, 9–15% income tax, EU candidate 2028, 4–8 week processing).
+
+Verified `check_brochure_parity.py` 15/15 on all three post-edit (script blocks parse clean, no WP-safety regressions). Shipped via [PR #361](https://github.com/rayvtt/NAC-Program-Brochures/pull/361) (squash-merged, commit `9cceae6`) — `wp-sync.yml` fired automatically on push to `main`; same "Claude's to ship" class of safe on-page Meta fix as the 09-19/09-20/09-21 ticks (no WP admin needed, no structural/redirect risk).
+
+**Flagged but NOT fixed this tick (scope control — titles/H1 carry more brand/parity risk than meta description, and these are P2, lowest priority in the tracked set):** Montenegro's `<title>` and hero `<h1>` also say "Cư Trú" not "Định Cư" — a bigger word-choice mismatch than NZ/St Kitts's reordering issue. New Zealand's title reads "New Zealand Golden Visa" (reversed word order vs. the tracked "golden visa new zealand" phrase) — left as-is since it's a natural, strong match already. Worth a follow-up if these P2 keywords are still not-ranking after the next couple of GSC pulls once the meta fix has had time to register.
+
+**Indexation check:** nothing shipped 8–14 days ago besides the still-unconfirmed 09-19/09-20/09-21 fixes (Property Hub H1, Malta CLP, Greece/Turkey CLP) — all well within normal Google recrawl latency, still nothing to confirm via GSC (no fresh GSC API pull this session; rank snapshots come from the separate cron).
+
+**Still BLOCKED ON RAY (unchanged from 09-21):**
+1. Malta CLP redirect bug (task #1524, filed 09-20) — WP admin, Redirection plugin, highest priority.
+2. Consolidation-plan 301s + CPT noindex (WP admin).
+3. Where the blog's Notion→HTML render step lives (needed before the 12-H1 blog fix, task #1461) — confirmed not in any of the 5 accessible repos.
+4. EB-5 pillar's 5 `[VERIFY]` items.
+5. The 5 content-queue drafts + remaining idle SEO Tasks — no Ray decision yet.
+
+**Next:** the CLP + brochure title/meta/H1 audit passes are now both exhausted for the current keyword set (every mapped surface — hub, CLPs, brochures — has been checked; blog-surface keywords route to articles, not yet audited the same way). Candidates for the next tick: (a) run the same title/meta/H1 intent-match check on the 16 blog-mapped keywords' landing articles once the blog render-step location is found (blocked on #3 above), or (b) do a first real indexation check via GSC (not WebSearch, which is unreliable for this) once a fresh GSC pull lands, to see if any of the last 4 ticks' fixes (Property Hub, Malta, Greece/Turkey, NZ/St Kitts/Montenegro) have moved anything — the 09-21 GSC pull still shows 0/47 ranking, so this is the first real signal test to watch for. Otherwise: keep escalating the 5 blockers above.
+
 ## 2026-09-21 — Goal review
 
 - **Tracked**: 47  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 47
