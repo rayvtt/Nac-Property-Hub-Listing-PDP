@@ -1812,6 +1812,36 @@ src="https://www.facebook.com/tr?id=38882033478076563&amp;ev=PageView&amp;noscri
       <div class="cl-track-lbl"><span data-vi="">Châu Lục</span><span data-en="">Continents</span></div>
     </div>
   </div>
+<script>
+/* §10 track-record ribbon — LIVE numbers from the Property Hub feed (Hub
+   Status = Live), computed in the browser so the strip is never stale; the
+   figures baked above are only the first paint / no-JS fallback. Continent
+   buckets mirror REGION_CONTINENT in scripts/sync-notion-clp.mjs. */
+(function(){
+  var nums=document.querySelectorAll('.cl-track .cl-track-num');
+  if(nums.length<3||!window.fetch)return;
+  var CONT={asia:'Asia',eu:'Europe',uk:'Europe',me:'Middle East',caribe:'Central America',us:'North America',pac:'Oceania'};
+  // the feed's country carries a flag emoji ("🇻🇳 Việt Nam") — drop the two
+  // regional-indicator code points so "United Kingdom" and "🇬🇧 United Kingdom" dedupe
+  function stripFlag(s){s=String(s||'');var out='';for(var i=0;i<s.length;i++){var cp=s.codePointAt(i);if(cp>=0x1F1E6&&cp<=0x1F1FF){i++;continue;}out+=String.fromCodePoint(cp);if(cp>0xFFFF)i++;}return out.replace(/ +/g,' ').trim().toLowerCase();}
+  fetch('https://nac-property-hub.ray-vtt.workers.dev/properties')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      var rows=Array.isArray(d)?d:(d.properties||d.results||[]);
+      if(!rows.length)return;
+      var countries={},conts={};
+      rows.forEach(function(p){
+        var c=stripFlag(p.country); if(c)countries[c]=1;
+        var k=CONT[String(p.region||'').toLowerCase()]; if(k)conts[k]=1;
+      });
+      var floor=Math.floor(rows.length/10)*10, nC=Object.keys(countries).length, nK=Object.keys(conts).length;
+      if(floor>0)nums[0].innerHTML=floor+'<span class="cl-track-plus">+</span>';
+      if(nC>0)nums[1].textContent=String(nC);
+      if(nK>0)nums[2].textContent=String(nK);
+    })
+    .catch(function(){ /* feed down: baked figures stand */ });
+})();
+</script>
   <div class="cl-journeys-head">
     <div class="cl-journeys-lbl"><span data-vi="">Hành Trình Nhà Đầu Tư</span><span data-en="">Investor Journeys</span></div>
     <h3 class="cl-journeys-title"><span data-vi="">Câu Chuyện Tiêu Biểu</span><span data-en="">Representative Journeys</span></h3>

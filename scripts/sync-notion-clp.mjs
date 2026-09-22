@@ -997,7 +997,10 @@ async function scaffoldMissingCountries(notion) {
 async function fetchGlobalStats(notion) {
   const countries = new Set();
   let total = 0;
-  for (const status of ['Live', 'Draft']) {
+  // Live only — the ribbon is a 'vetted, live' claim, and the in-page script
+  // recomputes it from the Live feed anyway; Draft rows would make first paint
+  // disagree with what the browser then shows.
+  for (const status of ['Live']) {
     let cursor;
     do {
       const res = await notion.databases.query({
