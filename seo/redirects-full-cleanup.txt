@@ -1,0 +1,74 @@
+# NAC — full broken/duplicate-URL cleanup: 301 redirect map (crawl 2026-09-22)
+# ============================================================================
+# Live-crawled every WordPress custom-post-type + taxonomy URL on
+# nomadassetcollective.com (residences / citizenships / compares / compare-cat)
+# plus the country landing pages (CLPs). This file lists ONLY the URLs that are
+# STILL BROKEN (return 200, i.e. no redirect yet). The ~17 residence/citizenship
+# redirects you already added are LIVE and are intentionally NOT repeated here.
+#
+# HOW TO APPLY
+#   Method A (recommended) — Rank Math -> Redirections -> Import/Add New:
+#     each line = Source (exact) -> Destination, type 301.
+#   Method B — Apache/LiteSpeed .htaccess: paste the "Redirect 301" lines ABOVE
+#     the "# BEGIN WordPress" block. (Not for Nginx.)
+#   All destinations below were verified to return HTTP 200 on 2026-09-22.
+#
+# AFTER redirects are live: Rank Math -> Titles & Meta -> set the `residence`,
+# `citizenship`, `compare` post types AND the `compare-cat` taxonomy to
+# NOINDEX + "exclude from sitemap" so Google stops rediscovering these stubs.
+# (Redirects reclaim the existing equity; noindex stops the pattern recurring.)
+# ============================================================================
+
+# ---- GROUP 1: the last live Greece duplicate (highest priority) ----
+# This is the original "Greece Golden Visa" article still served raw at a
+# /residences/ URL — the #1 cannibaliser of the Greece CLP.
+Redirect 301 /residences/chuong-trinh-hy-lap-golden-visa/ https://nomadassetcollective.com/property-hub-bat-dong-san/greece/
+
+# ---- GROUP 2: remaining /citizenships/ stubs still live ----
+Redirect 301 /citizenships/saint-lucia-citizenship/ https://nomadassetcollective.com/brochures/
+Redirect 301 /citizenships/ https://nomadassetcollective.com/brochures/
+
+# ---- GROUP 3: /compares/ thin taxonomy stubs (country -> its canonical page) ----
+# CLP if the country has one; else its brochure; else the Property Hub.
+Redirect 301 /compares/hy-lap/ https://nomadassetcollective.com/property-hub-bat-dong-san/greece/
+Redirect 301 /compares/sip-cp/ https://nomadassetcollective.com/property-hub-bat-dong-san/cyprus/
+Redirect 301 /compares/panama/ https://nomadassetcollective.com/property-hub-bat-dong-san/panama/
+Redirect 301 /compares/thai-lan/ https://nomadassetcollective.com/property-hub-bat-dong-san/thailand/
+Redirect 301 /compares/uc/ https://nomadassetcollective.com/property-hub-bat-dong-san/australia/
+Redirect 301 /compares/malaysia/ https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/
+Redirect 301 /compares/malta-mt/ https://nomadassetcollective.com/brochures/chuong-trinh-malta-thuong-tru-nhan-rbi/
+Redirect 301 /compares/bo-dao-nha/ https://nomadassetcollective.com/brochures/chuong-trinh-bo-dao-nha-golden-visa/
+Redirect 301 /compares/new-zealand/ https://nomadassetcollective.com/brochures/chuong-trinh-new-zealand-rbi-dau-tu-di-tru/
+Redirect 301 /compares/new-zealand-2/ https://nomadassetcollective.com/brochures/chuong-trinh-new-zealand-rbi-dau-tu-di-tru/
+Redirect 301 /compares/nauru/ https://nomadassetcollective.com/brochures/chuong-trinh-nauru-quoc-tich-cbi-citizenship-by-investment/
+Redirect 301 /compares/hungary/ https://nomadassetcollective.com/property-hub-bat-dong-san/
+Redirect 301 /compares/caribbean/ https://nomadassetcollective.com/so-sanh/
+Redirect 301 /compares/688/ https://nomadassetcollective.com/so-sanh/
+Redirect 301 /compares/ https://nomadassetcollective.com/so-sanh/
+
+# ---- GROUP 4: /compare-cat/ thin archive pages -> the real comparison tool ----
+Redirect 301 /compare-cat/asia/ https://nomadassetcollective.com/so-sanh/
+Redirect 301 /compare-cat/caribbean/ https://nomadassetcollective.com/so-sanh/
+Redirect 301 /compare-cat/europe/ https://nomadassetcollective.com/so-sanh/
+Redirect 301 /compare-cat/oceania/ https://nomadassetcollective.com/so-sanh/
+
+# ---- GROUP 5: duplicate UK country landing page (REVIEW before applying) ----
+# TWO live CLPs exist for the United Kingdom:
+#   /property-hub-bat-dong-san/uk/            title "United Kingdom · NAC Property Collection"
+#   /property-hub-bat-dong-san/united-kingdom/ title "Đầu tư định cư Anh: Bất động sản hàng đầu…"
+# The /united-kingdom/ one carries the VI keyword-targeted title (the canonical
+# CLP pattern), so retire /uk/ into it. CONFIRM which URL you link to from the
+# hub/menus before applying — keep whichever is canonical, 301 the other.
+Redirect 301 /property-hub-bat-dong-san/uk/ https://nomadassetcollective.com/property-hub-bat-dong-san/united-kingdom/
+
+# ---- GROUP 6: duplicate Greece brochure page (REVIEW) ----
+# A second live Greece Golden Visa page exists under /brochures/ with an
+# auto-generated slug. Greece's canonical is the CLP; this page duplicates it.
+# If you don't need a standalone Greece brochure, 301 it to the CLP:
+Redirect 301 /brochures/residences-chuong-trinh-hy-lap-golden-visa/ https://nomadassetcollective.com/property-hub-bat-dong-san/greece/
+
+# ---- NOT a redirect: /property-hub-bat-dong-san/early-access/ ----
+# This is a functional beta-signup page (title "NAC Property Hub — Đăng ký truy
+# cập beta"), not a broken duplicate. Do NOT redirect it. Instead set it to
+# NOINDEX (Rank Math on that page) so it stops appearing in search.
+# ---- end ----
