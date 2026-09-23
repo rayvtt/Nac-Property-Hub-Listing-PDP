@@ -9,407 +9,446 @@
 <link rel="icon" href="https://nomadassetcollective.com/wp-content/uploads/2026/04/cropped-OTG-Passport-Icons.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=Be+Vietnam+Pro:wght@400;500;600&display=swap">
 <style>
 :root{
-  --paper:#fbfaf7; --paper2:#f1efe9; --ink:#111214; --ink2:#3a3c42; --mut:#6c6e75; --rule:#111214; --hair:#dcd9d1;
-  --accent:#F4622A; --brand:#1800ad; --navy:#000a22; --wa:#25D366; --mast:none;
-  --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
-  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --paper:#F6F6F2; --sheet:#FFFFFF; --ink:#15171C; --ink-2:#4E525B; --ink-3:#8A8D93;
+  --rule:#DCDCD6; --rule-2:#EBEBE6; --accent:#1800AD; --accent-soft:#ECEAFB; --live:#F4622A; --wa:#1FA855;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --sans:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --measure:40rem; --rail:170px; --gap:48px;
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --paper:#0d0e10; --paper2:#17181b; --ink:#ecebe6; --ink2:#c9c8c2; --mut:#8d8e94; --rule:#ecebe6; --hair:#2a2b2f; --brand:#9a92ff; --mast:invert(1); color-scheme:dark;
-}}
+  color-scheme:dark; --paper:#101216; --sheet:#171A20; --ink:#ECEBE6; --ink-2:#B4B5B8; --ink-3:#7D8087;
+  --rule:#2C3038; --rule-2:#22252C; --accent:#A8A2FF; --accent-soft:#23214A; --live:#FF7A45;}}
 :root[data-theme="dark"]{
-  --paper:#0d0e10; --paper2:#17181b; --ink:#ecebe6; --ink2:#c9c8c2; --mut:#8d8e94; --rule:#ecebe6; --hair:#2a2b2f; --brand:#9a92ff; --mast:invert(1); color-scheme:dark;
-}
+  color-scheme:dark; --paper:#101216; --sheet:#171A20; --ink:#ECEBE6; --ink-2:#B4B5B8; --ink-3:#7D8087;
+  --rule:#2C3038; --rule-2:#22252C; --accent:#A8A2FF; --accent-soft:#23214A; --live:#FF7A45;}
+
 *{box-sizing:border-box}
-body{background:var(--paper);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+html{scroll-padding-top:70px}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 19px/1.62 var(--serif);font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
-button{font:inherit;color:inherit}
-a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.wrap{max-width:1280px;margin:0 auto;padding-inline:32px}
-h1,h2,h3{font-family:var(--serif);font-weight:600;margin:0;text-wrap:balance;letter-spacing:-.012em}
-.lab{font:700 11px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase}
-.lab.a{color:var(--accent)}
-.by{font-size:13px;color:var(--mut);font-variant-numeric:tabular-nums}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+[hidden]{display:none!important}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:24px}
+.label{font:500 11px/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.label.ink{color:var(--ink)}
+.label.acc{color:var(--accent)}
+.sans{font-family:var(--sans)}
+.live{display:inline-flex;align-items:center;gap:7px;font:500 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+.live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--live);animation:pulse 2.4s ease-out infinite}
+.live.off::before{background:var(--ink-3);animation:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--live) 55%,transparent)}70%,100%{box-shadow:0 0 0 7px transparent}}
 
-/* masthead */
-.top{padding-block:14px 0}
-.strip{display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:12.5px;color:var(--mut);padding-bottom:12px}
-.strip .r{display:flex;gap:14px;align-items:center}
-.tog{border:0;background:none;cursor:pointer;color:var(--mut);font-weight:600;padding:4px 2px;border-bottom:1.5px solid transparent}
-.tog[aria-pressed="true"]{color:var(--ink);border-bottom-color:var(--accent)}
-.mast{display:flex;justify-content:center;border-block:1px solid var(--rule);padding-block:18px}
-.mast img{height:86px;width:auto;filter:var(--mast)}
-.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);border-bottom:3px double var(--rule)}
-.nav-in{display:flex;justify-content:center;gap:26px;overflow-x:auto;scrollbar-width:none;padding-block:12px}
-.nav-in::-webkit-scrollbar{display:none}
-.nav button{border:0;background:none;cursor:pointer;white-space:nowrap;font:600 13px var(--sans);letter-spacing:.02em;color:var(--ink2);padding:2px 0;border-bottom:2px solid transparent}
-.nav button:hover{color:var(--ink)}
-.nav button[aria-pressed="true"]{color:var(--ink);border-bottom-color:var(--accent)}
-.cta{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font:600 13px var(--sans);padding:9px 16px;border-radius:2px}
-.cta:hover{background:#dd531d}
+/* ── Masthead: one quiet line; the tools live in it ── */
+.mast{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:saturate(1.2) blur(10px);-webkit-backdrop-filter:saturate(1.2) blur(10px);border-bottom:1px solid var(--rule)}
+.mast .wrap{display:flex;align-items:center;gap:20px;height:54px}
+.brand{font:500 22px/1 var(--serif);letter-spacing:-.01em;white-space:nowrap}
+.brand i{font-style:italic;font-weight:400}
+.mast .sec{font:500 12px/1 var(--sans);color:var(--ink-2);padding-left:20px;border-left:1px solid var(--rule);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.tools{margin-left:auto;display:flex;gap:10px;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:999px;padding:2px;background:var(--sheet)}
+.seg button{white-space:nowrap;border:0;background:none;font:500 12px/1 var(--sans);padding:7px 11px;border-radius:999px;cursor:pointer;color:var(--ink-2);min-height:30px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.icon-btn{display:inline-grid;place-items:center;width:34px;height:34px;border:1px solid var(--rule);border-radius:999px;background:var(--sheet);cursor:pointer;color:var(--ink-2)}
+.icon-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+.book{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--paper);font:500 12.5px/1 var(--sans);padding:10px 14px;border-radius:999px;white-space:nowrap}
+.progress{position:absolute;left:0;bottom:-1px;height:2px;width:0;background:var(--accent);transition:width .12s linear}
+.sections{border-bottom:1px solid var(--rule)}
+.sections .wrap{display:flex;gap:22px;overflow-x:auto;scrollbar-width:none;height:44px;align-items:center}
+.sections .wrap::-webkit-scrollbar{display:none}
+.sections a{font:500 12.5px/1 var(--sans);color:var(--ink-2);white-space:nowrap;padding-block:14px;border-bottom:2px solid transparent}
+.sections a:hover{color:var(--ink)}
+.sections a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
 
-/* cover */
-.cover{display:grid;grid-template-columns:minmax(0,2.1fr) minmax(0,1fr);gap:0;padding-block:36px 44px;border-bottom:1px solid var(--rule)}
-.cover-main{padding-right:36px;border-right:1px solid var(--hair)}
-.cover-main .img{aspect-ratio:3/2;overflow:hidden;background:var(--paper2)}
-.cover-main img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
-.cover-main a:hover img{transform:scale(1.02)}
-.cover-main h1{font-size:clamp(40px,5.4vw,78px);line-height:.96;margin-top:22px}
-.cover-main a:hover h1{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:8px;text-decoration-color:var(--accent)}
-.cover-main .dek{font:italic 500 clamp(19px,1.8vw,24px)/1.35 var(--serif);color:var(--ink2);margin:16px 0 0;max-width:40ch}
-.cover-main .by{margin-top:14px}
-.cover-side{padding-left:32px;display:flex;flex-direction:column}
-.side-item{padding-block:18px;border-top:1px solid var(--hair)}
-.side-item:first-child{border-top:0;padding-top:0}
-.side-item .img{aspect-ratio:16/10;overflow:hidden;background:var(--paper2);margin-bottom:12px}
-.side-item img{width:100%;height:100%;object-fit:cover}
-.side-item h3{font-size:23px;line-height:1.1;margin-top:6px}
-.side-item a:hover h3{color:var(--accent)}
-.side-item .by{margin-top:8px}
+/* ── Opening: rail · headline ── */
+.open{padding-block:56px 32px;display:grid;grid-template-columns:var(--rail) minmax(0,1fr);column-gap:var(--gap)}
+.open .rail-o{grid-row:1/span 5;display:grid;gap:18px;align-content:start;padding-top:6px;font:400 12px/1.5 var(--sans);color:var(--ink-3)}
+.open .rail-o b{display:block;font:600 20px/1.1 var(--sans);color:var(--ink);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.open .kicker{grid-column:2;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-bottom:20px}
+.open h1{grid-column:2;margin:0;font:350 clamp(40px,6.2vw,86px)/.98 var(--serif);letter-spacing:-.028em;text-wrap:balance;max-width:16ch}
+.open h1 em{font-style:italic;font-weight:300;color:var(--ink-2)}
+.open h1 a:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.12em;text-decoration-color:var(--accent)}
+.open .dek{grid-column:2;margin:24px 0 0;font:300 clamp(20px,2.2vw,26px)/1.36 var(--serif);color:var(--ink-2);max-width:34ch;text-wrap:balance}
+.open .byline{grid-column:2;margin-top:26px;display:flex;flex-wrap:wrap;gap:6px 22px;font:400 13px/1.4 var(--sans);color:var(--ink-2)}
+.open .byline b{font-weight:600;color:var(--ink)}
+figure.hero{margin:0 0 8px}
+figure.hero .ph{width:100%;aspect-ratio:21/9;overflow:hidden;background:var(--rule-2)}
+figure.hero img{width:100%;height:100%;object-fit:cover;object-position:center 45%}
+figure.hero figcaption{display:flex;justify-content:space-between;gap:16px;padding-top:10px;font:400 12px/1.4 var(--sans);color:var(--ink-3)}
 
-/* reading time */
-.time{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.2fr);gap:40px;padding-block:44px;border-bottom:1px solid var(--rule)}
-.time h2{font-size:clamp(30px,3vw,42px);line-height:1}
-.time p{color:var(--mut);margin:12px 0 0;max-width:30ch;font-size:15px}
-.time-pick{display:flex;gap:8px;margin-top:22px;flex-wrap:wrap}
-.time-pick button{border:1px solid var(--rule);background:none;cursor:pointer;padding:9px 16px;font:600 14px var(--sans);font-variant-numeric:tabular-nums;border-radius:999px}
-.time-pick button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
-.stack{list-style:none;margin:0;padding:0;counter-reset:s}
-.stack li{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:18px;align-items:baseline;padding-block:14px;border-top:1px solid var(--hair)}
-.stack li:first-child{border-top:0}
-.stack li::before{counter-increment:s;content:counter(s);font:600 34px/1 var(--serif);color:var(--accent);font-variant-numeric:lining-nums}
-.stack h3{font-size:22px;line-height:1.15}
+/* ── Three-column story grid: rail · text · margin ── */
+.story{display:grid;grid-template-columns:var(--rail) minmax(0,var(--measure)) 1fr;column-gap:var(--gap);padding-block:44px 24px}
+.rail{position:sticky;top:86px;align-self:start;display:grid;gap:26px}
+.rail .toc{display:grid;gap:9px;font:400 13px/1.35 var(--sans)}
+.rail .toc a{color:var(--ink-3);padding-left:10px;border-left:2px solid transparent;transition:color .2s,border-color .2s}
+.rail .toc a:hover{color:var(--ink)}
+.rail .toc a.on{color:var(--ink);border-left-color:var(--accent)}
+.rail .toc .grp{font:500 10px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-top:6px}
+.rail .meta{font:400 12px/1.5 var(--sans);color:var(--ink-3)}
+.rail .meta b{display:block;font-weight:600;color:var(--ink);font-size:20px;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.text{grid-column:2;min-width:0}
+.margin{grid-column:3;min-width:0}
+
+/* thesis box */
+.thesis{margin:0 0 44px;padding:22px 0 24px;border-top:2px solid var(--ink);border-bottom:1px solid var(--rule)}
+.thesis .label{margin-bottom:12px;color:var(--ink)}
+.thesis ol{margin:0;padding:0;list-style:none;counter-reset:t;display:grid;gap:12px}
+.thesis li{counter-increment:t;display:grid;grid-template-columns:26px 1fr;font:400 19px/1.42 var(--serif)}
+.thesis li::before{content:counter(t);font:600 12px/1 var(--sans);color:var(--accent);padding-top:7px;font-variant-numeric:tabular-nums}
+.thesis li a:hover{color:var(--accent)}
+.thesis li small{display:block;font:400 12px/1.4 var(--sans);color:var(--ink-3);margin-top:3px}
+
+/* figures strip */
+.figs{margin:32px 0 40px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+.figs div{padding:18px 16px 18px 0}
+.figs div+div{padding-left:16px;border-left:1px solid var(--rule-2)}
+.figs b{display:block;font:300 38px/1 var(--serif);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.figs span{display:block;margin-top:8px;font:400 12px/1.4 var(--sans);color:var(--ink-2)}
+
+blockquote.pull{margin:48px 0;padding:0;border:0;font:italic 300 clamp(28px,3.3vw,40px)/1.18 var(--serif);letter-spacing:-.015em;text-wrap:balance}
+blockquote.pull::before{content:"";display:block;width:48px;height:2px;background:var(--live);margin-bottom:20px}
+blockquote.pull cite{display:block;margin-top:14px;font:400 13px/1.4 var(--sans);font-style:normal;color:var(--ink-3)}
+blockquote.pull a:hover{color:var(--accent)}
+
+/* ── Front page ── */
+.edition{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);column-gap:var(--gap);padding-block:40px;border-top:1px solid var(--rule)}
+.edition>.lh{display:grid;gap:10px;align-content:start;padding-top:4px}
+.edition>.lh h2{margin:0;font:400 28px/1.1 var(--serif);letter-spacing:-.015em}
+.edition>.lh h2 a:hover{color:var(--accent)}
+.edition>.lh p{margin:0;font:400 12.5px/1.5 var(--sans);color:var(--ink-3)}
+.edition>.lh .more{font:500 12px/1.3 var(--sans);color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.lead-row{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:32px}
+.lead-row .ph{aspect-ratio:3/2;overflow:hidden;background:var(--rule-2)}
+.lead-row img,.tile img{width:100%;height:100%;object-fit:cover;transition:transform 1s cubic-bezier(.2,.7,.2,1)}
+.lead-row a:hover img,.tile a:hover img{transform:scale(1.025)}
+.lead-row h3{margin:0 0 10px;font:400 32px/1.08 var(--serif);letter-spacing:-.018em;text-wrap:balance}
+.lead-row a:hover h3,.hl a:hover h3,.tile a:hover h3{color:var(--accent)}
+.lead-row p{margin:0;font:300 18px/1.45 var(--serif);color:var(--ink-2)}
+.meta-l{margin-top:12px;font:400 12px/1.4 var(--sans);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.hl{list-style:none;margin:26px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink)}
+.hl li{padding:14px 16px 0 0}
+.hl li+li{padding-left:16px;border-left:1px solid var(--rule-2)}
+.hl h3{margin:0;font:400 19px/1.25 var(--serif);text-wrap:balance}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}
+.tile .ph{aspect-ratio:4/3;overflow:hidden;background:var(--rule-2);margin-bottom:12px}
+.tile h3{margin:6px 0 0;font:400 20px/1.2 var(--serif);text-wrap:balance}
+
+.time-box{display:grid;gap:18px}
+.time-box .seg{justify-self:start}
+.stack{list-style:none;margin:0;padding:0;counter-reset:s;border-top:1px solid var(--ink)}
+.stack li{counter-increment:s;display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:14px;align-items:baseline;padding-block:14px;border-bottom:1px solid var(--rule-2)}
+.stack li::before{content:counter(s);font:600 12px/1 var(--sans);color:var(--accent);font-variant-numeric:tabular-nums}
+.stack h3{margin:0;font:400 20px/1.25 var(--serif)}
 .stack a:hover h3{color:var(--accent)}
-.stack .m{font-size:13px;color:var(--mut);white-space:nowrap;font-variant-numeric:tabular-nums}
-.stack .sum{grid-column:2/-1;font-size:13px;color:var(--mut);margin-top:-6px}
+.stack .m{font:400 12px/1 var(--sans);color:var(--ink-3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.sum{font:400 12px/1.4 var(--sans);color:var(--ink-3);text-align:right}
 
-/* essays band */
-.essays{background:var(--navy);color:#eef0fa;padding-block:56px}
-.essays .lab.a{color:#ff8a5c}
-.essays-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:16px}
-.essays-head h2{font-size:clamp(38px,4.6vw,64px);line-height:.95;color:#fff}
-.essays-head h2 em{color:#ff8a5c}
-.essays-head p{margin:0;color:#9aa3c7;max-width:40ch;font-size:15px}
-.essay-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:30px}
-.essay{padding:0 22px;border-left:1px solid rgba(255,255,255,.16)}
-.essay:first-child{padding-left:0;border-left:0}
-.essay .q{font:italic 600 44px/0.6 var(--serif);color:#ff8a5c;display:block;height:22px}
-.essay h3{font-size:24px;line-height:1.1;color:#fff}
-.essay a:hover h3{text-decoration:underline;text-underline-offset:5px;text-decoration-color:#ff8a5c}
-.essay p{color:#9aa3c7;font-size:14px;margin:12px 0 0;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
-.essay .by{color:#7f89b3;margin-top:12px}
+/* routes-style table */
+.routes{overflow-x:auto}
+.routes table{width:100%;min-width:560px;border-collapse:collapse;font:400 14px/1.45 var(--sans)}
+.routes th,.routes td{text-align:left;vertical-align:top;padding:13px 14px 13px 0;border-bottom:1px solid var(--rule-2)}
+.routes thead th{font:500 11px/1.3 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);border-bottom:1px solid var(--ink)}
+.routes tbody th{font:500 18px/1.25 var(--serif);width:22%}
+.routes tbody th a:hover,.routes td a:hover{color:var(--accent)}
+.routes tbody th small{display:block;font:400 12px/1.4 var(--sans);color:var(--ink-3);margin-top:3px}
+.routes td{color:var(--ink-2);font-variant-numeric:tabular-nums}
+.routes td.n{font:300 26px/1 var(--serif);color:var(--ink);width:10%}
+.routes td .t{font:400 16px/1.35 var(--serif);color:var(--ink)}
+.bar-i{display:block;height:3px;background:var(--rule-2);margin-top:8px}
+.bar-i i{display:block;height:100%;background:var(--accent)}
 
-/* sections */
-.sect{padding-block:48px;border-bottom:1px solid var(--rule)}
-.sect-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-top:4px solid var(--rule);padding-top:12px;margin-bottom:26px}
-.sect-head h2{font-size:clamp(28px,2.6vw,36px)}
-.sect-head button{border:0;background:none;cursor:pointer;font:600 13px var(--sans);color:var(--mut)}
-.sect-head button:hover{color:var(--accent)}
-.row3{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(2,minmax(0,1fr));gap:32px}
-.row3 .img{aspect-ratio:4/3;overflow:hidden;background:var(--paper2);margin-bottom:12px}
-.row3 .big .img{aspect-ratio:16/10}
-.row3 img{width:100%;height:100%;object-fit:cover}
-.row3 h3{font-size:22px;line-height:1.12;margin-top:6px}
-.row3 .big h3{font-size:30px;line-height:1.05}
-.row3 a:hover h3{color:var(--accent)}
-.row3 p{font-size:14.5px;color:var(--ink2);margin:10px 0 0}
-.row3 .by{margin-top:8px}
-
-/* index with hover preview */
-.index{padding-block:52px 64px}
-.index-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:end;border-top:4px solid var(--rule);padding-top:12px}
-.index-head h2{font-size:clamp(34px,3.6vw,52px);line-height:1}
-.index-head .count{color:var(--mut);font-size:13px}
-.places{display:flex;flex-wrap:wrap;gap:6px 18px;margin:20px 0 10px;font-family:var(--serif);font-size:21px;line-height:1.3}
-.places button{border:0;background:none;cursor:pointer;padding:0;color:var(--ink2)}
-.places button sup{font:600 10px var(--sans);color:var(--mut);margin-left:2px}
-.places button:hover{color:var(--ink)}
-.places button[aria-pressed="true"]{color:var(--accent);text-decoration:underline;text-underline-offset:5px}
-.status{min-height:22px;font-size:13px;color:var(--mut);margin-bottom:8px}
-.status button{border:0;background:none;cursor:pointer;color:var(--accent);font-weight:600;padding:0 0 0 6px}
-.list{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
-.list a{display:grid;grid-template-columns:110px minmax(0,1fr) 150px 90px;gap:20px;align-items:baseline;padding-block:14px;border-bottom:1px solid var(--hair)}
-.list .d{font-size:12.5px;color:var(--mut);font-variant-numeric:tabular-nums}
-.list h3{font-size:21px;line-height:1.15;font-weight:600}
-.list .c{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
-.list .t{font-size:12.5px;color:var(--mut);text-align:right;font-variant-numeric:tabular-nums}
-.list a:hover h3{color:var(--accent)}
-.list a:hover{background:var(--paper2)}
-.more{display:flex;justify-content:center;margin-top:26px}
-.more button{border:1px solid var(--rule);background:none;cursor:pointer;padding:11px 22px;font:600 13px var(--sans);letter-spacing:.06em;text-transform:uppercase}
-.more button:hover{background:var(--ink);color:var(--paper)}
-.peek{position:fixed;z-index:30;width:260px;aspect-ratio:4/3;pointer-events:none;overflow:hidden;box-shadow:0 20px 50px -12px rgba(0,0,0,.35);opacity:0;transform:translate(24px,-50%) scale(.96);transition:opacity .18s,transform .18s}
-.peek.on{opacity:1;transform:translate(24px,-50%) scale(1)}
+/* index list */
+.idx{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.idx a{display:grid;grid-template-columns:44px 96px minmax(0,1fr) 140px 64px;gap:16px;align-items:baseline;padding-block:13px;border-bottom:1px solid var(--rule-2)}
+.idx .p{font:500 10px/1 var(--sans);color:var(--ink-3);font-variant-numeric:tabular-nums;opacity:.7}
+.idx .d,.idx .c,.idx .t{font:400 12px/1.3 var(--sans);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.idx .c{color:var(--accent);letter-spacing:.06em;text-transform:uppercase;font-size:10.5px;font-weight:500}
+.idx .t{text-align:right}
+.idx h3{margin:0;font:400 19px/1.3 var(--serif)}
+.idx a:hover h3{color:var(--accent)}
+.idx a:hover{background:var(--sheet)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.chips button{border:1px solid var(--rule);background:var(--paper);border-radius:999px;padding:7px 13px;font:400 13px/1.3 var(--sans);cursor:pointer;min-height:34px}
+.chips button sup{font-size:10px;color:var(--ink-3);margin-left:3px}
+.chips button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.morebtn{display:flex;justify-content:center;margin-top:24px}
+.btn-line{border:1px solid var(--ink);background:none;border-radius:999px;padding:11px 20px;font:500 13px/1 var(--sans);cursor:pointer}
+.btn-line:hover{background:var(--ink);color:var(--paper)}
+.peek{position:fixed;z-index:40;width:240px;aspect-ratio:4/3;pointer-events:none;overflow:hidden;opacity:0;transform:translate(24px,-50%);transition:opacity .15s;box-shadow:0 18px 40px -14px rgba(0,0,0,.35)}
+.peek.on{opacity:1}
 .peek img{width:100%;height:100%;object-fit:cover}
 
-/* consult */
-.consult{border-top:4px solid var(--rule);padding-block:44px 56px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px;align-items:end}
-.consult h2{font-size:clamp(32px,3.6vw,52px);line-height:1}
-.consult p{color:var(--ink2);margin:14px 0 0;max-width:46ch}
-.consult .acts{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
-.wa{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--rule);font:600 13px var(--sans);padding:9px 16px;border-radius:2px}
-.wa svg{fill:var(--wa)}
-footer{border-top:1px solid var(--rule);padding-block:22px;font-size:12.5px;color:var(--mut)}
-.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+/* ask */
+.ask{margin:52px 0 20px;padding:24px;background:var(--sheet);border:1px solid var(--rule);border-radius:4px}
+.ask h3{margin:0 0 4px;font:400 24px/1.2 var(--serif);letter-spacing:-.01em}
+.ask .hint{margin:0 0 16px;font:400 13px/1.5 var(--sans);color:var(--ink-3)}
+.ask-in{display:flex;gap:10px;align-items:center;border:1px solid var(--rule);border-radius:999px;padding:0 14px;background:var(--paper)}
+.ask-in input{flex:1;border:0;background:none;outline:none;font:400 16px/1 var(--sans);padding:12px 0;min-width:0}
+.qs{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.qs button{border:1px solid var(--rule);background:var(--paper);border-radius:999px;padding:7px 13px;font:400 13px/1.3 var(--sans);cursor:pointer;min-height:34px}
+.qs button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.ans{margin-top:16px;display:grid;gap:12px}
+.ans .hit{border-top:1px solid var(--rule-2);padding-top:12px;font:400 17px/1.55 var(--serif)}
+.ans .hit mark{background:var(--accent-soft);color:inherit;padding:0 2px}
+.ans .cite{display:inline-block;margin-top:6px;border:0;background:none;padding:0;cursor:pointer;font:500 12px/1 var(--sans);color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.ans .none{font:400 14px/1.5 var(--sans);color:var(--ink-3)}
 
-@keyframes up{from{opacity:.3;transform:translateY(8px)}to{opacity:1;transform:none}}
-.stack li{animation:up .45s ease both}
-.stack li:nth-child(2){animation-delay:.04s}.stack li:nth-child(3){animation-delay:.08s}.stack li:nth-child(4){animation-delay:.12s}.stack li:nth-child(5){animation-delay:.16s}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.cta{margin:44px 0 0;padding:26px 0;border-top:1px solid var(--ink);display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center;justify-content:space-between}
+.cta p{margin:0;max-width:30ch;font:400 21px/1.35 var(--serif)}
+.cta .acts{display:flex;gap:10px;flex-wrap:wrap}
+.cta a{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:var(--paper);font:500 14px/1 var(--sans);padding:14px 20px;border-radius:999px}
+.cta a.wa{background:none;color:var(--ink);border:1px solid var(--rule)}
+.cta a.wa svg{fill:var(--wa)}
 
-@media (max-width:1000px){
-  .cover{grid-template-columns:1fr}.cover-main{padding-right:0;border-right:0}.cover-side{padding-left:0;margin-top:32px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
-  .side-item{border-top:0;padding-block:0}
-  .essay-grid{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:32px}.essay:nth-child(3){padding-left:0;border-left:0}
-  .row3{grid-template-columns:1fr 1fr}.row3 .big{grid-column:1/-1}
-  .time{grid-template-columns:1fr;gap:20px}
-  .list a{grid-template-columns:90px minmax(0,1fr) 80px}.list .c{display:none}
-}
-@media (max-width:640px){
-  .wrap{padding-inline:16px}
-  .strip .date{display:none}
-  .mast img{height:60px}
-  .nav-in{justify-content:flex-start;gap:20px}
-  .cover-side{grid-template-columns:1fr}
-  .essay-grid{grid-template-columns:1fr}.essay{padding:0 0 22px!important;border-left:0!important;border-bottom:1px solid rgba(255,255,255,.16);margin-bottom:22px}
-  .row3{grid-template-columns:1fr}
-  .stack li{grid-template-columns:34px minmax(0,1fr)}.stack .m{grid-column:2}.stack li::before{font-size:28px}
-  .list a{grid-template-columns:minmax(0,1fr) auto;gap:6px 14px}.list .d{grid-column:1;order:2}.list h3{grid-column:1/-1;order:1}.list .t{order:3}
-  .consult{grid-template-columns:1fr}.consult .acts{justify-content:flex-start}
-  .peek{display:none}
-}
-</style>
+.ledger{margin:48px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;padding:22px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);font:400 13px/1.5 var(--sans);color:var(--ink-2)}
+.ledger b{display:block;margin-bottom:6px;font:500 11px/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.ledger .watch{color:var(--ink)}
+.ledger .watch::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--live);margin-right:8px;vertical-align:1px}
+.ledger a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
 
-<style>
-/* ---------- site-level additions ---------- */
-.mast a{display:block}
-.page-head{padding-block:40px 28px;border-bottom:1px solid var(--rule)}
-.page-head .lab{margin-bottom:12px}
-.page-head h1{font-size:clamp(44px,6vw,92px);line-height:.92}
-.page-head p{font:italic 500 clamp(19px,1.8vw,24px)/1.35 var(--serif);color:var(--ink2);margin:14px 0 0;max-width:52ch}
-.page-head .stats{display:flex;gap:28px;flex-wrap:wrap;margin-top:22px;font-size:13px;color:var(--mut)}
-.page-head .stats b{display:block;font:600 30px/1 var(--serif);color:var(--ink);font-variant-numeric:lining-nums}
-.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px 32px;padding-block:36px 20px}
-.grid3 .img{aspect-ratio:4/3;overflow:hidden;background:var(--paper2);margin-bottom:12px}
-.grid3 img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
-.grid3 a:hover img{transform:scale(1.03)}
-.grid3 h3{font-size:23px;line-height:1.12;margin-top:6px}
-.grid3 a:hover h3{color:var(--accent)}
-.grid3 p{font-size:14.5px;color:var(--ink2);margin:8px 0 0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.grid3 .by{margin-top:8px}
-.feature{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:36px;align-items:end;padding-block:32px;border-bottom:1px solid var(--hair)}
-.feature .img{aspect-ratio:16/10;overflow:hidden;background:var(--paper2)}
-.feature img{width:100%;height:100%;object-fit:cover}
-.feature h2{font-size:clamp(32px,3.6vw,52px);line-height:1}
-.feature a:hover h2{color:var(--accent)}
-.feature p{color:var(--ink2);margin:14px 0 0}
-.dest-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:1px solid var(--rule);margin-top:28px}
-.dest-grid a{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:18px 16px 18px 0;border-bottom:1px solid var(--hair);font:600 26px/1.1 var(--serif)}
-.dest-grid a span{font:600 12px var(--sans);color:var(--mut);font-variant-numeric:tabular-nums}
-.dest-grid a:hover{color:var(--accent)}
-.searchbar{display:flex;gap:12px;align-items:center;border-bottom:2px solid var(--rule);padding-block:10px;margin-top:28px}
-.searchbar input{flex:1;border:0;background:none;outline:none;color:var(--ink);font:500 clamp(24px,3vw,40px)/1.2 var(--serif);min-width:0}
-.searchbar svg{flex:none;stroke:var(--mut)}
-.empty-note{padding-block:40px;color:var(--mut);font-size:15px}
-.nav a.navl{white-space:nowrap;font:600 13px var(--sans);letter-spacing:.02em;color:var(--ink2);padding:2px 0;border-bottom:2px solid transparent}
-.nav a.navl:hover{color:var(--ink)}
-.nav a.navl[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
-.nav a.navl.ic{display:inline-flex;align-items:center;gap:6px}
-.crumbs{font-size:13px;color:var(--mut);padding-top:22px}
+/* ── Article body ── */
+.art-body h2{font:400 32px/1.12 var(--serif);letter-spacing:-.015em;margin:56px 0 18px;text-wrap:balance;scroll-margin-top:84px}
+.art-body h3{font:italic 400 24px/1.2 var(--serif);margin:36px 0 12px;scroll-margin-top:84px}
+.art-body p,.art-body li{text-wrap:pretty}
+.art-body p{margin:0 0 22px;position:relative}
+.art-body p.n::before{content:attr(data-p);position:absolute;left:-44px;top:.42em;width:28px;text-align:right;font:500 10px/1 var(--sans);color:var(--ink-3);letter-spacing:.04em;font-variant-numeric:tabular-nums;opacity:.55}
+.art-body p.flash{animation:flash 1.8s ease-out}
+@keyframes flash{0%{background:var(--accent-soft)}100%{background:transparent}}
+.art-body .nac-drop::first-letter,.drop::first-letter{float:left;font:400 5.1em/.8 var(--serif);padding:.08em .09em 0 0;color:var(--ink)}
+.art-body strong{font-weight:600}
+.art-body a{color:var(--accent);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.art-body ul,.art-body ol{margin:0 0 22px;padding-left:22px}
+.art-body li{margin-bottom:8px}
+.art-body li::marker{color:var(--accent);font:600 13px var(--sans)}
+.art-body blockquote{margin:44px 0;padding:0;border:0;font:italic 300 clamp(26px,3vw,36px)/1.2 var(--serif);letter-spacing:-.015em}
+.art-body blockquote::before{content:"";display:block;width:48px;height:2px;background:var(--live);margin-bottom:18px}
+.art-body blockquote p{margin:0}
+.art-body figure{margin:30px 0}
+.art-body img{height:auto}
+.art-body figcaption{font:400 12px/1.4 var(--sans);color:var(--ink-3);padding-top:8px}
+.art-body hr{border:0;border-top:1px solid var(--rule);margin:40px 0}
+.art-body .tw{margin:28px 0 30px;overflow-x:auto}
+.art-body table{width:100%;min-width:520px;border-collapse:collapse;font:400 14px/1.45 var(--sans);font-variant-numeric:tabular-nums}
+.art-body th,.art-body td{text-align:left;vertical-align:top;padding:12px 14px 12px 0;border-bottom:1px solid var(--rule-2)}
+.art-body thead th,.art-body tr:first-child th{font:500 11px/1.3 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);border-bottom:1px solid var(--ink)}
+.art-body td{color:var(--ink-2)}
+.art-body td:first-child{color:var(--ink);font-weight:500}
+.art-body .nac-refs{display:none}
+body.skim .art-body .deep{display:none}
+body.skim .art-body p.lead{font-size:20px}
+.srcs{margin:40px 0 0;padding-top:14px;border-top:1px solid var(--ink)}
+.srcs ol{margin:10px 0 0;padding:0;list-style:none;counter-reset:r;display:grid;gap:8px}
+.srcs li{counter-increment:r;display:grid;grid-template-columns:26px 1fr;font:400 14px/1.45 var(--sans)}
+.srcs li::before{content:counter(r);font:600 11px/1 var(--sans);color:var(--accent);padding-top:4px}
+.srcs a:hover{color:var(--accent)}
+.pn{display:grid;grid-template-columns:1fr 1fr;border-block:1px solid var(--rule);margin-top:40px}
+.pn a{display:block;padding:18px 18px 18px 0}
+.pn a+a{padding-left:18px;border-left:1px solid var(--rule-2);text-align:right}
+.pn h4{margin:6px 0 0;font:400 19px/1.25 var(--serif)}
+.pn a:hover h4{color:var(--accent)}
+.skel{height:15px;background:var(--rule-2);margin:14px 0}
+.skel.s{width:62%}
+
+/* search + misc pages */
+.searchbar{display:flex;gap:12px;align-items:center;border-bottom:2px solid var(--ink);padding-block:8px;margin-top:6px}
+.searchbar input{flex:1;border:0;background:none;outline:none;font:350 clamp(28px,3.4vw,44px)/1.2 var(--serif);letter-spacing:-.02em;min-width:0}
+.empty-note{font:400 15px/1.5 var(--sans);color:var(--ink-3);padding-block:24px}
+.crumbs{font:400 12.5px/1.4 var(--sans);color:var(--ink-3)}
 .crumbs a:hover{color:var(--accent)}
 
-/* ---------- article reader ---------- */
-.art-hero{margin-top:22px;aspect-ratio:21/9;overflow:hidden;background:var(--paper2)}
-.art-hero img{width:100%;height:100%;object-fit:cover}
-.art{max-width:760px;margin:0 auto;padding-block:30px 20px}
-.art .lab{margin-bottom:14px}
-.art h1{font-size:clamp(38px,5vw,66px);line-height:1}
-.art .deck{font:italic 500 clamp(20px,2vw,26px)/1.3 var(--serif);color:var(--mut);margin:14px 0 0}
-.art .stand{font-size:18px;line-height:1.55;color:var(--ink);margin:22px 0 0;font-weight:500}
-.art .stand.en{font-size:16px;color:var(--mut);font-weight:400;margin-top:10px}
-.art-by{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;border-block:1px solid var(--hair);padding-block:12px;margin-top:24px;font-size:13px;color:var(--mut);font-variant-numeric:tabular-nums}
-.art-by a{color:var(--ink);font-weight:600;border-bottom:1.5px solid var(--accent)}
-.art-by .sp{margin-left:auto;display:flex;gap:14px}
-.toc{margin-top:22px;border:1px solid var(--rule);padding:4px 20px}
-.toc summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;padding-block:12px;font:700 11px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase}
-.toc summary::-webkit-details-marker{display:none}
-.toc summary::after{content:"+";font:400 22px/1 var(--sans);color:var(--accent)}
-.toc[open] summary::after{content:"–"}
-.toc ul{list-style:none;margin:0 0 16px;padding:0;columns:2;column-gap:32px}
-.toc li{break-inside:avoid;padding-block:4px;font-size:14.5px;line-height:1.4}
-.toc li a{display:block;border-left:2px solid var(--hair);padding-left:12px}
-.toc li a:hover{border-left-color:var(--accent)}
-.toc a:hover{color:var(--accent)}
-.toc .grp{display:block;font:700 10.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin:6px 0 6px;column-span:all}
-.body{font-size:17.5px;line-height:1.75;color:var(--ink)}
-.body section{margin-top:34px}
-.body section+section{border-top:3px double var(--rule);padding-top:26px}
-.body h2{font-size:32px;line-height:1.1;margin:40px 0 10px;scroll-margin-top:70px}
-.body h3{font-size:24px;font-style:italic;font-weight:500;margin:28px 0 8px;scroll-margin-top:70px}
-.body p{margin:0 0 18px}
-.body a{color:var(--brand);text-decoration:underline;text-underline-offset:3px;text-decoration-color:color-mix(in srgb,var(--brand) 40%,transparent)}
-.body strong{font-weight:650}
-.body ul,.body ol{padding-left:22px;margin:0 0 18px}
-.body li{margin-bottom:6px}
-.body li::marker{color:var(--accent)}
-.body blockquote{margin:30px 0;padding:0 0 0 22px;border-left:3px solid var(--accent);font:italic 500 26px/1.3 var(--serif);color:var(--ink)}
-.body blockquote p{margin:0}
-.body img{height:auto;margin:22px 0}
-.body figure{margin:26px 0}
-.body figcaption{font-size:13px;color:var(--mut);margin-top:6px}
-.body hr{border:0;border-top:1px solid var(--hair);margin:30px 0}
-.body .tw{overflow-x:auto;margin:24px 0;border-top:2px solid var(--rule);border-bottom:1px solid var(--rule)}
-.body table{border-collapse:collapse;width:100%;font-size:14.5px;line-height:1.45;font-variant-numeric:tabular-nums}
-.body th{text-align:left;font:700 11px/1.3 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--mut);padding:12px 12px 10px;border-bottom:1px solid var(--rule);white-space:nowrap}
-.body td{padding:10px 12px;border-bottom:1px solid var(--hair);vertical-align:top}
-.body .nac-drop::first-letter{float:left;font:600 76px/.78 var(--serif);color:var(--accent);padding:8px 10px 0 0}
-.body .nac-refs{margin-top:44px;border-top:4px solid var(--rule);padding-top:10px}
-.body .nac-refs h2{font-size:22px;margin:10px 0 12px}
-.body .nac-src{list-style:none;padding:0}
-.body .nac-src li{border-bottom:1px solid var(--hair);padding-block:8px;margin:0;font-size:15px}
-.body .nac-src li::before{content:"↗ ";color:var(--accent)}
-.art-foot{max-width:760px;margin:0 auto;display:flex;justify-content:space-between;gap:20px;border-top:1px solid var(--rule);padding-block:18px 8px;font-size:13px;color:var(--mut)}
-.art-foot a{color:var(--ink);font-weight:600}
-.art-foot a:hover{color:var(--accent)}
-.pn{display:grid;grid-template-columns:1fr 1fr;gap:0;border-block:1px solid var(--rule);margin-top:40px}
-.pn a{padding:20px 20px 20px 0;display:block}
-.pn a+a{border-left:1px solid var(--hair);padding-left:20px;text-align:right}
-.pn h3{font-size:21px;line-height:1.15;margin-top:6px}
-.pn a:hover h3{color:var(--accent)}
-.progress{position:fixed;left:0;top:0;height:3px;background:var(--accent);z-index:50;width:0}
-.skel{height:14px;background:var(--paper2);margin:12px 0;border-radius:2px}
-.skel.w6{width:60%}.skel.h{height:54px;width:85%}
-.back-top{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:40;width:44px;height:44px;border-radius:50%;border:1px solid var(--rule);background:var(--paper);cursor:pointer;display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .2s}
+footer.foot{padding-block:32px 56px;font:400 12px/1.6 var(--sans);color:var(--ink-3);border-top:1px solid var(--rule);margin-top:40px}
+footer.foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+footer.foot a:hover{color:var(--ink)}
+.back-top{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:25;width:42px;height:42px;border-radius:50%;border:1px solid var(--rule);background:var(--sheet);cursor:pointer;display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .2s;color:var(--ink-2)}
 .back-top.on{opacity:1;pointer-events:auto}
-@media (max-width:1000px){
-  .grid3{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .feature{grid-template-columns:1fr}
-  .dest-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+#view{animation:fade .35s ease both}
+@keyframes fade{from{opacity:.001}to{opacity:1}}
+
+@media (max-width:1140px){
+  :root{--rail:150px;--gap:40px}
+  .story{grid-template-columns:var(--rail) minmax(0,var(--measure))}
+  .margin{display:none}
+  .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:860px){
+  .open,.story,.edition{grid-template-columns:minmax(0,1fr)}
+  .open>*{grid-column:1!important}
+  .open .rail-o{grid-row:auto;display:flex;flex-wrap:wrap;gap:8px 22px;order:5;margin-top:24px;padding-top:14px;border-top:1px solid var(--rule)}
+  .open .rail-o b{font-size:17px}
+  .story .rail{display:none}
+  .text{grid-column:1}
+  .art-body p.n::before{display:none}
+  .open{padding-block:36px 24px}
+  figure.hero .ph{aspect-ratio:4/3}
+  .wrap.hero-w{padding-inline:0}
+  figure.hero figcaption{padding-inline:16px}
+  .edition>.lh{margin-bottom:18px;grid-template-columns:1fr auto;align-items:baseline}
+  .edition>.lh p{display:none}
+  .lead-row{grid-template-columns:1fr;gap:18px}
+  .idx a{grid-template-columns:86px minmax(0,1fr) 56px}
+  .idx .p,.idx .c{display:none}
 }
 @media (max-width:640px){
-  .grid3{grid-template-columns:1fr}
-  .dest-grid{grid-template-columns:1fr}
-  .art-hero{aspect-ratio:4/3;margin-inline:-16px}
-  .toc ol{columns:1}
-  .body{font-size:17px}
-  .body h2{font-size:27px}
-  .pn{grid-template-columns:1fr}.pn a+a{border-left:0;border-top:1px solid var(--hair);padding-left:0;text-align:left}
-  .art-by .sp{margin-left:0}
+  body{font-size:18px}
+  .wrap{padding-inline:16px}
+  .mast .sec,.book span{display:none}
+  .mast .wrap{gap:10px}
+  .book{padding:10px 11px}
+  .seg button{padding:7px 9px}
+  #depth button{padding:7px 8px;font-size:11px}
 }
+@media (max-width:440px){
+  .book{display:none}
+  .figs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .figs div:nth-child(3){padding-left:0;border-left:0}
+  .figs div:nth-child(n+3){border-top:1px solid var(--rule-2)}
+  .hl{grid-template-columns:1fr}.hl li+li{padding-left:0;border-left:0;border-top:1px solid var(--rule-2)}.hl li{padding-bottom:14px}
+  .tiles{grid-template-columns:1fr}
+  .art-body h2{font-size:27px}
+  .ledger{grid-template-columns:1fr;gap:16px}
+  .ask{padding:18px}
+  .idx a{grid-template-columns:minmax(0,1fr) auto;gap:4px 12px}.idx .d{order:2}.idx h3{grid-column:1/-1;order:1}.idx .t{order:3}
+  .pn{grid-template-columns:1fr}.pn a+a{border-left:0;border-top:1px solid var(--rule-2);padding-left:0;text-align:left}
+  .peek{display:none}
+}
+@media (prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<div class="progress" id="progress" aria-hidden="true"></div>
-<header class="top">
+<header class="mast">
   <div class="wrap">
-    <div class="strip">
-      <span class="date"><span id="today"></span> · <span class="src" id="src"></span></span>
-      <div class="r">
-        <button class="tog" type="button" id="lang-vi" aria-pressed="true">Tiếng Việt</button><button class="tog" type="button" id="lang-en" aria-pressed="false">English</button>
-        <a class="cta" href="https://calendar.app.google/gnbtNBTBDKuHUasw7" target="_blank" rel="noopener" data-vi="Tư vấn nhanh" data-en="Book a consult">Tư vấn nhanh</a>
+    <a class="brand" href="#/">NAC <i>Times</i></a>
+    <span class="sec" id="mast-sec"></span>
+    <div class="tools">
+      <div class="seg" role="group" aria-label="Độ sâu đọc" id="depth" hidden>
+        <button id="d-skim" type="button" aria-pressed="false">Đọc lướt</button><button id="d-full" type="button" aria-pressed="true">Đầy đủ</button>
       </div>
+      <a class="icon-btn" href="#/tim" aria-label="Tìm kiếm" title="Tìm kiếm ( / )"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></a>
+      <div class="seg" role="group" aria-label="Language"><button id="l-vi" type="button" aria-pressed="true">VI</button><button id="l-en" type="button" aria-pressed="false">EN</button></div>
+      <a class="book" href="https://calendar.app.google/gnbtNBTBDKuHUasw7" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span data-vi="Tư vấn" data-en="Consult">Tư vấn</span></a>
     </div>
-    <div class="mast"><a href="#/" aria-label="NAC Times — trang chủ"><img src="https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/Masthead.png" alt="The NAC Times" width="255" height="227"></a></div>
   </div>
+  <div class="progress" id="progress"></div>
 </header>
-<nav class="nav" aria-label="Chuyên mục"><div class="wrap nav-in" id="nav"></div></nav>
+<nav class="sections" aria-label="Chuyên mục"><div class="wrap" id="nav"></div></nav>
 <main id="view" tabindex="-1"></main>
-<div class="wrap"><section class="consult" aria-labelledby="c-h">
-  <div><div class="lab a" data-vi="Từ trang báo đến kế hoạch" data-en="From the page to a plan">Từ trang báo đến kế hoạch</div>
-  <h2 id="c-h" style="margin-top:10px" data-vi="Đọc xong, hãy bàn với NAC về căn cứ thứ hai của bạn." data-en="Finished reading? Talk to NAC about your second base.">Đọc xong, hãy bàn với NAC về căn cứ thứ hai của bạn.</h2>
-  <p data-vi="30 phút, miễn phí — chương trình, ngân sách và lộ trình phù hợp với gia đình bạn." data-en="30 minutes, free — programs, budget and a route that fits your family.">30 phút, miễn phí — chương trình, ngân sách và lộ trình phù hợp với gia đình bạn.</p></div>
-  <div class="acts">
-    <a class="cta" href="https://calendar.app.google/gnbtNBTBDKuHUasw7" target="_blank" rel="noopener" data-vi="Đặt lịch tư vấn" data-en="Book a free consult">Đặt lịch tư vấn</a>
-    <a class="wa" href="https://wa.me/447388646000" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.2.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.4.2.5.3.1.2.1.6-.2 1.1z"/></svg>WhatsApp</a>
-  </div>
-</section></div>
-<footer><div class="wrap foot">
-  <span>© 2026 Nomad Asset Collective · NAC Times</span>
-  <span><a href="#/gioi-thieu" data-vi="Về NAC Times" data-en="About NAC Times">Về NAC Times</a> · <a href="#/diem-den" data-vi="Điểm đến" data-en="Destinations">Điểm đến</a> · <a href="#/tim" data-vi="Tìm kiếm" data-en="Search">Tìm kiếm</a> · <a href="https://nomadassetcollective.com" target="_blank" rel="noopener">nomadassetcollective.com</a></span>
+<footer class="foot"><div class="wrap">
+  <span>NAC Times — <span data-vi="tạp chí di trú đầu tư của Nomad Asset Collective" data-en="the investment-migration journal of Nomad Asset Collective">tạp chí di trú đầu tư của Nomad Asset Collective</span></span>
+  <span><a href="#/gioi-thieu" data-vi="Về NAC Times" data-en="About">Về NAC Times</a> · <a href="#/diem-den" data-vi="Điểm đến" data-en="Destinations">Điểm đến</a> · <a href="#/tim" data-vi="Tìm kiếm" data-en="Search">Tìm kiếm</a> · <a href="https://nomadassetcollective.com" target="_blank" rel="noopener">nomadassetcollective.com</a></span>
 </div></footer>
-<button class="back-top" type="button" id="back-top" aria-label="Lên đầu trang"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+<button class="back-top" type="button" id="back-top" aria-label="Lên đầu trang"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 <div class="peek" id="peek" aria-hidden="true"><img alt="" id="peek-img"></div>
 
 <script id="nt-data" type="application/json">[{"id": 1045, "d": "2026-09-23", "u": "https://blog.nomadassetcollective.com/di-cu-vi-khi-hau-va-con-sot-ham-tru-an-cua-gioi-ty-phu-nha-dau-tu-viet-nen-doc-tin-hieu-na/", "t": "Di cư vì khí hậu và cơn sốt hầm trú ẩn của giới tỷ phú: nhà đầu tư Việt nên đọc tín hiệu này thế nào?", "en": "", "x": "45,8 triệu lượt di dời vì thiên tai trong 2024, bảo hiểm rút khỏi California, tỷ phú mua hầm trú ẩn. NAC đọc tín hiệu: căn cứ thứ hai hợp pháp, không phải boong-ke.", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Hầm trú ẩn", "m": 8, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/09/di-cu-vi-khi-hau-va-con-sot-ham-tru-an-cua-gioi-ty-phu-nha-dau-tu-viet-nen-doc-tin-hieu-na-cover-1024x576.jpg"}, {"id": 1042, "d": "2026-09-22", "u": "https://blog.nomadassetcollective.com/nha-dau-tu-thoi-so-kiem-tien-khong-bien-gioi-nhung-can-mot-mai-nha-hop-phap/", "t": "Nhà đầu tư thời số: kiếm tiền không biên giới, nhưng cần một mái nhà hợp pháp", "en": "", "x": "Có một nhóm khách hàng mới đang lớn lên rất nhanh và sẽ định hình tương lai của ngành di trú đầu tư: người sáng lập công ty công nghệ, người làm trong lĩnh vực trí tuệ nhân tạo, lập trình viên, người kinh doanh phần mềm…", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Đầu tư", "m": 4, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/09/nha-dau-tu-thoi-so-kiem-tien-khong-bien-gioi-nhung-can-mot-mai-nha-hop-phap-cover-80670-1024x768.jpeg"}, {"id": 1035, "d": "2026-06-26", "u": "https://blog.nomadassetcollective.com/vn-en-so-sanh-dubai-golden-visa-vs-malaysia-mm2h-hai-mo-hinh-dinh-cu-chau-a-cho-hnwis-vietnam/", "t": "So Sánh: Dubai Golden Visa vs Malaysia MM2H – Hai Mô Hình Định Cư Châu Á Cho HNWIs ViệtNam", "en": "", "x": "Không phải tất cả nhà đầu tư Việt đều muốn đi châu Âu hay Caribbean. Một số phần lớn tiếp cận NAC với suy nghĩ: “Tôi muốn second base trong khu vực – gần Việt Nam, giữ được hoạt động kinh doanh, bản sắc châu Á”. Khi đó…", "c": "So Sánh", "k": "So Sánh · Golden visa", "m": 6, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/06/vn-en-so-sanh-dubai-golden-visa-vs-malaysia-mm2h-hai-mo-hinh-dinh-cu-chau-a-cho-hnwis-vietnam-cover-28f6d-683x1024.jpeg"}, {"id": 1033, "d": "2026-06-24", "u": "https://blog.nomadassetcollective.com/lan-dau-tien-trong-lich-su-ban-duoc-chon-noi-song-ai-thu-nhap-doc-lap-dia-diem-va-ky-nguyen-moi-cua-di-tru/", "t": "Lần Đầu Tiên Trong Lịch Sử, Bạn Được Chọn Nơi Sống: AI, Thu Nhập Độc Lập Địa Điểm Và Kỷ Nguyên Mới Của Di Trú", "en": "", "x": "Có một giả định âm thầm đã định hình cuộc đời của hầu hết mọi người: bạn sống ở nơi bạn sinh ra, hoặc nơi có công việc. Trong suốt lịch sử, đây không phải là một lựa chọn — mà là một ràng buộc. AI đang âm thầm tháo bỏ…", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Lần đầu tiên", "m": 3, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/06/lan-dau-tien-trong-lich-su-ban-duoc-chon-noi-song-ai-thu-nhap-doc-lap-dia-diem-va-ky-nguyen-moi-cua-di-tru-cover-88891-1024x683.jpeg"}, {"id": 1031, "d": "2026-06-21", "u": "https://blog.nomadassetcollective.com/ai-ubi-va-cuoc-chay-dua-phuc-loi-y-nghia-thuc-su-doi-voi-nha-dau-tu-viet-nam-trong-ky-nguyen-di-tru-moi/", "t": "AI, UBI Và “Cuộc Chạy Đua Phúc Lợi”: Ý Nghĩa Thực Sự Đối Với Nhà Đầu Tư Việt Nam Trong Kỷ Nguyên Di Trú Mới", "en": "", "x": "Phần lớn các cuộc thảo luận về AI, UBI và di trú đầu tư diễn ra ở phương Tây, qua lăng kính phương Tây. Nhưng nhà đầu tư Việt Nam đang ở một vị trí đặc biệt — và những thay đổi toàn cầu này có ý nghĩa rất khác đối với…", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Phúc lợi", "m": 3, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/06/ai-ubi-va-cuoc-chay-dua-phuc-loi-y-nghia-thuc-su-doi-voi-nha-dau-tu-viet-nam-trong-ky-nguyen-di-tru-moi-cover-d0ce1-683x1024.jpeg"}, {"id": 1029, "d": "2026-06-20", "u": "https://blog.nomadassetcollective.com/tai-san-van-hoa-vi-sao-nguoi-giau-that-su-do-cua-cai-bang-so-noi-ho-co-the-goi-la-nha/", "t": "Tài Sản Văn Hoá: Vì Sao Người Giàu Thật Sự Đo Của Cải Bằng Số Nơi Họ Có Thể Gọi Là Nhà", "en": "", "x": "Tóm tắt nhanh. Của cải bền vững nhất không phải một con số lớn nằm trong một loại tiền tệ, một quốc gia — mà là khả năng sống, giữ tài sản, cho con học và nghỉ hưu ở nhiều nơi. NAC gọi đó là tài sản văn hoá: mỗi quyền…", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Tài sản", "m": 5, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/06/tai-san-van-hoa-vi-sao-nguoi-giau-that-su-do-cua-cai-bang-so-noi-ho-co-the-goi-la-nha-cover-28eb2-1024x640.webp"}, {"id": 1027, "d": "2026-06-19", "u": "https://blog.nomadassetcollective.com/case-study-gia-dinh-doanh-nhan-ha-noi-va-8-thang-chinh-phuc-mm2h-malaysia-tu-quyet-dinh-den-the-cu-tru-dai-han/", "t": "Case Study: Gia Đình Doanh Nhân Hà Nội Và 8 Tháng Chinh Phục MM2H Malaysia — Từ Quyết Định Đến Thẻ Cư Trú Dài Hạn", "en": "", "x": "Anh Minh (45 tuổi) là chủ doanh nghiệp sản xuất nội thất tại Hà Nội, cùng vợ chị Lan (42 tuổi) và hai con gái (16 và 12 tuổi). Gia đình có tổng tài sản ròng khoảng 1,5 triệu USD, thu nhập hàng năm từ doanh nghiệp khoảng…", "c": "Case Study", "k": "Case Study · Gia đình", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/06/case-study-gia-dinh-doanh-nhan-ha-noi-va-8-thang-chinh-phuc-mm2h-malaysia-tu-quyet-dinh-den-the-cu-tru-dai-han-cover-499c9-1024x688.jpg"}, {"id": 1025, "d": "2026-06-18", "u": "https://blog.nomadassetcollective.com/bat-dong-san-branded-residences-viet-nam-2026-thi-truong-hang-sang-tang-truong-nhanh-nhat-chau-a-infographic/", "t": "Bất Động Sản Branded Residences Việt Nam 2026: Thị Trường Hạng Sang Tăng Trưởng Nhanh Nhất Châu Á [Infographic]", "en": "", "x": "Việt Nam vừa được xếp hạng thứ 4 toàn cầu về số lượng branded residences — chỉ sau Mỹ, Saudi Arabia và Mexico. Với hơn 50 dự án từ 34 thương hiệu quốc tế, thị trường này không còn là ngoại lệ: đây là một tài sản chiến…", "c": "Infographic", "k": "Infographic · Branded residences", "m": 2, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/06/bat-dong-san-branded-residences-viet-nam-2026-thi-truong-hang-sang-tang-truong-nhanh-nhat-chau-a-infographic-cover-a2148.jpg"}, {"id": 1023, "d": "2026-06-17", "u": "https://blog.nomadassetcollective.com/phan-tich-panama-friendly-nations-visa-canh-cua-chau-my-it-nguoi-viet-biet/", "t": "Phân Tích: Panama Friendly Nations Visa – Cánh Cửa Châu Mỹ Ít Người Việt Biết", "en": "", "x": "Trong khi phần lớn HNWIs Việt Nam nhìn về Châu Âu hay Caribbean khi nói đến đầu tư di trú, một chương trình ít được chú ý hơn nhưng cực kỳ đặc biệt đang nổi lên: Panama Friendly Nations Visa (FNV). Đây không phải chương…", "c": "Phân Tích", "k": "Phân Tích · Friendly nations", "m": 7, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/06/phan-tich-panama-friendly-nations-visa-canh-cua-chau-my-it-nguoi-viet-biet-cover-ebbd8-576x1024.jpeg"}, {"id": 1022, "d": "2026-06-17", "u": "https://blog.nomadassetcollective.com/phan-tich-bds-panama-city-2026-thi-truong-dang-tang-va-co-hoi-cho-nha-dau-tu-viet/", "t": "Phân Tích BĐS Panama City 2026: Thị Trường Đang Tăng Và Cơ Hội Cho Nhà Đầu Tư Việt", "en": "", "x": "Panama City đang nổi lên như một trong những thị trường bất động sản hấp dẫn nhất Châu Mỹ Latin — với ưu thế độc đáo mà ít thị trường nào có: nền kinh tế sử dụng USD hoàn toàn, miễn thuế thu nhập từ nước ngoài, và…", "c": "Phân Tích", "k": "Phân Tích · Thị trường", "m": 3, "bi": false, "img": ""}, {"id": 1020, "d": "2026-06-16", "u": "https://blog.nomadassetcollective.com/nobu-da-nang-so-huu-branded-residence-dang-cap-quoc-te-ngay-tren-dat-viet/", "t": "Nobu Đà Nẵng: Sở Hữu Branded Residence Đẳng Cấp Quốc Tế — Ngay Trên Đất Việt", "en": "", "x": "Tóm tắt nhanh. Nobu Residences Đà Nẵng là dự án căn hộ mang thương hiệu Nobu (Robert De Niro & đầu bếp Nobu Matsuhisa) đầu tiên tại Việt Nam — tháp 43 tầng, cao 186m, mặt tiền biển Mỹ Khê. Giá vào từ 360.000 USD, định…", "c": "Phân Tích", "k": "Phân Tích · Đà nẵng", "m": 3, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/06/nobu-da-nang-so-huu-branded-residence-dang-cap-quoc-te-ngay-tren-dat-viet-cover-af61b-1024x576.webp"}, {"id": 1013, "d": "2026-06-10", "u": "https://blog.nomadassetcollective.com/co-tuc-trai-nghiem-di-san-lon-nhat-ban-de-lai-cho-con-khong-nam-trong-so-tiet-kiem/", "t": "Cổ Tức Trải Nghiệm: Di Sản Lớn Nhất Bạn Để Lại Cho Con Không Nằm Trong Sổ Tiết Kiệm", "en": "", "x": "Tóm tắt nhanh. Tài sản tài chính có thể được thừa kế và tiêu hết trong một thế hệ. Thứ cộng dồn lâu hơn là cổ tức trải nghiệm — ngôn ngữ, tư duy, mạng lưới và khả năng thích nghi mà con cái có được khi thực sự sống ở…", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Cổ tức trải nghiệm", "m": 4, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/06/inheritance-1024x683.webp"}, {"id": 1011, "d": "2026-06-04", "u": "https://blog.nomadassetcollective.com/goc-nhin-nac-chuong-trinh-tot-nhat-cho-gia-dinh-hnwis-viet-2026-khong-co-dap-an-cho-tat-ca/", "t": "Góc Nhìn NAC: Chương Trình Tốt Nhất Cho Gia Đình HNWIs Việt 2026 — Không Có Đáp Án Cho Tất Cả", "en": "", "x": "Sau hơn 3 năm tư vấn cho nhà đầu tư Việt, NAC có thể khẳng định một điều: không có chương trình nào là “tốt nhất” cho mọi gia đình. Bài viết này không phải danh sách xếp hạng — đây là framework phân loại dựa trên…", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Gia đình", "m": 4, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/06/goc-nhin-nac-chuong-trinh-tot-nhat-cho-gia-dinh-hnwis-viet-2026-khong-co-dap-an-cho-tat-ca-cover-73804-1024x683.jpeg"}, {"id": 1007, "d": "2026-06-03", "u": "https://blog.nomadassetcollective.com/vn-en-so-sanh-sip-permanent-residency-vs-bo-dao-nha-golden-visa-hai-canh-cua-schengen-cho-nguoi-viet/", "t": "So Sánh: Síp Permanent Residency vs Bồ Đào Nha Golden Visa – Hai Cánh Cửa Schengen Cho Người Việt", "en": "", "x": "Khi nhà đầu tư Việt Nam tìm kiếm con đường vào châu Âu, hai chương trình thường được nhắc đến gần đây là Síp Permanent Residency (Síp PR) và Bồ Đào Nha Golden Visa. Cả hai đều là cánh cửa hợp pháp vào EU, nhưng triết lý…", "c": "So Sánh", "k": "So Sánh · Bồ đào nha", "m": 6, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/06/vn-en-so-sanh-sip-permanent-residency-vs-bo-dao-nha-golden-visa-hai-canh-cua-schengen-cho-nguoi-viet-cover-2b758-1024x576.jpeg"}, {"id": 1004, "d": "2026-06-02", "u": "https://blog.nomadassetcollective.com/khi-ai-viet-lai-hop-dong-xa-hoi-vi-sao-cac-mo-hinh-ubi-khac-nhau-se-dinh-hinh-lan-song-di-tru-dau-tu-toan-cau/", "t": "Khi AI Viết Lại Hợp Đồng Xã Hội: Vì Sao Các Mô Hình UBI Khác Nhau Sẽ Định Hình Làn Sóng Di Trú Đầu Tư Toàn Cầu", "en": "", "x": "Trong suốt lịch sử hiện đại, thu nhập của con người gắn chặt với lao động, và lao động gắn chặt với địa điểm. Bạn sống ở nơi có việc làm. Trí tuệ nhân tạo (AI) đang phá vỡ mối liên kết này — và hệ quả của nó vượt xa thị…", "c": "Phân Tích", "k": "Phân Tích · Mô hình", "m": 4, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/06/khi-ai-viet-lai-hop-dong-xa-hoi-vi-sao-cac-mo-hinh-ubi-khac-nhau-se-dinh-hinh-lan-song-di-tru-dau-tu-toan-cau-cover-9c079-1024x683.jpeg"}, {"id": 1002, "d": "2026-05-27", "u": "https://blog.nomadassetcollective.com/goc-nhin-nac-uae-nhu-mot-hub-tai-chinh-tai-sao-nha-dau-tu-viet-nen-ket-hop-golden-visa-uae-voi-chien-luoc-cu-tru-toan-cau/", "t": "Góc Nhìn NAC: UAE Như Một Hub Tài Chính — Tại Sao Nhà Đầu Tư Việt Nên Kết Hợp Golden Visa UAE Với Chiến Lược Cư Trú Toàn Cầu", "en": "", "x": "Trong hàng trăm cuộc tư vấn với nhà đầu tư Việt Nam, NAC nhận thấy một xu hướng rõ rệt: UAE đang được sử dụng không chỉ như điểm đến cư trú duy nhất, mà như một hub tài chính trung tâm trong chiến lược cư trú đa quốc…", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Tài chính", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/goc-nhin-nac-uae-nhu-mot-hub-tai-chinh-tai-sao-nha-dau-tu-viet-nen-ket-hop-golden-visa-uae-voi-chien-luoc-cu-tru-toan-cau-cover-6404e-1024x683.jpg"}, {"id": 999, "d": "2026-05-16", "u": "https://blog.nomadassetcollective.com/vietnam-vs-bali-vs-phuket-vs-penang-a-2026-branded-residence-comparison-for-foreign-buyers/", "t": "Vietnam vs Bali vs Phuket vs Penang: A 2026 Branded Residence Comparison for Foreign Buyers", "en": "", "x": "If you’re a foreign buyer evaluating a branded residence in Southeast Asia, you’re likely comparing four destinations: Vietnam, Bali, Phuket, and Penang. Each market has a distinct ownership framework, risk profile,…", "c": "So Sánh", "k": "So Sánh · Phuket", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/vietnam-vs-bali-vs-phuket-vs-penang-a-2026-branded-residence-comparison-for-foreign-buyers-cover-e6057-1024x576.jpg"}, {"id": 997, "d": "2026-05-16", "u": "https://blog.nomadassetcollective.com/goc-nhin-nac-tu-duy-chien-luoc-cho-hnwis-viet-trong-hanh-trinh-dam-bao-nghia-vu-thue/", "t": "Góc Nhìn NAC: Tư Duy Chiến Lược Cho HNWIs Việt Trong Hành Trình Đảm Bảo Nghĩa Vụ Thuế", "en": "", "x": "NAC quan sát một nghịch lý: nhiều nhà đầu tư Việt tốn hợp hướng nghìn giờ để tối ưu return của danh mục đầu tư — nhưng không dành một giờ nào để suy nghĩ về cấu trúc thuế. Với HNWI có tài sản trên $5 triệu USD, thiếu…", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Hnwis việt", "m": 4, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/goc-nhin-nac-tu-duy-chien-luoc-cho-hnwis-viet-trong-hanh-trinh-dam-bao-nghia-vu-thue-cover-108c1-1024x561.jpeg"}, {"id": 992, "d": "2026-05-15", "u": "https://blog.nomadassetcollective.com/infographic-so-sanh-toan-dien-5-chuong-trinh-ho-chieu-caribbean-2026-chi-phi-thoi-gian-va-quyen-loi-chi-tiet-cho-nha-dau-tu-viet-nam/", "t": "Infographic: So Sánh Toàn Diện 5 Chương Trình Hộ Chiếu Caribbean 2026 — Chi Phí, Thời Gian Và Quyền Lợi Chi Tiết Cho Nhà Đầu Tư Việt Nam", "en": "", "x": "Caribbean là khu vực duy nhất trên thế giới nơi 5 quốc gia độc lập đang vận hành chương trình Citizenship by Investment (CBI) được quốc tế công nhận. Các chương trình này cho phép nhà đầu tư và gia đình nhận quốc tịch…", "c": "Infographic", "k": "Infographic · Chương trình", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/infographic-so-sanh-toan-dien-5-chuong-trinh-ho-chieu-caribbean-2026-chi-phi-thoi-gian-va-quyen-loi-chi-tiet-cho-nha-dau-tu-viet-nam-cover-fcdd1-819x1024.jpg"}, {"id": 990, "d": "2026-05-15", "u": "https://blog.nomadassetcollective.com/phan-tich-chi-phi-an-cua-cac-chuong-trinh-dau-tu-di-tru-ma-it-agency-noi-den/", "t": "Phân Tích: Chi Phí Ẩn Của Các Chương Trình Đầu Tư Di Trú Mà Ít Agency Nói Đến", "en": "", "x": "Khi nhà đầu tư Việt nhìn vào bảo giá của agency, họ thấy một con số đầu tư lớn và một câu “đủ điều kiện visa”. Những gì họ không thấy là toàn bộ lớp chi phí ẩn bắt đầu chảy ra ngay sau khi ký hợp đồng — và tiếp tục…", "c": "Phân Tích", "k": "Phân Tích · Chi phí", "m": 3, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/phan-tich-chi-phi-an-cua-cac-chuong-trinh-dau-tu-di-tru-ma-it-agency-noi-den-cover-1ed21-1024x683.jpeg"}, {"id": 946, "d": "2026-05-14", "u": "https://blog.nomadassetcollective.com/cap-nhat-2026-bo-dao-nha-golden-visa-nhung-thay-doi-quan-trong-nha-dau-tu-viet-can-biet/", "t": "Cập Nhật 2026: Bồ Đào Nha Golden Visa — Những Thay Đổi Quan Trọng Nhà Đầu Tư Việt Cần Biết", "en": "", "x": "Bồ Đào Nha Golden Visa năm 2026 không còn là chương trình “bất động sản cho người nước ngoài” mà nhiều nhà đầu tư Việt đã biết từ 2018-2022. Sau cải cách lớn nhất từ trước đến nay vào năm 2023, chương trình đã chuyển…", "c": "Cập Nhật", "k": "Cập Nhật · Bồ đào nha", "m": 3, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/cap-nhat-2026-bo-dao-nha-golden-visa-nhung-thay-doi-quan-trong-nha-dau-tu-viet-can-biet-cover-bc274-683x1024.jpeg"}, {"id": 944, "d": "2026-05-13", "u": "https://blog.nomadassetcollective.com/goc-nhin-nac-5-sai-lam-pho-bien-cua-nha-dau-tu-viet-khi-chon-chuong-trinh-ho-chieu-thu-hai-va-cach-tranh/", "t": "Góc Nhìn NAC: 5 Sai Lầm Phổ Biến Của Nhà Đầu Tư Việt Khi Chọn Chương Trình Hộ Chiếu Thứ Hai — Và Cách Tránh", "en": "", "x": "Sau hơn một thập kỷ tư vấn di trú đầu tư cho hàng nghìn nhà đầu tư Việt Nam, đội ngũ NAC đã nhận diện một số mẫu sai lầm lặp đi lặp lại — dẫn đến việc khách hàng chọn nhầm chương trình, mất tiền phí không cần thiết,…", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Sai lầm", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/goc-nhin-nac-5-sai-lam-pho-bien-cua-nha-dau-tu-viet-khi-chon-chuong-trinh-ho-chieu-thu-hai-va-cach-tranh-cover-58750-1024x684.jpg"}, {"id": 942, "d": "2026-05-13", "u": "https://blog.nomadassetcollective.com/cap-nhat-2026-tho-nhi-ky-cbi-co-thuc-su-sap-tang-nguong/", "t": "Cập Nhật 2026: Thổ Nhĩ Kỳ CBI — Có Thực Sự Sắp Tăng Ngưỡng?", "en": "", "x": "Từ cuối 2024, một làn sóng tin đồn lan trên các diễn đàn đầu tư di trú: Thổ Nhĩ Kỳ sắp tăng ngưỡng đầu tư CBI từ $400,000 lên $600,000. Các agency sử dụng thông tin này để tạo urgency bán hàng. Thực tế năm 2026: ngưỡng…", "c": "Cập Nhật", "k": "Cập Nhật · Thổ nhĩ kỳ", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/cap-nhat-2026-tho-nhi-ky-cbi-co-thuc-su-sap-tang-nguong-cover-fea86-1024x678.jpeg"}, {"id": 940, "d": "2026-05-12", "u": "https://blog.nomadassetcollective.com/goc-nhin-nac-passport-portfolio-chien-luoc-dau-tu-cua-thap-ky-toi-cho-hnwis-viet/", "t": "Góc Nhìn NAC: Passport Portfolio — Chiến Lược Đầu Tư Của Thập Kỷ Tới Cho HNWIs Việt", "en": "", "x": "Trước giờ, quyền lợi được tự do đi lại, sống ở đâu, kinh doanh nơi nào, đã được những nhóm entreneur ưu tiên hàng đầu : không còn là một hộ chiếu duy nhất mà là portfolio hộ chiếu — giống như bạn không để toàn bộ tài…", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Passport portfolio", "m": 4, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/couple-walking-arm-in-arm-away-from-one-part-of-the-vistajet-fleet-1024x683.webp"}, {"id": 938, "d": "2026-05-12", "u": "https://blog.nomadassetcollective.com/phu-quoc-branded-resort-villas-2026-phan-tich-3-lop-nguoi-mua-nguoi-viet-viet-kieu-va-nguoi-nuoc-ngoai/", "t": "Phú Quốc Branded Resort Villas 2026: Phân Tích 3 Lớp Người Mua — Người Việt, Việt Kiều Và Người Nước Ngoài", "en": "", "x": "Phú Quốc năm 2026 đứng trước một ngưỡng cỪa mới: dòng vốn quốc tế đang chảy mạnh vào phân khúc branded resort villas, nhưng bản đồ người mua đang phân lới theo ba lớp rõ ràng — mỗi lớp với mức độ tiếp cận, quyền sở hữu…", "c": "Phân Tích", "k": "Phân Tích · Phú quốc", "m": 3, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/phu-quoc-branded-resort-villas-2026-phan-tich-3-lop-nguoi-mua-nguoi-viet-viet-kieu-va-nguoi-nuoc-ngoai-cover-e98f0-1024x680.jpeg"}, {"id": 935, "d": "2026-05-11", "u": "https://blog.nomadassetcollective.com/infographic-top-10-ho-chieu-manh-nhat-ma-nha-dau-tu-viet-co-the-dat-duoc-qua-dau-tu-2026/", "t": "Infographic: Top 10 Hộ Chiếu Mạnh Nhất Mà Nhà Đầu Tư Việt Có Thể Đạt Được Qua Đầu Tư 2026", "en": "", "x": "Hộ chiếu Việt Nam hiện xếp hạng 87 trên thế giới với 56 quốc gia miễn thị thực. Điều này tạo ra rào cản lớn cho doanh nhân và gia đình Việt Nam muốn di chuyển toàn cầu nhanh chóng. Trong bài Infographic này, NAC tổng…", "c": "Infographic", "k": "Infographic · Hộ chiếu", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/infographic-top-10-ho-chieu-manh-nhat-ma-nha-dau-tu-viet-co-the-dat-duoc-qua-dau-tu-2026-cover-05681-1024x809.jpg"}, {"id": 932, "d": "2026-05-10", "u": "https://blog.nomadassetcollective.com/infographic-so-sanh-chi-phi-sinh-hoat-6-diem-den-dau-tu-pho-bien-2026-danh-cho-nha-dau-tu-viet-nam-chuan-bi-tai-dinh-cu/", "t": "Infographic: So Sánh Chi Phí Sinh Hoạt 6 Điểm Đến Đầu Tư Phổ Biến 2026 — Dành Cho Nhà Đầu Tư Việt Nam Chuẩn Bị Tái Định Cư", "en": "", "x": "Một trong những sai lầm phổ biến nhất của nhà đầu tư Việt Nam khi chọn chương trình đầu tư di trú là chỉ tập trung vào ngưỡng đầu tư mà bỏ qua chi phí sinh hoạt lâu dài. Một chương trình có ngưỡng đầu tư thấp đi kèm chi…", "c": "Infographic", "k": "Infographic · Chi phí", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/infographic-so-sanh-chi-phi-sinh-hoat-6-diem-den-dau-tu-pho-bien-2026-danh-cho-nha-dau-tu-viet-nam-chuan-bi-tai-dinh-cu-cover-ecf48-1024x588.jpg"}, {"id": 920, "d": "2026-05-07", "u": "https://blog.nomadassetcollective.com/da-nang-resort-wellness-property-2026-co-hoi-dau-tu-cho-nguoi-nuoc-ngoai-va-viet-kieu-phan-tich/", "t": "Đà Nẵng Resort Wellness Property 2026: Cơ Hội Đầu Tư Cho Người Nước Ngoài Và Việt Kiều [Phân Tích]", "en": "", "x": "Năm 2026, Đà Nẵng không còn chỉ là thành phố du lịch biển. Khi Đà Nẵng Free Trade Zone được công bố cùng với việc mở rộng cảng Liên Chiểu được NNVN xúc tiến làm ưu tiên đất nước – đã biến nơi đây thành trung tâm thương…", "c": "Phân Tích", "k": "Phân Tích · Đà nẵng", "m": 3, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/da-nang-resort-wellness-property-2026-co-hoi-dau-tu-cho-nguoi-nuoc-ngoai-va-viet-kieu-phan-tich-cover-a4c4e-1024x575.jpeg"}, {"id": 918, "d": "2026-05-07", "u": "https://blog.nomadassetcollective.com/mua-branded-residence-tai-viet-nam-so-sanh-toan-dien-giua-3-nhom-nguoi-viet-viet-kieu-va-nguoi-nuoc-ngoai-infographic/", "t": "Mua Branded Residence Tại Việt Nam: So Sánh Toàn Diện Giữa 3 Nhóm — Người Việt, Việt Kiều Và Người Nước Ngoài [Infographic]", "en": "", "x": "Bất động sản Việt Nam đang được ba nhóm khách hàng tiếp cận theo ba góc độ hoàn toàn khác nhau. Cùng một tòa branded residence, nhưng quyền sở hữu, cấu trúc thuế, tiếm năng exit và chiến lược tương lai đều phân lớp rõ…", "c": "So Sánh", "k": "So Sánh · Việt nam", "m": 3, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/branded.webp"}, {"id": 917, "d": "2026-05-07", "u": "https://blog.nomadassetcollective.com/top-8-quoc-gia-thu-hut-nhieu-trieu-phu-nhat-the-gioi/", "t": "Top 8 Quốc Gia Thu Hút Nhiều Triệu Phú Nhất Thế Giới 2025", "en": "", "x": "Tiêu đề: Top 8 Điểm Đến Thu Hút Triệu Phú Nhất 2025 (Net HNWI Inflow)", "c": "Infographic", "k": "Infographic · Triệu phú", "m": 2, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/hnw.jpg"}, {"id": 915, "d": "2026-05-07", "u": "https://blog.nomadassetcollective.com/branded-residences-as-family-wealth-the-multi-generational-case-for-southeast-asia-luxury-property/", "t": "Branded Residences as Family Wealth: The Multi-Generational Case for Southeast Asia Luxury Property", "en": "", "x": "Families who have been deliberate about building wealth across generations share a common insight: the most durable assets are not purely financial. A property that serves as a family gathering point — a summer home…", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Branded residence", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/branded-residences-as-family-wealth-the-multi-generational-case-for-southeast-asia-luxury-property-cover-ebbb5.webp"}, {"id": 866, "d": "2026-05-04", "u": "https://blog.nomadassetcollective.com/phan-tich-bds-lisbon-porto-2026-chi-phi-thuc-te-va-co-hoi-cu-tru-d7-cho-nha-dau-tu-viet/", "t": "Phân Tích BĐS Lisbon & Porto 2026: Chi Phí Thực Tế Và Cơ Hội Cư Trú D7 Cho Nhà Đầu Tư Việt", "en": "", "x": "Bồ Đào Nha đã đóng cửa Golden Visa đối với đầu tư BĐS nhà ở từ tháng 10/2023 — nhưng thị trường bất động sản nước này vẫn hấp dẫn hơn bao giờ hết. Đây là nghịch lý thú vị: visa không còn, nhưng lý do đầu tư BĐS lại mạnh…", "c": "Phân Tích", "k": "Phân Tích · Chi phí", "m": 3, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/phan-tich-bds-lisbon-porto-2026-chi-phi-thuc-te-va-co-hoi-cu-tru-d7-cho-nha-dau-tu-viet-cover-e28ec-1024x512.jpg"}, {"id": 839, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/%f0%9f%a7%ae-so-sanh-thue-2026-uae-0-vs-phuong-tay-tai-sao-nha-dau-tu-chon-tai-dinh-cu-vi-thue/", "t": "🧮 So Sánh Thuế 2026: UAE 0% vs Phương Tây — Tại Sao Nhà Đầu Tư Chọn Tái Định Cư Vì Thuế", "en": "", "x": "Tiêu đề: So Sánh Thuế Cho Nhà Đầu Tư Cá Nhân Tại Các Điểm Đến Cư Trú Phổ Biến 2026", "c": "So Sánh", "k": "So Sánh", "m": 2, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/NAC_Website_CTO-Cover-2-1024x683.jpg"}, {"id": 836, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/so-sanh-spain-golden-visa-vs-bo-dao-nha-d7-visa-2026-hai-chien-luoc-dinh-cu-nam-au-dau-phu-hop-voi-nha-dau-tu-viet-nam/", "t": "So Sánh Spain Golden Visa vs Bồ Đào Nha D7 Visa 2026: Hai Chiến Lược Định Cư Nam Âu — Đâu Phù Hợp Với Nhà Đầu Tư Việt Nam?", "en": "", "x": "Trường hợp 1: Bạn là chủ doanh nghiệp bận rộn (Chọn Tây Ban Nha)", "c": "So Sánh", "k": "So Sánh · Bồ đào nha", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/NAC_Website_CTO-Cover-1024x683.jpg"}, {"id": 773, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/phan-tich-chien-luoc-dau-tu-quy-tai-cyprus-pr-2026-toi-uu-von-va-quyen-loi-cu-tru-eu-cho-nha-dau-tu-viet-nam/", "t": "Phân Tích Chiến Lược Đầu Tư Quỹ Tại Cyprus (PR) 2026 – Tối Ưu Vốn Và Quyền Lợi Cư Trú EU Cho Nhà Đầu Tư Việt Nam", "en": "", "x": "Cyprus Permanent Residency (PR) theo Category F thông qua đầu tư bất động sản €300.000 là lộ trình cư trú EU được nhận diện nhiều nhất. Song ít người biết rằng Cyprus cũng cho phép đưa các công cụ tài chính và quỹ đầu…", "c": "Phân Tích", "k": "Phân Tích · Đầu tư", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/phan-tich-chien-luoc-dau-tu-quy-tai-cyprus-pr-2026-toi-uu-von-va-quyen-loi-cu-tru-eu-cho-nha-dau-tu-viet-nam-cover-8238d-1024x683.jpg"}, {"id": 769, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/the-time-share-economics-of-vietnams-luxury-branded-residences-what-the-brochure-doesnt-show-you/", "t": "The Time-Share Economics of Vietnam's Luxury Branded Residences: What the Brochure Doesn't Show You", "en": "", "x": "The pitch is compelling: own a branded residence in Vietnam, use it for your family’s summer holiday, and let the hotel manage the rental income while you’re away. The brochure says 10% annual yield. Your financial…", "c": "Phân Tích", "k": "Phân Tích · Branded residence", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/the-time-share-economics-of-vietnams-luxury-branded-residences-what-the-brochure-doesnt-show-you-cover-d7f98.jpg"}, {"id": 767, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/the-emerging-market-premium-why-vietnams-branded-residence-coast-is-where-bali-was-in-2010/", "t": "The Emerging Market Premium: Why Vietnam's Branded Residence Coast Is Where Bali Was in 2010", "en": "", "x": "In 2010, a 3-bedroom villa in Seminyak, Bali — managed by a recognised brand and yielding a credible rental income — could be acquired for approximately $300,000–400,000. By 2025, comparable product in the same corridor…", "c": "Phân Tích", "k": "Phân Tích · Emerging market", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/the-emerging-market-premium-why-vietnams-branded-residence-coast-is-where-bali-was-in-2010-cover-e6057-1024x576.jpg"}, {"id": 765, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/du-hoc-chau-au-cho-con-nha-dau-tu-khi-500000-eur-dau-tu-tiet-kiem-duoc-300000-usd-hoc-phi/", "t": "Du Học Châu Âu Cho Con Nhà Đầu Tư: Khi 500,000 EUR Đầu Tư Tiết Kiệm Được 300,000 USD Học Phí", "en": "", "x": "Nhiều gia đình đầu tư Việt Nam chi hàng trăm nghìn USD cho con học tại Mỹ hoặc Anh — nhưng ít ai biết rằng một quyết định định cư đúng đắn tại Châu Âu có thể tiết kiệm toàn bộ khoản chi phí đó, trong khi vẫn đảm bảo…", "c": "Phân Tích", "k": "Phân Tích · Đầu tư", "m": 7, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/du-hoc-chau-au-cho-con-nha-dau-tu-khi-500000-eur-dau-tu-tiet-kiem-duoc-300000-usd-hoc-phi-cover-dd46b-1024x683.jpg"}, {"id": 763, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/chuong-trinh-overview-greece-golden-visa-2026-huong-dan-toan-dien-cho-nha-dau-tu-viet-nam/", "t": "Chương Trình Overview: Greece Golden Visa 2026 — Hướng Dẫn Toàn Diện Cho Nhà Đầu Tư Việt Nam", "en": "", "x": "Hy Lạp là một trong những chương trình Golden Visa có điều kiện đầu vào thấp nhất trong EU — trong khi cung cấp quyền tự do di chuyển toàn Schengen và cơ hội quốc tịch EU dài hạn.", "c": "Chương Trình Overview", "k": "Chương Trình Overview", "m": 11, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/3-1024x683.jpg"}, {"id": 761, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/tho-nhi-ky-cbi-quoc-tich-thay-doi-nguong-dau-tu-va-co-hoi-moi-cho-nha-dau-tu-viet-nam/", "t": "Thổ Nhĩ Kỳ (CBI) Quốc Tịch: Thay Đổi Ngưỡng Đầu Tư Và Cơ Hội Mới Cho Nhà Đầu Tư Việt Nam", "en": "", "x": "Chương trình Quốc Tịch Thổ Nhĩ Kỳ Qua Đầu Tư (Turkish Citizenship by Investment — CBI) được ra mắt từ năm 2017 và đã nhanh chóng trở thành một trong những chương trình được nộp hồ sơ nhiều nhất toàn cầu. Tính đến hết…", "c": "Chương Trình Overview", "k": "Chương Trình Overview · Thổ nhĩ kỳ", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/15-1024x683.jpg"}, {"id": 759, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/cap-nhat-antigua-barbuda-cbi-q2-2026-chinh-sach-moi-muc-phi-dieu-chinh-va-co-hoi-ho-chieu-caribbean-cho-nha-dau-tu-viet-nam/", "t": "Cập Nhật Antigua & Barbuda CBI Q2 2026: Chính Sách Mới, Mức Phí Điều Chỉnh Và Cơ Hội Hộ Chiếu Caribbean Cho Nhà Đầu Tư Việt Nam", "en": "", "x": "Chương trình CBI của Antigua & Barbuda ra mắt năm 2013 và hiện là một trong những chương trình được cấp phép nhanh và có chi phí thấp nhất trong 5 chương trình Caribbean. Hộ chiếu Antigua & Barbuda mở cửa 150+ quốc gia…", "c": "Cập Nhật", "k": "Cập Nhật · Antigua & barbuda", "m": 3, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/cap-nhat-antigua-barbuda-cbi-q2-2026-chinh-sach-moi-muc-phi-dieu-chinh-va-co-hoi-ho-chieu-caribbean-cho-nha-dau-tu-viet-nam-cover-ddeab-1024x616.jpg"}, {"id": 756, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/goc-nhin-nac-chien-luoc-3-ho-chieu-2026-xay-dung-danh-muc-quoc-tich-va-cu-tru-da-quoc-gia-cho-nha-dau-tu-viet-nam/", "t": "Góc Nhìn NAC: Chiến Lược 3 Hộ Chiếu 2026 — Xây Dựng Danh Mục Quốc Tịch Và Cư Trú Đa Quốc Gia Cho Nhà Đầu Tư Việt Nam", "en": "", "x": "Trong năm 2026, thế giới đang biến động theo những cách không có trong lịch sử hệ thống đa phương. Nhà đầu tư có tầm nhìn trên toàn cầu đang dần nhận ra một sự thật phụ: chỉ sở hữu một quốc tịch dựa trên đất đai xuất xư…", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Hộ chiếu", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/04/goc-nhin-nac-chien-luoc-3-ho-chieu-2026-xay-dung-danh-muc-quoc-tich-va-cu-tru-da-quoc-gia-cho-nha-dau-tu-viet-nam-cover-58750-1024x684.jpg"}, {"id": 751, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/goc-nhin-nac-chien-luoc-thua-ke-tai-san-quoc-te-cho-nha-dau-tu-viet-nam-co-tai-san-da-quoc-gia/", "t": "Góc Nhìn NAC: Chiến Lược Thừa Kế Tài Sản Quốc Tế Cho Nhà Đầu Tư Việt Nam Có Tài Sản Đa Quốc Gia", "en": "", "x": "Chúng tôi đã tư vấn và đồng hành cùng hàng trăm nhà đầu tư Việt Nam hoàn tất các chương trình đầu tư di trú. Và trong hầu hết các cuộc tư vấn, một chủ đề hiếm khi được khởi xướng chủ động từ phía khách hàng nhưng lại…", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Thừa kế", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/goc-nhin-nac-chien-luoc-thua-ke-tai-san-quoc-te-cho-nha-dau-tu-viet-nam-co-tai-san-da-quoc-gia-cover-42319-1024x512.jpg"}, {"id": 749, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/cap-nhat-hungary-guest-investor-visa-q2-2026-chinh-sach-moi-va-co-hoi-bat-dong-san-budapest-cho-nha-dau-tu-viet/", "t": "Cập Nhật Hungary Guest Investor Visa Q2 2026: Chính Sách Mới Và Cơ Hội Bất Động Sản Budapest Cho Nhà Đầu Tư Việt", "en": "", "x": "Hungary ra mắt chương trình Guest Investor Visa (GIV) vào ngày 1/7/2024, đánh dấu sự trở lại của một chương trình đầu tư di trú tại quốc gia EU Trung Âu sau khi chương trình trước đó bị đóng cửa năm 2017. Đến Quý…", "c": "Cập Nhật", "k": "Cập Nhật · Guest investor visa", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/cap-nhat-hungary-guest-investor-visa-q2-2026-chinh-sach-moi-va-co-hoi-bat-dong-san-budapest-cho-nha-dau-tu-viet-cover-e10ce-1024x684.jpg"}, {"id": 746, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/bat-dong-san-port-vila-2026-chi-phi-sinh-hoat-dau-tu-va-chuong-trinh-dsp-tai-vanuatu-infographic/", "t": "Bất Động Sản Port Vila 2026: Chi Phí Sinh Hoạt, Đầu Tư Và Chương Trình DSP Tại Vanuatu [Infographic]", "en": "", "x": "Port Vila — thủ đô của Vanuatu trên đảo Efate — là trung tâm kinh doanh, dịch vụ và bất động sản chủ yếu của quốc đảo này. Mặc dù quy mô nhỏ, thị trường bất động sản tại Port Vila đang tăng trưởng nhờ luồng vốn từ các…", "c": "Infographic", "k": "Infographic · Bất động sản", "m": 3, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/antigua-vs-grenada-2026-so-sanh-hai-chuong-trinh-cbi-caribbean-hang-dau-dau-la-lua-chon-tot-hon-cho-nha-dau-tu-viet-cover-27899-1024x681.jpg"}, {"id": 742, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/cap-nhat-hy-lap-golden-visa-q2-2026-nguong-dau-tu-moi-va-nhung-thay-doi-quan-trong-nha-dau-tu-viet-nam-can-biet/", "t": "Cập Nhật Hy Lạp Golden Visa Q2 2026: Ngưỡng Đầu Tư Mới Và Những Thay Đổi Quan Trọng Nhà Đầu Tư Việt Nam Cần Biết", "en": "", "x": "Hy Lạp Golden Visa từ lâu là một trong những chương trình cư trú đầu tư được nhà đầu tư Việt Nam ưa chuộng nhất tại châu Âu nhờ ngưỡng đầu tư linh hoạt và khả năng đi lại tự do trong toàn bộ khu vực Schengen gồm 26 quốc…", "c": "Cập Nhật", "k": "Cập Nhật · Hy lạp", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/cap-nhat-hy-lap-golden-visa-q2-2026-nguong-dau-tu-moi-va-nhung-thay-doi-quan-trong-nha-dau-tu-viet-nam-can-biet-cover-a76ca-1024x683.jpg"}, {"id": 740, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/bat-dong-san-toronto-vancouver-2026-so-sanh-gia-cho-nha-dau-tu-start-up-visa-infographic/", "t": "Bất Động Sản Vancouver & Toronto 2026: So Sánh Giá Cho Nhà Đầu Tư Start-Up Visa [Infographic]", "en": "", "x": "Cập nhật thêm: Bạn nên lưu ý rằng từ giữa năm 2024, Canada đã áp dụng mức thuế mới cho phần lợi nhuận trên $250,000 (với cá nhân), mức tính thuế sẽ tăng từ 50% lên 66.7%. Điều này cần được tính toán kỹ nếu bạn có ý định…", "c": "So Sánh", "k": "So Sánh · So sánh giá", "m": 3, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/21-1024x683.jpg"}, {"id": 738, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/antigua-vs-grenada-2026-so-sanh-hai-chuong-trinh-cbi-caribbean-hang-dau-dau-la-lua-chon-tot-hon-cho-nha-dau-tu-viet/", "t": "Antigua vs Grenada 2026: So Sánh Hai Chương Trình CBI Caribbean Hàng Đầu — Đâu Là Lựa Chọn Tốt Hơn Cho Nhà Đầu Tư Việt?", "en": "", "x": "Ưu tiên chi phí & Giáo dục: Chọn Antigua & Barbuda.", "c": "So Sánh", "k": "So Sánh · Chương trình", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/20-1024x683.jpg"}, {"id": 736, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/new-zealand-active-investor-plus-vs-canada-start-up-visa-2026-so-sanh-hai-lo-trinh-di-tru-anh-ngu-hang-dau/", "t": "New Zealand Active Investor Plus vs Canada Start-Up Visa 2026: So Sánh Hai Lộ Trình Di Trú Anh Ngữ Hàng Đầu", "en": "", "x": "Hai trong số các chương trình di trú đầu tư được nhà đầu tư Việt Nam quan tâm nhất trong năm 2026 là New Zealand Active Investor Plus Visa và Canada Start-Up Visa. Cả hai đều mở ra cánh cửa đến các quốc gia nói tiếng…", "c": "So Sánh", "k": "So Sánh · New zealand", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/NAC_Website_CTO-Cover-1-1024x683.jpg"}, {"id": 734, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/panama-friendly-nations-visa-pensionado-2026-phan-tich-chi-tiet-cho-nha-dau-tu-viet-nam/", "t": "Panama Friendly Nations Visa & Pensionado 2026: Phân Tích Chi Tiết Cho Nhà Đầu Tư Việt Nam", "en": "", "x": "Panama từ lâu đã được biết đến như một trung tâm tài chính quốc tế với hệ thống ngân hàng bảo mật và nền kinh tế đô-la hóa. Tuy nhiên, trong vài năm gần đây, Panama nổi lên như một lựa chọn di trú đầu tư hấp dẫn nhờ vào…", "c": "Phân Tích", "k": "Phân Tích · Friendly nations visa", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/panama-friendly-nations-visa-pensionado-2026-phan-tich-chi-tiet-cho-nha-dau-tu-viet-nam-cover-5f0f5-1024x681.jpg"}, {"id": 730, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/goc-nhin-nac-xu-huong-dau-tu-di-tru-2026-vi-sao-nha-dau-tu-viet-dang-chu-y-den-thai-binh-duong/", "t": "Góc Nhìn NAC: Xu Hướng Đầu Tư Di Trú 2026 — Vì Sao Nhà Đầu Tư Việt Đang Chú Ý Đến Thái Bình Dương", "en": "", "x": "Khi nhìn lại các cuộc tư vấn trong 12 tháng gần đây, đội ngũ NAC nhận ra một sự thay đổi rõ rệt trong danh mục địa lý mà nhà đầu tư Việt Nam hỏi đến: bên cạnh những tên quen thuộc như Hy Lạp, Thiếu Bương Nà, Bồ Đào Nha,…", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Đầu tư", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/goc-nhin-nac-xu-huong-dau-tu-di-tru-2026-vi-sao-nha-dau-tu-viet-dang-chu-y-den-thai-binh-duong-cover-56d1f-1024x512.jpg"}, {"id": 726, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/cap-nhat-italy-investor-visa-q2-2026-thay-doi-chinh-sach-va-co-hoi-moi-cho-nha-dau-tu-viet-nam/", "t": "Cập Nhật Italy Investor Visa Q2 2026: Thay Đổi Chính Sách Và Cơ Hội Mới Cho Nhà Đầu Tư Việt Nam", "en": "", "x": "Chương trình Investor Visa Italy (Visto per Investitori) ra mắt từ 2017 nhưng chỉ được thiết kế lại và đưa vào vận hành ổn định trong giai đoạn 2024–2025. Đến Quý 2 năm 2026, cầu phí hành chính, quy trình phê duyệt và…", "c": "Cập Nhật", "k": "Cập Nhật · Investor visa", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/cap-nhat-italy-investor-visa-q2-2026-thay-doi-chinh-sach-va-co-hoi-moi-cho-nha-dau-tu-viet-nam-cover-14af5-1024x678.jpg"}, {"id": 723, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/malta-vs-cyprus-2026-so-sanh-hai-con-duong-cu-tru-dia-trung-hai-quoc-tich-eu-vs-thuong-tru-chien-luoc/", "t": "Cyprus vs. Malta 2026: So Sánh Hai Con Đường Cư Trú Địa Trung Hải — Quốc Tịch EU vs Thường Trú Chiến Lược", "en": "", "x": "Malta và Cyprus — hai hạt ngọc Địa Trung Hải, cả hai đều là thành viên EU, cả hai đều đang thu hút nhà đầu tư quốc tế. Nhưng khi đi vào chi tiết, đây là hai sản phẩm hoàn toàn khác nhau về mục tiêu, chi phí, và kết quả…", "c": "So Sánh", "k": "So Sánh · Cư trú", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/17-1024x683.jpg"}, {"id": 721, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/nauru-cbi-2026-phan-tich-chuong-trinh-quoc-tich-dau-tu-nho-nhat-the-gioi-co-hoi-thuc-te-hay-chi-la-ho-chieu-thu-hai/", "t": "Nauru CBI 2026: Phân Tích Chương Trình Quốc Tịch Đầu Tư Nhỏ Nhất Thế Giới — Cơ Hội Thực Tế Hay Chỉ Là Hộ Chiếu Thứ Hai?", "en": "", "x": "Nauru là quốc gia cộng hòa nhỏ nhất thế giới, nằm giữa Thái Bình Dương với diện tích chỉ 21 km² và dân số khoảng 10.000 người. Không được biết đến rộng rãi trong cộng đồng đầu tư di trú, Nauru đã âm thầm triển khai một…", "c": "Phân Tích", "k": "Phân Tích · Chương trình", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/nauru-cbi-2026-phan-tich-chuong-trinh-quoc-tich-dau-tu-nho-nhat-the-gioi-co-hoi-thuc-te-hay-chi-la-ho-chieu-thu-hai-cover-8676b-683x1024.jpg"}, {"id": 719, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/bat-dong-san-limassol-nicosia-2026-phan-tich-gia-theo-khu-vuc-cho-nha-dau-tu-tai-cyprus/", "t": "Bất Động Sản Limassol & Nicosia 2026: Phân Tích Giá Theo Khu Vực Cho Nhà Đầu Tư Tại Cyprus", "en": "", "x": "Cyprus — đảo quốc Địa Trung Hải với nền kinh tế dịch vụ và du lịch phát triển — tiếp tục là điểm đến đầu tư bất động sản hấp dẫn của khu vực EU năm 2026. Dù chương trình Quốc Tịch Đầu Tư (CIP) của Cyprus đã bị đóng từ…", "c": "Infographic", "k": "Infographic · Bất động sản", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/bat-dong-san-limassol-nicosia-2026-phan-tich-gia-theo-khu-vuc-cho-nha-dau-tu-tai-cyprus-cover-36d76-1024x683.jpg"}, {"id": 717, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/malaysia-mm2h-vs-new-zealand-active-investor-plus-2026-hai-con-duong-thuong-tru-chau-a-thai-binh-duong-danh-cho-nha-dau-tu-viet-nam/", "t": "Malaysia MM2H vs New Zealand Active Investor Plus 2026: Hai Con Đường Thường Trú Châu Á-Thái Bình Dương Dành Cho Nhà Đầu Tư Việt Nam", "en": "", "x": "Khi đặt câu hỏi về các chương trình thường trú tại khu vực châu Á-Thái Bình Dương, nhà đầu tư Việt Nam thường so sánh hai tên tuổi nổi bật: Malaysia My Second Home (MM2H) và New Zealand Active Investor Plus Visa. Cả hai…", "c": "So Sánh", "k": "So Sánh · New zealand", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/19-1024x683.jpg"}, {"id": 716, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/goc-nhin-nac-7-cau-hoi-nha-dau-tu-viet-nam-can-tu-hoi-truoc-khi-chon-chuong-trinh-di-tru/", "t": "Góc Nhìn NAC: 7 Câu Hỏi Nhà Đầu Tư Việt Nam Cần Tự Hỏi Trước Khi Chọn Chương Trình Di Trú", "en": "", "x": "Sau hơn một thập kỷ tư vấn di trú đầu tư cho nhà đầu tư Việt Nam, đội ngũ NAC nhận thấy một mẫu hình rõ ràng: những người đưa ra quyết định tốt nhất đều bắt đầu bằng cách trả lời được một số câu hỏi cốt lõi trước khi…", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Câu hỏi", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/04/goc-nhin-nac-7-cau-hoi-nha-dau-tu-viet-nam-can-tu-hoi-truoc-khi-chon-chuong-trinh-di-tru-cover-58750-1024x512.jpg"}, {"id": 715, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/vanuatu-dsp-2026-ho-chieu-thai-binh-duong-qua-dau-tu-chuong-trinh-quoc-tich-nhanh-nhat-the-gioi/", "t": "Vanuatu DSP 2026: Hộ Chiếu Thái Bình Dương Qua Đầu Tư — Chương Trình Quốc Tịch Nhanh Nhất Thế Giới", "en": "", "x": "Vanuatu — quần đảo nằm ở Nam Thái Bình Dương với dân số hơn 300.000 người — đang trở thành điểm đến được cộng đồng nhà đầu tư di trú quốc tế nhắc đến ngày càng nhiều. Lý do nằm ở Chương Trình Hỗ Trợ Phát Triển…", "c": "Chương Trình Overview", "k": "Chương Trình Overview · Hộ chiếu", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/4-1024x683.jpg"}, {"id": 713, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/bo-dao-nha-d7-visa-2026-thuong-tru-eu-danh-cho-nguoi-co-thu-nhap-thu-dong-cap-nhat-dieu-kien-va-co-hoi/", "t": "Bồ Đào Nha D7 Visa 2026: Thường Trú EU Dành Cho Người Có Thu Nhập Thụ Động — Cập Nhật Điều Kiện Và Cơ Hội", "en": "", "x": "Trong khi Golden Visa Bồ Đào Nha đã trải qua nhiều thay đổi lớn, một chương trình khác của nước này vẫn đứng vững và ngày càng thu hút sự quan tâm: D7 Passive Income Visa — con đường thường trú EU không yêu cầu vốn đầu…", "c": "Cập Nhật", "k": "Cập Nhật · Bồ đào nha", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/bo-dao-nha-d7-visa-2026-thuong-tru-eu-danh-cho-nguoi-co-thu-nhap-thu-dong-cap-nhat-dieu-kien-va-co-hoi-cover-3c571-1024x683.jpg"}, {"id": 711, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/case-study-nu-doanh-nhan-viet-va-hanh-trinh-canada-start-up-visa-tu-startup-ha-noi-den-pr-canada-trong-3-nam/", "t": "Case Study: Nữ Doanh Nhân Việt Và Hành Trình Canada Start-Up Visa — Từ Startup Hà Nội Đến PR Canada Trong 3 Năm", "en": "", "x": "Lưu ý: Case study này dựa trên tổng hợp từ nhiều khách hàng thực tế. Thông tin nhận dạng đã được thay đổi để bảo mật riêng tư.", "c": "Case Study", "k": "Case Study · Hành trình", "m": 6, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/case-study-nu-doanh-nhan-viet-va-hanh-trinh-canada-start-up-visa-tu-startup-ha-noi-den-pr-canada-trong-3-nam-cover-244db-819x1024.jpg"}, {"id": 710, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/goc-nhin-nac-tai-sao-da-quoc-tich-va-da-thuong-tru-la-chien-luoc-bao-ve-tai-san-cho-giai-doan-nuoc-nha-tang-toc-cho-nha-dau-tu-viet-nam/", "t": "Góc Nhìn NAC: Tại Sao Đa Quốc Tịch Và Đa Thường Trú Là Chiến Lược Bảo Vệ Tài Sản Cho Giai Đoạn Nước Nhà “Tăng Tốc” cho Nhà Đầu Tư Việt Nam", "en": "", "x": "Năm 2020, đại dịch đóng cửa thế giới. Năm 2022, một cuộc chiến nổ ra ở châu Âu. Năm 2024, bao gồm nhiều căng thẳng địa chính trị leo thang ở nhiều khu vực. Ba sự kiện này đã có một tác động chung: thay đổi sâu sắc cách…", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Thường trú", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/04/goc-nhin-nac-tai-sao-da-quoc-tich-va-da-thuong-tru-la-chien-luoc-bao-ve-tai-san-cho-giai-doan-nuoc-nha-tang-toc-cho-nha-dau-tu-viet-nam-cover-05681-1024x512.jpg"}, {"id": 708, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/bat-dong-san-madrid-2026-phan-tich-gia-theo-khu-vuc-va-co-hoi-dau-tu-gan-golden-visa-infographic/", "t": "Bất Động Sản Madrid 2026: Phân Tích Giá Theo Khu Vực Và Cơ Hội Đầu Tư Gắn Golden Visa [Infographic]", "en": "", "x": "Madrid đã vượt qua cuộc khủng hoảng bất động sản sau năm 2008 một cách ngoạn mục, và từ 2020 đến nay đang trong giai đoạn tăng trưởng mạnh mẽ nhất trong vòng hai thập kỷ. Giống Lisbon nhưng với quy mô lớn hơn nhiều, thị…", "c": "Infographic", "k": "Infographic · Bất động sản", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/bat-dong-san-madrid-2026-phan-tich-gia-theo-khu-vuc-va-co-hoi-dau-tu-gan-golden-visa-infographic-cover-e61d1-1024x683.jpg"}, {"id": 706, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/cap-nhat-chinh-sach-di-tru-dau-tu-q1-2026-nhung-thay-doi-quan-trong-nha-dau-tu-viet-nam-can-biet-ngay/", "t": "Cập Nhật Chính Sách Di Trú Đầu Tư Q1 2026: Những Thay Đổi Quan Trọng Nhà Đầu Tư Việt Nam Cần Biết Ngay", "en": "", "x": "Quý 1 năm 2026 chứng kiến nhiều thay đổi chính sách đáng kể trong lĩnh vực đầu tư di trú toàn cầu. Nếu bạn đang cân nhắc một chương trình cụ thể, hoặc đã bắt đầu quy trình, những cập nhật dưới đây có thể ảnh hưởng trực…", "c": "Cập Nhật", "k": "Cập Nhật · Đầu tư", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/cap-nhat-chinh-sach-di-tru-dau-tu-q1-2026-nhung-thay-doi-quan-trong-nha-dau-tu-viet-nam-can-biet-ngay-cover-927ff-1024x678.jpg"}, {"id": 704, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/grenada-cbi-2026-chien-luoc-ho-chieu-caribbean-ket-hop-e-2-visa-my-canh-cua-vao-hoa-ky-cho-nha-dau-tu-viet-nam/", "t": "Grenada CBI 2026: Chiến Lược Hộ Chiếu Caribbean Kết Hợp E-2 Visa Mỹ — Cánh Cửa Vào Hoa Kỳ Cho Nhà Đầu Tư Việt Nam", "en": "", "x": "Hoa Kỳ không có trong danh sách các quốc gia cấp thường trú qua đầu tư trực tiếp cho công dân Việt Nam — đây là thực tế mà nhiều nhà đầu tư chấp nhận và dừng lại. Nhưng có một con đường khác, ít được biết đến hơn, đang…", "c": "Phân Tích", "k": "Phân Tích · Chiến lược", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/grenada-cbi-2026-chien-luoc-ho-chieu-caribbean-ket-hop-e-2-visa-my-canh-cua-vao-hoa-ky-cho-nha-dau-tu-viet-nam-cover-f26be-683x1024.jpg"}, {"id": 702, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/case-study-gia-dinh-doanh-nhan-tp-hcm-va-18-thang-chinh-phuc-thuong-tru-hy-lap-bai-hoc-thuc-te-tu-hanh-trinh/", "t": "Case Study: Gia Đình Doanh Nhân TP.HCM Và 18 Tháng Chinh Phục Thường Trú Hy Lạp — Bài Học Thực Tế Từ Hành Trình", "en": "", "x": "Lưu ý của NAC: Case study dưới đây dựa trên tổng hợp từ nhiều hồ sơ khách hàng thực tế. Thông tin nhận dạng đã được thay đổi để bảo mật riêng tư.", "c": "Case Study", "k": "Case Study · Gia đình", "m": 6, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/case-study-gia-dinh-doanh-nhan-tp-hcm-va-18-thang-chinh-phuc-thuong-tru-hy-lap-bai-hoc-thuc-te-tu-hanh-trinh-cover-a76ca-1024x683.jpg"}, {"id": 701, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/uae-vs-hy-lap-2026-hai-chien-luoc-thuong-tru-hoan-toan-khac-biet-dau-la-phu-hop-voi-ban/", "t": "UAE vs Hy Lạp 2026: Hai Chiến Lược Thường Trú Hoàn Toàn Khác Biệt — Đâu Là Phù Hợp Với Bạn?", "en": "", "x": "Vùng Zone A (Athens, Thessaloniki, Mykonos, Santorini…): Ngưỡng đã tăng lên 800.000 EUR.", "c": "So Sánh", "k": "So Sánh · Hy lạp", "m": 6, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/16-1024x683.jpg"}, {"id": 699, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/bat-dong-san-lisbon-2026-phan-tich-gia-theo-quan-va-co-hoi-dau-tu-cho-nguoi-xin-d7-visa-infographic/", "t": "Bất Động Sản Lisbon 2026: Phân Tích Giá Theo Quận Và Cơ Hội Đầu Tư Cho Người Xin D7 Visa [Infographic]", "en": "", "x": "Lisbon năm 2026 không còn là thị trường bí mật của châu Âu — nhưng vẫn là một trong số ít thành phố thủ đô EU nơi nhà đầu tư Việt Nam có thể tham gia với chi phí hợp lý và tiềm năng tăng trưởng thực sự. Dữ liệu dưới đây…", "c": "Infographic", "k": "Infographic · Bất động sản", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/bat-dong-san-lisbon-2026-phan-tich-gia-theo-quan-va-co-hoi-dau-tu-cho-nguoi-xin-d7-visa-infographic-cover-8a5b2-1024x681.jpg"}, {"id": 698, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/dau-tu-di-tru-vi-con-cai-chien-luoc-ma-cha-me-viet-dang-am-tham-thuc-hien/", "t": "Đầu tư di trú vì con cái: Chiến lược mà cha mẹ Việt đang âm thầm thực hiện", "en": "", "x": "Không phải tất cả các quyết định đầu tư di trú đều xuất phát từ thuế hay hộ chiếu. Một phần ngày càng lớn các hồ sơ NAC tiếp nhận đến từ cha mẹ — những người không nhất thiết muốn rời Việt Nam, nhưng muốn mở ra lựa chọn…", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Đầu tư", "m": 5, "bi": false, "img": ""}, {"id": 697, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/5-sai-lam-pho-bien-khi-dau-tu-lay-thuong-tru-nuoc-ngoai-va-cach-tranh/", "t": "5 sai lầm phổ biến khi đầu tư lấy thường trú nước ngoài — và cách tránh", "en": "", "x": "Đầu tư di trú không phải lĩnh vực dễ tha thứ cho sai lầm. Một quyết định sai có thể khiến bạn mất trăm nghìn đô la, mất nhiều năm, hoặc cả hai.", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · Sai lầm", "m": 3, "bi": false, "img": ""}, {"id": 695, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/spain-golden-visa-2026-co-hoi-thuong-tru-eu-tai-nen-kinh-te-lon-thu-tu-chau-au/", "t": "Spain Golden Visa 2026: Cơ Hội Thường Trú EU Tại Nền Kinh Tế Lớn Thứ Tư Châu Âu", "en": "", "x": "Khi nói đến đầu tư lấy thường trú tại châu Âu, phần lớn nhà đầu tư Việt Nam thường nghĩ ngay đến Hy Lạp hay Bồ Đào Nha. Thế nhưng Tây Ban Nha — nền kinh tế lớn thứ tư Liên minh châu Âu với GDP gần 1.600 tỷ USD — đang…", "c": "Chương Trình Overview", "k": "Chương Trình Overview · Thường trú", "m": 6, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/12-1024x683.jpg"}, {"id": 691, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/hy-lap-vs-tho-nhi-ky-2026-so-sanh-toan-dien-hai-chuong-trinh-dau-tu-di-tru-du-lieu-bds-roi-va-chien-luoc-chon-lua/", "t": "Hy Lạp vs Thổ Nhĩ Kỳ 2026: So sánh toàn diện hai chương trình đầu tư di trú — dữ liệu BĐS, ROI và chiến lược chọn lựa", "en": "", "x": "Hai chương trình. Hai mục tiêu khác nhau. Hai thị trường bất động sản với logic riêng biệt.Nhà đầu tư Việt Nam ngày càng đặt câu hỏi không phải “có nên đầu tư di trú không” — mà là “chọn Hy Lạp hay Thổ Nhĩ Kỳ?”", "c": "So Sánh", "k": "So Sánh · Hy lạp", "m": 9, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/18-1024x683.jpg"}, {"id": 689, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/cyprus-pr-2026-dinh-cu-chau-au-voi-e300-000-va-lo-trinh-quoc-tich-5-nam/", "t": "Cyprus PR 2026: Định cư châu Âu với €300.000 và lộ trình quốc tịch 5 năm", "en": "", "x": "Cyprus — hòn đảo Schengen của Thị Trường Chung EU — là một trong những điểm đến được cân nhắc nhiều nhất trong cộng đồng di cư đầu tư toàn cầu, nhưng thường bị đánh giá thấp hơn mức xứng đáng.", "c": "Chương Trình Overview", "k": "Chương Trình Overview · Châu âu", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/5-1024x683.jpg"}, {"id": 685, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/malta-mein-2026-quoc-tich-eu-nhanh-nhat-va-nhung-dieu-nha-dau-tu-viet-can-biet/", "t": "Malta MEIN 2026: Quốc tịch EU nhanh nhất và những điều nhà đầu tư Việt cần biết", "en": "", "x": "Malta là quốc gia EU duy nhất hiện có chương trình cấp quốc tịch thông qua đầu tư trực tiếp — chương trình Malta Exceptional Investor Naturalisation (MEIN). Đối với nhà đầu tư muốn có hộ chiếu EU trong thời gian ngắn…", "c": "Chương Trình Overview", "k": "Chương Trình Overview · Quốc tịch", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/6-1024x683.jpg"}, {"id": 683, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/caribbean-cbi-2026-so-sanh-grenada-st-kitts-va-dominica-cho-nha-dau-tu-chau-a/", "t": "Caribbean CBI 2026: So sánh Grenada, St Kitts và Dominica cho nhà đầu tư châu Á", "en": "", "x": "Các chương trình uốc tịch Caribbean không giống nhau. Mỗi chương trình có ngưỡng đầu tư, tốc độ xử lý, và lợi thế chiến lược riêng. Bài viết này sẽ giúp bạn phân biệt giữa ba lựa chọn phổ biến nhất với nhà đầu tư châu Á.", "c": "So Sánh", "k": "So Sánh · St kitts", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/NAC_Website_CTO-Cover-1-1-1024x683.jpg"}, {"id": 681, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/thue-va-thuong-tru-nuoc-ngoai-nhung-dieu-nha-dau-tu-viet-can-hieu-dung/", "t": "Thuế và thường trú nước ngoài: Những điều nhà đầu tư Việt cần hiểu đúng", "en": "", "x": "Một trong những hiểu lầm phổ biến nhất trong lĩnh vực đầu tư di trú: rằng việc có thẻ thường trú ở một quốc gia có nghĩa là bạn phải nộp thuế ở đó.", "c": "So Sánh", "k": "So Sánh · Thường trú", "m": 3, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/thue-va-thuong-tru-nuoc-ngoai-nhung-dieu-nha-dau-tu-viet-can-hieu-dung-cover-ecf48-1024x588.jpg"}, {"id": 679, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/panama-friendly-nations-visa-2026-can-cu-chien-luoc-chau-my-cho-nha-dau-tu-viet-nam/", "t": "Panama Friendly Nations Visa 2026: Căn cứ chiến lược châu Mỹ cho nhà đầu tư Việt Nam", "en": "", "x": "Nhắc đến định cư châu Mỹ, nhiều người ngay lập tức nghĩ đến Hoa Kỳ hay Canada. Nhưng trong cộng đồng nhà đầu tư tự do di chuyển toàn cầu, Panama đã lâu trở thành một căn cứ chiến lược được chọn lựa có chủ ý — không phải…", "c": "Chương Trình Overview", "k": "Chương Trình Overview · Chiến lược", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/8-1024x683.jpg"}, {"id": 677, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/canada-start-up-visa-2026-thuong-tru-vinh-vien-canada-cho-nha-sang-lap-viet-nam/", "t": "Canada Start-Up Visa 2026: Thường trú vĩnh viễn Canada cho nhà sáng lập Việt Nam", "en": "", "x": "Canada không có chương trình Golden Visa truyền thống như châu Âu. Nhưng Canada có một trong những chương trình thường trú vĩnh viễn hợp dẫn nhất thế giới dành cho doanh nhân: Start-Up Visa (SUV).", "c": "Chương Trình Overview", "k": "Chương Trình Overview · Start-up visa", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/14-1024x683.jpg"}, {"id": 675, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/bat-dong-san-athens-2026-so-sanh-gia-theo-quan-trung-tam-infographic/", "t": "Bất Động Sản Athens 2026: So Sánh Giá Theo Quận Trung Tâm [Infographic]", "en": "", "x": "Athens is the capital of Greece and the primary real estate market underpinning the Greece Golden Visa program. Understanding each central district helps investors optimize between the €250,000 minimum threshold and…", "c": "So Sánh", "k": "So Sánh · Athens 2026", "m": 3, "bi": true, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/bat-dong-san-athens-2026-so-sanh-gia-theo-quan-trung-tam-infographic-cover-a76ca-1024x683.jpg"}, {"id": 673, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/hungary-guest-investor-visa-2026-thuong-tru-eu-10-nam-voi-e250-000/", "t": "Hungary Guest Investor Visa 2026: Thường trú EU 10 năm với €250.000", "en": "", "x": "Trong bối cảnh chương trình Golden Visa Hy Lạp tăng ngưỡng lên €800.000 tại nhiều khu vực, Hungary đã ra mắt một lựa chọn đáng chú ý: chương trình Guest Investor Visa (GIV) với ngưỡng đầu tư chỉ từ €250.000.", "c": "Chương Trình Overview", "k": "Chương Trình Overview · Thường trú", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/7-1024x683.jpg"}, {"id": 671, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/italy-investor-visa-2026-cu-tru-eu-qua-dau-tu-sang-tao-va-kinh-doanh/", "t": "Italy Investor Visa 2026: Cư trú EU qua đầu tư sáng tạo và kinh doanh", "en": "", "x": "Italy không phải tên đầu tiên xuất hiện trong các cuộc trò chuyện về Golden Visa châu Âu. Nhưng những nhà đầu tư có tầm nhìn biết rõ: nước Ý có một chương trình độc đáo hướng tới chất lượng hơn số lượng — và kèm theo đó…", "c": "Cập Nhật", "k": "Cập Nhật · Đầu tư", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/italy-investor-visa-2026-cu-tru-eu-qua-dau-tu-sang-tao-va-kinh-doanh-cover-14af5-1024x678.jpg"}, {"id": 669, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/nauru-ecrc-2026/", "t": "Nauru ECRC 2026", "en": "", "x": "Vào tháng 11/2024, tại COP29 Baku, cộng hòa Nauru chính thức ra mắt chương trình Economic and Climate Resilience Citizenship (ECRC) — chương trình CBI mới nhất trên thế giới. Chưa đầy một rưỡi năm sau khi ra mắt, Nauru…", "c": "Chương Trình Overview", "k": "Chương Trình Overview · Nauru ecrc", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/9-1024x683.jpg"}, {"id": 667, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/italy-investor-visa-2026/", "t": "Italy Investor Visa 2026", "en": "", "x": "Italy không chỉ là biểu tượng của văn hóa và ẩm thực — đây còn là một điểm đến đầu tư di động ngày càng được cân nhắc bởi các nhà đầu tư châu Á muốn kết hợp chất lượng sống EU với mức đầu tư hợp lý.", "c": "Chương Trình Overview", "k": "Chương Trình Overview · Investor visa", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/13-1024x683.jpg"}, {"id": 665, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/new-zealand-active-investor-plus-2026/", "t": "New Zealand Active Investor Plus 2026", "en": "", "x": "Trong mặt nhà đầu tư châu Á, New Zealand thường xuất hiện như hình ảnh của một cuộc sống lý tưởng: không khí sạch, thiên nhiên hoàng tráng, xã hội ổn định, hệ thống giáo dục hàng đầu, và một nhà nước hoạt động minh bạch.", "c": "Góc Nhìn NAC", "k": "Góc Nhìn NAC · New zealand", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/new-zealand-active-investor-plus-2026-cover-9dcd7-1024x724.jpg"}, {"id": 663, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/malaysia-mm2h-2026/", "t": "Malaysia MM2H 2026", "en": "", "x": "Trong khi nhiều nhà đầu tư Việt Nam đang hướng mắt về châu Âu, một lựa chọn gần nhà hơn đang được cộng đồng di cư đầu tư toàn cầu đánh giá lại nghiêm túc: chương trình Malaysia My Second Home (MM2H).", "c": "Chương Trình Overview", "k": "Chương Trình Overview · Malaysia mm2h", "m": 5, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/1-1024x683.jpg"}, {"id": 662, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/antigua-barbuda-cbi-2026-quoc-tich-caribbean-day-du-va-lo-trinh-den-ho-chieu-manh/", "t": "Antigua & Barbuda CBI 2026: Quốc tịch Caribbean đầy đủ và lộ trình đến hộ chiếu mạnh", "en": "", "x": "Trong thị trường CBI (quốc tịch qua đầu tư) Caribbean, Grenada và St Kitts & Nevis thường được nhắc đến nhiều hơn. Nhưng Antigua & Barbuda có một số ưu điểm cụ thể mà nhiều nhà đầu tư chưa biết. Năm 2026, đây là một…", "c": "Chương Trình Overview", "k": "Chương Trình Overview · Antigua & barbuda", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/11-1024x683.jpg"}, {"id": 660, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/uae-golden-visa-2026/", "t": "UAE Golden Visa 2026", "en": "", "x": "Trong khi Dubai được biết đến rộng rãi như một địa điểm sống, chương trình UAE Golden Visa là nền tảng pháp lý đẳng sau. Năm 2022, UAE đã cải tổ toàn diện chương trình này, mở rộng điều kiện cho nhiều nhóm hơn và loại…", "c": "Chương Trình Overview", "k": "Chương Trình Overview · Uae golden visa", "m": 4, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/2-1024x683.jpg"}, {"id": 658, "d": "2026-05-03", "u": "https://blog.nomadassetcollective.com/tai-sao-bo-dao-nha-van-la-lua-chon-hang-dau-chau-au/", "t": "Tại Sao Bồ Đào Nha Vẫn Là Lựa Chọn Hàng Đầu Châu Âu", "en": "", "x": "Sau nhiều năm thay đổi chính sách, chương trình Golden Visa Bồ Đào Nha vẫn tiếp tục thu hút nhà đầu tư toàn cầu — nhưng với cấu trúc hoàn toàn mới. Kể từ khi đầu tư bất động sản trực tiếp tại các thành phố lớn bị loại…", "c": "Chương Trình Overview", "k": "Chương Trình Overview · Bồ đào nha", "m": 7, "bi": false, "img": "https://blog.nomadassetcollective.com/wp-content/uploads/2026/05/10-1024x683.jpg"}]</script>
 <script>
 (function(){
-/* ================= config ================= */
 var WP = 'https://blog.nomadassetcollective.com/wp-json/wp/v2';
+var CAL = 'https://calendar.app.google/gnbtNBTBDKuHUasw7', WA = 'https://wa.me/447388646000';
 var CATS = [
   {vi:'Góc Nhìn NAC', en:'NAC Perspective', slug:'goc-nhin-nac', dvi:'Những bài luận về tiền, nơi chốn và tự do — viết cho nhà đầu tư Việt đang xây căn cứ thứ hai.', den:'Essays on money, place and freedom — for Vietnamese investors building a second base.'},
-  {vi:'Phân Tích', en:'Analysis', slug:'phan-tich', dvi:'Số liệu, thị trường và những gì chúng thực sự nói với nhà đầu tư.', den:'Data, markets and what they actually tell an investor.'},
-  {vi:'So Sánh', en:'Comparisons', slug:'so-sanh', dvi:'Đặt các chương trình và điểm đến cạnh nhau — để lựa chọn rõ ràng hơn.', den:'Programs and destinations side by side — so the choice gets clearer.'},
-  {vi:'Chương Trình Overview', en:'Programs', slug:'chuong-trinh', dvi:'Tổng quan từng chương trình cư trú và quốc tịch đầu tư: điều kiện, chi phí, thời gian.', den:'Each residency and citizenship program: requirements, cost, timeline.'},
+  {vi:'Phân Tích', en:'Analysis', slug:'phan-tich', dvi:'Số liệu, thị trường, và điều chúng thực sự nói với nhà đầu tư.', den:'Data, markets, and what they actually tell an investor.'},
+  {vi:'So Sánh', en:'Comparisons', slug:'so-sanh', dvi:'Các chương trình và điểm đến đặt cạnh nhau — để lựa chọn rõ hơn.', den:'Programs and destinations side by side — so the choice gets clearer.'},
+  {vi:'Chương Trình Overview', en:'Programs', slug:'chuong-trinh', dvi:'Từng chương trình cư trú và quốc tịch đầu tư: điều kiện, chi phí, thời gian.', den:'Each residency and citizenship program: requirements, cost, timeline.'},
   {vi:'Cập Nhật', en:'Updates', slug:'cap-nhat', dvi:'Thay đổi chính sách và tin mới cần biết.', den:'Policy changes and news that matter.'},
-  {vi:'Infographic', en:'Infographic', slug:'infographic', dvi:'Bức tranh toàn cảnh trong một khung hình.', den:'The whole picture in one frame.'},
+  {vi:'Infographic', en:'Infographic', slug:'infographic', dvi:'Toàn cảnh trong một khung hình.', den:'The whole picture in one frame.'},
   {vi:'Case Study', en:'Case Study', slug:'case-study', dvi:'Những gia đình thật, quyết định thật.', den:'Real families, real decisions.'}];
 var DEST_ALL = [['Việt Nam','Vietnam','viet-nam','đà nẵng|việt nam|vietnam|hồ tràm'],['Hy Lạp','Greece','hy-lap','hy lạp|greece|athens'],['Bồ Đào Nha','Portugal','bo-dao-nha','bồ đào nha|portugal'],['Síp','Cyprus','sip','síp|cyprus|limassol'],['Malta','Malta','malta','malta'],['Thổ Nhĩ Kỳ','Türkiye','tho-nhi-ky','thổ nhĩ kỳ|turkey|türkiye|istanbul'],['UAE','UAE','uae','dubai|uae|abu dhabi'],['Panama','Panama','panama','panama'],['Caribbean','Caribbean','caribbean','caribbean|antigua|st kitts|grenada|dominica'],['New Zealand','New Zealand','new-zealand','new zealand'],['Úc','Australia','uc','nước úc|australia|sydney|melbourne'],['Malaysia','Malaysia','malaysia','malaysia|mm2h|penang'],['Thái Lan','Thailand','thai-lan','thái lan|thailand|phuket|bangkok'],['Canada','Canada','canada','canada'],['Mỹ','USA','my','eb-5|nước mỹ|hoa kỳ|usa|california'],['Tây Ban Nha','Spain','tay-ban-nha','tây ban nha|spain'],['Ý','Italy','y','nước ý|italy'],['Anh','UK','anh','anh quốc|vương quốc anh|london'],['Montenegro','Montenegro','montenegro','montenegro']]
   .map(function(d){ return {vi:d[0], en:d[1], slug:d[2], re:new RegExp(d[3], 'i'), n:0}; });
 
-/* ================= state ================= */
-var lang = 'vi'; try { if (localStorage.getItem('nt_lang') === 'en') lang = 'en'; } catch (e) {}
-var P = [], sorted = [], DEST = [], byId = {}, isLive = false;
-var st = {budget:15, shown:15, dest:'', cat:'', q:''};
-var artCache = {};
+var lang = 'vi', depth = 'full';
+try { var sl = localStorage.getItem('nt-lang'), sd = localStorage.getItem('nt-depth'); if (sl === 'vi' || sl === 'en') lang = sl; if (sd === 'skim' || sd === 'full') depth = sd; } catch (e) {}
+var P = [], sorted = [], DEST = [], byId = {}, isLive = false, artCache = {};
+var st = {budget:15, shown:20, dest:'', cat:''};
 
-/* ================= helpers ================= */
 function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 function T(vi, en){ return lang === 'en' ? en : vi; }
 function catOf(v){ for (var i = 0; i < CATS.length; i++) if (CATS[i].vi === v) return CATS[i]; return null; }
-function catBySlug(s){ for (var i = 0; i < CATS.length; i++) if (CATS[i].slug === s) return CATS[i]; return null; }
 function cat(v){ var c = catOf(v); return c ? (lang === 'en' ? c.en : c.vi) : v; }
 function destOf(v){ for (var i = 0; i < DEST_ALL.length; i++) if (DEST_ALL[i].vi === v) return DEST_ALL[i]; return null; }
 function dn(d){ return lang === 'en' ? d.en : d.vi; }
-function day(d){ return new Date(d + 'T00:00:00').toLocaleDateString(lang === 'en' ? 'en-GB' : 'vi-VN', {day:'numeric', month:'long', year:'numeric'}); }
-function short(d){ return new Date(d + 'T00:00:00').toLocaleDateString(lang === 'en' ? 'en-GB' : 'vi-VN', {day:'2-digit', month:'2-digit', year:'numeric'}); }
+function dot(d){ var x = d.split('-'); return lang === 'en' ? new Date(d + 'T00:00:00').toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}) : x[2] + '.' + x[1] + '.' + x[0]; }
 function mins(p){ return p.m + T(' phút đọc', ' min read'); }
 function L(p){ return ' href="#/bai/' + p.id + '"'; }
-function im(p, eager){ return '<div class="img">' + (p.img ? '<img src="' + esc(p.img) + '" alt=""' + (eager ? '' : ' loading="lazy"') + '>' : '') + '</div>'; }
-function by(p){ return '<div class="by">' + esc(mins(p)) + ' · ' + esc(day(p.d)) + '</div>'; }
+function ph(p, eager){ return '<div class="ph">' + (p.img ? '<img src="' + esc(p.img) + '" alt=""' + (eager ? ' fetchpriority="high"' : ' loading="lazy"') + '>' : '') + '</div>'; }
+function ml(p){ return '<div class="meta-l">' + esc(cat(p.c)) + ' · ' + esc(dot(p.d)) + ' · ' + esc(mins(p)) + '</div>'; }
 function txt(h){ var d = document.createElement('textarea'); d.innerHTML = String(h || '').replace(/<[^>]+>/g, ' '); return d.value.replace(/ +/g, ' ').trim(); }
 function norm(s){ return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').split('đ').join('d'); }
-function card(p){ return '<div><a' + L(p) + '>' + im(p) + '<div class="lab a">' + esc(cat(p.c)) + '</div><h3>' + esc(p.t) + '</h3></a><p>' + esc(p.x) + '</p>' + by(p) + '</div>'; }
+function split(title){ var m = title.match(/^(.{12,}?)([:—–]| - )\s*(.+)$/); return m ? esc(m[1]) + m[2] + ' <em>' + esc(m[3]) + '</em>' : esc(title); }
+function waSvg(){ return '<svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.2.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.4.2.5.3.1.2.1.6-.2 1.1z"/></svg>'; }
+function cta(line){ return '<div class="cta"><p>' + line + '</p><div class="acts"><a href="' + CAL + '" target="_blank" rel="noopener">' + T('Đặt lịch tư vấn miễn phí', 'Book a free consultation') + ' <span aria-hidden="true">→</span></a><a class="wa" href="' + WA + '" target="_blank" rel="noopener">' + waSvg() + 'WhatsApp</a></div></div>'; }
 
 /* ================= data ================= */
 function prep(data){
   P = data; byId = {};
-  DEST_ALL.forEach(function(d){ d.n = 0; });
-  P.forEach(function(p){ byId[p.id] = p; if (!p.m) p.m = 5; var h = (p.t + ' ' + p.x + ' ' + p.k).toLowerCase(); p.dest = []; DEST_ALL.forEach(function(d){ if (d.re.test(h)) { p.dest.push(d.vi); d.n++; } }); p.hay = norm(p.t + ' ' + p.x + ' ' + p.k + ' ' + p.en + ' ' + p.c + ' ' + p.dest.join(' ')); });
-  DEST = DEST_ALL.filter(function(d){ return d.n > 0; }).sort(function(a, b){ return b.n - a.n; });
+  DEST_ALL.forEach(function(d){ d.n = 0; d.latest = null; });
   sorted = P.slice().sort(function(a, b){ return a.d < b.d ? 1 : a.d > b.d ? -1 : 0; });
+  sorted.forEach(function(p){ byId[p.id] = p; if (!p.m) p.m = 5; var h = (p.t + ' ' + p.x + ' ' + p.k).toLowerCase(); p.dest = []; DEST_ALL.forEach(function(d){ if (d.re.test(h)) { p.dest.push(d.vi); d.n++; if (!d.latest) d.latest = p; } }); p.hay = norm(p.t + ' ' + p.x + ' ' + p.k + ' ' + p.en + ' ' + p.c + ' ' + p.dest.join(' ')); });
+  DEST = DEST_ALL.filter(function(d){ return d.n > 0; }).sort(function(a, b){ return b.n - a.n; });
 }
 function fromWp(p){
   var e = p._embedded || {}, m = (e['wp:featuredmedia'] || [])[0] || {}, sz = (m.media_details || {}).sizes || {};
   var terms = [].concat.apply([], e['wp:term'] || []), c = terms.filter(function(t){ return t.taxonomy === 'category'; })[0];
   var html = (p.content || {}).rendered || '', mm = html.match(/(\d+) min read/), kk = html.match(/nac-mag-kick">([^<]*)/), dk = html.match(/nac-mag-deck">([^<]*)/);
-  return {id:p.id, d:p.date.slice(0, 10), u:p.link, t:txt(p.title.rendered), en:dk ? txt(dk[1]) : '', x:txt(p.excerpt.rendered).slice(0, 220), c:c ? txt(c.name) : '', k:kk ? txt(kk[1]) : '', m:mm ? +mm[1] : 0, bi:html.indexOf('id="nac-en"') >= 0, img:((sz.large || sz.medium_large || {}).source_url) || m.source_url || ''};
+  return {id:p.id, d:p.date.slice(0, 10), mo:(p.modified || p.date).slice(0, 10), u:p.link, t:txt(p.title.rendered), en:dk ? txt(dk[1]) : '', x:txt(p.excerpt.rendered).slice(0, 240), c:c ? txt(c.name) : '', k:kk ? txt(kk[1]) : '', m:mm ? +mm[1] : 0, bi:html.indexOf('id="nac-en"') >= 0, img:((sz.large || sz.medium_large || {}).source_url) || m.source_url || ''};
 }
-function setSrc(){ var el = document.getElementById('src'); el.textContent = isLive ? T('● Trực tiếp từ blog', '● Live from the blog') : T('Bản lưu', 'Saved edition'); el.className = isLive ? 'src live' : 'src'; }
-
-/* ================= views ================= */
+function liveTag(){ return '<span class="live' + (isLive ? '' : ' off') + '">' + (isLive ? T('Ấn bản sống · cập nhật từ blog', 'Living edition · synced from the blog') : T('Ấn bản lưu', 'Saved edition')) + '</span>'; }
 var used = {};
 function take(list, n){ var o = []; for (var i = 0; i < list.length && o.length < n; i++) if (!used[list[i].id]) { used[list[i].id] = 1; o.push(list[i]); } return o; }
 
+/* ================= FRONT PAGE ================= */
 function vHome(){
-  used = {};
+  used = {}; document.title = 'NAC Times — ' + T('Tạp chí di trú đầu tư', 'The investment-migration journal');
   var withImg = sorted.filter(function(p){ return p.img; });
-  var coverP = take(withImg, 1)[0], sideP = take(withImg, 2);
-  var essayP = take(sorted.filter(function(p){ return p.c === 'Góc Nhìn NAC'; }), 4);
-  var sects = ['Phân Tích', 'So Sánh', 'Chương Trình Overview'].map(function(c){ return {c:c, ps:take(sorted.filter(function(p){ return p.c === c && p.img; }), 3)}; });
-  return '<div class="wrap"><section class="cover">' +
-    '<div class="cover-main"><a' + L(coverP) + '>' + im(coverP, true) + '<div class="lab a" style="margin-top:22px">' + esc(coverP.k || cat(coverP.c)) + '</div><h1>' + esc(coverP.t) + '</h1></a><p class="dek">' + esc(coverP.x) + '</p>' + by(coverP) + '</div>' +
-    '<div class="cover-side">' + sideP.map(function(p){ return '<div class="side-item"><a' + L(p) + '>' + im(p, true) + '<div class="lab a">' + esc(cat(p.c)) + '</div><h3>' + esc(p.t) + '</h3></a>' + by(p) + '</div>'; }).join('') + '</div></section>' +
-    '<section class="time" aria-labelledby="time-h"><div><div class="lab a">' + T('Đọc theo thời gian bạn có', 'Read to the time you have') + '</div><h2 id="time-h" style="margin-top:10px">' + T('Hôm nay bạn có bao lâu?', 'How long do you have today?') + '</h2><p>' + T('Chọn quỹ thời gian — NAC Times xếp một chồng bài vừa khít, mới nhất trước.', 'Pick a time budget — NAC Times stacks a set of stories that fits, newest first.') + '</p><div class="time-pick" id="pick"></div></div><div><ol class="stack" id="stack" aria-live="polite"></ol><p class="by" id="stack-sum" style="margin:6px 0 0;text-align:right"></p></div></section></div>' +
-    '<section class="essays"><div class="wrap"><div class="essays-head"><div><div class="lab a">' + T('Chuyên mục chủ lực', 'Flagship column') + '</div><h2 style="margin-top:10px"><a href="#/muc/goc-nhin-nac">Góc Nhìn <em>NAC</em></a></h2></div><p>' + esc(T(CATS[0].dvi, CATS[0].den)) + '</p></div><div class="essay-grid">' +
-    essayP.map(function(p){ return '<div class="essay"><span class="q" aria-hidden="true">“</span><a' + L(p) + '><h3>' + esc(p.t) + '</h3></a><p>' + esc(p.x) + '</p>' + by(p) + '</div>'; }).join('') + '</div></div></section>' +
-    '<div class="wrap">' + sects.map(function(s){ var c = catOf(s.c); return '<section class="sect"><div class="sect-head"><h2><a href="#/muc/' + c.slug + '">' + esc(cat(s.c)) + '</a></h2><a class="by" href="#/muc/' + c.slug + '">' + T('Tất cả bài ', 'All ') + esc(cat(s.c)) + ' →</a></div><div class="row3">' +
-      s.ps.map(function(p, i){ return '<div class="' + (i === 0 ? 'big' : '') + '"><a' + L(p) + '>' + im(p) + '<h3>' + esc(p.t) + '</h3></a>' + (i === 0 ? '<p>' + esc(p.x) + '</p>' : '') + by(p) + '</div>'; }).join('') + '</div></section>'; }).join('') +
-    '<section class="index" id="index"><div class="index-head"><h2>' + T('Mục lục toàn bộ', 'The complete index') + '</h2><span class="count">' + P.length + T(' bài viết', ' stories') + '</span></div><div class="places" id="places"></div><div class="status" id="status" aria-live="polite"></div><ul class="list" id="list"></ul><div class="more"><button type="button" id="more">' + T('Xem thêm', 'Show more') + '</button></div></section></div>';
+  var lead = take(withImg, 1)[0];
+  var brief = sorted.filter(function(p){ return p !== lead; }).slice(0, 3);
+  var totalMin = P.reduce(function(a, p){ return a + p.m; }, 0);
+  var today = new Date().toISOString().slice(0, 10);
+  var quoteP = sorted.filter(function(p){ return p.c === 'Góc Nhìn NAC' && p.x.length > 60 && p !== lead; })[0];
+  var quote = quoteP ? quoteP.x.split(/(?<=[.!?])\s/)[0] : '';
+  var html = '<div class="wrap"><section class="open">' +
+    '<div class="rail-o"><div><b>' + dot(today) + '</b>' + T('ấn bản hôm nay', 'today’s edition') + '</div><div><b>' + P.length + '</b>' + T('bài trong kho', 'stories on file') + '</div><div><b>' + DEST.length + '</b>' + T('điểm đến', 'destinations') + '</div></div>' +
+    '<div class="kicker"><span class="label acc">' + esc(lead.k || cat(lead.c)) + '</span>' + liveTag() + '</div>' +
+    '<h1><a' + L(lead) + '>' + split(lead.t) + '</a></h1><p class="dek">' + esc(lead.x) + '</p>' +
+    '<div class="byline"><span><b>' + T('Ban biên tập NAC', 'The NAC Desk') + '</b></span><span>' + dot(lead.d) + '</span><span>' + esc(mins(lead)) + '</span>' + (lead.dest.length ? '<span>' + lead.dest.slice(0, 3).map(function(d){ return dn(destOf(d)); }).join(' · ') + '</span>' : '') + '</div></section></div>' +
+    '<div class="wrap hero-w"><figure class="hero"><a' + L(lead) + '>' + ph(lead, true) + '</a><figcaption><span>' + esc(lead.t) + '</span><span>' + T('Ảnh: NAC', 'Photograph: NAC') + '</span></figcaption></figure></div>' +
+    '<div class="wrap"><section class="story" style="padding-bottom:8px"><aside class="rail"><div class="meta"><b>' + totalMin + '</b>' + T('phút đọc trong kho', 'minutes of reading on file') + '</div><div class="meta"><b>' + CATS.length + '</b>' + T('chuyên mục', 'sections') + '</div></aside><div class="text">' +
+    '<section class="thesis"><div class="label">' + T('Ấn bản này, trong ba câu', 'This edition, in three sentences') + '</div><ol>' +
+      brief.map(function(p){ return '<li><span><a' + L(p) + '>' + esc(p.t) + '</a><small>' + esc(cat(p.c)) + ' · ' + esc(mins(p)) + '</small></span></li>'; }).join('') + '</ol></section>' +
+    '<div class="figs" role="list"><div role="listitem"><b>' + P.length + '</b><span>' + T('bài phân tích song ngữ', 'bilingual analyses') + '</span></div><div role="listitem"><b>' + DEST.length + '</b><span>' + T('điểm đến đã phân tích', 'destinations covered') + '</span></div><div role="listitem"><b>' + P.filter(function(p){ return p.bi; }).length + '</b><span>' + T('bài có bản tiếng Anh', 'stories with an English edition') + '</span></div><div role="listitem"><b>' + totalMin + '</b><span>' + T('phút đọc', 'minutes of reading') + '</span></div></div>' +
+    (quote ? '<blockquote class="pull"><a' + L(quoteP) + '>' + esc(quote) + '</a><cite>— ' + esc(quoteP.t) + '</cite></blockquote>' : '') +
+    '</div></section></div>';
+
+  // desks: rail label + lead + three headlines
+  html += '<div class="wrap">' + ['Góc Nhìn NAC', 'Phân Tích', 'So Sánh'].map(function(c){
+    var x = catOf(c), list = sorted.filter(function(p){ return p.c === c; }), l = take(list.filter(function(p){ return p.img; }), 1)[0], rest = take(list, 3);
+    if (!l) return '';
+    return '<section class="edition"><div class="lh"><h2><a href="#/muc/' + x.slug + '">' + esc(cat(c)) + '</a></h2><p>' + esc(T(x.dvi, x.den)) + '</p><a class="more" href="#/muc/' + x.slug + '">' + list.length + T(' bài →', ' stories →') + '</a></div><div>' +
+      '<div class="lead-row"><a' + L(l) + '>' + ph(l) + '</a><div><a' + L(l) + '><h3>' + esc(l.t) + '</h3></a><p>' + esc(l.x) + '</p>' + ml(l) + '</div></div>' +
+      '<ul class="hl">' + rest.map(function(p){ return '<li><a' + L(p) + '><h3>' + esc(p.t) + '</h3></a>' + ml(p) + '</li>'; }).join('') + '</ul></div></section>';
+  }).join('');
+
+  // reading time
+  html += '<section class="edition"><div class="lh"><h2>' + T('Bạn có bao lâu?', 'How long do you have?') + '</h2><p>' + T('Chọn quỹ thời gian — ấn bản xếp một chồng bài vừa khít, mới nhất trước.', 'Pick a time budget — the edition stacks stories that fit, newest first.') + '</p></div><div class="time-box"><div class="seg" role="group" id="pick"></div><ol class="stack" id="stack"></ol><div class="sum" id="stack-sum"></div></div></section>';
+
+  // programs tiles
+  var progs = take(sorted.filter(function(p){ return p.c === 'Chương Trình Overview' && p.img; }), 4);
+  if (progs.length) html += '<section class="edition"><div class="lh"><h2><a href="#/muc/chuong-trinh">' + T('Chương trình', 'Programs') + '</a></h2><p>' + esc(T(CATS[3].dvi, CATS[3].den)) + '</p></div><div class="tiles">' + progs.map(function(p){ return '<div class="tile"><a' + L(p) + '>' + ph(p) + '<h3>' + esc(p.t) + '</h3></a>' + ml(p) + '</div>'; }).join('') + '</div></section>';
+
+  // destinations as the routes table
+  var maxN = DEST.length ? DEST[0].n : 1;
+  html += '<section class="edition"><div class="lh"><h2><a href="#/diem-den">' + T('Điểm đến', 'Destinations') + '</a></h2><p>' + T('Mỗi quốc gia NAC Times đã viết về, đọc theo số bài và bài mới nhất.', 'Every country NAC Times covers, read by volume and latest story.') + '</p><a class="more" href="#/diem-den">' + T('Toàn bộ →', 'All →') + '</a></div><div class="routes"><table><thead><tr><th scope="col">' + T('Điểm đến', 'Destination') + '</th><th scope="col">' + T('Số bài', 'Stories') + '</th><th scope="col">' + T('Bài mới nhất', 'Latest') + '</th></tr></thead><tbody>' +
+    DEST.slice(0, 8).map(function(d){ return '<tr><th scope="row"><a href="#/diem-den/' + d.slug + '">' + esc(dn(d)) + '</a></th><td class="n">' + d.n + '<span class="bar-i"><i style="width:' + Math.round(d.n / maxN * 100) + '%"></i></span></td><td><a' + L(d.latest) + '><span class="t">' + esc(d.latest.t) + '</span></a><div class="meta-l" style="margin-top:4px">' + dot(d.latest.d) + '</div></td></tr>'; }).join('') + '</tbody></table></div></section>';
+
+  // full index
+  html += '<section class="edition" id="index"><div class="lh"><h2>' + T('Mục lục', 'The index') + '</h2><p>' + T('Mọi bài trong kho, mới nhất trước. Rê chuột để xem ảnh.', 'Every story on file, newest first. Hover for the picture.') + '</p></div><div><div class="chips" id="places"></div><ul class="idx" id="list"></ul><div class="morebtn"><button class="btn-line" type="button" id="more">' + T('Xem thêm', 'Show more') + '</button></div></div></section>';
+  html += '<div class="story" style="padding-top:0"><div></div><div class="text">' + cta(T('Đi qua từng con số trong kho bằng hồ sơ thật của gia đình bạn.', 'Walk through the numbers on file against your family’s actual situation.')) +
+    '<div class="ledger"><div><b>' + T('Ấn bản', 'Edition') + '</b>' + dot(today) + '<br>' + P.length + T(' bài · cập nhật liên tục', ' stories · continuously updated') + '</div><div><b>' + T('Nguồn', 'Source') + '</b>' + (isLive ? T('Đồng bộ trực tiếp từ ', 'Synced live from ') : T('Bản lưu của ', 'Saved copy of ')) + '<a href="https://blog.nomadassetcollective.com" target="_blank" rel="noopener">blog.nomadassetcollective.com</a></div><div class="watch"><b>' + T('Đang theo dõi', 'Watching') + '</b>' + T('Luật quốc tịch Bồ Đào Nha · chính sách Golden Visa EU', 'Portugal nationality law · EU golden-visa policy') + '</div></div></div></div></div>';
+  return html;
 }
 function afterHome(){ renderStack(); renderIndex(); bindPeek(); }
 function renderStack(){
@@ -418,189 +457,268 @@ function renderStack(){
   var left = st.budget, out = [];
   for (var i = 0; i < sorted.length && out.length < 6 && left > 0; i++) { var p = sorted[i]; if (p.m <= left) { out.push(p); left -= p.m; } }
   document.getElementById('stack').innerHTML = out.map(function(p){ return '<li><a' + L(p) + '><h3>' + esc(p.t) + '</h3></a><span class="m">' + esc(mins(p)) + '</span></li>'; }).join('');
-  document.getElementById('stack-sum').textContent = out.length + T(' bài · tổng ', ' stories · ') + (st.budget - left) + T(' / ' + st.budget + ' phút', ' of ' + st.budget + ' min');
+  document.getElementById('stack-sum').textContent = out.length + T(' bài · ', ' stories · ') + (st.budget - left) + T(' / ' + st.budget + ' phút', ' of ' + st.budget + ' min');
 }
 function renderIndex(){
   var el = document.getElementById('list'); if (!el) return;
-  document.getElementById('places').innerHTML = DEST.filter(function(d){ return d.n > 1; }).map(function(d){ return '<button type="button" data-dest="' + esc(d.vi) + '" aria-pressed="' + (st.dest === d.vi) + '">' + esc(dn(d)) + '<sup>' + d.n + '</sup></button>'; }).join('');
+  document.getElementById('places').innerHTML = '<button type="button" data-dest="" aria-pressed="' + (!st.dest) + '">' + T('Tất cả', 'All') + '<sup>' + P.length + '</sup></button>' + DEST.filter(function(d){ return d.n > 1; }).map(function(d){ return '<button type="button" data-dest="' + esc(d.vi) + '" aria-pressed="' + (st.dest === d.vi) + '">' + esc(dn(d)) + '<sup>' + d.n + '</sup></button>'; }).join('');
   var list = sorted.filter(function(p){ return !st.dest || p.dest.indexOf(st.dest) >= 0; });
-  el.innerHTML = list.slice(0, st.shown).map(function(p){ return '<li><a' + L(p) + ' data-id="' + p.id + '"><span class="d">' + short(p.d) + '</span><h3>' + esc(p.t) + '</h3><span class="c">' + esc(cat(p.c)) + '</span><span class="t">' + esc(mins(p)) + '</span></a></li>'; }).join('');
+  el.innerHTML = list.slice(0, st.shown).map(function(p, i){ return '<li><a' + L(p) + ' data-id="' + p.id + '"><span class="p">¶' + (i + 1) + '</span><span class="d">' + dot(p.d) + '</span><h3>' + esc(p.t) + '</h3><span class="c">' + esc(cat(p.c)) + '</span><span class="t">' + p.m + T(' phút', ' min') + '</span></a></li>'; }).join('');
   document.getElementById('more').hidden = list.length <= st.shown;
-  var d = destOf(st.dest);
-  document.getElementById('status').innerHTML = d ? esc(list.length + T(' bài · ', ' stories · ') + dn(d)) + ' · <a href="#/diem-den/' + d.slug + '" style="color:var(--accent);font-weight:600">' + T('Trang ' + d.vi + ' →', d.en + ' page →') + '</a><button type="button" id="clear">' + T('Xoá bộ lọc', 'Clear filter') + '</button>' : '';
 }
-
-function listPage(title, lab, desc, list, statsHtml){
-  var f = list.filter(function(p){ return p.img; })[0];
-  var rest = list.filter(function(p){ return p !== f; });
-  return '<div class="wrap"><div class="crumbs"><a href="#/">' + T('Trang chủ', 'Home') + '</a> / ' + esc(lab) + '</div><header class="page-head"><div class="lab a">' + esc(lab) + '</div><h1>' + esc(title) + '</h1>' + (desc ? '<p>' + esc(desc) + '</p>' : '') + (statsHtml || '') + '</header>' +
-    (f ? '<a class="feature"' + L(f) + '>' + im(f, true) + '<div><div class="lab a">' + esc(cat(f.c)) + '</div><h2 style="margin-top:8px">' + esc(f.t) + '</h2><p>' + esc(f.x) + '</p>' + by(f) + '</div></a>' : '') +
-    (rest.length ? '<div class="grid3">' + rest.map(card).join('') + '</div>' : (f ? '' : '<p class="empty-note">' + T('Chưa có bài viết nào ở đây.', 'No stories here yet.') + '</p>')) + '</div>';
-}
-function stats(list){
-  var ms = list.reduce(function(a, p){ return a + p.m; }, 0);
-  var last = list[0] ? short(list[0].d) : '—';
-  return '<div class="stats"><div><b>' + list.length + '</b>' + T('bài viết', 'stories') + '</div><div><b>' + ms + '</b>' + T('phút đọc', 'minutes of reading') + '</div><div><b>' + last + '</b>' + T('cập nhật gần nhất', 'latest') + '</div></div>';
-}
-function vCat(slug){
-  var c = catBySlug(slug); if (!c) return vNotFound();
-  var list = sorted.filter(function(p){ return p.c === c.vi; });
-  document.title = (lang === 'en' ? c.en : c.vi) + ' · NAC Times';
-  return listPage(lang === 'en' ? c.en : c.vi, T('Chuyên mục', 'Section'), T(c.dvi, c.den), list, stats(list));
-}
-function vDestIndex(){
-  document.title = T('Điểm đến', 'Destinations') + ' · NAC Times';
-  return '<div class="wrap"><div class="crumbs"><a href="#/">' + T('Trang chủ', 'Home') + '</a> / ' + T('Điểm đến', 'Destinations') + '</div><header class="page-head"><div class="lab a">' + T('Bản đồ biên tập', 'Editorial atlas') + '</div><h1>' + T('Điểm đến', 'Destinations') + '</h1><p>' + T('Mỗi quốc gia NAC Times đã viết về — và bao nhiêu bài phân tích đang chờ bạn.', 'Every country NAC Times has covered — and how much analysis is waiting for you.') + '</p></header><div class="dest-grid">' +
-    DEST.map(function(d){ return '<a href="#/diem-den/' + d.slug + '">' + esc(dn(d)) + '<span>' + d.n + T(' bài', ' stories') + '</span></a>'; }).join('') + '</div><div style="height:40px"></div></div>';
-}
-function vDest(slug){
-  var d = null; DEST_ALL.forEach(function(x){ if (x.slug === slug) d = x; }); if (!d) return vNotFound();
-  var list = sorted.filter(function(p){ return p.dest.indexOf(d.vi) >= 0; });
-  document.title = dn(d) + ' · NAC Times';
-  return listPage(dn(d), T('Điểm đến', 'Destination'), T('Mọi bài NAC Times nhắc đến ' + d.vi + ' — chương trình, thị trường và góc nhìn.', 'Every NAC Times story that covers ' + d.en + ' — programs, markets and perspective.'), list, stats(list)).replace(T('Trang chủ', 'Home') + '</a> / ', T('Trang chủ', 'Home') + '</a> / <a href="#/diem-den">' + T('Điểm đến', 'Destinations') + '</a> / ');
-}
-function vSearch(q){
-  document.title = T('Tìm kiếm', 'Search') + ' · NAC Times';
-  return '<div class="wrap"><div class="crumbs"><a href="#/">' + T('Trang chủ', 'Home') + '</a> / ' + T('Tìm kiếm', 'Search') + '</div><header class="page-head"><div class="lab a">' + T('Tìm trong kho', 'Search the archive') + '</div><label class="searchbar" for="sq"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="sq" type="search" autocomplete="off" value="' + esc(q) + '" placeholder="' + T('Hy Lạp, golden visa, Đà Nẵng…', 'Greece, golden visa, Da Nang…') + '"></label><div class="status" id="s-status" style="margin-top:12px"></div></header><div class="grid3" id="s-res"></div></div>';
-}
-function renderSearch(){
-  var el = document.getElementById('sq'); if (!el) return;
-  var q = norm(el.value.trim()), terms = q.split(' ').filter(Boolean);
-  var res = terms.length ? sorted.filter(function(p){ return terms.every(function(t){ return p.hay.indexOf(t) >= 0; }); }) : [];
-  document.getElementById('s-status').textContent = terms.length ? res.length + T(' kết quả', ' results') : T('Gõ tên quốc gia, chương trình hoặc chủ đề — không cần dấu.', 'Type a country, program or topic — accents optional.');
-  document.getElementById('s-res').innerHTML = res.map(card).join('') || (terms.length ? '<p class="empty-note">' + T('Không tìm thấy. Thử một từ ngắn hơn, ví dụ "visa" hoặc "síp".', 'Nothing found. Try a shorter word, like "visa" or "cyprus".') + '</p>' : '');
-}
-function vAbout(){
-  document.title = T('Về NAC Times', 'About NAC Times');
-  var ms = P.reduce(function(a, p){ return a + p.m; }, 0);
-  return '<div class="wrap"><div class="crumbs"><a href="#/">' + T('Trang chủ', 'Home') + '</a> / ' + T('Giới thiệu', 'About') + '</div><header class="page-head"><div class="lab a">' + T('Giới thiệu', 'About') + '</div><h1>' + T('Về NAC Times', 'About NAC Times') + '</h1><p>' + T('Tạp chí di trú đầu tư của Nomad Asset Collective — viết cho nhà đầu tư Việt muốn hiểu thế giới trước khi chọn nơi đặt tài sản, gia đình và tương lai.', 'The investment-migration journal of Nomad Asset Collective — for Vietnamese investors who want to understand the world before deciding where to place their assets, family and future.') + '</p>' +
-    '<div class="stats"><div><b>' + P.length + '</b>' + T('bài viết', 'stories') + '</div><div><b>' + DEST.length + '</b>' + T('điểm đến', 'destinations') + '</div><div><b>' + ms + '</b>' + T('phút đọc', 'minutes of reading') + '</div></div></header>' +
-    '<div class="art" style="padding-top:36px"><div class="body"><p class="nac-drop">' + T('NAC Times đọc tín hiệu toàn cầu — chính sách thị thực, thị trường bất động sản, thuế và đời sống — rồi dịch chúng thành quyết định thực tế cho nhà đầu tư Việt. Mỗi bài viết song ngữ Việt – Anh, dựa trên nguồn chính thức, và không hứa hẹn kết quả.', 'NAC Times reads global signals — visa policy, property markets, tax and quality of life — and turns them into practical decisions for Vietnamese investors. Stories are bilingual Vietnamese–English, grounded in official sources, and never promise outcomes.') + '</p><h2>' + T('Các chuyên mục', 'The sections') + '</h2><ul>' +
-    CATS.map(function(c){ return '<li><a href="#/muc/' + c.slug + '">' + esc(lang === 'en' ? c.en : c.vi) + '</a> — ' + esc(T(c.dvi, c.den)) + '</li>'; }).join('') + '</ul></div></div></div>';
-}
-function vNotFound(){ document.title = 'NAC Times'; return '<div class="wrap"><header class="page-head"><div class="lab a">404</div><h1>' + T('Không tìm thấy trang', 'Page not found') + '</h1><p>' + T('Trang này không tồn tại hoặc đã được chuyển.', 'This page doesn’t exist or has moved.') + ' <a href="#/" style="color:var(--accent)">' + T('Về trang chủ →', 'Back to the front page →') + '</a></p></header></div>'; }
-
-/* ---------- article ---------- */
-function vArticle(id){
-  var p = byId[id];
-  document.title = (p ? p.t : 'NAC Times') + ' · NAC Times';
-  var head = p ? '<div class="lab a">' + esc(p.k || cat(p.c)) + '</div><h1>' + esc(p.t) + '</h1>' + (p.en ? '<p class="deck">' + esc(p.en) + '</p>' : '') : '<div class="skel h"></div>';
-  return '<div class="wrap"><div class="crumbs"><a href="#/">' + T('Trang chủ', 'Home') + '</a>' + (p && catOf(p.c) ? ' / <a href="#/muc/' + catOf(p.c).slug + '">' + esc(cat(p.c)) + '</a>' : '') + '</div>' +
-    '<div class="art-hero">' + (p && p.img ? '<img src="' + esc(p.img) + '" alt="">' : '') + '</div>' +
-    '<article class="art" id="art">' + head + '<div id="art-rest"><div class="skel"></div><div class="skel"></div><div class="skel w6"></div></div></article><div id="art-after"></div></div>';
-}
-function cleanBody(html){
-  var doc = new DOMParser().parseFromString('<div id="r">' + html + '</div>', 'text/html'), r = doc.getElementById('r');
-  r.querySelectorAll('style,script,.nac-mag-hero,.nac-mag-kick,.nac-mag-head,.nac-toc,.wp-block-rank-math-toc-block,#nac-doc-them,.nac-rel').forEach(function(n){ n.remove(); });
-  r.querySelectorAll('p').forEach(function(n){ if (!n.textContent.trim() && !n.querySelector('img')) n.remove(); });
-  r.querySelectorAll('table').forEach(function(t){ var w = doc.createElement('div'); w.className = 'tw'; t.parentNode.insertBefore(w, t); w.appendChild(t); });
-  r.querySelectorAll('a[href]').forEach(function(a){ var h = a.getAttribute('href'); if (h.charAt(0) !== '#') { a.target = '_blank'; a.rel = 'noopener'; } });
-  var n = 0; r.querySelectorAll('h2,h3').forEach(function(h){ if (!h.id) h.id = 'h-' + (++n); });
-  return r;
-}
-function paintArticle(id, post){
-  var p = byId[id] || fromWp(post);
-  var html = post.content.rendered;
-  var stand = html.match(/<p class="nac-mag-stand">([\s\S]*?)<\/p>/), standEn = html.match(/<p class="nac-mag-stand en">([\s\S]*?)<\/p>/);
-  var r = cleanBody(html), hasEn = !!r.querySelector('#nac-en');
-  var heads = [].slice.call(r.querySelectorAll('h2')).filter(function(h){ return !h.closest('.nac-refs'); });
-  var vi = heads.filter(function(h){ var s = h.closest('section'); return !s || s.id !== 'nac-en'; }), en = heads.filter(function(h){ var s = h.closest('section'); return s && s.id === 'nac-en'; });
-  function li(h){ return '<li><a href="#/bai/' + id + '/' + h.id + '">' + esc(h.textContent.trim()) + '</a></li>'; }
-  var toc = heads.length > 1 ? '<details class="toc" open><summary>' + T('Mục lục', 'Contents') + ' · ' + heads.length + '</summary>' +
-    (en.length ? '<span class="grp">Tiếng Việt</span><ul>' + vi.map(li).join('') + '</ul><span class="grp">English</span><ul>' + en.map(li).join('') + '</ul>' : '<ul>' + heads.map(li).join('') + '</ul>') + '</details>' : '';
-  var rest = document.getElementById('art-rest'); if (!rest) return;
-  rest.innerHTML = (stand ? '<p class="stand">' + stand[1] + '</p>' : '') + (standEn && (!stand || txt(standEn[1]) !== txt(stand[1])) ? '<p class="stand en">' + standEn[1] + '</p>' : '') +
-    '<div class="art-by"><span>' + esc(mins(p)) + '</span><span>' + esc(day(p.d)) + '</span>' + (hasEn ? '<span class="sp"><a href="#/bai/' + id + '/nac-vi">Tiếng Việt</a><a href="#/bai/' + id + '/nac-en">English</a></span>' : '') + '</div>' +
-    toc + '<div class="body">' + r.innerHTML + '</div>';
-  var same = sorted.filter(function(x){ return x.c === p.c && x.id !== p.id; }).slice(0, 3);
-  var i = sorted.indexOf(byId[id]), newer = i > 0 ? sorted[i - 1] : null, older = i >= 0 && i < sorted.length - 1 ? sorted[i + 1] : null;
-  document.getElementById('art-after').innerHTML = '<div class="art-foot"><span>' + T('Bản gốc trên blog: ', 'Original on the blog: ') + '<a href="' + esc(p.u) + '" target="_blank" rel="noopener">blog.nomadassetcollective.com ↗</a></span></div>' +
-    ((newer || older) ? '<nav class="pn">' + (older ? '<a' + L(older) + '><span class="lab a">← ' + T('Bài trước', 'Previous') + '</span><h3>' + esc(older.t) + '</h3></a>' : '<span></span>') + (newer ? '<a' + L(newer) + '><span class="lab a">' + T('Bài sau', 'Next') + ' →</span><h3>' + esc(newer.t) + '</h3></a>' : '') + '</nav>' : '') +
-    (same.length ? '<section class="sect" style="border-bottom:0"><div class="sect-head"><h2>' + T('Cùng chuyên mục', 'More in ') + (lang === 'en' ? esc(cat(p.c)) : ': ' + esc(cat(p.c))) + '</h2></div><div class="grid3" style="padding-top:0">' + same.map(card).join('') + '</div></section>' : '');
-}
-function loadArticle(id, anchor){
-  function go(post){ paintArticle(id, post); if (anchor) { var t = document.getElementById(anchor); if (t) t.scrollIntoView(); } }
-  if (artCache[id]) return go(artCache[id]);
-  fetch(WP + '/posts/' + id + '?_embed=wp:featuredmedia,wp:term').then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); }).then(function(post){ artCache[id] = post; if (current().id === String(id)) go(post); })
-    .catch(function(){ var rest = document.getElementById('art-rest'), p = byId[id]; if (rest) rest.innerHTML = '<p class="empty-note">' + T('Không tải được nội dung lúc này.', 'The story could not load right now.') + (p ? ' <a style="color:var(--accent)" href="' + esc(p.u) + '" target="_blank" rel="noopener">' + T('Đọc trên blog ↗', 'Read on the blog ↗') + '</a>' : '') + '</p>'; });
-}
-
-/* ================= router ================= */
-function current(){ var h = location.hash.replace(/^#\/?/, ''), parts = h.split('?')[0].split('/'); return {r:parts[0] || '', id:parts[1] || '', sub:parts[2] || '', q:decodeURIComponent((h.split('?q=')[1] || '').replace(/\+/g, ' '))}; }
-var lastRoute = '';
-function route(){
-  var c = current(), v = document.getElementById('view'), key = c.r + '/' + c.id, html;
-  if (key === lastRoute && c.r === 'bai' && c.sub) { var t = document.getElementById(c.sub); if (t) t.scrollIntoView({behavior:'smooth'}); return; }
-  var same = key === lastRoute; lastRoute = key;
-  if (c.r === '') { document.title = 'NAC Times — ' + T('Tạp chí di trú đầu tư', 'The investment-migration journal'); html = vHome(); }
-  else if (c.r === 'muc') html = vCat(c.id);
-  else if (c.r === 'diem-den') html = c.id ? vDest(c.id) : vDestIndex();
-  else if (c.r === 'bai') html = vArticle(c.id);
-  else if (c.r === 'tim') html = vSearch(c.q);
-  else if (c.r === 'gioi-thieu') html = vAbout();
-  else html = vNotFound();
-  var y = window.scrollY; v.innerHTML = html;
-  if (c.r === '') afterHome();
-  if (c.r === 'tim') { renderSearch(); var sq = document.getElementById('sq'); sq.focus(); sq.setSelectionRange(sq.value.length, sq.value.length); }
-  if (c.r === 'bai') loadArticle(c.id, c.sub);
-  window.scrollTo(0, same ? y : 0);
-  renderNav(c);
-}
-function renderNav(c){
-  var here = c.r === 'muc' ? c.id : c.r;
-  document.getElementById('nav').innerHTML = '<a class="navl" href="#/"' + (here === '' ? ' aria-current="page"' : '') + '>' + T('Trang nhất', 'Front page') + '</a>' +
-    CATS.map(function(x){ return '<a class="navl" href="#/muc/' + x.slug + '"' + (here === x.slug ? ' aria-current="page"' : '') + '>' + esc(lang === 'en' ? x.en : x.vi) + '</a>'; }).join('') +
-    '<a class="navl" href="#/diem-den"' + (here === 'diem-den' ? ' aria-current="page"' : '') + '>' + T('Điểm đến', 'Destinations') + '</a>' +
-    '<a class="navl ic" href="#/tim"' + (here === 'tim' ? ' aria-current="page"' : '') + '><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>' + T('Tìm', 'Search') + '</a>';
-}
-
-/* ================= interactions ================= */
 var peek = document.getElementById('peek'), peekImg = document.getElementById('peek-img');
 function bindPeek(){
   var list = document.getElementById('list'); if (!list || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   list.addEventListener('pointermove', function(e){ var a = e.target.closest('a[data-id]'), p = a && byId[a.getAttribute('data-id')]; if (!p || !p.img) { peek.classList.remove('on'); return; } if (peekImg.getAttribute('src') !== p.img) peekImg.src = p.img; peek.style.left = e.clientX + 'px'; peek.style.top = e.clientY + 'px'; peek.classList.add('on'); });
   list.addEventListener('pointerleave', function(){ peek.classList.remove('on'); });
 }
-document.addEventListener('click', function(e){
-  var t = e.target.closest('[data-dest],[data-budget],#more,#clear,#lang-vi,#lang-en,#back-top'); if (!t) return;
-  if (t.id === 'back-top') return window.scrollTo({top:0, behavior:'smooth'});
-  if (t.id === 'lang-vi' || t.id === 'lang-en') { lang = t.id === 'lang-en' ? 'en' : 'vi'; try { localStorage.setItem('nt_lang', lang); } catch (x) {} applyLang(); lastRoute = ''; return route(); }
-  if (t.id === 'more') { st.shown += 15; return renderIndex(); }
-  if (t.id === 'clear') { st.dest = ''; st.shown = 15; return renderIndex(); }
-  if (t.hasAttribute('data-budget')) { st.budget = +t.getAttribute('data-budget'); return renderStack(); }
-  if (t.hasAttribute('data-dest')) { st.dest = st.dest === t.getAttribute('data-dest') ? '' : t.getAttribute('data-dest'); st.shown = 15; return renderIndex(); }
-});
-document.addEventListener('input', function(e){ if (e.target.id === 'sq') { renderSearch(); history.replaceState(null, '', '#/tim?q=' + encodeURIComponent(e.target.value)); } });
-document.addEventListener('keydown', function(e){ if (e.key === '/' && !/input|textarea/i.test(document.activeElement.tagName)) { e.preventDefault(); location.hash = '#/tim'; } });
+
+/* ================= LIST PAGES (section / destination) ================= */
+function listPage(o){
+  used = {};
+  var list = o.list, lead = take(list.filter(function(p){ return p.img; }), 1)[0], brief = take(list, 3), rest = list.filter(function(p){ return !used[p.id]; });
+  var ms = list.reduce(function(a, p){ return a + p.m; }, 0);
+  var html = '<div class="wrap"><section class="open"><div class="rail-o"><div class="crumbs"><a href="#/">NAC Times</a>' + (o.parent ? ' / <a href="' + o.parent[1] + '">' + esc(o.parent[0]) + '</a>' : '') + '</div><div><b>' + list.length + '</b>' + T('bài', 'stories') + '</div><div><b>' + ms + '</b>' + T('phút đọc', 'minutes') + '</div>' + (list[0] ? '<div><b>' + dot(list[0].d) + '</b>' + T('mới nhất', 'latest') + '</div>' : '') + '</div>' +
+    '<div class="kicker"><span class="label acc">' + esc(o.kicker) + '</span>' + liveTag() + '</div><h1>' + esc(o.title) + '</h1><p class="dek">' + esc(o.desc) + '</p></section></div>';
+  if (!lead) return html + '<div class="wrap"><p class="empty-note">' + T('Chưa có bài viết nào ở đây.', 'No stories here yet.') + '</p></div>';
+  html += '<div class="wrap"><section class="story" style="padding-top:12px"><aside class="rail"><div class="meta"><b>' + (o.extraN != null ? o.extraN : list.filter(function(p){ return p.bi; }).length) + '</b>' + (o.extraL || T('bài có bản tiếng Anh', 'with an English edition')) + '</div></aside><div class="text">' +
+    (brief.length ? '<section class="thesis"><div class="label">' + T('Đọc trước, trong ba bài', 'Start here, in three stories') + '</div><ol>' + brief.map(function(p){ return '<li><span><a' + L(p) + '>' + esc(p.t) + '</a><small>' + esc(cat(p.c)) + ' · ' + esc(mins(p)) + '</small></span></li>'; }).join('') + '</ol></section>' : '') +
+    '</div></section></div>';
+  html += '<div class="wrap"><section class="edition" style="border-top:0;padding-top:0"><div class="lh"><span class="label ink">' + T('Bài dẫn', 'Lead story') + '</span></div><div class="lead-row"><a' + L(lead) + '>' + ph(lead, true) + '</a><div><a' + L(lead) + '><h3>' + esc(lead.t) + '</h3></a><p>' + esc(lead.x) + '</p>' + ml(lead) + '</div></div></section>';
+  if (rest.length) html += '<section class="edition"><div class="lh"><span class="label ink">' + T('Tất cả bài', 'All stories') + '</span><p>' + rest.length + T(' bài khác, mới nhất trước.', ' more, newest first.') + '</p></div><div class="tiles">' + rest.map(function(p){ return '<div class="tile"><a' + L(p) + '>' + ph(p) + '<h3>' + esc(p.t) + '</h3></a>' + ml(p) + '</div>'; }).join('') + '</div></section>';
+  html += '<div class="story" style="padding-top:0"><div></div><div class="text">' + cta(o.cta) + '</div></div></div>';
+  return html;
+}
+function vCat(slug){
+  var c = null; CATS.forEach(function(x){ if (x.slug === slug) c = x; }); if (!c) return vNotFound();
+  document.title = (lang === 'en' ? c.en : c.vi) + ' · NAC Times';
+  return listPage({kicker:T('Chuyên mục', 'Section'), title:lang === 'en' ? c.en : c.vi, desc:T(c.dvi, c.den), list:sorted.filter(function(p){ return p.c === c.vi; }), cta:T('Có câu hỏi về một chương trình cụ thể? Hỏi thẳng cố vấn NAC.', 'A question about a specific program? Ask a NAC advisor directly.')});
+}
+function vDest(slug){
+  var d = null; DEST_ALL.forEach(function(x){ if (x.slug === slug) d = x; }); if (!d) return vNotFound();
+  document.title = dn(d) + ' · NAC Times';
+  var list = sorted.filter(function(p){ return p.dest.indexOf(d.vi) >= 0; }), cats = {}; list.forEach(function(p){ cats[p.c] = 1; });
+  return listPage({kicker:T('Điểm đến', 'Destination'), title:dn(d), parent:[T('Điểm đến', 'Destinations'), '#/diem-den'], desc:T('Mọi bài NAC Times nhắc đến ' + d.vi + ' — chương trình, thị trường và góc nhìn.', 'Every NAC Times story that covers ' + d.en + ' — programs, markets and perspective.'), list:list, extraN:Object.keys(cats).length, extraL:T('chuyên mục đề cập', 'sections covering it'), cta:T('Cân nhắc ' + d.vi + '? Đi qua lộ trình với NAC bằng hồ sơ thật.', 'Considering ' + d.en + '? Walk the route with NAC against your real file.')});
+}
+function vDestIndex(){
+  document.title = T('Điểm đến', 'Destinations') + ' · NAC Times';
+  var maxN = DEST.length ? DEST[0].n : 1;
+  return '<div class="wrap"><section class="open"><div class="rail-o"><div class="crumbs"><a href="#/">NAC Times</a></div><div><b>' + DEST.length + '</b>' + T('điểm đến', 'destinations') + '</div></div><div class="kicker"><span class="label acc">' + T('Bản đồ biên tập', 'Editorial atlas') + '</span>' + liveTag() + '</div><h1>' + T('Điểm <em>đến</em>', 'Desti<em>nations</em>') + '</h1><p class="dek">' + T('Mỗi quốc gia NAC Times đã viết về — đọc theo số bài, và bài mới nhất về nơi đó.', 'Every country NAC Times has covered — read by volume, and the latest story about each.') + '</p></section>' +
+    '<section class="story" style="padding-top:8px"><aside class="rail"><div class="meta"><b>' + P.filter(function(p){ return p.dest.length; }).length + '</b>' + T('bài gắn điểm đến', 'stories tagged to a place') + '</div></aside><div class="text"><div class="routes"><table><caption style="caption-side:bottom;text-align:left;padding-top:10px;font:400 12px/1.5 var(--sans);color:var(--ink-3)">' + T('Điểm đến được nhận diện theo tên quốc gia/thành phố trong tiêu đề và tóm tắt bài.', 'Destinations are matched from country and city names in each title and summary.') + '</caption><thead><tr><th scope="col">' + T('Điểm đến', 'Destination') + '</th><th scope="col">' + T('Số bài', 'Stories') + '</th><th scope="col">' + T('Bài mới nhất', 'Latest') + '</th></tr></thead><tbody>' +
+    DEST.map(function(d){ return '<tr><th scope="row"><a href="#/diem-den/' + d.slug + '">' + esc(dn(d)) + '</a></th><td class="n">' + d.n + '<span class="bar-i"><i style="width:' + Math.round(d.n / maxN * 100) + '%"></i></span></td><td><a' + L(d.latest) + '><span class="t">' + esc(d.latest.t) + '</span></a><div class="meta-l" style="margin-top:4px">' + dot(d.latest.d) + '</div></td></tr>'; }).join('') + '</tbody></table></div></div></section></div>';
+}
+function vSearch(q){
+  document.title = T('Tìm kiếm', 'Search') + ' · NAC Times';
+  return '<div class="wrap"><section class="open"><div class="rail-o"><div class="crumbs"><a href="#/">NAC Times</a></div><div><b>' + P.length + '</b>' + T('bài có thể tìm', 'searchable stories') + '</div></div><div class="kicker"><span class="label acc">' + T('Tìm trong kho', 'Search the archive') + '</span></div>' +
+    '<label class="searchbar" for="sq" style="grid-column:2"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="sq" type="search" autocomplete="off" value="' + esc(q) + '" placeholder="' + T('Hy Lạp, golden visa, Đà Nẵng…', 'Greece, golden visa, Da Nang…') + '"></label><div class="byline" id="s-status"></div></section>' +
+    '<section class="story" style="padding-top:8px"><div></div><div class="text"><ul class="idx" id="s-res"></ul></div></section></div>';
+}
+function renderSearch(){
+  var el = document.getElementById('sq'); if (!el) return;
+  var q = norm(el.value.trim()), terms = q.split(' ').filter(Boolean);
+  var res = terms.length ? sorted.filter(function(p){ return terms.every(function(t){ return p.hay.indexOf(t) >= 0; }); }) : [];
+  document.getElementById('s-status').textContent = terms.length ? res.length + T(' kết quả', ' results') : T('Gõ tên quốc gia, chương trình hoặc chủ đề — không cần dấu.', 'Type a country, program or topic — accents optional.');
+  document.getElementById('s-res').innerHTML = res.map(function(p, i){ return '<li><a' + L(p) + '><span class="p">¶' + (i + 1) + '</span><span class="d">' + dot(p.d) + '</span><h3>' + esc(p.t) + '</h3><span class="c">' + esc(cat(p.c)) + '</span><span class="t">' + p.m + T(' phút', ' min') + '</span></a></li>'; }).join('') || (terms.length ? '<li class="empty-note">' + T('Không tìm thấy. Thử một từ ngắn hơn, như “visa” hoặc “síp”.', 'Nothing found. Try a shorter word, like “visa” or “cyprus”.') + '</li>' : '');
+}
+function vAbout(){
+  document.title = T('Về NAC Times', 'About NAC Times');
+  var ms = P.reduce(function(a, p){ return a + p.m; }, 0);
+  return '<div class="wrap"><section class="open"><div class="rail-o"><div class="crumbs"><a href="#/">NAC Times</a></div></div><div class="kicker"><span class="label acc">' + T('Giới thiệu', 'About') + '</span></div><h1>' + T('Một tạp chí cho người <em>đang chọn nơi sống</em>', 'A journal for people <em>choosing where to live</em>') + '</h1><p class="dek">' + T('NAC Times đọc tín hiệu toàn cầu và dịch chúng thành quyết định thực tế cho nhà đầu tư Việt.', 'NAC Times reads global signals and turns them into practical decisions for Vietnamese investors.') + '</p></section>' +
+    '<section class="story"><aside class="rail"><div class="meta"><b>' + P.length + '</b>' + T('bài viết', 'stories') + '</div><div class="meta"><b>' + ms + '</b>' + T('phút đọc', 'minutes') + '</div></aside><div class="text art-body">' +
+    '<section class="thesis"><div class="label">' + T('Cam kết biên tập, trong ba câu', 'Our editorial promise, in three sentences') + '</div><ol><li>' + T('Mỗi bài song ngữ Việt – Anh, viết cho nhà đầu tư Việt trước tiên.', 'Every story is bilingual Vietnamese–English, written for Vietnamese investors first.') + '</li><li>' + T('Số liệu dẫn về nguồn chính thức; không hứa hẹn kết quả.', 'Figures trace to official sources; we never promise outcomes.') + '</li><li>' + T('Mỗi bài là một bài viết sống — được cập nhật khi luật thay đổi.', 'Each story is a living article — updated when the rules change.') + '</li></ol></section>' +
+    '<p class="drop">' + T('Chúng tôi viết về thị thực, bất động sản, thuế và đời sống ở những nơi mà gia đình Việt đang cân nhắc làm căn cứ thứ hai. Không phải để bán một giấc mơ, mà để giúp bạn thấy rõ cái giá, thời gian và rủi ro của từng lựa chọn.', 'We write about visas, property, tax and daily life in the places Vietnamese families are weighing as a second base. Not to sell a dream, but to make the cost, the timeline and the risk of each option plain.') + '</p><h2>' + T('Các chuyên mục', 'The sections') + '</h2><ul>' +
+    CATS.map(function(c){ return '<li><a href="#/muc/' + c.slug + '">' + esc(lang === 'en' ? c.en : c.vi) + '</a> — ' + esc(T(c.dvi, c.den)) + '</li>'; }).join('') + '</ul>' + cta(T('Muốn bàn về trường hợp của bạn?', 'Want to talk through your case?')) + '</div></section></div>';
+}
+function vNotFound(){ document.title = 'NAC Times'; return '<div class="wrap"><section class="open"><div class="rail-o"></div><div class="kicker"><span class="label acc">404</span></div><h1>' + T('Trang này <em>không tồn tại</em>', 'This page <em>doesn’t exist</em>') + '</h1><p class="dek"><a href="#/" style="color:var(--accent)">' + T('Về trang nhất →', 'Back to the front page →') + '</a></p></section></div>'; }
+
+/* ================= ARTICLE ================= */
+var artLangNow = 'vi';
+function vArticle(id){
+  var p = byId[id];
+  document.title = (p ? p.t : 'NAC Times') + ' · NAC Times';
+  if (!p) return '<div class="wrap"><section class="open"><div class="rail-o"></div><h1><span class="skel" style="display:block;height:60px;width:80%"></span></h1></section></div><div class="wrap"><section class="story"><div></div><div class="text" id="art-rest"><div class="skel"></div><div class="skel"></div><div class="skel s"></div></div></section></div>';
+  var c = catOf(p.c);
+  return '<div class="wrap"><section class="open"><div class="rail-o"><div class="crumbs"><a href="#/">NAC Times</a>' + (c ? ' / <a href="#/muc/' + c.slug + '">' + esc(cat(p.c)) + '</a>' : '') + '</div></div>' +
+    '<div class="kicker"><span class="label acc">' + esc(p.k || cat(p.c)) + '</span><span class="live" id="art-ver">' + T('Bài viết sống', 'Living article') + '</span></div><h1>' + split(p.t) + '</h1>' +
+    (p.en ? '<p class="dek" style="font-style:italic">' + esc(p.en) + '</p>' : '<p class="dek">' + esc(p.x) + '</p>') +
+    '<div class="byline"><span><b>' + T('Ban biên tập NAC', 'The NAC Desk') + '</b></span><span>' + dot(p.d) + '</span><span id="art-rt">' + esc(mins(p)) + '</span>' + (p.dest.length ? '<span>' + p.dest.slice(0, 3).map(function(d){ return '<a href="#/diem-den/' + destOf(d).slug + '">' + esc(dn(destOf(d))) + '</a>'; }).join(' · ') + '</span>' : '') + '</div></section></div>' +
+    '<div class="wrap hero-w"><figure class="hero">' + ph(p, true) + '<figcaption><span>' + esc(p.x.slice(0, 120)) + (p.x.length > 120 ? '…' : '') + '</span><span>' + T('Ảnh: NAC', 'Photograph: NAC') + '</span></figcaption></figure></div>' +
+    '<div class="wrap"><section class="story"><aside class="rail" aria-label="' + T('Trong bài', 'In this piece') + '"><nav class="toc" id="toc"></nav><div class="meta"><b id="rail-rt">' + p.m + T(' phút', ' min') + '</b><span id="rail-rtl">' + T('đọc đầy đủ', 'full read') + '</span></div></aside><div class="text" id="art-rest"><div class="skel"></div><div class="skel"></div><div class="skel s"></div><div class="skel"></div></div></section><div id="art-after"></div></div>';
+}
+function cleanBody(html){
+  var doc = new DOMParser().parseFromString('<div id="r">' + html + '</div>', 'text/html'), r = doc.getElementById('r');
+  var refs = [].slice.call(r.querySelectorAll('.nac-refs .nac-src a')).map(function(a){ return {t:a.textContent.trim(), u:a.href}; });
+  r.querySelectorAll('style,script,.nac-mag-hero,.nac-mag-kick,.nac-mag-head,.nac-toc,.wp-block-rank-math-toc-block,.nac-refs').forEach(function(n){ n.remove(); });
+  r.querySelectorAll('p').forEach(function(n){ if (!n.textContent.trim() && !n.querySelector('img')) n.remove(); });
+  r.querySelectorAll('table').forEach(function(t){ var w = doc.createElement('div'); w.className = 'tw'; t.parentNode.insertBefore(w, t); w.appendChild(t); });
+  r.querySelectorAll('a[href]').forEach(function(a){ if (a.getAttribute('href').charAt(0) !== '#') { a.target = '_blank'; a.rel = 'noopener'; } });
+  // sections by language; posts without an EN section are one VI section
+  var vi = r.querySelector('#nac-vi'), en = r.querySelector('#nac-en');
+  if (!vi) { vi = doc.createElement('section'); vi.id = 'nac-vi'; while (r.firstChild) vi.appendChild(r.firstChild); r.appendChild(vi); }
+  [vi, en].forEach(function(sec){
+    if (!sec) return; var k = sec.id === 'nac-en' ? 'en' : 'vi', n = 0, afterH = true;
+    sec.querySelectorAll('h2,h3').forEach(function(h){ h.id = k + '-h' + (++n); });
+    [].slice.call(sec.children).forEach(function(el){
+      if (/^H[23]$/.test(el.tagName)) { afterH = true; return; }
+      if (el.tagName === 'P') { el.classList.add('n'); if (afterH) { el.classList.add('lead'); afterH = false; } else el.classList.add('deep'); }
+      else if (el.tagName !== 'DIV') el.classList.add('deep');
+    });
+  });
+  return {root:r, vi:vi, en:en, refs:refs};
+}
+function paintArticle(id, post){
+  var p = byId[id] || fromWp(post); if (!byId[id]) { byId[id] = p; }
+  var body = cleanBody(post.content.rendered), hasEn = !!body.en;
+  var rest = document.getElementById('art-rest'); if (!rest) return;
+  if (!document.querySelector('.open h1') || document.querySelector('.open h1 .skel')) { var v = document.getElementById('view'); var y = scrollY; v.innerHTML = vArticle(id); rest = document.getElementById('art-rest'); scrollTo(0, y); }
+  artLangNow = hasEn && lang === 'en' ? 'en' : 'vi';
+  var heads = [].slice.call(body.vi.querySelectorAll('h2')).slice(0, 3).map(function(h){ return h.textContent.replace(/^\d+\.\s*/, '').trim(); });
+  var thesis = heads.length >= 2 ? '<section class="thesis"><div class="label">' + T('Bài này đi qua', 'This piece walks through') + '</div><ol>' + heads.map(function(h){ return '<li>' + esc(h) + '</li>'; }).join('') + '</ol></section>' : '';
+  var headsEn = hasEn ? [].slice.call(body.en.querySelectorAll('h2')).slice(0, 3).map(function(h){ return h.textContent.replace(/^\d+\.\s*/, '').trim(); }) : [];
+  var thesisEn = headsEn.length >= 2 ? '<section class="thesis"><div class="label">This piece walks through</div><ol>' + headsEn.map(function(h){ return '<li>' + esc(h) + '</li>'; }).join('') + '</ol></section>' : '';
+  rest.innerHTML =
+    (!hasEn && lang === 'en' ? '<p class="empty-note" style="padding-top:0">This story is published in Vietnamese only.</p>' : '') +
+    '<div class="art-body" data-al="vi"' + (artLangNow === 'vi' ? '' : ' hidden') + ' lang="vi">' + thesis + body.vi.innerHTML + '</div>' +
+    (hasEn ? '<div class="art-body" data-al="en"' + (artLangNow === 'en' ? '' : ' hidden') + ' lang="en">' + thesisEn + body.en.innerHTML + '</div>' : '') +
+    '<section class="ask" aria-labelledby="ask-h"><h3 id="ask-h">' + T('Hỏi bài viết', 'Ask this article') + '</h3><p class="hint">' + T('Câu trả lời là chính các câu trong bài, kèm đoạn nguồn.', 'Answers are the article’s own sentences, cited to the paragraph.') + '</p>' +
+      '<label class="ask-in" for="ask-q"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="ask-q" type="text" autocomplete="off" placeholder="' + T('Chi phí, thời gian, thuế, quốc tịch…', 'Cost, timeline, tax, citizenship…') + '"></label>' +
+      '<div class="qs" id="ask-qs"></div><div class="ans" id="ask-ans"></div></section>' +
+    (body.refs.length ? '<section class="srcs"><div class="label ink">' + T('Nguồn chính thức', 'Official sources') + '</div><ol>' + body.refs.map(function(r){ return '<li><a href="' + esc(r.u) + '" target="_blank" rel="noopener">' + esc(r.t) + ' ↗</a></li>'; }).join('') + '</ol></section>' : '') +
+    cta(T('Đi qua từng con số trong bài bằng hồ sơ thật của gia đình bạn.', 'Walk through every number in this piece against your family’s actual file.')) +
+    '<div class="ledger"><div><b>' + T('Phiên bản', 'Version') + '</b>' + T('Xuất bản ', 'Published ') + dot(p.d) + (post.modified && post.modified.slice(0, 10) !== p.d ? '<br>' + T('Cập nhật ', 'Updated ') + dot(post.modified.slice(0, 10)) : '<br>' + T('Chưa có đính chính.', 'No corrections.')) + '</div><div><b>' + T('Nguồn', 'Sources') + '</b>' + (body.refs.length ? body.refs.length + T(' nguồn chính thức, dẫn ở trên', ' official sources, listed above') : T('Hồ sơ và số liệu NAC', 'NAC records and data')) + '<br><a href="' + esc(p.u) + '" target="_blank" rel="noopener">' + T('Bản gốc trên blog ↗', 'Original on the blog ↗') + '</a></div><div class="watch"><b>' + T('Đang theo dõi', 'Watching') + '</b>' + (p.dest.length ? T('Thay đổi chính sách tại ', 'Policy changes in ') + p.dest.slice(0, 2).map(function(d){ return dn(destOf(d)); }).join(T(' và ', ' and ')) : T('Thay đổi chính sách liên quan', 'Related policy changes')) + '</div></div>';
+  var i = sorted.indexOf(p), newer = i > 0 ? sorted[i - 1] : null, older = i >= 0 && i < sorted.length - 1 ? sorted[i + 1] : null;
+  var same = sorted.filter(function(x){ return x.c === p.c && x !== p; }).slice(0, 4);
+  document.getElementById('art-after').innerHTML = '<div class="story" style="padding-block:0"><div></div><div class="text">' + ((newer || older) ? '<nav class="pn">' + (older ? '<a' + L(older) + '><span class="label">← ' + T('Bài trước', 'Previous') + '</span><h4>' + esc(older.t) + '</h4></a>' : '<span></span>') + (newer ? '<a' + L(newer) + '><span class="label">' + T('Bài sau', 'Next') + ' →</span><h4>' + esc(newer.t) + '</h4></a>' : '') + '</nav>' : '') + '</div></div>' +
+    (same.length ? '<section class="edition" style="margin-top:40px"><div class="lh"><h2><a href="#/muc/' + (catOf(p.c) || {}).slug + '">' + T('Cùng chuyên mục', 'More in this section') + '</a></h2></div><div class="tiles">' + same.map(function(x){ return '<div class="tile"><a' + L(x) + '>' + ph(x) + '<h3>' + esc(x.t) + '</h3></a>' + ml(x) + '</div>'; }).join('') + '</div></section>' : '');
+  document.getElementById('art-ver').textContent = T('Bài viết sống', 'Living article') + (post.modified && post.modified.slice(0, 10) !== p.d ? ' · ' + T('cập nhật ', 'updated ') + dot(post.modified.slice(0, 10)) : ' · v1');
+  articleChrome();
+}
+function activeBody(){ return document.querySelector('.art-body[data-al]:not([hidden])'); }
+function articleChrome(){
+  var b = activeBody(); if (!b) return;
+  document.body.classList.toggle('skim', depth === 'skim');
+  var n = 0; b.querySelectorAll('p.n').forEach(function(p){ if (getComputedStyle(p).display === 'none') { p.removeAttribute('data-p'); return; } p.setAttribute('data-p', '¶' + (++n)); });
+  var toc = document.getElementById('toc');
+  if (toc) toc.innerHTML = [].slice.call(b.querySelectorAll('h2')).map(function(h){ return '<a href="#/bai/' + current().id + '/' + h.id + '" data-h="' + h.id + '">' + esc(h.textContent.replace(/^\d+\.\s*/, '').trim()) + '</a>'; }).join('');
+  var words = (b.textContent || '').split(/\s+/).length, full = Math.max(1, Math.round(words / 220)), vis = 0;
+  b.querySelectorAll('p.n,li').forEach(function(x){ if (x.offsetParent) vis += (x.textContent || '').split(/\s+/).length; });
+  var skimMin = Math.max(1, Math.round(vis / 220));
+  document.getElementById('rail-rt').textContent = (depth === 'skim' ? skimMin : full) + T(' phút', ' min');
+  document.getElementById('rail-rtl').textContent = depth === 'skim' ? T('đọc lướt', 'skim') : T('đọc đầy đủ', 'full read');
+  // ask chips from the article's own headings
+  var qs = document.getElementById('ask-qs');
+  if (qs) qs.innerHTML = ['chi phí|cost', 'thời gian|time', 'thuế|tax', 'quốc tịch|citizenship', 'rủi ro|risk'].map(function(k){ var w = k.split('|'); return '<button type="button" data-ask="' + (lang === 'en' ? w[1] : w[0]) + '" aria-pressed="false">' + (lang === 'en' ? w[1] : w[0]) + '</button>'; }).join('');
+  spy(); prog();
+}
+function ask(q){
+  var b = activeBody(), out = document.getElementById('ask-ans'); if (!b || !out) return;
+  var terms = norm(q).split(' ').filter(function(t){ return t.length > 1; }); if (!terms.length) { out.innerHTML = ''; return; }
+  if (depth === 'skim') { depth = 'full'; paintDepth(); }
+  var hits = [];
+  b.querySelectorAll('p.n,li').forEach(function(p){
+    var sentences = (p.textContent || '').split(/(?<=[.!?])\s+/);
+    sentences.forEach(function(s){ var ns = norm(s), score = 0; terms.forEach(function(t){ if (ns.indexOf(t) >= 0) score++; }); if (score) hits.push({s:s, p:p, score:score}); });
+  });
+  hits.sort(function(a, b){ return b.score - a.score; });
+  hits = hits.slice(0, 3);
+  out.innerHTML = hits.length ? '' : '<div class="none">' + T('Bài này không nói trực tiếp về điều đó. Hỏi cố vấn NAC để có câu trả lời cho trường hợp của bạn.', 'This piece doesn’t address that directly. Ask a NAC advisor for an answer on your case.') + '</div>';
+  hits.forEach(function(h){
+    var d = document.createElement('div'); d.className = 'hit';
+    var s = esc(h.s);
+    d.innerHTML = '“' + s + '”';
+    var tag = h.p.getAttribute('data-p') || '';
+    var c = document.createElement('button'); c.type = 'button'; c.className = 'cite'; c.textContent = T('Nguồn: đoạn ', 'Source: ') + (tag || '¶');
+    c.addEventListener('click', function(){ h.p.scrollIntoView({behavior:'smooth', block:'center'}); h.p.classList.remove('flash'); void h.p.offsetWidth; h.p.classList.add('flash'); });
+    d.appendChild(document.createElement('br')); d.appendChild(c); out.appendChild(d);
+  });
+}
+function loadArticle(id, anchor){
+  function go(post){ paintArticle(id, post); if (anchor) { var t = document.getElementById(anchor); if (t) t.scrollIntoView(); } }
+  if (artCache[id] && artCache[id].content) return go(artCache[id]);
+  fetch(WP + '/posts/' + id + '?_embed=wp:featuredmedia,wp:term').then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function(post){ artCache[id] = post; if (current().id === String(id)) go(post); })
+    .catch(function(){ var rest = document.getElementById('art-rest'), p = byId[id]; if (rest) rest.innerHTML = '<p class="empty-note">' + T('Không tải được nội dung lúc này.', 'The story could not load right now.') + (p ? ' <a style="color:var(--accent)" href="' + esc(p.u) + '" target="_blank" rel="noopener">' + T('Đọc trên blog ↗', 'Read on the blog ↗') + '</a>' : '') + '</p>'; });
+}
+
+/* ================= ROUTER + CHROME ================= */
+function current(){ var h = location.hash.replace(/^#\/?/, ''), parts = h.split('?')[0].split('/'); return {r:parts[0] || '', id:parts[1] || '', sub:parts[2] || '', q:decodeURIComponent((h.split('?q=')[1] || '').replace(/\+/g, ' '))}; }
+var lastKey = '';
+function route(){
+  var c = current(), key = c.r + '/' + c.id;
+  if (key === lastKey && c.r === 'bai' && c.sub) { var t = document.getElementById(c.sub); if (t) t.scrollIntoView({behavior:'smooth'}); return; }
+  var same = key === lastKey; lastKey = key;
+  var v = document.getElementById('view'), html;
+  if (c.r === '') html = vHome();
+  else if (c.r === 'muc') html = vCat(c.id);
+  else if (c.r === 'diem-den') html = c.id ? vDest(c.id) : vDestIndex();
+  else if (c.r === 'bai') html = vArticle(c.id);
+  else if (c.r === 'tim') html = vSearch(c.q);
+  else if (c.r === 'gioi-thieu') html = vAbout();
+  else html = vNotFound();
+  var y = scrollY; v.innerHTML = html;
+  document.getElementById('depth').hidden = c.r !== 'bai';
+  document.body.classList.toggle('skim', c.r === 'bai' && depth === 'skim');
+  if (c.r === '') afterHome();
+  if (c.r === 'tim') { renderSearch(); var sq = document.getElementById('sq'); sq.focus(); sq.setSelectionRange(sq.value.length, sq.value.length); }
+  if (c.r === 'bai') loadArticle(c.id, c.sub);
+  scrollTo(0, same ? y : 0);
+  renderNav(c); prog();
+}
+function renderNav(c){
+  var here = c.r === 'muc' ? c.id : c.r;
+  document.getElementById('nav').innerHTML = '<a href="#/"' + (here === '' ? ' aria-current="page"' : '') + '>' + T('Trang nhất', 'Front page') + '</a>' +
+    CATS.map(function(x){ return '<a href="#/muc/' + x.slug + '"' + (here === x.slug ? ' aria-current="page"' : '') + '>' + esc(lang === 'en' ? x.en : x.vi) + '</a>'; }).join('') +
+    '<a href="#/diem-den"' + (here === 'diem-den' ? ' aria-current="page"' : '') + '>' + T('Điểm đến', 'Destinations') + '</a><a href="#/gioi-thieu"' + (here === 'gioi-thieu' ? ' aria-current="page"' : '') + '>' + T('Giới thiệu', 'About') + '</a>';
+  var sec = '';
+  if (c.r === 'bai' && byId[c.id]) sec = cat(byId[c.id].c) + (byId[c.id].dest[0] ? ' · ' + dn(destOf(byId[c.id].dest[0])) : '');
+  else if (c.r === 'muc') { CATS.forEach(function(x){ if (x.slug === c.id) sec = lang === 'en' ? x.en : x.vi; }); }
+  else if (c.r === 'diem-den') sec = T('Điểm đến', 'Destinations');
+  else if (c.r === '') sec = T('Ấn bản ', 'Edition · ') + dot(new Date().toISOString().slice(0, 10));
+  document.getElementById('mast-sec').textContent = sec;
+}
 var bar = document.getElementById('progress'), bt = document.getElementById('back-top');
-window.addEventListener('scroll', function(){
-  var a = document.getElementById('art');
-  if (a) { var r = a.getBoundingClientRect(), total = a.offsetHeight - innerHeight; bar.style.width = Math.max(0, Math.min(100, (-r.top / Math.max(1, total)) * 100)) + '%'; } else bar.style.width = '0';
-  bt.classList.toggle('on', window.scrollY > 900);
-}, {passive:true});
+function prog(){ var t = document.querySelector('#art-rest'); if (!t || current().r !== 'bai') { bar.style.width = '0'; return; } var r = t.getBoundingClientRect(), h = r.height - innerHeight * .6; bar.style.width = Math.max(0, Math.min(1, -r.top / Math.max(h, 1))) * 100 + '%'; }
+function spy(){ var b = activeBody(); if (!b) return; var on = null; b.querySelectorAll('h2').forEach(function(h){ if (h.getBoundingClientRect().top < innerHeight * .35) on = h.id; }); document.querySelectorAll('#toc a').forEach(function(l){ l.classList.toggle('on', l.getAttribute('data-h') === on); }); }
+addEventListener('scroll', function(){ prog(); spy(); bt.classList.toggle('on', scrollY > 900); }, {passive:true});
+function paintDepth(){ document.getElementById('d-skim').setAttribute('aria-pressed', String(depth === 'skim')); document.getElementById('d-full').setAttribute('aria-pressed', String(depth === 'full')); try { localStorage.setItem('nt-depth', depth); } catch (e) {} if (current().r === 'bai') articleChrome(); }
 function applyLang(){
   document.documentElement.lang = lang;
   document.querySelectorAll('[data-vi][data-en]').forEach(function(el){ el.textContent = el.getAttribute('data-' + lang); });
-  document.getElementById('lang-vi').setAttribute('aria-pressed', String(lang === 'vi'));
-  document.getElementById('lang-en').setAttribute('aria-pressed', String(lang === 'en'));
-  document.getElementById('today').textContent = new Date().toLocaleDateString(lang === 'en' ? 'en-GB' : 'vi-VN', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
-  setSrc();
+  document.getElementById('l-vi').setAttribute('aria-pressed', String(lang === 'vi'));
+  document.getElementById('l-en').setAttribute('aria-pressed', String(lang === 'en'));
+  document.getElementById('d-skim').textContent = T('Đọc lướt', 'Skim'); document.getElementById('d-full').textContent = T('Đầy đủ', 'Full');
 }
+document.addEventListener('click', function(e){
+  var t = e.target.closest('[data-dest],[data-budget],[data-ask],#more,#l-vi,#l-en,#d-skim,#d-full,#back-top'); if (!t) return;
+  if (t.id === 'back-top') return scrollTo({top:0, behavior:'smooth'});
+  if (t.id === 'l-vi' || t.id === 'l-en') { lang = t.id === 'l-en' ? 'en' : 'vi'; try { localStorage.setItem('nt-lang', lang); } catch (x) {} applyLang(); lastKey = ''; var y = scrollY, c = current(); route(); if (c.r !== 'bai') scrollTo(0, y); return; }
+  if (t.id === 'd-skim' || t.id === 'd-full') { depth = t.id === 'd-skim' ? 'skim' : 'full'; return paintDepth(); }
+  if (t.id === 'more') { st.shown += 20; return renderIndex(); }
+  if (t.hasAttribute('data-budget')) { st.budget = +t.getAttribute('data-budget'); return renderStack(); }
+  if (t.hasAttribute('data-dest')) { st.dest = t.getAttribute('data-dest'); st.shown = 20; return renderIndex(); }
+  if (t.hasAttribute('data-ask')) { document.querySelectorAll('#ask-qs button').forEach(function(b){ b.setAttribute('aria-pressed', String(b === t)); }); document.getElementById('ask-q').value = t.getAttribute('data-ask'); return ask(t.getAttribute('data-ask')); }
+});
+document.addEventListener('input', function(e){
+  if (e.target.id === 'sq') { renderSearch(); history.replaceState(null, '', '#/tim?q=' + encodeURIComponent(e.target.value)); }
+  if (e.target.id === 'ask-q') ask(e.target.value);
+});
+document.addEventListener('keydown', function(e){ if (e.key === '/' && !/input|textarea/i.test(document.activeElement.tagName)) { e.preventDefault(); location.hash = '#/tim'; } });
 
-/* ================= boot ================= */
-var cached = null; try { cached = JSON.parse(sessionStorage.getItem('nt_posts') || 'null'); } catch (e) {}
+/* ================= BOOT ================= */
+var cached = null; try { cached = JSON.parse(sessionStorage.getItem('nt_posts2') || 'null'); } catch (e) {}
 prep(cached && cached.length ? cached : JSON.parse(document.getElementById('nt-data').textContent));
-applyLang(); route();
-window.addEventListener('hashchange', route);
-fetch(WP + '/posts?per_page=100&status=publish&_embed=wp:featuredmedia,wp:term&_fields=id,date,link,title,excerpt,content,_links,_embedded')
+applyLang(); paintDepth(); route();
+addEventListener('hashchange', route);
+fetch(WP + '/posts?per_page=100&status=publish&_embed=wp:featuredmedia,wp:term&_fields=id,date,modified,link,title,excerpt,content,_links,_embedded')
   .then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); })
   .then(function(rows){
     var data = rows.map(fromWp).filter(function(p){ return p.t; }); if (data.length < 5) return;
     rows.forEach(function(r){ artCache[r.id] = r; });
-    try { sessionStorage.setItem('nt_posts', JSON.stringify(data)); } catch (x) {}
-    isLive = true; prep(data); setSrc();
-    var c = current(); if (c.r !== 'bai' && c.r !== 'tim') { lastRoute = ''; var y = window.scrollY; route(); window.scrollTo(0, y); }
-  }).catch(function(){ isLive = false; setSrc(); });
+    try { sessionStorage.setItem('nt_posts2', JSON.stringify(data)); } catch (x) {}
+    isLive = true; prep(data);
+    var c = current(); if (c.r !== 'bai' && c.r !== 'tim') { lastKey = ''; var y = scrollY; route(); scrollTo(0, y); }
+    else if (c.r === 'bai') { var el = document.querySelector('.kicker .live'); }
+  }).catch(function(){ isLive = false; });
 })();
 </script>
 </body>
