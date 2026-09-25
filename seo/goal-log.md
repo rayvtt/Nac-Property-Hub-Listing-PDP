@@ -2,6 +2,33 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-09-25 — Execution tick: homepage title/meta/H1 audit (last unaudited target_url surface) shipped
+
+**De-dup check first:** `git log --since=midnight` clean across all 5 repos (routine content-pipeline auto-syncs only, last pre-midnight commits 00–02 UTC). 🚀 SEO Tasks confirmed via SQL (`date("Last Edited")='2026-09-25'`) — zero rows touched today before this run. Rank snapshot is still `seo/rank-snapshots/2026-09-21.json` (tracked 47, all not-ranking, avg position null) — no fresher GSC pull exists; per the 28-day-window rule, not re-measured this tick. **Nothing to defend** — nothing is in top-3 to fall out of.
+
+Zero tasks at `Status=Approved AND Auto-Applicable=true` (seo-apply has nothing to do — unchanged every day). CC_KEY/cockpit access re-checked (`curl .../blog-wp-whoami`) — still 401, so the Greece 12-H1 blog fix and the 4 blog keyword-meta fixes queued 09-23 remain genuinely blocked, not just unattempted.
+
+**Shipped this run — closed the one target_url surface in `seo/goal-keywords.json` never audited this cycle** (hub 09-18/19, CLP 09-20/21, brochure 09-22, blog 09-23 were all done; the `surface:"home"` cluster — 3 keywords → `https://nomadassetcollective.com/` — was missed):
+- Live-curled the homepage (served from `NAC-HOMEPAGE-V2.html` in `rayvtt/NAC---Property-Hub`, confirmed by matching the live H1 text back to the file). `<title>` already exact-matched **`đầu tư định cư`** (P0). `<meta name="description">`, `og:description`, and `twitter:description` matched **none** of the 3 mapped phrases (`đầu tư di trú` P0, `đầu tư định cư` P0, `di trú đầu tư` P1) as an exact contiguous phrase.
+- Rewrote all 3 descriptions to work in `đầu tư di trú` as one native-Vietnamese sentence (per `/copy-write-vi` — topic-fronted, no calque), without disturbing the title's existing match: meta → *"NAC đồng hành cùng nhà đầu tư di trú qua danh mục bất động sản tuyển chọn, gắn với 16 chương trình cư trú & quốc tịch — đối tác iQi Global, chuẩn IMC."* (150 chars); og/twitter mirrored shorter (127/106 chars).
+- Shipped via [PR #350](https://github.com/rayvtt/NAC---Property-Hub/pull/350) (rebase-merged, commit `d91aa06`), no WP admin needed — synced automatically via `sync-html-to-wordpress.yml`. **Live-verified via curl post-sync**: new meta description confirmed live on `nomadassetcollective.com/`.
+- SEO task filed and marked `Applied` in 🚀 SEO Tasks with the PR link.
+
+**New finding, filed not fixed:** the homepage's single `<h1>` ("Tiên phong một tiêu chuẩn sống toàn cầu" — a deliberate brand hero tagline) targets none of the 3 keywords. Unlike the Property Hub tool's H1 (rewritten directly 09-19 — that was a structural multi-H1 defect, not a creative-copy call), this is the flagship homepage's hero brand statement — filed as a separate P2 task for **Ray's call**, not self-served, with 3 options sketched (leave as pure brand voice; work a phrase into the hero-sub line instead; rewrite the H1 itself).
+
+**Indexation check:** nothing else shipped in the last 14 days besides 09-24's Notion-only WP-Post-ID backfill (no live page changed, nothing new to index-check) and today's homepage meta fix (too fresh to check recrawl — GSC latency is days, not hours). The 5 content-queue drafts remain `Idea`/Waiting to Review, unchanged.
+
+**Still BLOCKED ON RAY (unchanged + 1 new):**
+1. Malta CLP redirect bug (task #1524, filed 09-20) — WP admin, Redirection plugin, highest priority.
+2. Consolidation-plan 301s + CPT noindex — WP admin.
+3. Greece 12-H1 blog fix + the 4 blog keyword-meta fixes queued 09-23 — need Ray's cockpit access or a session holding `CC_KEY` (confirmed still 401 today).
+4. EB-5 pillar's 5 `[VERIFY]` items.
+5. The 14-row Published-but-not-live discrepancy filed 09-24 — needs Ray's per-row call.
+6. **NEW** — the homepage H1 hero-tagline keyword gap (today) — brand/creative call.
+7. The 5 content-queue drafts + all queued SEO Tasks — no Ray decision yet.
+
+**Next:** the on-page title/meta/H1 intent-match audit is now genuinely exhausted across every mapped surface (hub, CLP, brochure, blog, home). Once someone with CC_KEY/cockpit access is available, that unlocks 3 queued items at once (Greece 12-H1, 4 blog metas, 14-row re-push decisions). Until then: the first real GSC indexation check once a fresher snapshot lands, or re-verify the content queue is still exhausted before the next tick.
+
 ## 2026-09-24 — Execution tick: sitewide WP Post ID backfill sweep (closes out 09-23's blocker) + 14-row discrepancy found
 
 **De-dup check first:** `git log --since=midnight` across all 5 repos showed only routine content-pipeline auto-syncs (Notion sync, CLP sync, PDP scaffold) — no goal-review or SEO-fix commits yet today. 🚀 SEO Tasks confirmed via Notion SQL query (`date("Last Edited")='2026-09-24'`) — zero rows touched today before this run. Zero tasks at `Status=Approved AND Auto-Applicable=true` (seo-apply has nothing to do — same as every prior day). Rank snapshot is still `seo/rank-snapshots/2026-09-21.json` (tracked 47, all not-ranking, avg position null) — no fresher GSC pull exists; nothing to re-measure this tick per the 28-day-window rule. **Nothing to defend** — nothing is in top-3 to fall out of. The 5 content-queue pillar drafts remain `Status=Idea`/Waiting to Review, unchanged — no Ray decision yet, nothing to re-draft.
