@@ -2,6 +2,36 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-09-26 — Execution tick: root-caused the dormant Auto-Applicable backlog (297 tasks since May) — 39 tested live, real capability gap found
+
+**De-dup check first:** `git log --since=midnight` across all 5 repos showed only routine content-pipeline auto-syncs (Notion sync, CLP sync, PDP scaffold) before this run. Rank snapshot is still `seo/rank-snapshots/2026-09-21.json` (tracked 47, all not-ranking) — no fresher GSC pull; per the 28-day rule, not re-measured. **Nothing to defend** — nothing is in top-3 to fall out of. The 5 content-queue drafts remain `Idea`/Waiting to Review, unchanged (genuinely exhausted per 09-17/09-23).
+
+**New lever found — every prior tick's "Approved AND Auto-Applicable=true" check was querying the wrong gate.** Queried the full 🚀 SEO Tasks DB directly: **297 tasks sit at `Status=New` AND `Auto-Applicable=true`**, all created in one bulk audit on **2026-05-20** and never touched since (Impact Score up to 2000 — higher than anything in the active queue, incl. the P0 consolidation finding at 72). Every prior daily tick only ever checked whether *Approved* auto-applicable tasks existed (always zero, since nothing had promoted these from `New`) — nobody had looked at `New` + `Auto-Applicable=true` together before. Broke the 297 down by URL pattern:
+- **62 target `/residences/*`, `/citizenships/*`, `/compares/*`, `/residence-region/*`, `/citizenship-region/*`** — these are the exact 20+ broken duplicate CPT URLs `seo/consolidation-plan-2026-09.md` (2026-09-12) already flagged for 301-redirect/noindex, still blocked on Ray. Shipping schema/meta fixes to pages slated for retirement would be wasted, counter-to-the-plan effort. **Left `New`, untouched** — flagging here so a future tick doesn't spend cycles on them; they should be bulk-Rejected once the redirect decision lands (or as its own small cleanup pass).
+- **26 target `/khu-vuc/*` and `/nhan-tam-trang/*`** — WP taxonomy archive pages (region/tag). `seo-apply.mjs` can only patch a page/post's `raw_html_code`/ACF field; a taxonomy archive has neither (confirmed live: `blog.nomadassetcollective.com/khu-vuc/chau-au/` and `/nhan-tam-trang/dang-hot/` both genuinely lack `<meta name="description">`). Fixing these needs a **different mechanism** (Rank Math term-meta via WP REST, if exposed) — a real script gap, not yet built. **Left `New`.**
+- **~209 remaining** — real, single-purpose blog posts/pages on the main domain (`nomadassetcollective.com/<slug>/`) and the tool page. Spot-checked 3 live (`vanuatu-cbi-2026-...`, `malaysia-mm2h-2026`, `spain-golden-visa-2026`): og:image genuinely still missing on all 3; the one `ld+json` block present on each is only Rank Math's sitewide `Organization`/`WebSite` graph, not page-specific schema — so the "No schema.org markup" findings are real, not stale.
+
+**Tested the lever for real, in a small batch, rather than bulk-approving all 209 blind:** approved 39 of these (20 "No schema.org markup" + 19 "Missing og:image", task IDs 909–928 and 1160–1177/1179 — excluded #1178, an odd `/en/home/` URL, for separate review), then ran `seo-apply.yml` twice via `workflow_dispatch` — **dry-run first** (confirmed the plan), then **live**. Result both times: `applied=0 resolved=0 snoozed=38 skipped=1 errored=0`.
+
+**Why zero applied — a genuine, newly-discovered capability gap, not a bug in this run:** all 38 are standalone WP posts/pages on `nomadassetcollective.com` whose SEO (title/meta/og/schema) is owned entirely by the **Rank Math plugin's own per-post fields**, edited in the WP editor — they carry no `raw_html_code` ACF field for `seo-apply.mjs` to patch (that field only exists on the brochure/hub/tool "app-shell" pages this repo authors as raw HTML). The script correctly detected this per-task and self-snoozed each one with the reason (`WP page has no raw_html_code field — meta & schema are managed by Rank Math, not this applier`) instead of erroring or silently no-op'ing. One task (`#924`, an `/en/...` URL variant) hit "no WP page/post found for slug" and was marked skipped — likely a stale/incorrect URL from the original May audit, worth a manual look.
+
+**Net effect of this tick:** turned 39 tasks that had sat as *misleadingly* "New, ready to auto-apply" since May into an *accurately* `Snoozed` state with the real blocker on record — no live pages touched, no errors. This also surfaces the actual highest-value next lever: **build Rank Math REST/meta-field write support into `seo-apply.mjs`** (or a sibling script) so the other ~209 tasks (up to Impact 2000 each, i.e. bigger than the whole rest of the tracked queue combined) can actually ship. That's an infra task, not a one-tick fix — flagging for a dedicated session, not attempting a live plugin-API integration blind in an unattended run.
+
+**Indexation check:** nothing shipped to a live page this run (Notion-status-only + a discovery pass) — nothing new to check against GSC.
+
+**Still BLOCKED ON RAY (unchanged from 09-25):**
+1. Malta CLP redirect bug (task #1524, filed 09-20) — WP admin, Redirection plugin.
+2. Consolidation-plan 301s + CPT noindex — WP admin. (Directly relevant to the 62 CPT-duplicate tasks found today — same decision unblocks both.)
+3. Greece 12-H1 blog fix + the 4 blog keyword-meta fixes queued 09-23 — CC_KEY/cockpit access still 401 (re-checked today).
+4. EB-5 pillar's 5 `[VERIFY]` items.
+5. The 14-row Published-but-not-live discrepancy (09-24).
+6. Homepage H1 hero-tagline keyword gap (09-25) — brand/creative call.
+7. The 5 content-queue drafts + all queued SEO Tasks.
+
+**New, not yet blocked on anyone — just not yet built:** Rank Math meta-field write support for standalone WP posts (see above). Worth scoping as its own session once bandwidth allows; would unlock the biggest single impact-score pool in the entire tracker.
+
+**Next:** (a) spot-check task #924 and #1178's URLs manually — likely stale slugs from the May audit; (b) once Rank Math REST write support exists, resume this same batch-and-test pattern on the remaining ~209 valid tasks in the New+Auto-Applicable backlog, ~40 at a time; (c) revisit the 62 CPT-duplicate tasks the moment the consolidation-plan redirect decision lands — they can be bulk-Rejected or bulk-Applied depending which way Ray goes; (d) continue pinging Ray on the standing blockers above, unchanged too many days running now.
+
 ## 2026-09-25 — Execution tick: homepage title/meta/H1 audit (last unaudited target_url surface) shipped
 
 **De-dup check first:** `git log --since=midnight` clean across all 5 repos (routine content-pipeline auto-syncs only, last pre-midnight commits 00–02 UTC). 🚀 SEO Tasks confirmed via SQL (`date("Last Edited")='2026-09-25'`) — zero rows touched today before this run. Rank snapshot is still `seo/rank-snapshots/2026-09-21.json` (tracked 47, all not-ranking, avg position null) — no fresher GSC pull exists; per the 28-day-window rule, not re-measured this tick. **Nothing to defend** — nothing is in top-3 to fall out of.
