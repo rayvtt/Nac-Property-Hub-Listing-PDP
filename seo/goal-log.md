@@ -2,6 +2,14 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-09-28 — Goal review
+
+- **Tracked**: 47  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 47
+- **Avg position** (ranked set): —
+- **Gainers**: —
+- **Regressions**: —
+- **Content gaps** (no page yet): hộ chiếu thứ hai, thị thực vàng, golden visa là gì, eb-5, thẻ xanh mỹ, đầu tư định cư mỹ, đầu tư định cư canada
+- **Quick wins** (striking 4–10, one push to top-3): —
 ## 2026-09-28 — Execution tick: corrected the 3×H1 root-cause diagnosis (2nd live instance found, was wrongly blamed on the WP theme)
 
 **De-dup check first:** `git log --since=midnight` clean across all 5 repos (only routine content-pipeline auto-syncs before this run, 01:33–01:47 UTC). 🚀 SEO Tasks queried via SQL (`date("Last Edited")='2026-09-28'`) — zero rows touched today before this run. Rank snapshot is still `seo/rank-snapshots/2026-09-21.json` (tracked 47, all not-ranking, avg position null) — 7 days old, within the 28-day window; the next biweekly GSC pull is due ~10-01 per the cron, not re-measured this tick. **Nothing to defend** — nothing is in top-3 to fall out of.
