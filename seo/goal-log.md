@@ -2,6 +2,36 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-09-28 — Execution tick: corrected the 3×H1 root-cause diagnosis (2nd live instance found, was wrongly blamed on the WP theme)
+
+**De-dup check first:** `git log --since=midnight` clean across all 5 repos (only routine content-pipeline auto-syncs before this run, 01:33–01:47 UTC). 🚀 SEO Tasks queried via SQL (`date("Last Edited")='2026-09-28'`) — zero rows touched today before this run. Rank snapshot is still `seo/rank-snapshots/2026-09-21.json` (tracked 47, all not-ranking, avg position null) — 7 days old, within the 28-day window; the next biweekly GSC pull is due ~10-01 per the cron, not re-measured this tick. **Nothing to defend** — nothing is in top-3 to fall out of.
+
+**Blockers re-checked, all unchanged (Ray hasn't acted on any):** #1524 (Malta redirect) still `New`; #1521/#1461 (consolidation plan / Greece 12-H1) still `Approved`/`New`, no new notes; content-queue pillars #1517 (second-passport) and #1518 (Golden Visa) still `New`/Waiting to Review — no Ray decision since 09-27. `curl`'d `/blog-wp-whoami` — still 401.
+
+**Genuinely new since 09-27, found this run:** two more Site CMS articles went live via the 08:00 VN auto-publish cadence — "Góc Nhìn NAC: Vì Sao New Zealand…" (09-27, WP Post ID 2304) and, checking back further, "Hộ chiếu thuật toán…" (09-24, WP Post ID 2305) hadn't been checked yet either. Per 09-27's own "Next" item (b) — spot-check whether the cost-pillar's 3×H1 defect recurs on other bilingual-split articles — live-curled all 4 recently-published posts (NZ 09-27, cost-pillar 09-26, climate/billionaire-bunker 09-25, algorithmic-passport 09-24):
+- **NZ (09-27):** 1 h1. Clean — it's a single-language (VI-only) Góc Nhìn NAC piece, no VI/EN divider heading to trigger the bug.
+- **Climate/billionaire-bunker (09-25):** 1 h1. Clean — it IS bilingual-split (h2 sections with `vi-`/`en-` id prefixes) but its Notion source never uses a heading-level language-divider block at all, so there's nothing for the bug to fire on.
+- **Algorithmic-passport (09-24):** **confirmed second live instance**, different symptom — two EMPTY `<h1></h1>` tags (not labeled text) where the divider sits. Its Notion source uses plain bracket markers `# [VN]` / `# [EN]`, vs the cost-pillar's flag-emoji `🇻🇳 Tiếng Việt` / `🇬🇧 English`.
+
+**Root-caused properly this time (09-27's conclusion was wrong) — read `nac-marketing-omnichannel/command-center/blog-wp.js` at git HEAD directly instead of testing snippets in isolation:**
+- Live-curl confirms both broken `<h1>`s sit inside `<div class="article-body">` — i.e. inside the WP post_content itself, **not** template chrome. So it was never a WP-theme problem — that was 09-27's dead-end conclusion, now retracted on task #1534.
+- The **current** `renderBlocks()` is already correct on both counts: every `heading_1` Notion block is unconditionally downgraded to `<h2>` ("the theme owns `<h1>`"), and `VI_MARK`/`EN_MARK` match both the flag-emoji form and the plain-bracket form and drop the block entirely (`flush(); continue`) — a fresh render of either article today would not reproduce either symptom.
+- Why the live posts still show it: flag-emoji marker support landed in commit `d312c755` (2026-09-22); a separate `backfill({upgrade:true})` path added the next day (`1638fc53`, 2026-09-23) explicitly preserves a post's *existing* stored body HTML and only regenerates the SEO wrapper/TOC/JSON-LD — it never re-runs `renderBlocks()`. Most likely explanation (not provable from here without deploy/push logs): these 2 posts' bodies were generated or last touched before/around that fix and never got a real re-render.
+- **Reclassified the blocker** (updated task #1534's Notes in full): this is no longer "needs WP theme/admin access" — it's "needs a plain force re-push of these 2 posts' `article_vi`/`article_en` through the current `renderBlocks()`" — same CC_KEY/cockpit-access blocker as everything else on this list, not a separate dead end. Concrete, low-risk, mechanical fix ready to execute the moment access exists.
+
+**Indexation check:** nothing shipped to a live page this run (Notion task-note update only). The cost-pillar (09-26) and the 2 newly-noticed posts (09-24, 09-27) remain within normal recrawl latency — nothing new to confirm against GSC until the next pull.
+
+**Still BLOCKED ON RAY (unchanged from 09-27):**
+1. Malta CLP redirect bug (#1524, filed 09-20) — WP admin, Redirection plugin.
+2. Consolidation-plan 301s + CPT noindex — WP admin.
+3. CC_KEY/cockpit access (still 401) — now blocks 6 queued items: Greece 12-H1 (#1461), the 4 blog keyword-meta fixes (09-23), the 14-row re-push discrepancy (09-24), and **now explicitly** the 2 confirmed 3×H1 posts (#1534, today).
+4. EB-5 pillar's 5 `[VERIFY]` items.
+5. Homepage H1 hero-tagline keyword gap (09-25) — brand/creative call.
+6. Golden Visa (#1518) + second-passport (#1517) + EB-5 (#1516) pillars — still Idea/Waiting to Review, no Ray decision.
+7. The Rank Math meta-field write support gap (09-26 finding) — infra task, not yet built; unlocks the ~209-task auto-applicable backlog.
+
+**Next:** (a) once CC_KEY/cockpit access exists, execute the now-concrete fix on #1534 (force re-push, not upgrade) and verify live; (b) once the next GSC pull lands (~10-01), check whether any on-page fix since 09-19 has moved the needle off 0/47 top-3; (c) keep checking each newly-published Site CMS article for this same defect class until access unblocks the backlog — it's now a known, well-understood pattern, cheap to spot-check per article; (d) the Rank Math write-support infra gap remains the single largest unclaimed lever.
+
 ## 2026-09-27 — Execution tick: cost-pillar content gap shipped live (found already-published) — new structural finding + first Ray content decision surfaced
 
 **De-dup check first:** `git log --since=midnight` clean in all 5 repos (only routine content-pipeline auto-syncs before this run). 🚀 SEO Tasks queried via SQL (`date("Last Edited")='2026-09-27'`) — zero rows touched today before this run. Rank snapshot is still `seo/rank-snapshots/2026-09-21.json` (tracked 47, all not-ranking, avg position null) — 6 days old, within the 28-day window, not re-measured this tick. **Nothing to defend** — nothing is in top-3 to fall out of.
