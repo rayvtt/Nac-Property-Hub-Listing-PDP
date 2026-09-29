@@ -2,6 +2,12 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-09-29 — Execution tick: quiet (no new movement)
+
+**De-dup:** no earlier run today; only routine content-pipeline auto-syncs. New snapshot `2026-09-28` landed (47 tracked, 0 top-3, all not-ranking) — same as 09-21, nothing to defend. Not re-measured.
+**Only Notion change since 09-28:** task #924 (schema for the Athens price-by-district blog URL) flipped to `Approved`, but the applier's note reads "WP page not found for slug …" (URL is an `/en/` path, no matching WP page) — Auto-Applicable but not landable; needs the correct slug/URL, or reject as stale. Not self-served.
+**Blockers unchanged:** #1524, #1461/#1534 re-push (CC_KEY/cockpit 401), 301s + CPT noindex, EB-5 [VERIFY], pillars #1516-1518 decisions, Rank Math write-support gap. Next GSC pull ~10-01.
+
 ## 2026-09-28 — Goal review
 
 - **Tracked**: 47  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 47
