@@ -2,6 +2,16 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-09-30 — Execution tick: quiet (nothing to defend, nothing safely advanceable)
+
+**De-dup:** no seo commits or SEO Tasks edits earlier today; only 09-29's #924 "Apply skipped" note. Snapshot `2026-09-28.json` still 0/47 top-3, all not-ranking — nothing to defend; not re-measured (next GSC pull ~10-01).
+
+**Checked #924** (Approved, Auto-Applicable schema task, slug `bat-dong-san-athens-2026-so-sanh-gia-theo-quan-trung-tam-data`): the slug 404s on blog.nomadassetcollective.com and returns no post via WP REST — the page is not published, so the applier's "WP page not found" is correct. Left as-is; re-check once the article is live (or retarget/reject if the slug was retired).
+
+**Blockers unchanged:** Malta redirect #1524, consolidation 301s + CPT noindex, CC_KEY/cockpit access (#1534 force re-push, Greece 12-H1 #1461), pillar decisions (#1516/#1517/#1518), Rank Math meta write-support gap.
+
+**Next:** review the 10-01 GSC snapshot; execute #1534 once cockpit access exists.
+
 ## 2026-09-28 — Goal review
 
 - **Tracked**: 47  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 47
