@@ -99,6 +99,7 @@ function extractProperty(page) {
     regionCity: richText(p['Region/City']),
     district: richText(p['📍 District']),
     hubType: readSelect(p['🏨 Hub Type']),
+    unitsLeft: readNumber(p['⏳ Units Left']),
     currency: readSelect(p['Currency']),
     purchasePrice: readNumber(p['Purchase Price']),
     localCurrency: readSelect(p['Local Currency']),
@@ -333,6 +334,32 @@ function renderPriceBands(bands, currency, converted) {
 // listing keeps the template's hardcoded default cards (no regression).
 function renderMarketStats(stats) {
   return stats.map(s => `<div class="nac-mkt-card"><div class="nac-mkt-val">${esc(s.val)}</div><div class="nac-mkt-key"><span data-vi="">${esc(s.vi)}</span><span data-en="">${esc(s.en)}</span></div></div>`).join('');
+}
+
+// ─── Hero availability chip ─────────────────────────────────────────────────
+// The scarcity signal, read from the same Notion field the Property Hub uses
+// (`⏳ Units Left`) and worded identically, so hub card and PDP never disagree:
+// 0 → sold out · 1 → final residence · n → final n · blank → no chip at all.
+function availChip(n) {
+  if (n == null || isNaN(n)) return null;
+  if (n <= 0) return { sold: true, vi: 'Đã bán hết', en: 'Sold out' };
+  if (n === 1) return { sold: false, vi: 'Căn cuối cùng', en: 'Final residence' };
+  return { sold: false, vi: `Chỉ còn ${n} căn`, en: `Final ${n} residences` };
+}
+// Tone is written inline rather than as a stylesheet rule: every one of the
+// already-shipped PDPs carries its own copy of the CSS, so a new class would
+// need a 130-file migration. `.nac-chip` / `.nac-chip-dot` already exist in all
+// of them — this only overrides the colours on top.
+function renderAvailChip(a) {
+  const tone = a.sold
+    ? 'color:rgba(255,255,255,.85);border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.1)'
+    : 'color:#f3e5c3;border-color:rgba(212,175,55,.45);background:rgba(212,175,55,.14)';
+  // Sold out is whispered, not shouted (same call the hub makes): the dot stops
+  // pulsing and goes to ink. Remaining-inventory keeps the gold breathing dot.
+  const dot = a.sold
+    ? '<span style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55);flex:0 0 auto"></span>'
+    : '<span class="nac-chip-dot" style="background:#e3c86e;box-shadow:0 0 0 4px rgba(227,200,110,.18)"></span>';
+  return `<span class="nac-chip nac-chip-avail" data-avail="${a.sold ? 'soldout' : 'final'}" style="display:inline-flex;align-items:center;gap:.4rem;${tone}">${dot}<span data-vi="">${esc(a.vi)}</span><span data-en="">${esc(a.en)}</span></span>`;
 }
 
 function renderDonutRows(scores) {
@@ -724,6 +751,28 @@ function patch(html, prop) {
     // local source (stable across FX moves) — for the de-band fingerprint + audit
     if (prop._localPrice != null) roi.attr('data-local-price', String(Math.round(prop._localPrice)));
     roi.attr('data-local-cur', prop._srcCur);
+  }
+
+  // ─── Hero availability chip ─────────────────────────────────────────────
+  // Idempotent in the same shape as the spotlight banners below: the chip is
+  // stripped and the Live chip restored first, so clearing `⏳ Units Left` in
+  // Notion removes the whole treatment on the next sync.
+  $('.nac-chip-avail').remove();
+  $('.nac-chip-live').removeAttr('style');
+  const avail = availChip(prop.unitsLeft);
+  if (avail) {
+    // Anchor on the Live chip, not on `.nac-hero-chips`: the shipped PDPs have
+    // drifted from the template — two of them (incl. nobu-da-nang) carry the
+    // Live chip inside `.nac-hero-eyebrow` with no chips row at all. The Live
+    // chip itself is the one element present in every file, so the availability
+    // chip lands beside it whichever hero variant this listing uses.
+    const live = $('.nac-chip-live').first();
+    const host = live.length ? null : $('.nac-hero-chips').first().add($('.nac-hero-eyebrow').first()).first();
+    if (live.length) live.after(renderAvailChip(avail));
+    else if (host && host.length) host.append(renderAvailChip(avail));
+    // "Live" beside "Sold out" reads as a contradiction to a buyer — once the
+    // inventory is gone the availability chip speaks for the listing's state.
+    if (avail.sold) $('.nac-chip-live').attr('style', 'display:none');
   }
 
   // ─── Spotlight banners ──────────────────────────────────────────────────
