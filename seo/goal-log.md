@@ -2,6 +2,12 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-10-01 — Execution tick: quiet, nothing shippable
+
+**De-dup:** no SEO commits today (only content-pipeline auto-syncs); 🚀 SEO Tasks last touched 09-30 (#924, unchanged). Snapshot still 2026-09-28 (0/47 top-3) — nothing to defend; not re-measured. No new GSC pull landed.
+**Queue:** every remaining item is Ray/WP-admin or cockpit-access gated (Malta redirect #1524, 301s + CPT noindex, CC_KEY 401 blocking #1534/#1461 re-pushes, EB-5 [VERIFY] items, Golden Visa/second-passport pillar decisions). No Claude-owned unshipped item; no filler drafted.
+**Next:** review the next GSC pull; execute #1534 force re-push once cockpit access exists.
+
 ## 2026-09-28 — Goal review
 
 - **Tracked**: 47  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 47
