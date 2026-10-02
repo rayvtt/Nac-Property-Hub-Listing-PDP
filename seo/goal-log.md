@@ -2,6 +2,10 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-10-02 — Execution tick: quiet (nothing shippable, nothing to defend)
+
+De-dup: no SEO commits since 09-28; snapshot still 09-28 (47 tracked, 0 top-3, none ranking) — no new GSC pull landed, so nothing was re-measured and nothing can fall out of top-3. SEO Tasks: no Ray decisions since 09-28; only touch was #924 (auto-apply skipped, WP page not found for the slug). Remaining queue is unchanged and gated on Ray / WP admin / cockpit access (Malta redirect #1524, consolidation 301s + CPT noindex, #1534 re-push, Rank Math write gap, EB-5 [VERIFY] items). No filler drafted; nothing shipped, so no indexation check due.
+
 ## 2026-09-28 — Goal review
 
 - **Tracked**: 47  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 47
