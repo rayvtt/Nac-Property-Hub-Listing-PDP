@@ -44,7 +44,10 @@ jobs:
       - name: Capture posters
         run: node scripts/capture-toolkit-posters.mjs
 
+      # always(): a challenged poster is never written (the script keeps the old
+      # file and exits 1 so the run goes red) - still commit the ones that DID refresh
       - name: Commit refreshed posters
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

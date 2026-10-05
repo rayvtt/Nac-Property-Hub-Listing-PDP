@@ -62,6 +62,30 @@ async function ev(page, fn, arg) {
   return page.evaluate(fn, arg);
 }
 
+// The site WAF (Imunify360) answers a suspicious client with a JS challenge
+// page: "Please wait while your request is being verified...". On 2026-10-05
+// it served that page for every URL and the script screenshotted it 18 times,
+// reported success and committed it over every real poster. So: detect it,
+// give the JS challenge time to clear itself, and NEVER save a frame of it.
+const CHALLENGE_RE = /request is being verified|please wait while your request|checking your browser|just a moment/i;
+async function isChallenged(page) {
+  try {
+    return await page.evaluate((src) => {
+      const t = ((document.title || '') + ' ' + ((document.body && document.body.innerText) || '')).slice(0, 4000);
+      return new RegExp(src, 'i').test(t);
+    }, CHALLENGE_RE.source);
+  } catch (e) { return true; } // mid-reload: treat as still challenged
+}
+async function waitOutChallenge(page, ms = 30000) {
+  const end = Date.now() + ms;
+  while (await isChallenged(page)) {
+    if (Date.now() > end) return false;
+    await page.waitForTimeout(1500);
+    await page.waitForLoadState('networkidle', { timeout: 8000 }).catch(() => {});
+  }
+  return true;
+}
+
 // the So Sánh page sits behind WP post-password protection — unlock the context
 await ctx.request.post('https://nomadassetcollective.com/wp-login.php?action=postpass', {
   form: { post_password: 'nomad', redirect_to: 'https://nomadassetcollective.com/so-sanh/' },
@@ -92,6 +116,7 @@ for (const t of TOOLS) {
           url = path + (path.includes('?') ? '&' : '?') + L.query + hash;
         }
         await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 }).catch(() => {});
+        if (!(await waitOutChallenge(page))) throw new Error('WAF challenge did not clear after 30s');
         if (t.langToggle) {
           const want = L.suffix === '-en' ? 'en' : 'vi';
           await ev(page, (w) => {
@@ -130,6 +155,7 @@ for (const t of TOOLS) {
             return r && r.children.length > 2;
           }, { timeout: 10000 }).catch(() => {});
         }
+        if (await isChallenged(page)) throw new Error('page is a WAF challenge - keeping the previous poster');
         const buf = await page.screenshot({ type: 'jpeg', quality: 72 });
         const path = `${OUT_DIR}/${slug}.jpg`;
         mkdirSync(dirname(path), { recursive: true });
@@ -146,5 +172,5 @@ for (const t of TOOLS) {
   }
 }
 await browser.close();
-if (failures) { console.error(`${failures} poster(s) failed`); process.exit(1); }
+if (failures) { console.error(`${failures} poster(s) not refreshed - their previous files were left untouched`); process.exit(1); }
 console.log('All toolkit posters captured.');
