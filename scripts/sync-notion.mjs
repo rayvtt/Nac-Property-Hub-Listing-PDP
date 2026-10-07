@@ -90,6 +90,7 @@ function extractProperty(page) {
   const propertyIdNum = readPropertyIdNumber(p['Property ID']);
   return {
     slug: richText(p['🔗 Slug']),
+    listingUrl: (p['Listing URL']?.url || richText(p['Listing URL']) || '').trim(),
     propertyId: propertyIdNum != null ? `NAC-${propertyIdNum}` : null,
     propertyNameEn: richText(p['Property Name']),
     propertyNameVi: richText(p['Name VI']),
@@ -396,9 +397,19 @@ const COUNTRY_SLUG_OVERRIDES = {
   'Việt Nam': 'vietnam',
   'United States': 'usa',
   'USA': 'usa',
-  'United Kingdom': 'uk',
+  'United Kingdom': 'united-kingdom',
   'Dubai': 'uae',
 };
+// Canonical = the real live WP URL. Notion `Listing URL` is written back by
+// create-wp-page.mjs from the actual WP page, so it wins over the derived
+// country/slug guess (which drifted: /uk/ vs /united-kingdom/, nobu-da-nang vs nobu-dn).
+function canonicalOf(prop) {
+  const u = String(prop.listingUrl || '').trim();
+  if (/^https:\/\/nomadassetcollective\.com\/property-hub-bat-dong-san\/[^/]+\/[^/]+\/?$/.test(u)) {
+    return u.endsWith('/') ? u : u + '/';
+  }
+  return `https://nomadassetcollective.com/property-hub-bat-dong-san/${countrySlugFromName(prop.country)}/${prop.slug}/`;
+}
 function countrySlugFromName(c) {
   if (!c) return '';
   if (COUNTRY_SLUG_OVERRIDES[c]) return COUNTRY_SLUG_OVERRIDES[c];
@@ -422,7 +433,7 @@ function patchHeadSeo($, prop) {
   const idNum = prop.propertyId?.replace(/^NAC-/, '') || '';
   const location = [prop.district, prop.regionCity, prop.country].filter(Boolean).join(', ');
   const cSlug = countrySlugFromName(prop.country);
-  const canonical = `https://nomadassetcollective.com/property-hub-bat-dong-san/${cSlug}/${prop.slug}/`;
+  const canonical = canonicalOf(prop);
 
   const price = fmtMoneyShort(prop._dispPrice != null ? prop._dispPrice : prop.purchasePrice, prop._dispCur || prop.currency);
   const yieldStr = prop.yieldPct != null ? `${fmt1(prop.yieldPct)}%` : '';

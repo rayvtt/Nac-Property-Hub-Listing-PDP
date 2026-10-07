@@ -34,7 +34,7 @@ import fs from 'node:fs/promises';
 
 const COUNTRY_SLUG_OVERRIDES = {
   'Việt Nam': 'vietnam', 'United States': 'usa', 'USA': 'usa',
-  'United Kingdom': 'uk', 'Dubai': 'uae',
+  'United Kingdom': 'united-kingdom', 'Dubai': 'uae',
 };
 export function countrySlugFromName(c) {
   if (!c) return '';
@@ -76,6 +76,11 @@ const money = (n, currency) => {
 };
 
 function canonicalOf(prop) {
+  // Prefer the real live WP URL from Notion `Listing URL` (see sync-notion.mjs).
+  const u = String(prop.listingUrl || '').trim();
+  if (u.startsWith(HUB + '/') && /^[^/]+\/[^/]+\/?$/.test(u.slice(HUB.length + 1))) {
+    return u.endsWith('/') ? u : u + '/';
+  }
   return `${HUB}/${countrySlugFromName(prop.country)}/${prop.slug}/`;
 }
 function locationText(prop) {
@@ -270,8 +275,8 @@ function completeFaq(json, prop) {
 }
 
 function completeBreadcrumb(json, prop) {
-  const cSlug = countrySlugFromName(prop.country);
   const canonical = canonicalOf(prop);
+  const cSlug = canonical.slice(HUB.length + 1).split('/')[0] || countrySlugFromName(prop.country);
   if (!Array.isArray(json.itemListElement)) return json;
   for (const item of json.itemListElement) {
     if (item.position === 2) {
