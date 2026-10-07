@@ -40,7 +40,7 @@ const COUNTRY_SLUG_OVERRIDES = {
   'Việt Nam': 'vietnam',
   'United States': 'usa',
   'USA': 'usa',
-  'United Kingdom': 'uk',
+  'United Kingdom': 'united-kingdom',
   'Dubai': 'uae',
 };
 
