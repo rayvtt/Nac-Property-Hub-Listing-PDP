@@ -2,6 +2,10 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-10-08 — Execution tick: no-op (nothing new to advance)
+
+De-dup: no SEO commits today; only SEO Task touched since 10-07 is #924 (Approved, Athens schema, awaiting cockpit access — already logged). Snapshot 2026-10-05: 0/47 top-3 → nothing to defend. Queue unchanged: remaining items are Ray's (#1524 Malta 301, #1521 consolidation/301s + CPT noindex, #1534 H1 re-push, EB-5 draft in Notion trash, Golden Visa/second-passport pillars awaiting review). No drafts, no filler. Next GSC pull due ~10-12.
+
 ## 2026-10-05 — Goal review
 
 - **Tracked**: 47  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 47
