@@ -2,6 +2,9 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-10-09 — Execution tick (no-op)
+
+Snapshot 2026-10-05 still current (0/47 top-3, nothing to defend). SEO Tasks: nothing new since 10-08; only #924 (Approved, cockpit access needed) and stale May og:image tasks (WP access needed). Consolidation 301s/CPT noindex remain Ray's. Nothing shipped; next GSC pull ~10-12.
 ## 2026-10-05 — Goal review
 
 - **Tracked**: 47  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 47
