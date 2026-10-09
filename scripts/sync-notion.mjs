@@ -174,6 +174,9 @@ const COUNTRY_FLAGS = {
   'Spain': '🇪🇸', 'Portugal': '🇵🇹', 'UAE': '🇦🇪',
   'Mexico': '🇲🇽', 'Colombia': '🇨🇴', 'Costa Rica': '🇨🇷',
   'Turkey': '🇹🇷', 'Cyprus': '🇨🇾', 'United Kingdom': '🇬🇧',
+  // 2026-10-09: these were missing, so 63 pages kept the template's default 🇻🇳 (Australia ×49, Greece ×10, Malta ×3, Grenada ×1)
+  'Australia': '🇦🇺', 'Greece': '🇬🇷', 'Malta': '🇲🇹', 'Grenada': '🇬🇩', 'New Zealand': '🇳🇿', 'Canada': '🇨🇦',
+  'Italy': '🇮🇹', 'Hungary': '🇭🇺', 'Austria': '🇦🇹', 'Antigua': '🇦🇬', 'Jordan': '🇯🇴', 'Nauru': '🇳🇷', 'Vanuatu': '🇻🇺',
 };
 const countryFlag = (c) => (c && COUNTRY_FLAGS[c]) || null;
 
