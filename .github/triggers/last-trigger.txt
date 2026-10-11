@@ -12,3 +12,4 @@
 2026-07-17T07:20Z — created the missing 🌍 NAC - Country Listings row for Malta (Hub Status=Live, slug=malta) — create-wp-page.yml was failing on all 3 new Malta listings with "No WP parent page found at /property-hub-bat-dong-san/malta/". Fire create-wp-clp-page to create the Malta parent WP page, then create-wp-page to create the 3 Malta LLP child pages — create-wp-clp-page,create-wp-page,sync-notion-clp,sync-wp-clp,sync-wp
 2026-07-17T07:33Z — re-fire sync-wp: the 07:21 trigger's sync-wp run raced ahead of create-wp-page (WP pages for the 3 Malta listings now confirmed created — Portomaso WP Page ID 2968 etc. — but that run's page-lookup-by-URL search happened before they were indexed, so all 3 failed with "did not match any WP page"). Re-firing now that the pages definitely exist — sync-wp
 sync-notion: nobu sold out 2026-10-11T12:09:57Z
+sync-wp re-fire: nobu sold-out HTML now on main 2026-10-11T12:22:47Z — sync-wp
