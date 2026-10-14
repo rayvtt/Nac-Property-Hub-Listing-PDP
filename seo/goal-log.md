@@ -2,6 +2,10 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-10-14 — Execution tick (no-op, no filler)
+
+**De-dup:** no SEO commits today; yesterday's run (10-13) also skipped. Latest snapshot `2026-10-12` (tracked 47, top-3 0, none ranking) — nothing to defend, no re-measure. Queue re-read: only change since 10-13 is #924 (stale `/en/...` Athens URL, no WP page found, Rank Math-managed — not auto-appliable) back at Approved; no Ray decisions on the 5 pillar drafts, #1521/#1524 consolidation (301s + CPT noindex are Ray's). No indexation-check targets (nothing shipped in 14d by this routine). Nothing shipped; Ray not pinged.
+
 ## 2026-10-12 — Goal review
 
 - **Tracked**: 47  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 47
