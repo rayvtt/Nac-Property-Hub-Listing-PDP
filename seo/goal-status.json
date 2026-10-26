@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-10-19T16:18:02.848Z",
+  "updatedAt": "2026-10-26T15:57:17.039Z",
   "property": "https://nomadassetcollective.com/,https://blog.nomadassetcollective.com/",
   "ok": true,
   "tokenHealth": "ok",
   "error": null,
   "latest": {
-    "date": "2026-10-19",
+    "date": "2026-10-26",
     "tracked": 47,
     "top3": 0,
     "striking": 0,
@@ -107,6 +107,16 @@
     },
     {
       "date": "2026-10-19",
+      "tracked": 47,
+      "top3": 0,
+      "striking": 0,
+      "page2": 0,
+      "deep": 0,
+      "notRanking": 47,
+      "avgPosition": null
+    },
+    {
+      "date": "2026-10-26",
       "tracked": 47,
       "top3": 0,
       "striking": 0,
