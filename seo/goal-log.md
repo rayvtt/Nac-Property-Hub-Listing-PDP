@@ -2,6 +2,13 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-11-06 — Execution run (no new measurement)
+
+- Used the 2026-11-02 snapshot (47 tracked, 0 top-3, 0 ranking), so there is nothing to defend. No earlier SEO run today; the day's commits are sync-only.
+- Nothing shipped this run. The six pillar briefs queued on 2026-07-24 are not in the 🚀 SEO Tasks DB under their own titles. Open rows are old H1 tasks marked Approved and old meta/schema rows marked Snoozed.
+- Still blocked on Ray (the same two items): (1) pick one canonical URL per program and 301 the rest; (2) fix the 12-H1 `/residences/` and `/citizenships/` template.
+- Next run: draft the Golden Visa explainer through /blog-article as a DRAFT after confirming it isn't already in Site CMS.
+
 ## 2026-11-02 — Goal review
 
 - **Tracked**: 47  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 47
