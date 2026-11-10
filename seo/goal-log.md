@@ -2,6 +2,12 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-11-10 — SEO optimiser run (06:10 UTC)
+
+- Latest snapshot 11-09: 0/47 top-3, none ranking → nothing to defend. No SEO files shipped in last 14d needing indexation check.
+- SEO Tasks #924 (Approved, auto-applicable, WebPage+BreadcrumbList schema on the Athens price-comparison blog URL) was skipped by the applier: *WP page not found for slug* (URL is a `/en/` blog path, not a page the applier can resolve). Needs a slug/site-mapping fix in the applier or a manual WP schema add; not self-served.
+- Consolidation 301s + CPT noindex remain Ray's WP-admin items. No filler drafted.
+
 ## 2026-11-09 — Goal review
 
 - **Tracked**: 47  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 47
