@@ -2,6 +2,32 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-11-11 — Execution tick: PDP title cap shipped (PR #459) + Approved-queue sweep 88 → 3
+
+**De-dup first:** no SEO commits or goal-log entries today before this run; the last execution entry was 2026-09-28. The Agent Ops brief shows 11-10's run was `skipped` and was never logged here. Snapshot `seo/rank-snapshots/2026-11-09.json` (28-day window) was not re-measured. **Nothing to defend:** 0/47 in top-3.
+
+**Rank data sanity-checked:** every snapshot since July shows 0 impressions on all tracked keywords, so I checked the pipe before trusting it. The 11-09 goal-review job log shows `GSC rows: cur=38 queries, prev=30`. OAuth and the property work; the site simply has almost no VN search visibility and none of its 38 queries are tracked keywords. The data is real, not a broken pull.
+
+**Shipped: PDP `<title>` cap (PR #459, squash-merged).**
+- Root cause behind every open "Title too long" task: `patchHeadSeo()` built `Name · Tagline · NAC-ID`, which put the whole marketing tagline in the SERP title. 119/129 PDPs were over 70 chars (median 91, max 150).
+- New pure builder `scripts/pdp-title.mjs` produces `Name · City · NAC-ID`, capped at 65. It skips the place when the name already has it, falls back to the short name, then cuts at a word boundary. The tagline still ships in og:title and the meta description. Offline test `scripts/pdp-title.test.mjs` rebuilds all 129 titles: all ≤ 65, max 63, NAC-ID kept.
+- Fired `sync-notion` via `.github/triggers/last-trigger.txt`. Commit `bb28946` rewrote **124/129** titles. Then fired `sync-wp` (bot commits don't chain-trigger it).
+- **5 PDPs were not rewritten** (the-prince-residence-phu-nhuan, binghatti-mercedes-benz-city, the-one-sai-gon, the-newcastle-central-athens-golden-visa, danks-st-district-waterloo). Their titles carry no NAC-ID, so their Notion rows are most likely not `Hub Status = Live` and sync skips them. They'll fix themselves if they go Live; if delisted, they're candidates for `delete-listings`.
+
+**🚀 SEO Tasks Approved queue: 88 → 3.** Each item was re-checked against the repo or live page before it was closed:
+- 27 "Title too long" → **Applied** (PR #459). #1313 (Prince Residence) left open with a note.
+- 12 "No H1" (CLPs vietnam/panama/turkey/cyprus/UK + /tu-van-nhanh/) → **Applied**. Already resolved upstream: each live page has exactly 1 `<h1>`.
+- 14 "Meta description too long" (PDPs + Hub) → **Applied**. Already resolved: `firstSentence(155)` keeps all 129 PDPs ≤ 155, and the Hub is at 154.
+- 33 "images missing alt" → **Rejected (no change needed)**. The only alt-less `<img>`s are decorative social icons (`alt="" aria-hidden="true"`, correct a11y) and a 1×1 hidden pixel. The audit counts `alt=""` as missing.
+- #924 Athens blog schema (Ray approved 11-10; the applier failed with "WP page not found") → **Rejected**. The URL 404s on the main site, blog root and blog /en/, and WP REST search finds no post with that slug. Nothing to put schema on.
+- Still Approved: #1521 consolidation plan (301s + CPT noindex are Ray's WP admin), #1516 EB-5 pillar, #1313.
+
+**Indexation check (last 14 days):** nothing else shipped in that window. The titles go live with sync-wp run 2515 today; Google recrawl will follow. Check CTR/impressions on PDP URLs in the 11-23 snapshot.
+
+**Still blocked on Ray (unchanged since 09-28):** consolidation 301s + CPT noindex (#1521), Malta CLP redirect (#1524), CC_KEY/cockpit access for blog re-pushes (#1534 3×H1, #1461), the Golden Visa / second-passport / EB-5 pillar decisions, and the EB-5 `[VERIFY]` items.
+
+**Next:** (a) confirm live PDP titles after sync-wp 2515; (b) teach `seo-audit.mjs` that `alt=""` + `aria-hidden` is valid, so it stops re-filing 33 false positives each run; (c) the 5 non-Live PDPs: are they delisted (retire them) or waiting to go Live?
+
 ## 2026-11-09 — Goal review
 
 - **Tracked**: 47  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 47
