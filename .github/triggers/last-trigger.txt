@@ -13,3 +13,4 @@
 2026-07-17T07:33Z — re-fire sync-wp: the 07:21 trigger's sync-wp run raced ahead of create-wp-page (WP pages for the 3 Malta listings now confirmed created — Portomaso WP Page ID 2968 etc. — but that run's page-lookup-by-URL search happened before they were indexed, so all 3 failed with "did not match any WP page"). Re-firing now that the pages definitely exist — sync-wp
 sync-notion: nobu sold out 2026-10-11T12:09:57Z
 sync-wp re-fire: nobu sold-out HTML now on main 2026-10-11T12:22:47Z — sync-wp
+2026-11-11T05:30Z — PR #459 capped PDP <title> at 65 chars (Name · City · NAC-ID); fire sync-notion to rewrite all 129 titles now instead of waiting on the throttled cron — sync-notion
