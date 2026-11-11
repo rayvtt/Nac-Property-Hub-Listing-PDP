@@ -14,3 +14,4 @@
 sync-notion: nobu sold out 2026-10-11T12:09:57Z
 sync-wp re-fire: nobu sold-out HTML now on main 2026-10-11T12:22:47Z — sync-wp
 2026-11-11T05:30Z — PR #459 capped PDP <title> at 65 chars (Name · City · NAC-ID); fire sync-notion to rewrite all 129 titles now instead of waiting on the throttled cron — sync-notion
+2026-11-11T06:20Z — re-fire sync-wp: sync-notion bb28946 rewrote 124 PDP titles (PR #459 cap) but bot commits can't chain-trigger sync-wp — sync-wp
