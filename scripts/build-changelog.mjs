@@ -51,7 +51,7 @@ const FIELDS = [
 const countryOf = (h) => (h.match(/property-hub-bat-dong-san\/([a-z-]+)\//) || [null, null])[1];
 const nameOf = (h) => {
   let t = m1(h, /<title>([^<]+)<\/title>/) || '';
-  t = t.replace(/\s*[|–—].*$/, '').trim(); // strip "| NAC" / "— City (...)" suffix
+  t = t.replace(/\s*[|–—·].*$/, '').trim(); // strip "| NAC" / "— City (...)" / "· City · NAC-ID" suffix
   return t || null;
 };
 const trunc = (s, n = 52) => { s = (s || '').replace(/\s+/g, ' ').trim(); return s.length > n ? s.slice(0, n) + '…' : s; };
