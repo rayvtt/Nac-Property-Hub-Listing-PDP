@@ -13,6 +13,7 @@ import {
   completeStructuredData, resolveGeo, buildLlmsTxt, loadCache, saveCache,
 } from './seo-geo-llm.mjs';
 import { loadRates, toUSD, roundUSD } from './fx.mjs';
+import { buildPdpTitle } from './pdp-title.mjs';
 
 // Live FX rates (USD→X), loaded once per run in main(). Money is displayed in
 // USD (converted live) while Notion keeps the brochure-local amounts as source.
@@ -441,12 +442,9 @@ function patchHeadSeo($, prop) {
   const price = fmtMoneyShort(prop._dispPrice != null ? prop._dispPrice : prop.purchasePrice, prop._dispCur || prop.currency);
   const yieldStr = prop.yieldPct != null ? `${fmt1(prop.yieldPct)}%` : '';
 
-  // Build the canonical title: "Name — Tagline · Location · NAC-ID"
-  const titleParts = [nameEn];
-  if (prop.taglineEn) titleParts.push(prop.taglineEn);
-  else if (location) titleParts.push(location);
-  if (idNum) titleParts.push(`NAC-${idNum}`);
-  const title = titleParts.join(' · ');
+  // SERP title: "Name · City · NAC-ID", ≤ 65 chars (see pdp-title.mjs). The
+  // tagline stays in og:title + meta description, not the <title>.
+  const title = buildPdpTitle({ nameEn: nameEn || nameVi, regionCity: prop.regionCity, country: prop.country, idNum });
 
   // Description: 1-sentence factual summary. Prefer Notion desc_en, fall back
   // to a built string from price/yield/location.
