@@ -249,7 +249,22 @@ async function extractSignals(pageUrl) {
   const bodyWordCount = bodyText.split(/\s+/).length;
 
   // Image alt coverage
-  const imgs = $('img');
+  // Decorative images are excluded from both counts: an explicit alt="" marked
+  // aria-hidden / role=presentation|none is the correct a11y pattern (WCAG H67),
+  // and 1×1 / hidden tracking pixels carry no content. Counting them as
+  // "missing alt" re-filed the same 33 false-positive tasks every run.
+  const isDecorative = (el) => {
+    const $el = $(el);
+    const alt = $el.attr('alt');
+    const role = ($el.attr('role') || '').toLowerCase();
+    if (alt !== undefined && !alt.trim() &&
+        ($el.attr('aria-hidden') === 'true' || role === 'presentation' || role === 'none')) return true;
+    const w = parseInt($el.attr('width') || '', 10), h = parseInt($el.attr('height') || '', 10);
+    if ((w > 0 && w <= 1) || (h > 0 && h <= 1)) return true;
+    if (/display\s*:\s*none|visibility\s*:\s*hidden/i.test($el.attr('style') || '')) return true;
+    return false;
+  };
+  const imgs = $('img').filter((_, el) => !isDecorative(el));
   const imgsTotal = imgs.length;
   const imgsMissingAlt = imgs.filter((_, el) => !($(el).attr('alt') || '').trim()).length;
 
