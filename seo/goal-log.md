@@ -2,6 +2,29 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-11-12 — Execution tick: audit alt false-positive fixed (PR #462) + titles verified live + 5 orphan PDPs found
+
+**De-dup first:** today had no SEO commits or goal-log entries before this run. Yesterday's "next" list was (a) confirm the titles are live, (b) fix the `alt=""` false positive, (c) find out what the 5 skipped PDPs are. Snapshot `2026-11-09.json` was not re-measured. **Nothing to defend:** 0/47 in top-3.
+
+**Shipped: `seo-audit.mjs` stops flagging decorative images (PR #462, squash-merged).**
+- Images with `alt=""` plus `aria-hidden="true"` or `role=presentation|none`, and 1×1 or hidden tracking pixels, are now left out of the alt-coverage count. Real images with no `alt` attribute are still flagged.
+- Tested offline: template PDPs go from 8/15 to 0/7 (the task no longer fires) and CLP `vn` from 3/5 to 0/2. The next audit won't re-file the 33 tasks rejected on 11-11.
+
+**Indexation / live check (PR #459 titles):** sampled 12 random PDPs live against the repo. **12/12 `<title>`s match**, so sync-wp landed the capped titles. Check CTR/impressions in the 11-23 snapshot.
+
+**Finding: 5 PDPs are live and indexable on WP but no longer tracked as Live in Notion.** These are why sync skipped their titles yesterday. All return 200 with `robots: index, follow` (a control slug returns 404, so these aren't soft 404s):
+- `the-prince-residence-phu-nhuan`: Notion **Archived**
+- `the-newcastle-central-athens-golden-visa`: Notion **Draft**
+- `binghatti-mercedes-benz-city`: no Notion row under this slug. The Live row is `binghatti-mercedes-benz-places` (Downtown Dubai). This page is the Nad Al Sheba "Binghatti City" project, so it may be a separate project that lost its row rather than a duplicate.
+- `the-one-sai-gon`: no Notion row
+- `danks-st-district-waterloo`: no Notion row (the Live Waterloo listing is `tb-w-waterloo`)
+
+They serve stale prices and 90–150-char titles, and Google can index them. **Ray decides:** retire each one with `delete-listings` (removes the WP page, HTML and index entry) or set it back to Live in Notion. I didn't self-serve this because delete-listings removes public pages.
+
+**Still blocked on Ray (unchanged):** consolidation 301s + CPT noindex (#1521), Malta CLP redirect (#1524), cockpit access for blog re-pushes (#1534, #1461), the pillar decisions, and the EB-5 `[VERIFY]` items.
+
+**Next:** run the audit once on the merged code to confirm 0 alt tasks; act on Ray's call for the 5 orphans; 11-23 snapshot: PDP CTR after the title cap.
+
 ## 2026-11-11 — Execution tick: PDP title cap shipped (PR #459) + Approved-queue sweep 88 → 3
 
 **De-dup first:** no SEO commits or goal-log entries today before this run; the last execution entry was 2026-09-28. The Agent Ops brief shows 11-10's run was `skipped` and was never logged here. Snapshot `seo/rank-snapshots/2026-11-09.json` (28-day window) was not re-measured. **Nothing to defend:** 0/47 in top-3.
