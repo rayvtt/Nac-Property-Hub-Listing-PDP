@@ -2,6 +2,29 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-11-13 — Execution tick: blog post sitemap frozen since 10-15 (22 articles missing) + #1312 closed
+
+**De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. Snapshot `2026-11-09.json` was not re-measured. **Nothing to defend:** 0/47 in top-3.
+
+**Queue check:** nothing un-shipped that Claude can act on. All 5 content briefs are already drafted in Site CMS and waiting on Ray; 0 tasks are Approved + Auto-Applicable; the consolidation items are Ray's WP admin. So this run was an indexation and on-page audit, per the empty-queue rule.
+
+**Indexation audit of the 17 blog posts published since 10-30:** all 17 return 200, `index, follow`, self-canonical, exactly 1 `<h1>`, 2–3 JSON-LD blocks, meta description 99–155 chars. Titles run 67–73 chars with the site suffix, slightly long but not truncating the headline.
+
+**Finding (#1535, P1): the blog's `post-sitemap.xml` is frozen at 2026-10-15.**
+- It lists 153 URLs, newest `lastmod` 2026-10-15T06:34Z. WP REST reports 175 published posts.
+- 22 articles are missing: everything first published from 10-16 onward, including 13 of the 17 from the last 14 days. The 4 recent posts that do appear already existed on 10-15.
+- A cache-busting query string returns the same file, so it's Rank Math's stored sitemap cache, not an edge cache. The custom `/en-sitemap.xml` is current (lastmod 11-13).
+- Effect: Google can only find new VI articles through internal links.
+- **Not self-served.** Fix A (Ray, ~10 s): blog WP admin → Rank Math → Sitemap Settings → Save Changes, then confirm ~175 URLs. Fix B (Claude, on Ray's go): fire the existing `blog-sitemap-fix` workflow in `nac-marketing-omnichannel`. It toggles the sitemap module off/on, was built for a rewrite problem, and may not clear the cache; it also needs a push to that repo's default branch, which this session isn't allowed to do. If the sitemap freezes again after a flush, the Worker's REST publish isn't invalidating the cache and the publisher needs a post-publish flush.
+
+**Main-site sitemap:** `page-sitemap.xml` has 176 URLs and covers 129/129 PDP files (`nobu-da-nang` is listed under its canonical `/vietnam/nobu-dn/`).
+
+**Closed:** #1312 "Title too long — hyatt-regency-ho-tram" → Applied. PR #459 already fixed it (now 40 chars, live); it was missed in the 11-11 sweep.
+
+**Still blocked on Ray (unchanged):** the 5 orphan PDPs (retire or restore), consolidation 301s + CPT noindex (#1521), Malta CLP redirect (#1524), cockpit access for blog re-pushes (#1534, #1461), the pillar decisions, and the EB-5 `[VERIFY]` items.
+
+**Next:** re-check `post-sitemap.xml` after Ray's flush and watch whether the next published article appears on its own; run the audit once on merged code to confirm 0 alt tasks (not done this run); 11-23 snapshot: PDP CTR after the title cap.
+
 ## 2026-11-12 — Execution tick: audit alt false-positive fixed (PR #462) + titles verified live + 5 orphan PDPs found
 
 **De-dup first:** today had no SEO commits or goal-log entries before this run. Yesterday's "next" list was (a) confirm the titles are live, (b) fix the `alt=""` false positive, (c) find out what the 5 skipped PDPs are. Snapshot `2026-11-09.json` was not re-measured. **Nothing to defend:** 0/47 in top-3.
