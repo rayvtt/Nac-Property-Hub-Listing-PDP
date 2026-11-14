@@ -2,6 +2,32 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-11-14 — Execution tick: keyword target-URL audit; 5 stale blog targets fixed; 1 dead link on the Greece brochure
+
+**De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. Snapshot `2026-11-09.json` was not re-measured. **Nothing to defend:** 0/47 in top-3.
+
+**Queue check:** unchanged since 11-13. 3 tasks are Approved (#1521, #1516, #1313) and all three wait on Ray; 0 are Approved + Auto-Applicable; the 5 content briefs are already drafted. So this run was an on-page audit of the keyword targets, per the empty-queue rule.
+
+**Audit: every `target_url` in `goal-keywords.json` fetched live (21 URLs behind 40 keywords).**
+- 15 return 200, indexable, self-canonical, exactly 1 `<h1>`.
+- **5 blog targets were stale and are now fixed in the file.** The blog's permalinks gained a category prefix, so the tracked URLs 301 to `/chuong-trinh-overview/…`, `/so-sanh/…` or `/cap-nhat/…`. Updated 10 keyword rows (Portugal ×2, Panama FNV, Antigua ×2, Italy ×2, cost pillar ×3) to the final canonical URL, so the tracker and Rank Tracker DB point at the URL Google indexes.
+- 1 still broken, already known: the Malta CLP 301s to `/malaysia/` (#1524, Ray's WP Redirection rule). `định cư malta` and `malta mprp` cannot rank until it is removed.
+- 7 keywords still have no target (content gaps, unchanged).
+
+**Keyword placement on the target page** (exact phrase in title / H1 / meta description):
+- All three: 11 keywords, 10 of them CLPs.
+- In none of the three: 15 keywords (2 are the Malta pair, measured against the Malaysia page they redirect to). Most of the rest are secondary keywords sharing a page with a primary one (`mm2h là gì`, `thái lan ltr visa`, `định cư ý`, `quốc tịch antigua`, `định cư bồ đào nha`, `friendly nations visa panama`, `golden visa new zealand`, and 4 Property Hub keywords including P0 `đầu tư định cư châu âu`). These need either their own page or a section on the shared one; that is a content decision, not a meta patch. The blog ones stay blocked on cockpit access (#1527).
+
+**Internal links to the blog (PDP, CLP, brochure and Hub repos):** 84 distinct old-style blog URLs are linked from the main site. 83 resolve with one 301 hop to a 200. **1 is a 404** (#1536): the Greece brochure's §03 article banner and its "Đọc Bài" button link to the "752 UHNWI → 978" article, which no longer exists on the blog. The link comes from the Brochures Meta-data row in Notion, so it needs a replacement article picked there; not self-served.
+
+**Re-check of #1535 (blog `post-sitemap.xml`):** still frozen at 2026-10-15. 153 URLs listed against 176 published, so 23 articles are now missing (was 22).
+
+**Not done:** the audit dry-run to confirm 0 alt tasks (carried over again).
+
+**Still blocked on Ray (unchanged):** sitemap flush (#1535), the 5 orphan PDPs, consolidation 301s + CPT noindex (#1521), Malta CLP redirect (#1524), cockpit access for blog re-pushes (#1534, #1461, #1527), the pillar decisions, and the EB-5 `[VERIFY]` items.
+
+**Next:** audit dry-run on merged code; decide per shared-page keyword whether it gets a section or its own brief; 11-23 snapshot: PDP CTR after the title cap.
+
 ## 2026-11-13 — Execution tick: blog post sitemap frozen since 10-15 (22 articles missing) + #1312 closed
 
 **De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. Snapshot `2026-11-09.json` was not re-measured. **Nothing to defend:** 0/47 in top-3.
