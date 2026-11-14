@@ -5,7 +5,7 @@
     "gsc_property": "sc-domain:nomadassetcollective.com",
     "bands": { "top-3": "<=3", "striking": "4-10", "page-2": "11-20", "deep": "21+", "not-ranking": "no impressions" },
     "notes": "target_url null = content gap (no dedicated page yet — brief one on the listed surface). One canonical URL per keyword; do not create a second competing page. Refine/expand this list — it is the single human-owned input.",
-    "updated": "2026-09-27"
+    "updated": "2026-11-14"
   },
   "keywords": [
     { "kw": "đầu tư di trú", "cluster": "head", "intent": "commercial", "surface": "home", "priority": "P0", "target_url": "https://nomadassetcollective.com/" },
@@ -22,20 +22,20 @@
 
     { "kw": "eb-5", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P1", "target_url": null },
     { "kw": "thẻ xanh mỹ", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P1", "target_url": null },
-    { "kw": "golden visa bồ đào nha", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P1", "target_url": "https://blog.nomadassetcollective.com/tai-sao-bo-dao-nha-van-la-lua-chon-hang-dau-chau-au/" },
-    { "kw": "định cư bồ đào nha", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P1", "target_url": "https://blog.nomadassetcollective.com/tai-sao-bo-dao-nha-van-la-lua-chon-hang-dau-chau-au/" },
+    { "kw": "golden visa bồ đào nha", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P1", "target_url": "https://blog.nomadassetcollective.com/chuong-trinh-overview/tai-sao-bo-dao-nha-van-la-lua-chon-hang-dau-chau-au/" },
+    { "kw": "định cư bồ đào nha", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P1", "target_url": "https://blog.nomadassetcollective.com/chuong-trinh-overview/tai-sao-bo-dao-nha-van-la-lua-chon-hang-dau-chau-au/" },
     { "kw": "golden visa hy lạp", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P1", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/greece/" },
     { "kw": "định cư hy lạp", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P1", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/greece/" },
     { "kw": "đầu tư định cư síp", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P1", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/cyprus/" },
     { "kw": "quốc tịch síp", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/cyprus/" },
     { "kw": "đầu tư định cư thổ nhĩ kỳ", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P1", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/turkey/" },
     { "kw": "quốc tịch thổ nhĩ kỳ", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/turkey/" },
-    { "kw": "friendly nations visa panama", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/panama-friendly-nations-visa-2026-can-cu-chien-luoc-chau-my-cho-nha-dau-tu-viet-nam/" },
+    { "kw": "friendly nations visa panama", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/chuong-trinh-overview/panama-friendly-nations-visa-2026-can-cu-chien-luoc-chau-my-cho-nha-dau-tu-viet-nam/" },
     { "kw": "đầu tư định cư panama", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/panama/" },
-    { "kw": "quốc tịch antigua", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/antigua-barbuda-cbi-2026-quoc-tich-caribbean-day-du-va-lo-trinh-den-ho-chieu-manh/" },
-    { "kw": "quốc tịch caribbean", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/antigua-barbuda-cbi-2026-quoc-tich-caribbean-day-du-va-lo-trinh-den-ho-chieu-manh/" },
-    { "kw": "italy investor visa", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/italy-investor-visa-2026-cu-tru-eu-qua-dau-tu-sang-tao-va-kinh-doanh/" },
-    { "kw": "định cư ý", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/italy-investor-visa-2026-cu-tru-eu-qua-dau-tu-sang-tao-va-kinh-doanh/" },
+    { "kw": "quốc tịch antigua", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/chuong-trinh-overview/antigua-barbuda-cbi-2026-quoc-tich-caribbean-day-du-va-lo-trinh-den-ho-chieu-manh/" },
+    { "kw": "quốc tịch caribbean", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/chuong-trinh-overview/antigua-barbuda-cbi-2026-quoc-tich-caribbean-day-du-va-lo-trinh-den-ho-chieu-manh/" },
+    { "kw": "italy investor visa", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/cap-nhat/italy-investor-visa-2026-cu-tru-eu-qua-dau-tu-sang-tao-va-kinh-doanh/" },
+    { "kw": "định cư ý", "cluster": "program", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/cap-nhat/italy-investor-visa-2026-cu-tru-eu-qua-dau-tu-sang-tao-va-kinh-doanh/" },
     { "kw": "mm2h là gì", "cluster": "program", "intent": "informational", "surface": "clp", "priority": "P1", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/" },
     { "kw": "định cư malaysia", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malaysia/" },
     { "kw": "định cư malta", "cluster": "program", "intent": "commercial", "surface": "clp", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/malta/" },
@@ -55,8 +55,8 @@
     { "kw": "đầu tư định cư dubai", "cluster": "country", "intent": "commercial", "surface": "clp", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/uae/" },
     { "kw": "đầu tư định cư singapore", "cluster": "country", "intent": "commercial", "surface": "clp", "priority": "P2", "target_url": "https://nomadassetcollective.com/property-hub-bat-dong-san/singapore/" },
 
-    { "kw": "chi phí đầu tư định cư", "cluster": "money", "intent": "informational", "surface": "blog", "priority": "P1", "target_url": "https://blog.nomadassetcollective.com/dau-tu-dinh-cu-can-bao-nhieu-tien-bang-chi-phi-cac-chuong-trinh-2026/" },
-    { "kw": "đầu tư định cư cần bao nhiêu tiền", "cluster": "money", "intent": "informational", "surface": "blog", "priority": "P1", "target_url": "https://blog.nomadassetcollective.com/dau-tu-dinh-cu-can-bao-nhieu-tien-bang-chi-phi-cac-chuong-trinh-2026/" },
-    { "kw": "đầu tư định cư giá rẻ", "cluster": "money", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/dau-tu-dinh-cu-can-bao-nhieu-tien-bang-chi-phi-cac-chuong-trinh-2026/" }
+    { "kw": "chi phí đầu tư định cư", "cluster": "money", "intent": "informational", "surface": "blog", "priority": "P1", "target_url": "https://blog.nomadassetcollective.com/so-sanh/dau-tu-dinh-cu-can-bao-nhieu-tien-bang-chi-phi-cac-chuong-trinh-2026/" },
+    { "kw": "đầu tư định cư cần bao nhiêu tiền", "cluster": "money", "intent": "informational", "surface": "blog", "priority": "P1", "target_url": "https://blog.nomadassetcollective.com/so-sanh/dau-tu-dinh-cu-can-bao-nhieu-tien-bang-chi-phi-cac-chuong-trinh-2026/" },
+    { "kw": "đầu tư định cư giá rẻ", "cluster": "money", "intent": "commercial", "surface": "blog", "priority": "P2", "target_url": "https://blog.nomadassetcollective.com/so-sanh/dau-tu-dinh-cu-can-bao-nhieu-tien-bang-chi-phi-cac-chuong-trinh-2026/" }
   ]
 }
