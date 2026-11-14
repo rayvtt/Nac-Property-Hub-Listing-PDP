@@ -15,8 +15,8 @@ Weekly VN immigration-investment SEO rank reviews (most recent first).
 - 7 keywords still have no target (content gaps, unchanged).
 
 **Keyword placement on the target page** (exact phrase in title / H1 / meta description):
-- All three: 13 keywords, almost all CLPs.
-- In none of the three: 14 keywords. Most are secondary keywords sharing a page with a primary one (`mm2h là gì`, `thái lan ltr visa`, `định cư ý`, `quốc tịch antigua`, `định cư bồ đào nha`, `friendly nations visa panama`, `golden visa new zealand`, and 4 Property Hub keywords including P0 `đầu tư định cư châu âu`). These need either their own page or a section on the shared one; that is a content decision, not a meta patch. The blog ones stay blocked on cockpit access (#1527).
+- All three: 11 keywords, 10 of them CLPs.
+- In none of the three: 15 keywords (2 are the Malta pair, measured against the Malaysia page they redirect to). Most of the rest are secondary keywords sharing a page with a primary one (`mm2h là gì`, `thái lan ltr visa`, `định cư ý`, `quốc tịch antigua`, `định cư bồ đào nha`, `friendly nations visa panama`, `golden visa new zealand`, and 4 Property Hub keywords including P0 `đầu tư định cư châu âu`). These need either their own page or a section on the shared one; that is a content decision, not a meta patch. The blog ones stay blocked on cockpit access (#1527).
 
 **Internal links to the blog (PDP, CLP, brochure and Hub repos):** 84 distinct old-style blog URLs are linked from the main site. 83 resolve with one 301 hop to a 200. **1 is a 404** (#1536): the Greece brochure's §03 article banner and its "Đọc Bài" button link to the "752 UHNWI → 978" article, which no longer exists on the blog. The link comes from the Brochures Meta-data row in Notion, so it needs a replacement article picked there; not self-served.
 
