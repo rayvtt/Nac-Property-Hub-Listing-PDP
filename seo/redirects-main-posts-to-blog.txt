@@ -1,0 +1,75 @@
+# NAC — main-site article copies -> blog canonical (generated 2026-11-15 from live WP REST)
+# 67 posts are published on nomadassetcollective.com (2026-03-13 .. 2026-04-28), all index,follow + self-canonical, no <h1>.
+# Rows below have a live twin on blog.nomadassetcollective.com (same slug, or same title).
+# Apply in WP admin (Rank Math -> Redirections, 301) or paste above "# BEGIN WordPress" on Apache/LiteSpeed.
+#
+# ---- same slug on the blog (43) ----
+Redirect 301 /5-sai-lam-pho-bien-khi-dau-tu-lay-thuong-tru-nuoc-ngoai-va-cach-tranh/ https://blog.nomadassetcollective.com/goc-nhin-nac/5-sai-lam-pho-bien-khi-dau-tu-lay-thuong-tru-nuoc-ngoai-va-cach-tranh/
+Redirect 301 /antigua-barbuda-cbi-2026-quoc-tich-caribbean-day-du-va-lo-trinh-den-ho-chieu-manh/ https://blog.nomadassetcollective.com/chuong-trinh-overview/antigua-barbuda-cbi-2026-quoc-tich-caribbean-day-du-va-lo-trinh-den-ho-chieu-manh/
+Redirect 301 /antigua-vs-grenada-2026-so-sanh-hai-chuong-trinh-cbi-caribbean-hang-dau-dau-la-lua-chon-tot-hon-cho-nha-dau-tu-viet/ https://blog.nomadassetcollective.com/so-sanh/antigua-vs-grenada-2026-so-sanh-hai-chuong-trinh-cbi-caribbean-hang-dau-dau-la-lua-chon-tot-hon-cho-nha-dau-tu-viet/
+Redirect 301 /bat-dong-san-athens-2026-so-sanh-gia-theo-quan-trung-tam-infographic/ https://blog.nomadassetcollective.com/so-sanh/bat-dong-san-athens-2026-so-sanh-gia-theo-quan-trung-tam-infographic/
+Redirect 301 /bat-dong-san-limassol-nicosia-2026-phan-tich-gia-theo-khu-vuc-cho-nha-dau-tu-tai-cyprus/ https://blog.nomadassetcollective.com/infographic/bat-dong-san-limassol-nicosia-2026-phan-tich-gia-theo-khu-vuc-cho-nha-dau-tu-tai-cyprus/
+Redirect 301 /bat-dong-san-lisbon-2026-phan-tich-gia-theo-quan-va-co-hoi-dau-tu-cho-nguoi-xin-d7-visa-infographic/ https://blog.nomadassetcollective.com/infographic/bat-dong-san-lisbon-2026-phan-tich-gia-theo-quan-va-co-hoi-dau-tu-cho-nguoi-xin-d7-visa-infographic/
+Redirect 301 /bat-dong-san-madrid-2026-phan-tich-gia-theo-khu-vuc-va-co-hoi-dau-tu-gan-golden-visa-infographic/ https://blog.nomadassetcollective.com/infographic/bat-dong-san-madrid-2026-phan-tich-gia-theo-khu-vuc-va-co-hoi-dau-tu-gan-golden-visa-infographic/
+Redirect 301 /bat-dong-san-port-vila-2026-chi-phi-sinh-hoat-dau-tu-va-chuong-trinh-dsp-tai-vanuatu-infographic/ https://blog.nomadassetcollective.com/infographic/bat-dong-san-port-vila-2026-chi-phi-sinh-hoat-dau-tu-va-chuong-trinh-dsp-tai-vanuatu-infographic/
+Redirect 301 /bat-dong-san-toronto-vancouver-2026-so-sanh-gia-cho-nha-dau-tu-start-up-visa-infographic/ https://blog.nomadassetcollective.com/so-sanh/bat-dong-san-toronto-vancouver-2026-so-sanh-gia-cho-nha-dau-tu-start-up-visa-infographic/
+Redirect 301 /bo-dao-nha-d7-visa-2026-thuong-tru-eu-danh-cho-nguoi-co-thu-nhap-thu-dong-cap-nhat-dieu-kien-va-co-hoi/ https://blog.nomadassetcollective.com/cap-nhat/bo-dao-nha-d7-visa-2026-thuong-tru-eu-danh-cho-nguoi-co-thu-nhap-thu-dong-cap-nhat-dieu-kien-va-co-hoi/
+Redirect 301 /cap-nhat-chinh-sach-di-tru-dau-tu-q1-2026-nhung-thay-doi-quan-trong-nha-dau-tu-viet-nam-can-biet-ngay/ https://blog.nomadassetcollective.com/cap-nhat/cap-nhat-chinh-sach-di-tru-dau-tu-q1-2026-nhung-thay-doi-quan-trong-nha-dau-tu-viet-nam-can-biet-ngay/
+Redirect 301 /cap-nhat-hungary-guest-investor-visa-q2-2026-chinh-sach-moi-va-co-hoi-bat-dong-san-budapest-cho-nha-dau-tu-viet/ https://blog.nomadassetcollective.com/cap-nhat/cap-nhat-hungary-guest-investor-visa-q2-2026-chinh-sach-moi-va-co-hoi-bat-dong-san-budapest-cho-nha-dau-tu-viet/
+Redirect 301 /cap-nhat-hy-lap-golden-visa-q2-2026-nguong-dau-tu-moi-va-nhung-thay-doi-quan-trong-nha-dau-tu-viet-nam-can-biet/ https://blog.nomadassetcollective.com/cap-nhat/cap-nhat-hy-lap-golden-visa-q2-2026-nguong-dau-tu-moi-va-nhung-thay-doi-quan-trong-nha-dau-tu-viet-nam-can-biet/
+Redirect 301 /cap-nhat-italy-investor-visa-q2-2026-thay-doi-chinh-sach-va-co-hoi-moi-cho-nha-dau-tu-viet-nam/ https://blog.nomadassetcollective.com/cap-nhat/cap-nhat-italy-investor-visa-q2-2026-thay-doi-chinh-sach-va-co-hoi-moi-cho-nha-dau-tu-viet-nam/
+Redirect 301 /caribbean-cbi-2026-so-sanh-grenada-st-kitts-va-dominica-cho-nha-dau-tu-chau-a/ https://blog.nomadassetcollective.com/so-sanh/caribbean-cbi-2026-so-sanh-grenada-st-kitts-va-dominica-cho-nha-dau-tu-chau-a/
+Redirect 301 /case-study-gia-dinh-doanh-nhan-tp-hcm-va-18-thang-chinh-phuc-thuong-tru-hy-lap-bai-hoc-thuc-te-tu-hanh-trinh/ https://blog.nomadassetcollective.com/case-study/case-study-gia-dinh-doanh-nhan-tp-hcm-va-18-thang-chinh-phuc-thuong-tru-hy-lap-bai-hoc-thuc-te-tu-hanh-trinh/
+Redirect 301 /case-study-nu-doanh-nhan-viet-va-hanh-trinh-canada-start-up-visa-tu-startup-ha-noi-den-pr-canada-trong-3-nam/ https://blog.nomadassetcollective.com/case-study/case-study-nu-doanh-nhan-viet-va-hanh-trinh-canada-start-up-visa-tu-startup-ha-noi-den-pr-canada-trong-3-nam/
+Redirect 301 /cyprus-pr-2026-dinh-cu-chau-au-voi-e300-000-va-lo-trinh-quoc-tich-5-nam/ https://blog.nomadassetcollective.com/chuong-trinh-overview/cyprus-pr-2026-dinh-cu-chau-au-voi-e300-000-va-lo-trinh-quoc-tich-5-nam/
+Redirect 301 /dau-tu-di-tru-vi-con-cai-chien-luoc-ma-cha-me-viet-dang-am-tham-thuc-hien/ https://blog.nomadassetcollective.com/goc-nhin-nac/dau-tu-di-tru-vi-con-cai-chien-luoc-ma-cha-me-viet-dang-am-tham-thuc-hien/
+Redirect 301 /goc-nhin-nac-7-cau-hoi-nha-dau-tu-viet-nam-can-tu-hoi-truoc-khi-chon-chuong-trinh-di-tru/ https://blog.nomadassetcollective.com/goc-nhin-nac/goc-nhin-nac-7-cau-hoi-nha-dau-tu-viet-nam-can-tu-hoi-truoc-khi-chon-chuong-trinh-di-tru/
+Redirect 301 /goc-nhin-nac-chien-luoc-thua-ke-tai-san-quoc-te-cho-nha-dau-tu-viet-nam-co-tai-san-da-quoc-gia/ https://blog.nomadassetcollective.com/goc-nhin-nac/goc-nhin-nac-chien-luoc-thua-ke-tai-san-quoc-te-cho-nha-dau-tu-viet-nam-co-tai-san-da-quoc-gia/
+Redirect 301 /goc-nhin-nac-tai-sao-da-quoc-tich-va-da-thuong-tru-la-chien-luoc-bao-ve-tai-san-cho-giai-doan-nuoc-nha-tang-toc-cho-nha-dau-tu-viet-nam/ https://blog.nomadassetcollective.com/goc-nhin-nac/goc-nhin-nac-tai-sao-da-quoc-tich-va-da-thuong-tru-la-chien-luoc-bao-ve-tai-san-cho-giai-doan-nuoc-nha-tang-toc-cho-nha-dau-tu-viet-nam/
+Redirect 301 /goc-nhin-nac-xu-huong-dau-tu-di-tru-2026-vi-sao-nha-dau-tu-viet-dang-chu-y-den-thai-binh-duong/ https://blog.nomadassetcollective.com/goc-nhin-nac/goc-nhin-nac-xu-huong-dau-tu-di-tru-2026-vi-sao-nha-dau-tu-viet-dang-chu-y-den-thai-binh-duong/
+Redirect 301 /grenada-cbi-2026-chien-luoc-ho-chieu-caribbean-ket-hop-e-2-visa-my-canh-cua-vao-hoa-ky-cho-nha-dau-tu-viet-nam/ https://blog.nomadassetcollective.com/phan-tich/grenada-cbi-2026-chien-luoc-ho-chieu-caribbean-ket-hop-e-2-visa-my-canh-cua-vao-hoa-ky-cho-nha-dau-tu-viet-nam/
+Redirect 301 /hungary-guest-investor-visa-2026-thuong-tru-eu-10-nam-voi-e250-000/ https://blog.nomadassetcollective.com/chuong-trinh-overview/hungary-guest-investor-visa-2026-thuong-tru-eu-10-nam-voi-e250-000/
+Redirect 301 /hy-lap-vs-tho-nhi-ky-2026-so-sanh-toan-dien-hai-chuong-trinh-dau-tu-di-tru-du-lieu-bds-roi-va-chien-luoc-chon-lua/ https://blog.nomadassetcollective.com/so-sanh/hy-lap-vs-tho-nhi-ky-2026-so-sanh-toan-dien-hai-chuong-trinh-dau-tu-di-tru-du-lieu-bds-roi-va-chien-luoc-chon-lua/
+Redirect 301 /italy-investor-visa-2026/ https://blog.nomadassetcollective.com/chuong-trinh-overview/italy-investor-visa-2026/
+Redirect 301 /italy-investor-visa-2026-cu-tru-eu-qua-dau-tu-sang-tao-va-kinh-doanh/ https://blog.nomadassetcollective.com/cap-nhat/italy-investor-visa-2026-cu-tru-eu-qua-dau-tu-sang-tao-va-kinh-doanh/
+Redirect 301 /malaysia-mm2h-2026/ https://blog.nomadassetcollective.com/chuong-trinh-overview/malaysia-mm2h-2026/
+Redirect 301 /malaysia-mm2h-vs-new-zealand-active-investor-plus-2026-hai-con-duong-thuong-tru-chau-a-thai-binh-duong-danh-cho-nha-dau-tu-viet-nam/ https://blog.nomadassetcollective.com/so-sanh/malaysia-mm2h-vs-new-zealand-active-investor-plus-2026-hai-con-duong-thuong-tru-chau-a-thai-binh-duong-danh-cho-nha-dau-tu-viet-nam/
+Redirect 301 /malta-mein-2026-quoc-tich-eu-nhanh-nhat-va-nhung-dieu-nha-dau-tu-viet-can-biet/ https://blog.nomadassetcollective.com/chuong-trinh-overview/malta-mein-2026-quoc-tich-eu-nhanh-nhat-va-nhung-dieu-nha-dau-tu-viet-can-biet/
+Redirect 301 /malta-vs-cyprus-2026-so-sanh-hai-con-duong-cu-tru-dia-trung-hai-quoc-tich-eu-vs-thuong-tru-chien-luoc/ https://blog.nomadassetcollective.com/so-sanh/malta-vs-cyprus-2026-so-sanh-hai-con-duong-cu-tru-dia-trung-hai-quoc-tich-eu-vs-thuong-tru-chien-luoc/
+Redirect 301 /nauru-cbi-2026-phan-tich-chuong-trinh-quoc-tich-dau-tu-nho-nhat-the-gioi-co-hoi-thuc-te-hay-chi-la-ho-chieu-thu-hai/ https://blog.nomadassetcollective.com/phan-tich/nauru-cbi-2026-phan-tich-chuong-trinh-quoc-tich-dau-tu-nho-nhat-the-gioi-co-hoi-thuc-te-hay-chi-la-ho-chieu-thu-hai/
+Redirect 301 /nauru-ecrc-2026/ https://blog.nomadassetcollective.com/chuong-trinh-overview/nauru-ecrc-2026/
+Redirect 301 /new-zealand-active-investor-plus-2026/ https://blog.nomadassetcollective.com/goc-nhin-nac/new-zealand-active-investor-plus-2026/
+Redirect 301 /new-zealand-active-investor-plus-vs-canada-start-up-visa-2026-so-sanh-hai-lo-trinh-di-tru-anh-ngu-hang-dau/ https://blog.nomadassetcollective.com/so-sanh/new-zealand-active-investor-plus-vs-canada-start-up-visa-2026-so-sanh-hai-lo-trinh-di-tru-anh-ngu-hang-dau/
+Redirect 301 /panama-friendly-nations-visa-2026-can-cu-chien-luoc-chau-my-cho-nha-dau-tu-viet-nam/ https://blog.nomadassetcollective.com/chuong-trinh-overview/panama-friendly-nations-visa-2026-can-cu-chien-luoc-chau-my-cho-nha-dau-tu-viet-nam/
+Redirect 301 /panama-friendly-nations-visa-pensionado-2026-phan-tich-chi-tiet-cho-nha-dau-tu-viet-nam/ https://blog.nomadassetcollective.com/phan-tich/panama-friendly-nations-visa-pensionado-2026-phan-tich-chi-tiet-cho-nha-dau-tu-viet-nam/
+Redirect 301 /tai-sao-bo-dao-nha-van-la-lua-chon-hang-dau-chau-au/ https://blog.nomadassetcollective.com/chuong-trinh-overview/tai-sao-bo-dao-nha-van-la-lua-chon-hang-dau-chau-au/
+Redirect 301 /thue-va-thuong-tru-nuoc-ngoai-nhung-dieu-nha-dau-tu-viet-can-hieu-dung/ https://blog.nomadassetcollective.com/so-sanh/thue-va-thuong-tru-nuoc-ngoai-nhung-dieu-nha-dau-tu-viet-can-hieu-dung/
+Redirect 301 /uae-golden-visa-2026/ https://blog.nomadassetcollective.com/chuong-trinh-overview/uae-golden-visa-2026/
+Redirect 301 /uae-vs-hy-lap-2026-hai-chien-luoc-thuong-tru-hoan-toan-khac-biet-dau-la-phu-hop-voi-ban/ https://blog.nomadassetcollective.com/so-sanh/uae-vs-hy-lap-2026-hai-chien-luoc-thuong-tru-hoan-toan-khac-biet-dau-la-phu-hop-voi-ban/
+Redirect 301 /vanuatu-dsp-2026-ho-chieu-thai-binh-duong-qua-dau-tu-chuong-trinh-quoc-tich-nhanh-nhat-the-gioi/ https://blog.nomadassetcollective.com/chuong-trinh-overview/vanuatu-dsp-2026-ho-chieu-thai-binh-duong-qua-dau-tu-chuong-trinh-quoc-tich-nhanh-nhat-the-gioi/
+# ---- same title, different slug (1) ----
+Redirect 301 /bo-dao-nha-tai-sao-bo-dao-nha-van-la-lua-chon-hang-dau-chau-au/ https://blog.nomadassetcollective.com/chuong-trinh-overview/tai-sao-bo-dao-nha-van-la-lua-chon-hang-dau-chau-au/
+# ---- no twin found on the blog (23): decide per post — move to the blog, keep, or noindex ----
+# /austria-2026-phan-tich-co-hoi-cu-tru-eu-thong-qua-dau-tu-kinh-doanh-tai-trung-tam-chau-au/  (2026-03-28)
+# /bat-dong-san-dubai-2026-so-sanh-gia-cac-khu-trung-tam-cho-nha-dau-tu-infographic/  (2026-04-07)
+# /bat-dong-san-kuala-lumpur-2026-phan-tich-gia-theo-khu-vuc-cho-nha-dau-tu-mm2h-infographic/  (2026-04-07)
+# /case-study-doanh-nhan-sai-gon-va-hanh-trinh-quoc-tich-antigua-4-thang-tu-ho-so-den-ho-chieu-caribbean/  (2026-04-07)
+# /cu-tru-dubai-2026-co-hoi-va-nhung-dieu-can-biet-truoc-khi-chuyen-den/  (2026-04-04)
+# /goc-nhin-nac-panama-pensioner-visa-lua-chon-hoan-hao-cho-huu-tri/  (2026-04-15)
+# /golden-visa-hy-lap-2026-huong-dan-toan-dien-cho-nha-dau-tu-viet-nam/  (2026-03-23)
+# /italy-investor-visa-2026-thuong-tru-eu-voi-e250-000-va-loi-song-la-ma/  (2026-03-15)
+# /jordan-golden-visa-2026-cua-ngo-trung-dong-cho-nha-dau-tu-viet-nam-thuong-tru-kinh-doanh-va-vi-the-chien-luoc/  (2026-04-07)
+# /malaysia-mm2h-2026-thuong-tru-10-nam-tai-cua-ngo-dong-nam-a/  (2026-03-13)
+# /malaysia-my-second-home-mm2h-2026-huong-dan-toan-dien-cho-nha-dau-tu-viet-nam/  (2026-04-07)
+# /new-zealand-active-investor-plus-2026-thuong-tru-chat-luong-cao-cho-nha-dau-tu-toan-cau/  (2026-03-15)
+# /phan-tich-bds-port-vila-dsp-2026-chi-phi-thuc-te-sau-khi-co-ho-chieu-vanuatu/  (2026-04-28)
+# /phan-tich-jordan-golden-visa-2026-thi-truong-bds-amman-ty-suat-dau-tu-va-chien-luoc-toi-uu-hoa-quyen-loi-cho-nha-dau-tu-viet-nam/  (2026-04-28)
+# /quoc-tich-tho-nhi-ky-qua-dau-tu-chien-luoc-e-2-ma-nha-dau-tu-viet-can-biet/  (2026-03-19)
+# /so-sanh-cac-chuong-trinh-dinh-cu-canada-startup-skilled-worker-hay-express-entry/  (2026-04-10)
+# /spain-golden-visa-2026/  (2026-04-07)
+# /spain-golden-visa-2026-nhuoc-diem-lon-va-nhung-dieu-nha-dau-tu-can-biet-truoc-khi-quyet-dinh/  (2026-03-15)
+# /spain-non-lucrative-visa-2026-phan-tich-phuong-an-cu-tru-eu-chi-phi-thap-cho-nha-dau-tu-co-thu-nhap-thu-dong/  (2026-04-11)
+# /uae-golden-visa-2026-thuong-tru-10-nam-tat-ca-nhung-gi-nha-dau-tu-viet-nam-can-biet/  (2026-03-15)
+# /vanuatu-cbi-2026/  (2026-03-16)
+# /vanuatu-cbi-2026-quoc-tich-nhanh-nhat-chau-a-thai-binh-duong-trong-30-60-ngay/  (2026-03-16)
+# /vanuatu-cbi-2026-quoc-tich-nhanh-nhat-the-gioi-va-nhung-dieu-it-nguoi-biet/  (2026-03-13)

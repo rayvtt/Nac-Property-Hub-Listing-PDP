@@ -93,3 +93,30 @@ The paste-ready redirect block (Rank Math or .htaccess) is in [`seo/redirects-re
 - Fixes the 12-H1 topical-focus defect on the one real article it lives in.
 - **This is the prerequisite** — the queued content pillars (Golden Visa, US/EB-5, …) rank far faster once program signals aren't split 3–4 ways.
 - Timeline: recrawl + consolidation typically shows in GSC in **2–6 weeks**.
+
+---
+
+## 6. Status check 2026-11-15 (live crawl of all 541 sitemap URLs)
+
+**Section 2 redirects: 18 of 20 are live.** Ray pointed most of them at brochures rather than CLPs; that is fine, each source now lands on one program page.
+
+| Still open | Now | Needed |
+|---|---|---|
+| `/citizenships/saint-lucia-citizenship/` | 200, `index, follow` | 301 (plan: Property Hub) |
+| `/citizenships/` (archive) | 200, `index, follow` | 301 (plan: Property Hub) |
+| `/citizenships/grenada-citizenship/` | 301 → `/property-hub-bat-dong-san/grenada/`, which is an **empty 200** (0 bytes) | repoint to `/brochures/`, or publish the Grenada CLP |
+| CPT noindex + sitemap exclusion | 16 redirecting URLs are still listed in the sitemap; `/compares/` (15 URLs) is still `index, follow` | Rank Math → Titles & Meta → residence / citizenship / compare |
+
+**Two more CLP-level problems found in the same crawl**
+- `/property-hub-bat-dong-san/montenegro/` 301s to `/brochures/` (the brochure index, not Montenegro). Same class as Malta → Malaysia (#1524).
+- `/brochures/chuong-trinh-singapore-gip-dau-tu-quyen-cu-tru/` and `/property-hub-bat-dong-san/grenada/` return 200 with an empty body and are in the sitemap (soft 404s).
+
+## 7. Second duplicate set: 67 article copies on the main domain
+
+`nomadassetcollective.com` still has **67 published posts** (2026-03-13 → 2026-04-28), from before the blog moved to `blog.nomadassetcollective.com`. Every one is `index, follow`, self-canonical, in the sitemap, and has no `<h1>`.
+
+- **44 have a live twin on the blog** (43 same slug, 1 same title). Two indexable copies of one article on two hosts, each claiming to be canonical.
+- **4 of those twins are tracked keyword targets**, covering 7 keywords: Portugal (`golden visa bồ đào nha`, `định cư bồ đào nha`), Panama Friendly Nations, Antigua ×2, Italy ×2. The blog URL is the target in `goal-keywords.json`; the main-site copy competes with it.
+- **23 have no twin on the blog.** Several look like earlier versions of articles that were rewritten under a new slug (3 Vanuatu, 2 Spain, 2 Malaysia MM2H). These need a per-post call: move to the blog, 301 to the closest blog article, or noindex.
+
+**Fix (Ray, WP admin on the main site):** 301 each of the 44 to its blog twin. The paste-ready map is `seo/redirects-main-posts-to-blog.txt` (same format as the Section 2 file). Then exclude `post` from the main-site sitemap. Not self-served: redirects are Ray's.

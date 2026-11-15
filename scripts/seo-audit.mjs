@@ -203,7 +203,17 @@ async function extractSignals(pageUrl) {
       redirect: 'follow',
     });
     if (!res.ok) return { url: pageUrl, error: `HTTP ${res.status}` };
+    // A sitemap URL that redirects is not a page: auditing the destination's
+    // HTML under the source URL filed phantom title/meta/schema tasks (e.g.
+    // every retired /residences/ stub "inherited" the /brochures/ title).
+    // Report the redirect itself and skip the on-page checks.
+    const norm = (u) => u.replace(/\/+$/, '');
+    if (res.redirected && norm(res.url) !== norm(pageUrl)) {
+      return { url: pageUrl, redirectedTo: res.url };
+    }
     html = await res.text();
+    // 200 with no document = soft 404 (a WP page whose raw_html_code is empty).
+    if (html.trim().length < 200) return { url: pageUrl, emptyBody: true };
   } catch (err) {
     return { url: pageUrl, error: err.message };
   }
@@ -234,7 +244,9 @@ async function extractSignals(pageUrl) {
   $('script[type="application/ld+json"]').each((_, el) => {
     const txt = $(el).text().trim();
     if (!txt) return;
-    if (/\{[A-Za-z][^}\n]{0,48}\}/.test(txt)) schemaBroken = true; // unfilled placeholder
+    // `{search_term_string}` is the schema.org SearchAction query placeholder
+    // (Rank Math / Yoast emit it on purpose) — not an unfilled template token.
+    if (/\{[A-Za-z][^}\n]{0,48}\}/.test(txt.replace(/\{search_term_string\}/g, ''))) schemaBroken = true; // unfilled placeholder
     try {
       const json = JSON.parse(txt);
       const arr = Array.isArray(json) ? json : (json['@graph'] || [json]);
@@ -513,6 +525,27 @@ function heuristicTasks(signals, gscByPage, ga4ByUrl, theme) {
       impressions, sessions, avgPosition, targetQuery: topQuery,
       ...t,
     });
+
+    if (sig.redirectedTo) {
+      push({
+        title: `Sitemap URL redirects — ${slug || sig.url}`,
+        priority: 'P2', category: 'Technical', autoApplicable: false,
+        issue: `Listed in the XML sitemap but 301/302s to ${sig.redirectedTo}. Sitemaps should list only final, indexable URLs.`,
+        proposedFix: 'Remove the URL from the sitemap (unpublish the retired page or exclude its post type in Rank Math), or drop the redirect if the page should exist.',
+        impactScore: impactBase,
+      });
+      continue;
+    }
+    if (sig.emptyBody) {
+      push({
+        title: `Empty page (200, no HTML) — ${slug || sig.url}`,
+        priority: 'P0', category: 'Technical', autoApplicable: false,
+        issue: 'URL returns HTTP 200 with an empty body — a soft 404 that is listed in the sitemap.',
+        proposedFix: 'Publish the page content (ACF raw_html_code is empty), or set the page to Draft / redirect it until the content exists.',
+        impactScore: impactBase * 8,
+      });
+      continue;
+    }
 
     if (!sig.title) {
       push({
