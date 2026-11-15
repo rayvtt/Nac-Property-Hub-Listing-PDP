@@ -2,6 +2,33 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-11-15 — Execution tick: full sitemap crawl; 18/20 consolidation 301s found live; 67 duplicate articles on the main domain; audit false positives fixed
+
+**De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. Snapshot `2026-11-09.json` was not re-measured. **Nothing to defend:** 0/47 in top-3.
+
+**Queue check:** unchanged. 3 Approved tasks (#1521, #1516, #1313), all waiting on Ray; 0 Approved + Auto-Applicable; briefs already drafted. So this run did the audit dry-run carried over since 11-12.
+
+**Audit dry-run on merged code (541 sitemap URLs, no Notion writes):**
+- PDP alt tasks: **0**, as intended after PR #462. (74 blog posts still report images without alt; not checked this run.)
+- The run would have filed 680 tasks. Two groups were wrong, now fixed in `seo-audit.mjs` (this PR):
+  - 8 of 11 "Broken JSON-LD" P0s were the standard `{search_term_string}` search-box placeholder. The 3 that remain are real (`{token}` on three of the orphan PDPs).
+  - The audit followed redirects and judged the destination page under the source URL, so each retired stub "had" the brochure index's title, meta and schema. A redirecting sitemap URL now gets one "Sitemap URL redirects" task, and a 200 with no HTML gets one "Empty page" P0. Re-run: 635 tasks, 16 redirect rows, 2 empty-page rows.
+
+**Consolidation plan (#1521): 18 of the 20 redirects are live.** Earlier runs carried this item as blocked without re-testing it, so the date they went in is unknown. Most point at brochures instead of CLPs, which works. Details in `consolidation-plan-2026-09.md` §6.
+- Still open: `/citizenships/saint-lucia-citizenship/` and the `/citizenships/` archive (both 200, indexable); CPT noindex + sitemap exclusion (16 redirecting URLs are still in the sitemap, `/compares/` still indexable).
+- **`/citizenships/grenada-citizenship/` redirects to an empty page.** `/property-hub-bat-dong-san/grenada/` returns 200 with 0 bytes.
+
+**New findings (all Ray's WP admin, none self-served):**
+- **#1537, P0: 67 article copies on the main domain.** Posts from March–April 2026, all indexable, self-canonical, in the sitemap, no `<h1>`. 44 have a live twin on the blog (43 same slug). 4 of those twins are tracked targets covering 7 keywords (Portugal ×2, Panama FNV, Antigua ×2, Italy ×2), so each of those keywords has two competing URLs. Paste-ready 301 map: `seo/redirects-main-posts-to-blog.txt`. 23 have no twin and need a per-post call. Plan §7.
+- **#1538, P0: 2 empty pages in the sitemap.** Grenada CLP and the Singapore GIP brochure return 200 with no HTML.
+- **#1539, P1: Montenegro CLP 301s to the brochure index** (`/brochures/`). Same class as Malta → Malaysia (#1524).
+
+**Indexation check (last 14 days):** nothing new shipped to public pages in the window beyond the PDP titles (verified live 11-12).
+
+**Still blocked on Ray (unchanged):** blog sitemap flush (#1535), the 5 orphan PDPs, Malta CLP redirect (#1524), Greece brochure dead link (#1536), cockpit access for blog re-pushes (#1534, #1461, #1527), the pillar decisions, and the EB-5 `[VERIFY]` items.
+
+**Next:** 11-16 goal review / snapshot; re-test the 44 main-site copies after Ray's redirects; look at the 74 blog alt rows; shared-page keyword decisions (carried over).
+
 ## 2026-11-14 — Execution tick: keyword target-URL audit; 5 stale blog targets fixed; 1 dead link on the Greece brochure
 
 **De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. Snapshot `2026-11-09.json` was not re-measured. **Nothing to defend:** 0/47 in top-3.
