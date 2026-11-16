@@ -2,6 +2,31 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-11-16 — Execution tick: all 176 blog posts checked; the blog "missing alt" rows were a false positive, fixed in the audit
+
+**De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. The 11-16 goal-review snapshot has not landed yet (the job ran at 19:36 UTC last week), so `2026-11-09.json` is still the latest and was not re-measured. **Nothing to defend:** 0/47 in top-3.
+
+**Queue check:** unchanged. 3 Approved tasks (#1521, #1516, #1313), all waiting on Ray; 0 Approved + Auto-Applicable; the 5 content briefs are drafted. So this run took the carried-over audit item: the blog rows reporting images without alt.
+
+**Indexation check, all 176 published blog posts (fetched live from WP REST, not the stale sitemap):** 176/176 return 200, are indexable, self-canonical, and have exactly 1 `<h1>`. That includes the 23 posts missing from `post-sitemap.xml`.
+
+**Blog alt rows: not real work.**
+- 1,349 images across 47 posts have an empty `alt`. None lack the attribute.
+- 1,330 of them are one component: the Bản Tin Tuần cover card (`.nac-cov`). Every issue (35) and both quarterly reports render their own cover plus a 35-cover archive shelf. The photo sits inside a card that prints the headline and index as text, so `alt=""` is right. The audit counted it as missing and put each issue at 36/58, over its 30% threshold.
+- Fixed in `seo-audit.mjs` (this PR): an empty-`alt` image inside a compact text-bearing card (10–600 chars within 3 levels, block container) is treated as labelled by the card. Images with no `alt` attribute, article-level heroes and inline images are still counted. Offline re-run over the 176 posts: 0 alt tasks (was 37 VI posts, about 74 with the EN versions). PDP template, `nobu-da-nang` and CLP `vn` unchanged at 0.
+- 13 real gaps remain, all under the threshold so no task fires: 12 brand logos in the listing carousels of 6 comparison articles, and the featured image of the Panama City market article (`First-Time-Panama-City.webp`, no alt in the WP media library). Low value; the logos would need an `alt` in the publisher's carousel renderer in `nac-marketing-omnichannel`.
+
+**Re-tests (all unchanged since 11-15):**
+- Consolidation #1521: `/citizenships/saint-lucia-citizenship/` and `/citizenships/` still 200; `/compares/` still indexable.
+- #1538: Grenada CLP and the Singapore GIP brochure still return 200 with 0 bytes.
+- #1539 / #1524: Montenegro CLP still 301s to `/brochures/`, Malta CLP to `/malaysia/`.
+- #1537: sampled 4 of the 44 main-site article copies, all still 200.
+- #1535: `post-sitemap.xml` still 153 URLs, lastmod 2026-10-15, against 176 published.
+
+**Still blocked on Ray (unchanged):** #1537 (44 × 301 to the blog), #1538, #1539, #1524, #1535, the last 2 redirects + CPT noindex in #1521, the 5 orphan PDPs, Greece brochure dead link (#1536), cockpit access for blog re-pushes (#1534, #1461, #1527), the pillar decisions, and the EB-5 `[VERIFY]` items.
+
+**Next:** read the 11-16 snapshot when the goal-review job lands; shared-page keyword decisions (carried over); re-test Ray's items.
+
 ## 2026-11-15 — Execution tick: full sitemap crawl; 18/20 consolidation 301s found live; 67 duplicate articles on the main domain; audit false positives fixed
 
 **De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. Snapshot `2026-11-09.json` was not re-measured. **Nothing to defend:** 0/47 in top-3.
