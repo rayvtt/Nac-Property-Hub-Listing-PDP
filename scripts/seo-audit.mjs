@@ -274,6 +274,22 @@ async function extractSignals(pageUrl) {
     const w = parseInt($el.attr('width') || '', 10), h = parseInt($el.attr('height') || '', 10);
     if ((w > 0 && w <= 1) || (h > 0 && h <= 1)) return true;
     if (/display\s*:\s*none|visibility\s*:\s*hidden/i.test($el.attr('style') || '')) return true;
+    // An explicit alt="" inside a compact card that carries its own text (a
+    // magazine cover with its headline, a captioned figure, a linked teaser) is
+    // labelled by that text. The NAC Times weekly brief renders a 35-cover
+    // archive shelf this way, which flagged every issue at 36/58 "missing".
+    // The card must be small (10–600 chars within 3 levels) and a block
+    // container, so an article-level hero or an inline image is still counted.
+    if (alt !== undefined && !alt.trim()) {
+      let $p = $el.parent();
+      for (let lvl = 1; lvl <= 3 && $p.length; lvl++, $p = $p.parent()) {
+        const txt = $p.text().replace(/\s+/g, ' ').trim();
+        if (!txt) continue;
+        const tag = ($p.prop('tagName') || '').toLowerCase();
+        return txt.length >= 10 && txt.length <= 600 &&
+          ['div', 'figure', 'a', 'article', 'section', 'li'].includes(tag);
+      }
+    }
     return false;
   };
   const imgs = $('img').filter((_, el) => !isDecorative(el));
