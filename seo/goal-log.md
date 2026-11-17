@@ -2,6 +2,44 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-11-17 — Execution tick: 10 brochure meta descriptions restored at the source (PR #430); 6 keywords retargeted to brochures; Nauru brochure is a copy of Antigua
+
+**De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. The 11-16 snapshot landed (19:23 UTC) and was read, not re-measured: 0/47 in top-3, 0 impressions on every tracked keyword. **Nothing to defend.**
+
+**Queue check:** unchanged. 3 Approved tasks (#1521, #1516, #1313) wait on Ray; 0 Approved + Auto-Applicable; the 5 content briefs are drafted. So this run took the item carried over since 11-14: the keywords that share a page and appear in none of its title, H1 or meta description.
+
+**Method:** matched all 47 keywords against the 176 live blog titles and 177 main-site pages, then fetched 38 candidate pages and scored each keyword on title / H1 / meta / headings / body.
+
+**Shipped: meta descriptions on 10 brochures (NAC-Program-Brochures PR #430, squash-merged).**
+- 12 brochures had no `<meta name="description">` live. Tasks #855–869 were marked Applied on 05-26: the applier wrote the tag into WP's `raw_html_code`, and the next `wp-sync` overwrote it from the repo, which is the source of truth. The fix never stuck.
+- Added the tag to the source HTML of Antigua, Cyprus, Greece, Italy, Malaysia, Panama, Portugal, Turkey, UAE and UK. Each line says what the brochure covers (investment levels, process, family, tax, citizenship path), 134–154 chars, no programme figures or superlatives. Parity check 15/15 on all 10.
+- Live check after wp-sync: 9/10 show the new tag; Malaysia had not refreshed yet at the time of writing.
+- Left out: Nauru and Australia (below).
+
+**Shipped: 6 keywords retargeted in `goal-keywords.json`** to the page that already carries the phrase:
+- `thái lan ltr visa` → Thailand brochure (phrase in title, meta and 7× in body; the CLP has it nowhere).
+- `malta mprp` → Malta brochure (title, meta, 10× in body). This takes the keyword off the Malta CLP, which still 301s to Malaysia (#1524).
+- `mm2h là gì` → Malaysia brochure (the programme explainer; the new meta description opens with the phrase).
+- `quốc tịch antigua` → Antigua brochure (H1 "Quốc tịch Antigua & Barbuda").
+- `định cư ý` → Italy brochure (the only Italy page that says "Ý"; new meta description carries the phrase).
+- `chương trình đầu tư định cư` → `/brochures/` index (phrase in title; the Hub has it nowhere).
+
+**Left where they are:** `định cư malta` (Malta CLP, blocked on #1524), the Portugal pair and `friendly nations visa panama` (blog; the placement miss is word order, the titles carry every word), `golden visa hy lạp` and `quốc tịch thổ nhĩ kỳ` (CLPs already carry them), `golden visa new zealand` (already on the brochure).
+
+**New findings filed (all need Ray):**
+- **#1540, P0: the Nauru brochure page is a copy of the Antigua brochure.** Title says Nauru; H1, hero and figures are Antigua's (source file: 177 mentions of Antigua, 12 of Nauru). Live, indexable, self-canonical.
+- **#1541, P1 [VERIFY]: the Australia brochure presents the Significant Investor Visa as open.** Not verified against Home Affairs in this run; filed as a question.
+- **#1542, P0: brief for a "Đầu tư định cư châu Âu" pillar.** The P0 keyword has no page that contains it. Not drafted: it overlaps the Golden Visa pillar draft (#1518) and Ray should confirm they are two articles.
+- **#1543, P2: 3 Italy Investor Visa posts and 3 Panama Friendly Nations posts target one keyword each.** Different articles (10–21% overlap), so this is an internal-linking fix, not a redirect.
+
+**Still open on the Hub:** `đầu tư định cư châu âu`, `định cư nước ngoài` and `đầu tư bất động sản định cư` appear nowhere on the Property Hub page. #1542 covers the first; the other two need Hub copy, which is a content decision.
+
+**Re-tests (all unchanged since 11-16):** `/citizenships/saint-lucia-citizenship/` and `/citizenships/` still 200; `/compares/` still indexable (#1521). Grenada CLP and Singapore GIP brochure still 200 with 0 bytes (#1538). Montenegro CLP still 301s to `/brochures/` (#1539), Malta CLP to `/malaysia/` (#1524). `post-sitemap.xml` still 153 URLs, lastmod 2026-10-15, against 176 published (#1535).
+
+**Still blocked on Ray (unchanged):** #1537 (44 × 301 to the blog), #1538, #1539, #1524, #1535, the last 2 redirects + CPT noindex in #1521, the 5 orphan PDPs, Greece brochure dead link (#1536), cockpit access for blog re-pushes (#1534, #1461, #1527), the pillar decisions, and the EB-5 `[VERIFY]` items.
+
+**Next:** confirm the Malaysia meta is live; 11-23 snapshot: brochure impressions after the meta descriptions, and PDP CTR after the title cap; draft #1542 once Ray confirms it.
+
 ## 2026-11-16 — Goal review
 
 - **Tracked**: 47  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 47
