@@ -2,6 +2,39 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-11-18 — Execution tick: inbound-link audit; brochure index now links to its brochures (Brochures PR #432); blog articles barely interlink
+
+**De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. Snapshot `2026-11-16.json` was read, not re-measured: 0/47 in top-3, 0 impressions on every tracked keyword. **Nothing to defend.**
+
+**Queue check:** unchanged since 11-17. No task changed status and Ray has not answered #1542, so the Europe pillar stays undrafted. 3 Approved tasks (#1521, #1516, #1313) wait on Ray; 0 Approved + Auto-Applicable. So this run did an audit that had not been done: who links to the keyword target pages.
+
+**Method:** fetched the 299 URLs in the main-site sitemaps and the bodies of all 176 published blog posts (WP REST), extracted every `<a href>`, and counted the pages linking to each of the 26 target URLs. Blog template links (related posts, category archives) are not in the REST body and were not counted.
+
+**Shipped: the brochure index links to its brochures (NAC-Program-Brochures PR #432, squash-merged, live).**
+- `/brochures/` had no `<a href>` to any brochure. Each card held its URL in `data-url` and in the click handler that opens the lead form, which search engines do not follow. Brochures are the target page for 9 tracked keywords since 11-17, and the index is the only main-site page that lists them.
+- 12 of the 15 card URLs were also the old pre-`/brochures/` addresses, which 301.
+- Fix: the card button carries the real brochure URL as `href`; a normal click still opens the lead form. The 12 stale `WP URL` values in the 🎴 PB Overview Deck DB were updated to the canonical URLs, and `pull_overview_from_notion.py` now emits the `href`, so the 10-minute sync keeps both.
+- Tested in a headless browser at 1440×900 and 402×874: the click opens the form with the right programme, the page does not navigate, 0 JS errors. Live check after wp-sync: 15 crawlable brochure links, 0 old card URLs.
+- Side effect: Ctrl/middle-click on a card button opens the brochure without the form. Undo: revert PR #432.
+
+**Inbound links per target (pages linking in, in-body):**
+- Home, Hub and `/brochures/`: 166–279 main-site pages each, all navigation. No anchor text contains a tracked keyword.
+- CLPs: 1–4 main-site pages and 10–27 blog posts each (the listing carousel in the articles). Singapore has 1 + 1. The Malta CLP has 0 (it still redirects, #1524).
+- Brochures: 0–1 main-site pages before today's fix, and 1–8 blog posts.
+- **The 5 blog targets (10 keywords): 0 links from other posts, 0 from the main site.** The main site's mentions of those slugs point at its own duplicate copies (#1537).
+
+**Filed (both need Ray):**
+- **#1544, P1: blog articles barely link to each other.** 9 of 176 posts carry an in-body link to another post; 142 receive none; 26 of the existing links pass through a 301. The task lists about 15 links in 13 posts that already name the topic in plain text (6 for the Portugal article, 4 for Panama FNV, 2 for Italy, 1 for Antigua, 2 for the cost pillar). Not self-served: editing a published article in Notion puts the change live.
+- **#1545, P2: Antigua has no card on the brochure index and Italy shows as "Sắp Ra Mắt".** Both brochures are live. Card status, score and photo are set in the Overview Deck DB.
+
+**Indexation check (shipped in the last 14 days):** all 26 keyword target URLs fetched live. 25 return 200, indexable, self-canonical, 1 `<h1>`; the Malta CLP still 301s to `/malaysia/`. The 10 brochure meta descriptions from 11-17 are live, including Malaysia (unconfirmed yesterday).
+
+**Re-tests (all unchanged since 11-17):** `/citizenships/saint-lucia-citizenship/` and `/citizenships/` still 200; `/compares/` still indexable (#1521). Grenada CLP still 200 with 0 bytes (#1538). Montenegro CLP still 301s to `/brochures/` (#1539). `post-sitemap.xml` still 153 URLs against 176 published (#1535).
+
+**Still blocked on Ray (unchanged):** #1537 (44 × 301 to the blog), #1538, #1539, #1524, #1535, the last 2 redirects + CPT noindex in #1521, the 5 orphan PDPs, #1540 (Nauru brochure), #1541, the #1542 pillar decision, Greece brochure dead link (#1536), cockpit access for blog re-pushes (#1534, #1461, #1527), and the EB-5 `[VERIFY]` items.
+
+**Next:** old-style brochure URLs inside the New Zealand, St Kitts and Thailand brochure files (structured data); a brochure link on each CLP; 11-23 snapshot: brochure impressions after the meta descriptions and the index links.
+
 ## 2026-11-17 — Execution tick: 10 brochure meta descriptions restored at the source (PR #430); 6 keywords retargeted to brochures; Nauru brochure is a copy of Antigua
 
 **De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. The 11-16 snapshot landed (19:23 UTC) and was read, not re-measured: 0/47 in top-3, 0 impressions on every tracked keyword. **Nothing to defend.**
