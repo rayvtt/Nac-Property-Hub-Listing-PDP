@@ -2,6 +2,34 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-11-19 — Execution tick: brochures link to their country pages again (Brochures PR #434, #435); dead schema URLs fixed; the UK has two live country pages
+
+**De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. Snapshot `2026-11-16.json` was read, not re-measured: 0/47 in top-3, 0 impressions on every tracked keyword. **Nothing to defend.**
+
+**Queue check:** unchanged since 11-18. No task changed status, so #1542 (Europe pillar) stays undrafted and #1544 (blog interlinking) stays unapplied. 3 Approved tasks (#1521, #1516, #1313) wait on Ray; 0 Approved + Auto-Applicable. This run took the item carried over from 11-18: old URLs inside the brochure sources.
+
+**Method:** extracted every `nomadassetcollective.com` URL from the 21 files in `Brochures html/` (153 distinct, images excluded) and fetched each one. 63 return 200, 59 return 301, 31 return 404.
+
+**Shipped (NAC-Program-Brochures PR #434 and #435, squash-merged, live):**
+- **9 brochures link to their own country page.** `apply_listings.py` wrote the "all eligible properties" link as `/property-hub/?program=…&country=…` on every sync. That address 301s to the generic Hub, and each run undid the June repoint to country pages. The generator now returns the country page for Cyprus, Turkey, UK, Greece, Panama, UAE, Malaysia, Thailand and Australia, and the canonical Hub URL for the other countries. Each of those CLPs had 1–4 main-site pages linking in (11-18 audit); this adds one from the brochure for the same programme.
+- **Listing cards:** 9 listing URLs lacked the trailing slash and 301'd. The generator now adds it.
+- **Structured data and meta:** New Zealand (2 values on an old URL that 301s), Thailand (`twitter:url`, `DC.identifier`, `rel=up` on URLs that 404), Malta (7 `@id` / `item` values on a blog URL that 404s) and the brochure index (its own URL 9× as `/nac-brochures-overview/` and 9 programme URLs, all 404) now carry the canonical URLs.
+- **Partner gateway and brochure index:** blog category links, the Antigua brochure link and one Hub link no longer pass through a redirect.
+- Checks: parity 15/15 on every brochure; all JSON-LD blocks parse. Live after wp-sync on 10 pages: 0 old Hub links, 0 slash-less listing links, 0 dead schema URLs; the index still has 15 crawlable brochure links.
+- Undo: revert PR #435, then #434.
+
+**Filed (both need Ray):**
+- **#1546, P1: the UK has two live country pages.** `/property-hub-bat-dong-san/uk/` and `/property-hub-bat-dong-san/united-kingdom/` both return 200, are indexable, self-canonical and in `page-sitemap.xml`. `/united-kingdom/` is the current page and the keyword target; `/uk/` is an older template. PR #434 first pointed the UK brochure at `/uk/` (the slug in the repo's map); #435 corrected it within the same run. The 301 is Ray's.
+- **#1547, P2: images and files that 404.** Thailand and brochure-index `og:image` / `twitter:image` (shared links show no preview), `/logo.png` in two schema blocks, and `<link>` tags to `/about/`, `/llms-full.txt`, `/.well-known/ai-plugin.json`. Needs Ray to name the images.
+
+**Not fixed in this run:** about 25 blog article links in 16 brochures use the post URL without its category prefix and 301 (for example `/hy-lap-vs-tho-nhi-ky-2026…` → `/so-sanh/hy-lap-vs-tho-nhi-ky-2026…`). The article banner URLs come from the 🔖 Brochures Notion DB, so an HTML-only fix would be overwritten by the next sync. The Greece dead article link (#1536) and the Montenegro links (#1539) are unchanged.
+
+**Indexation check:** all 27 keyword target URLs fetched live. 26 return 200, indexable, self-canonical, 1 `<h1>`; the Malta CLP still 301s to `/malaysia/` (#1524). The 11-18 brochure index links and the 11-17 meta descriptions are still live.
+
+**Still blocked on Ray (unchanged):** #1537 (44 × 301 to the blog), #1538, #1539, #1524, #1535, the last 2 redirects + CPT noindex in #1521, the 5 orphan PDPs, #1540 (Nauru brochure), #1541, the #1542 pillar decision, #1544, #1545, Greece brochure dead link (#1536), cockpit access for blog re-pushes (#1534, #1461, #1527), and the EB-5 `[VERIFY]` items.
+
+**Next:** the blog article links in the brochures (update the URLs in the Brochures Notion DB and the static strings together); a brochure link on each CLP; 11-23 snapshot: brochure impressions.
+
 ## 2026-11-18 — Execution tick: inbound-link audit; brochure index now links to its brochures (Brochures PR #432); blog articles barely interlink
 
 **De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. Snapshot `2026-11-16.json` was read, not re-measured: 0/47 in top-3, 0 impressions on every tracked keyword. **Nothing to defend.**
