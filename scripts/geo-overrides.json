@@ -1,0 +1,1406 @@
+{
+ "metros": {
+  "da-nang": {
+   "vi": "Đà Nẵng",
+   "en": "Da Nang",
+   "lat": 16.0544,
+   "lng": 108.2022,
+   "maxKm": 60
+  },
+  "hcmc": {
+   "vi": "TP.HCM",
+   "en": "Ho Chi Minh City",
+   "lat": 10.7769,
+   "lng": 106.7009,
+   "maxKm": 30
+  },
+  "binh-duong": {
+   "vi": "Bình Dương",
+   "en": "Binh Duong",
+   "lat": 11.056,
+   "lng": 106.672,
+   "maxKm": 25
+  },
+  "ho-tram": {
+   "vi": "Hồ Tràm",
+   "en": "Ho Tram",
+   "lat": 10.48,
+   "lng": 107.42,
+   "maxKm": 25
+  },
+  "singapore": {
+   "vi": "Singapore",
+   "en": "Singapore",
+   "lat": 1.2903,
+   "lng": 103.852,
+   "maxKm": 25
+  },
+  "kuala-lumpur": {
+   "vi": "Kuala Lumpur",
+   "en": "Kuala Lumpur",
+   "lat": 3.1478,
+   "lng": 101.713,
+   "maxKm": 30
+  },
+  "bangkok": {
+   "vi": "Bangkok",
+   "en": "Bangkok",
+   "lat": 13.74,
+   "lng": 100.555,
+   "maxKm": 40
+  },
+  "phuket": {
+   "vi": "Phuket",
+   "en": "Phuket",
+   "lat": 7.98,
+   "lng": 98.31,
+   "maxKm": 40
+  },
+  "lusail": {
+   "vi": "Lusail",
+   "en": "Lusail",
+   "lat": 25.4229,
+   "lng": 51.5197,
+   "maxKm": 20
+  },
+  "dubai": {
+   "vi": "Dubai",
+   "en": "Dubai",
+   "lat": 25.16,
+   "lng": 55.27,
+   "maxKm": 50
+  },
+  "istanbul": {
+   "vi": "Istanbul",
+   "en": "Istanbul",
+   "lat": 41.02,
+   "lng": 28.9,
+   "maxKm": 60
+  },
+  "athens": {
+   "vi": "Athens",
+   "en": "Athens",
+   "lat": 37.97,
+   "lng": 23.72,
+   "maxKm": 35
+  },
+  "galaxidi": {
+   "vi": "Galaxidi",
+   "en": "Galaxidi",
+   "lat": 38.3775,
+   "lng": 22.383,
+   "maxKm": 10
+  },
+  "limassol": {
+   "vi": "Limassol",
+   "en": "Limassol",
+   "lat": 34.69,
+   "lng": 33.05,
+   "maxKm": 25
+  },
+  "paphos": {
+   "vi": "Paphos",
+   "en": "Paphos",
+   "lat": 34.775,
+   "lng": 32.425,
+   "maxKm": 20
+  },
+  "st-julians": {
+   "vi": "St Julian's",
+   "en": "St Julian's",
+   "lat": 35.9186,
+   "lng": 14.4894,
+   "maxKm": 5
+  },
+  "sliema": {
+   "vi": "Sliema",
+   "en": "Sliema",
+   "lat": 35.9122,
+   "lng": 14.5019,
+   "maxKm": 5
+  },
+  "swieqi": {
+   "vi": "Swieqi",
+   "en": "Swieqi",
+   "lat": 35.9231,
+   "lng": 14.4783,
+   "maxKm": 5
+  },
+  "london": {
+   "vi": "London",
+   "en": "London",
+   "lat": 51.5074,
+   "lng": -0.1278,
+   "maxKm": 30
+  },
+  "tuscany": {
+   "vi": "Tuscany",
+   "en": "Tuscany",
+   "lat": 43.6,
+   "lng": 11.33,
+   "maxKm": 40
+  },
+  "panama-city": {
+   "vi": "Panama City",
+   "en": "Panama City",
+   "lat": 8.9824,
+   "lng": -79.5199,
+   "maxKm": 25
+  },
+  "montego-bay": {
+   "vi": "Montego Bay",
+   "en": "Montego Bay",
+   "lat": 18.4725,
+   "lng": -77.9217,
+   "maxKm": 25
+  },
+  "st-kitts": {
+   "vi": "St Kitts",
+   "en": "St Kitts",
+   "lat": 17.25,
+   "lng": -62.66,
+   "maxKm": 25
+  },
+  "grenada": {
+   "vi": "Grenada",
+   "en": "Grenada",
+   "lat": 12.03,
+   "lng": -61.67,
+   "maxKm": 25
+  },
+  "sydney": {
+   "vi": "Sydney",
+   "en": "Sydney",
+   "lat": -33.8688,
+   "lng": 151.2093,
+   "maxKm": 60
+  },
+  "melbourne": {
+   "vi": "Melbourne",
+   "en": "Melbourne",
+   "lat": -37.8136,
+   "lng": 144.9631,
+   "maxKm": 50
+  },
+  "queenstown": {
+   "vi": "Queenstown",
+   "en": "Queenstown",
+   "lat": -45.0322,
+   "lng": 168.661,
+   "maxKm": 20
+  },
+  "port-vila": {
+   "vi": "Port Vila",
+   "en": "Port Vila",
+   "lat": -17.7415,
+   "lng": 168.315,
+   "maxKm": 20
+  },
+  "yaren": {
+   "vi": "Yaren",
+   "en": "Yaren",
+   "lat": -0.5469,
+   "lng": 166.9224,
+   "maxKm": 10
+  }
+ },
+ "listings": {
+  "4": {
+   "slug": "nobu-da-nang",
+   "lat": 16.06342,
+   "lng": 108.24555,
+   "metro": "da-nang",
+   "area": "Mỹ Khê",
+   "prec": "site",
+   "src": "OSM: Nobu Danang project site, An Hải"
+  },
+  "5": {
+   "slug": "grand-marina-sai-gon-bason-by-jw-marriot",
+   "lat": 10.78333,
+   "lng": 106.70776,
+   "metro": "hcmc",
+   "area": "Ba Son",
+   "prec": "site",
+   "src": "OSM: Grand Marina Saigon site"
+  },
+  "11": {
+   "slug": null,
+   "lat": 1.28027,
+   "lng": 103.85227,
+   "metro": "singapore",
+   "area": "Marina Bay",
+   "prec": "site",
+   "src": "OSM: Marina Bay Suites"
+  },
+  "15": {
+   "slug": null,
+   "lat": 25.42289,
+   "lng": 51.51972,
+   "metro": "lusail",
+   "area": "Lusail",
+   "prec": "city",
+   "src": "city centroid; no district in Notion"
+  },
+  "19": {
+   "slug": "pullman-panama-city",
+   "lat": 8.97647,
+   "lng": -79.5078,
+   "metro": "panama-city",
+   "area": "Punta Pacífica",
+   "prec": "area",
+   "src": "Punta Pacífica neighbourhood"
+  },
+  "20": {
+   "slug": null,
+   "lat": 17.2272,
+   "lng": -62.6402,
+   "metro": "st-kitts",
+   "area": "Christophe Harbour",
+   "prec": "site",
+   "src": "OSM: Park Hyatt St. Kitts"
+  },
+  "26": {
+   "slug": null,
+   "lat": 18.47246,
+   "lng": -77.92174,
+   "metro": "montego-bay",
+   "area": "Montego Bay",
+   "prec": "city",
+   "src": "city centroid"
+  },
+  "29": {
+   "slug": null,
+   "lat": 43.60695,
+   "lng": 11.33201,
+   "metro": "tuscany",
+   "area": "Chianti",
+   "prec": "area",
+   "src": "Greve in Chianti"
+  },
+  "39": {
+   "slug": null,
+   "lat": -17.7415,
+   "lng": 168.31502,
+   "metro": "port-vila",
+   "area": "Port Vila",
+   "prec": "city",
+   "src": "city centroid"
+  },
+  "41": {
+   "slug": null,
+   "lat": -45.03219,
+   "lng": 168.661,
+   "metro": "queenstown",
+   "area": "Queenstown",
+   "prec": "city",
+   "src": "town centroid"
+  },
+  "46": {
+   "slug": null,
+   "lat": -0.5469,
+   "lng": 166.92235,
+   "metro": "yaren",
+   "area": "Yaren",
+   "prec": "city",
+   "src": "district centroid"
+  },
+  "59": {
+   "slug": "mo",
+   "lat": 16.00567,
+   "lng": 108.2688,
+   "metro": "da-nang",
+   "area": "Non Nước",
+   "prec": "area",
+   "src": "Non Nước beach"
+  },
+  "60": {
+   "slug": "bagcilar-garden-istanbul",
+   "lat": 41.03455,
+   "lng": 28.85676,
+   "metro": "istanbul",
+   "area": "Bağcılar",
+   "prec": "area",
+   "src": "Bağcılar district"
+  },
+  "62": {
+   "slug": "keranis-ports-residences-piraeus-athens",
+   "lat": 37.94316,
+   "lng": 23.64706,
+   "metro": "athens",
+   "area": "Piraeus",
+   "prec": "area",
+   "src": "Piraeus (was mis-geocoded to a Piraeus Bank branch in central Athens)"
+  },
+  "63": {
+   "slug": "ocean-gate-building-piraeus-waterfront",
+   "lat": 37.94316,
+   "lng": 23.64706,
+   "metro": "athens",
+   "area": "Piraeus",
+   "prec": "area",
+   "src": "Piraeus"
+  },
+  "71": {
+   "slug": "santa-maria-panama",
+   "lat": 9.02989,
+   "lng": -79.45955,
+   "metro": "panama-city",
+   "area": "Santa María · Costa del Este",
+   "prec": "area",
+   "src": "Santa María business district, Juan Díaz"
+  },
+  "76": {
+   "slug": "referans-residence-beylikduzu-istanbul",
+   "lat": 41.00381,
+   "lng": 28.63729,
+   "metro": "istanbul",
+   "area": "Beylikdüzü",
+   "prec": "area",
+   "src": "Beylikdüzü district"
+  },
+  "77": {
+   "slug": "sefakoy-residence-boulevard-istanbul",
+   "lat": 41.00426,
+   "lng": 28.79798,
+   "metro": "istanbul",
+   "area": "Sefaköy",
+   "prec": "area",
+   "src": "Sefaköy quarter"
+  },
+  "78": {
+   "slug": "yeni-garden-avrupa-konutlari-bagcilar",
+   "lat": 41.03957,
+   "lng": 28.83806,
+   "metro": "istanbul",
+   "area": "Bağcılar · Yenimahalle",
+   "prec": "area",
+   "src": "Yenimahalle, Bağcılar"
+  },
+  "79": {
+   "slug": "w-suite-istanbul",
+   "lat": 41.04209,
+   "lng": 29.00286,
+   "metro": "istanbul",
+   "area": "Akaretler",
+   "prec": "area",
+   "src": "Akaretler, Beşiktaş (Notion district says Şişli/Levent)"
+  },
+  "81": {
+   "slug": "pearl-park-beachfront-condo-paphos",
+   "lat": 34.7618,
+   "lng": 32.428,
+   "metro": "paphos",
+   "area": "Universal",
+   "prec": "area",
+   "src": "Universal area, Paphos"
+  },
+  "85": {
+   "slug": "limassol-blu-marine-dao-sip",
+   "lat": 34.6675,
+   "lng": 33.0365,
+   "metro": "limassol",
+   "area": "Limassol seafront",
+   "prec": "area",
+   "src": "developer: Aktaia Odos, 330 m from Limassol Marina"
+  },
+  "86": {
+   "slug": "limassol-del-mar-dao-sip",
+   "lat": 34.7011,
+   "lng": 33.10236,
+   "metro": "limassol",
+   "area": "Potamos Germasogeia",
+   "prec": "site",
+   "src": "OSM: Del Mar building"
+  },
+  "87": {
+   "slug": "london-dock-wapping-london",
+   "lat": 51.50828,
+   "lng": -0.06524,
+   "metro": "london",
+   "area": "Wapping",
+   "prec": "site",
+   "src": "OSM: London Dock development"
+  },
+  "89": {
+   "slug": "oval-village-london",
+   "lat": 51.4855,
+   "lng": -0.11473,
+   "metro": "london",
+   "area": "Kennington",
+   "prec": "site",
+   "src": "OSM: Oval Village development"
+  },
+  "90": {
+   "slug": "bermondsey-place-london",
+   "lat": 51.49335,
+   "lng": -0.0748,
+   "metro": "london",
+   "area": "Bermondsey",
+   "prec": "area",
+   "src": "Bermondsey (Alscot Rd area)"
+  },
+  "91": {
+   "slug": "white-city-living-london",
+   "lat": 51.51133,
+   "lng": -0.22277,
+   "metro": "london",
+   "area": "White City",
+   "prec": "site",
+   "src": "OSM: White City Living"
+  },
+  "92": {
+   "slug": "fulham-reach-london",
+   "lat": 51.48773,
+   "lng": -0.22474,
+   "metro": "london",
+   "area": "Fulham",
+   "prec": "site",
+   "src": "OSM: Fulham Reach"
+  },
+  "93": {
+   "slug": "hyatt-regency-ho-tram",
+   "lat": 10.47006,
+   "lng": 107.37932,
+   "metro": "ho-tram",
+   "area": "Hồ Tràm",
+   "prec": "site",
+   "src": "OSM: Hyatt Regency Ho Tram"
+  },
+  "97": {
+   "slug": "natura-macquarie-park",
+   "lat": -33.7815,
+   "lng": 151.12567,
+   "metro": "sydney",
+   "area": "Macquarie Park",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "98": {
+   "slug": "downtown-zetland",
+   "lat": -33.90826,
+   "lng": 151.20634,
+   "metro": "sydney",
+   "area": "Green Square · Zetland",
+   "prec": "area",
+   "src": "Green Square"
+  },
+  "99": {
+   "slug": "yarra-park-alphington",
+   "lat": -37.77839,
+   "lng": 145.03128,
+   "metro": "melbourne",
+   "area": "Alphington",
+   "prec": "area",
+   "src": "Alphington"
+  },
+  "100": {
+   "slug": "west-side-place-melbourne-cbd",
+   "lat": -37.81437,
+   "lng": 144.95296,
+   "metro": "melbourne",
+   "area": "Melbourne CBD",
+   "prec": "site",
+   "src": "OSM: West Side Place, 250 Spencer St"
+  },
+  "101": {
+   "slug": "640-melbourne-cbd",
+   "lat": -37.81648,
+   "lng": 144.95456,
+   "metro": "melbourne",
+   "area": "Melbourne CBD",
+   "prec": "area",
+   "src": "640 Bourke Street"
+  },
+  "102": {
+   "slug": "aura-melbourne-square-stage-3-southbank",
+   "lat": -37.82573,
+   "lng": 144.96357,
+   "metro": "melbourne",
+   "area": "Southbank",
+   "prec": "site",
+   "src": "OSM: Melbourne Square"
+  },
+  "103": {
+   "slug": "park-modern-south-melbourne",
+   "lat": -37.83344,
+   "lng": 144.95705,
+   "metro": "melbourne",
+   "area": "South Melbourne",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "104": {
+   "slug": "r-evolution-south-melbourne",
+   "lat": -37.83344,
+   "lng": 144.95705,
+   "metro": "melbourne",
+   "area": "South Melbourne",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "105": {
+   "slug": "325-station-st-box-hill-south",
+   "lat": -37.83428,
+   "lng": 145.11996,
+   "metro": "melbourne",
+   "area": "Box Hill South",
+   "prec": "site",
+   "src": "325 Station St"
+  },
+  "106": {
+   "slug": "14-asquith-street-box-hill-south",
+   "lat": -37.83605,
+   "lng": 145.12222,
+   "metro": "melbourne",
+   "area": "Box Hill South",
+   "prec": "site",
+   "src": "14 Asquith St"
+  },
+  "107": {
+   "slug": "34-birdwood-st-box-hill-south",
+   "lat": -37.83317,
+   "lng": 145.12513,
+   "metro": "melbourne",
+   "area": "Box Hill South",
+   "prec": "site",
+   "src": "34 Birdwood St"
+  },
+  "108": {
+   "slug": "668-670-elgar-rd-box-hill-north",
+   "lat": -37.79848,
+   "lng": 145.1186,
+   "metro": "melbourne",
+   "area": "Box Hill North",
+   "prec": "site",
+   "src": "668 Elgar Rd"
+  },
+  "109": {
+   "slug": "380-middleborough-road-blackburn",
+   "lat": -37.82102,
+   "lng": 145.13832,
+   "metro": "melbourne",
+   "area": "Blackburn",
+   "prec": "site",
+   "src": "380 Middleborough Rd"
+  },
+  "110": {
+   "slug": "spring-square-bankstown",
+   "lat": -33.91522,
+   "lng": 151.03212,
+   "metro": "sydney",
+   "area": "Bankstown",
+   "prec": "site",
+   "src": "OSM: Spring Square, 25 Meredith St"
+  },
+  "111": {
+   "slug": "victoria-place-burwood",
+   "lat": -33.87848,
+   "lng": 151.10405,
+   "metro": "sydney",
+   "area": "Burwood",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "112": {
+   "slug": "beyond-hurstville",
+   "lat": -33.96071,
+   "lng": 151.10036,
+   "metro": "sydney",
+   "area": "Hurstville",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "113": {
+   "slug": "the-luminar-residences-lakemba",
+   "lat": -33.91963,
+   "lng": 151.07492,
+   "metro": "sydney",
+   "area": "Lakemba",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "114": {
+   "slug": "parkside-mq-macquarie-park",
+   "lat": -33.7815,
+   "lng": 151.12567,
+   "metro": "sydney",
+   "area": "Macquarie Park",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "115": {
+   "slug": "aura-north-sydney",
+   "lat": -33.83545,
+   "lng": 151.2083,
+   "metro": "sydney",
+   "area": "North Sydney",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "116": {
+   "slug": "serendipity-north-sydney",
+   "lat": -33.83632,
+   "lng": 151.20448,
+   "metro": "sydney",
+   "area": "North Sydney",
+   "prec": "site",
+   "src": "OSM: Serendipity, 5-7 Doohat Ave"
+  },
+  "117": {
+   "slug": "paramount-on-parkes-parramatta",
+   "lat": -33.81854,
+   "lng": 151.00995,
+   "metro": "sydney",
+   "area": "Harris Park · Parramatta",
+   "prec": "site",
+   "src": "OSM: Paramount On Parkes"
+  },
+  "118": {
+   "slug": "180-george-parramatta",
+   "lat": -33.81465,
+   "lng": 151.01015,
+   "metro": "sydney",
+   "area": "Parramatta",
+   "prec": "site",
+   "src": "OSM: Meriton 180 George"
+  },
+  "119": {
+   "slug": "alba-zetland",
+   "lat": -33.9082,
+   "lng": 151.20315,
+   "metro": "sydney",
+   "area": "Zetland",
+   "prec": "site",
+   "src": "OSM: Alba, 499 Botany Rd"
+  },
+  "120": {
+   "slug": "luna-zetland",
+   "lat": -33.90766,
+   "lng": 151.20822,
+   "metro": "sydney",
+   "area": "Zetland",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "121": {
+   "slug": "arncliffe-central-arncliffe",
+   "lat": -33.93824,
+   "lng": 151.14551,
+   "metro": "sydney",
+   "area": "Arncliffe",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "122": {
+   "slug": "duncan-house-arncliffe",
+   "lat": -33.93824,
+   "lng": 151.14551,
+   "metro": "sydney",
+   "area": "Arncliffe",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "123": {
+   "slug": "ashbury-apartment-ashbury",
+   "lat": -33.90011,
+   "lng": 151.11807,
+   "metro": "sydney",
+   "area": "Ashbury",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "124": {
+   "slug": "stage-2-auburn-auburn-square",
+   "lat": -33.84929,
+   "lng": 151.03283,
+   "metro": "sydney",
+   "area": "Auburn",
+   "prec": "area",
+   "src": "Auburn town centre"
+  },
+  "125": {
+   "slug": "2nd-avenue-blacktown",
+   "lat": -33.76845,
+   "lng": 150.90741,
+   "metro": "sydney",
+   "area": "Blacktown",
+   "prec": "area",
+   "src": "Blacktown centre"
+  },
+  "126": {
+   "slug": "17-george-st-burwood",
+   "lat": -33.87601,
+   "lng": 151.10266,
+   "metro": "sydney",
+   "area": "Burwood",
+   "prec": "area",
+   "src": "George Street, Burwood"
+  },
+  "127": {
+   "slug": "genesis-burwood",
+   "lat": -33.87848,
+   "lng": 151.10405,
+   "metro": "sydney",
+   "area": "Burwood",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "128": {
+   "slug": "victoria-place-burwood",
+   "lat": -33.87848,
+   "lng": 151.10405,
+   "metro": "sydney",
+   "area": "Burwood",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "129": {
+   "slug": "caringbah-greens-caringbah",
+   "lat": -34.0416,
+   "lng": 151.12274,
+   "metro": "sydney",
+   "area": "Caringbah",
+   "prec": "area",
+   "src": "Caringbah centre"
+  },
+  "130": {
+   "slug": "live-caringbah",
+   "lat": -34.0416,
+   "lng": 151.12274,
+   "metro": "sydney",
+   "area": "Caringbah",
+   "prec": "area",
+   "src": "Caringbah centre"
+  },
+  "131": {
+   "slug": "88-livie-carlingford",
+   "lat": -33.77449,
+   "lng": 151.04752,
+   "metro": "sydney",
+   "area": "Carlingford",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "132": {
+   "slug": "luxton-carlingford",
+   "lat": -33.77449,
+   "lng": 151.04752,
+   "metro": "sydney",
+   "area": "Carlingford",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "133": {
+   "slug": "the-carling-carlingford",
+   "lat": -33.78087,
+   "lng": 151.05056,
+   "metro": "sydney",
+   "area": "Carlingford",
+   "prec": "site",
+   "src": "OSM: The Carling"
+  },
+  "134": {
+   "slug": "lillian-residence-erskineville",
+   "lat": -33.90217,
+   "lng": 151.18599,
+   "metro": "sydney",
+   "area": "Erskineville",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "135": {
+   "slug": "the-macquarie-collection-macquarie-park",
+   "lat": -33.79026,
+   "lng": 151.13451,
+   "metro": "sydney",
+   "area": "Macquarie Park",
+   "prec": "site",
+   "src": "OSM: The Macquarie Collection"
+  },
+  "136": {
+   "slug": "trilogy-macquarie-park",
+   "lat": -33.77395,
+   "lng": 151.1206,
+   "metro": "sydney",
+   "area": "Macquarie Park",
+   "prec": "site",
+   "src": "OSM: Meriton Trilogy, 100 Talavera Rd"
+  },
+  "137": {
+   "slug": "macquarie-rise-macquarie-rise",
+   "lat": -33.7815,
+   "lng": 151.12567,
+   "metro": "sydney",
+   "area": "Macquarie Park",
+   "prec": "area",
+   "src": "Notion district 'Macquarie Rise' not a suburb; Macquarie Park assumed"
+  },
+  "138": {
+   "slug": "cosmopolitan-parramatta",
+   "lat": -33.81398,
+   "lng": 151.00267,
+   "metro": "sydney",
+   "area": "Parramatta",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "139": {
+   "slug": "one-city-square-parramatta",
+   "lat": -33.81398,
+   "lng": 151.00267,
+   "metro": "sydney",
+   "area": "Parramatta",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "140": {
+   "slug": "tb-w-waterloo",
+   "lat": -33.90028,
+   "lng": 151.20731,
+   "metro": "sydney",
+   "area": "Waterloo",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "142": {
+   "slug": "sanctuary-willow",
+   "lat": -33.81222,
+   "lng": 151.00598,
+   "metro": "sydney",
+   "area": "Parramatta",
+   "prec": "area",
+   "src": "Notion district 'Willow' read as Willow Grove, Parramatta 2150"
+  },
+  "143": {
+   "slug": "the-avenues-zetland",
+   "lat": -33.90766,
+   "lng": 151.20822,
+   "metro": "sydney",
+   "area": "Zetland",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "144": {
+   "slug": "ashbury-terrace-ashbury-terrace",
+   "lat": -33.90011,
+   "lng": 151.11807,
+   "metro": "sydney",
+   "area": "Ashbury",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "145": {
+   "slug": "homeland-residences-carlingford",
+   "lat": -33.77449,
+   "lng": 151.04752,
+   "metro": "sydney",
+   "area": "Carlingford",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "146": {
+   "slug": "the-signature-collection-pagewood-rivera",
+   "lat": -33.93907,
+   "lng": 151.21994,
+   "metro": "sydney",
+   "area": "Pagewood",
+   "prec": "area",
+   "src": "suburb centroid"
+  },
+  "147": {
+   "slug": "bagcilar-garden-phase-2-istanbul",
+   "lat": 41.03455,
+   "lng": 28.85676,
+   "metro": "istanbul",
+   "area": "Bağcılar",
+   "prec": "area",
+   "src": "Bağcılar district"
+  },
+  "148": {
+   "slug": "horizon-park-istanbul",
+   "lat": 41.00638,
+   "lng": 28.97587,
+   "metro": "istanbul",
+   "area": "İstanbul",
+   "prec": "city",
+   "src": "no district in Notion"
+  },
+  "149": {
+   "slug": "elite-complex-istanbul",
+   "lat": 41.00638,
+   "lng": 28.97587,
+   "metro": "istanbul",
+   "area": "İstanbul",
+   "prec": "city",
+   "src": "no district in Notion"
+  },
+  "150": {
+   "slug": "marmara-pearl-istanbul",
+   "lat": 41.00638,
+   "lng": 28.97587,
+   "metro": "istanbul",
+   "area": "İstanbul",
+   "prec": "city",
+   "src": "no district in Notion"
+  },
+  "151": {
+   "slug": "topkapi-nova-residence-istanbul",
+   "lat": 41.02071,
+   "lng": 28.92817,
+   "metro": "istanbul",
+   "area": "Topkapı",
+   "prec": "area",
+   "src": "Topkapı"
+  },
+  "152": {
+   "slug": "legend-residences-sariyer",
+   "lat": 41.17306,
+   "lng": 29.0483,
+   "metro": "istanbul",
+   "area": "Sarıyer",
+   "prec": "area",
+   "src": "Sarıyer"
+  },
+  "154": {
+   "slug": "the-one-glyfada-athens",
+   "lat": 37.8616,
+   "lng": 23.75459,
+   "metro": "athens",
+   "area": "Glyfada",
+   "prec": "area",
+   "src": "Glyfada"
+  },
+  "155": {
+   "slug": "opus-residence-kallithea",
+   "lat": 37.95601,
+   "lng": 23.70338,
+   "metro": "athens",
+   "area": "Kallithea",
+   "prec": "area",
+   "src": "Kallithea"
+  },
+  "156": {
+   "slug": "boulevard-residence-kallithea",
+   "lat": 37.95601,
+   "lng": 23.70338,
+   "metro": "athens",
+   "area": "Kallithea",
+   "prec": "area",
+   "src": "Kallithea"
+  },
+  "157": {
+   "slug": "meridia-piraeus-athens",
+   "lat": 37.94316,
+   "lng": 23.64706,
+   "metro": "athens",
+   "area": "Piraeus",
+   "prec": "area",
+   "src": "Piraeus"
+  },
+  "158": {
+   "slug": "kifisia-suites-park-18",
+   "lat": 38.07361,
+   "lng": 23.80822,
+   "metro": "athens",
+   "area": "Kifisia",
+   "prec": "area",
+   "src": "Kifisia"
+  },
+  "160": {
+   "slug": "levante-villas-galaxidi",
+   "lat": 38.37753,
+   "lng": 22.38299,
+   "metro": "galaxidi",
+   "area": "Galaxidi",
+   "prec": "area",
+   "src": "Galaxidi village"
+  },
+  "161": {
+   "slug": "izi-lux-kallithea-athens",
+   "lat": 37.95601,
+   "lng": 23.70338,
+   "metro": "athens",
+   "area": "Kallithea",
+   "prec": "area",
+   "src": "Kallithea"
+  },
+  "162": {
+   "slug": "conlay-signature-suites-klcc",
+   "lat": 3.15038,
+   "lng": 101.72039,
+   "metro": "kuala-lumpur",
+   "area": "Jalan Conlay",
+   "prec": "site",
+   "src": "OSM: The Conlay"
+  },
+  "163": {
+   "slug": "origin-kathu-patong",
+   "lat": 7.90994,
+   "lng": 98.34208,
+   "metro": "phuket",
+   "area": "Kathu",
+   "prec": "area",
+   "src": "Kathu"
+  },
+  "164": {
+   "slug": "so-origin-bangtao-beach",
+   "lat": 7.99395,
+   "lng": 98.29261,
+   "metro": "phuket",
+   "area": "Bang Tao",
+   "prec": "area",
+   "src": "Ban Bang Thao"
+  },
+  "165": {
+   "slug": "culture-thonglor",
+   "lat": 13.7408,
+   "lng": 100.58487,
+   "metro": "bangkok",
+   "area": "Thonglor",
+   "prec": "area",
+   "src": "Soi Sukhumvit 55"
+  },
+  "166": {
+   "slug": "ideo-sukhumvit-rama-4",
+   "lat": 13.70236,
+   "lng": 100.60155,
+   "metro": "bangkok",
+   "area": "Phra Khanong",
+   "prec": "area",
+   "src": "district centroid"
+  },
+  "167": {
+   "slug": "botanica-foresta-ii",
+   "lat": 8.02976,
+   "lng": 98.31236,
+   "metro": "phuket",
+   "area": "Cherngtalay",
+   "prec": "area",
+   "src": "next to Botanica Foresta (phase I, OSM)"
+  },
+  "168": {
+   "slug": "botanica-four-seasons",
+   "lat": 8.05705,
+   "lng": 98.27905,
+   "metro": "phuket",
+   "area": "Nai Thon",
+   "prec": "area",
+   "src": "Nai Thon"
+  },
+  "169": {
+   "slug": "hythe-by-botanica",
+   "lat": 8.03463,
+   "lng": 98.28433,
+   "metro": "phuket",
+   "area": "Layan",
+   "prec": "area",
+   "src": "Layan"
+  },
+  "170": {
+   "slug": "the-standard-residences-bangtao",
+   "lat": 7.99395,
+   "lng": 98.29261,
+   "metro": "phuket",
+   "area": "Bang Tao",
+   "prec": "area",
+   "src": "Ban Bang Thao"
+  },
+  "171": {
+   "slug": "layan-verde",
+   "lat": 8.03463,
+   "lng": 98.28433,
+   "metro": "phuket",
+   "area": "Layan",
+   "prec": "area",
+   "src": "Layan"
+  },
+  "172": {
+   "slug": "layan-green-park",
+   "lat": 8.03463,
+   "lng": 98.28433,
+   "metro": "phuket",
+   "area": "Layan",
+   "prec": "area",
+   "src": "Layan"
+  },
+  "173": {
+   "slug": "ayana-luxury-villas",
+   "lat": 7.99395,
+   "lng": 98.29261,
+   "metro": "phuket",
+   "area": "Bang Tao",
+   "prec": "area",
+   "src": "Ban Bang Thao"
+  },
+  "174": {
+   "slug": "anchan-villas",
+   "lat": 8.03463,
+   "lng": 98.28433,
+   "metro": "phuket",
+   "area": "Layan",
+   "prec": "area",
+   "src": "Layan"
+  },
+  "175": {
+   "slug": "balco-villas",
+   "lat": 7.99395,
+   "lng": 98.29261,
+   "metro": "phuket",
+   "area": "Bang Tao",
+   "prec": "area",
+   "src": "Ban Bang Thao"
+  },
+  "176": {
+   "slug": "the-residence-prime",
+   "lat": 7.99395,
+   "lng": 98.29261,
+   "metro": "phuket",
+   "area": "Bang Tao",
+   "prec": "area",
+   "src": "Notion district says Thep Krasattri; Region/City says Bangtao"
+  },
+  "177": {
+   "slug": "laguna-banyan-tree-residences",
+   "lat": 8.00056,
+   "lng": 98.30192,
+   "metro": "phuket",
+   "area": "Laguna",
+   "prec": "area",
+   "src": "Laguna Phuket"
+  },
+  "178": {
+   "slug": "botanica-montazure",
+   "lat": 7.94993,
+   "lng": 98.28276,
+   "metro": "phuket",
+   "area": "Kamala",
+   "prec": "area",
+   "src": "Kamala"
+  },
+  "179": {
+   "slug": "botanica-grand-avenue",
+   "lat": 8.00056,
+   "lng": 98.30192,
+   "metro": "phuket",
+   "area": "Laguna",
+   "prec": "area",
+   "src": "Laguna Phuket"
+  },
+  "180": {
+   "slug": "botanica-louvre",
+   "lat": 7.98962,
+   "lng": 98.30668,
+   "metro": "phuket",
+   "area": "Cherngtalay",
+   "prec": "area",
+   "src": "Choeng Thale centre"
+  },
+  "182": {
+   "slug": "coco-parc",
+   "lat": 13.72186,
+   "lng": 100.55342,
+   "metro": "bangkok",
+   "area": "Rama 4",
+   "prec": "site",
+   "src": "OSM: Coco Parc, 1150 Rama IV"
+  },
+  "183": {
+   "slug": "the-address-siam-ratchathewi",
+   "lat": 13.75248,
+   "lng": 100.53028,
+   "metro": "bangkok",
+   "area": "Ratchathewi",
+   "prec": "site",
+   "src": "OSM: The Address Siam-Ratchathewi"
+  },
+  "184": {
+   "slug": "culture-chula",
+   "lat": 13.73068,
+   "lng": 100.53234,
+   "metro": "bangkok",
+   "area": "Sam Yan",
+   "prec": "site",
+   "src": "OSM: Culture Chula"
+  },
+  "185": {
+   "slug": "origin-residences-sukhumvit-48",
+   "lat": 13.70236,
+   "lng": 100.60155,
+   "metro": "bangkok",
+   "area": "Phra Khanong",
+   "prec": "area",
+   "src": "district centroid (Sukhumvit 48)"
+  },
+  "186": {
+   "slug": "xt-phayathai",
+   "lat": 13.75761,
+   "lng": 100.53912,
+   "metro": "bangkok",
+   "area": "Phaya Thai",
+   "prec": "site",
+   "src": "OSM: XT Phayathai"
+  },
+  "187": {
+   "slug": "sobha-estates-hartland-2",
+   "lat": 25.17743,
+   "lng": 55.30795,
+   "metro": "dubai",
+   "area": "Sobha Hartland",
+   "prec": "area",
+   "src": "Sobha Hartland, MBR City (Notion says Nad Al Sheba)"
+  },
+  "188": {
+   "slug": "damac-safa-gate",
+   "lat": 25.18238,
+   "lng": 55.24963,
+   "metro": "dubai",
+   "area": "Al Safa",
+   "prec": "site",
+   "src": "OSM: Safa Gate"
+  },
+  "189": {
+   "slug": "damac-golf-greens",
+   "lat": 25.02644,
+   "lng": 55.25123,
+   "metro": "dubai",
+   "area": "DAMAC Hills",
+   "prec": "area",
+   "src": "DAMAC Hills"
+  },
+  "190": {
+   "slug": "damac-towers-paramount",
+   "lat": 25.17946,
+   "lng": 55.26837,
+   "metro": "dubai",
+   "area": "Business Bay",
+   "prec": "area",
+   "src": "Business Bay"
+  },
+  "191": {
+   "slug": "binghatti-mercedes-benz-places",
+   "lat": 25.1884,
+   "lng": 55.27999,
+   "metro": "dubai",
+   "area": "Downtown Dubai",
+   "prec": "site",
+   "src": "OSM: Mercedes Benz Places by Binghatti"
+  },
+  "193": {
+   "slug": "oxley-towers-klcc",
+   "lat": 3.15883,
+   "lng": 101.71546,
+   "metro": "kuala-lumpur",
+   "area": "Jalan Ampang",
+   "prec": "site",
+   "src": "OSM: Oxley Towers"
+  },
+  "194": {
+   "slug": "pavilion-square-klcc",
+   "lat": 3.14916,
+   "lng": 101.71534,
+   "metro": "kuala-lumpur",
+   "area": "Bukit Bintang",
+   "prec": "site",
+   "src": "OSM: Pavilion Square (U/C)"
+  },
+  "195": {
+   "slug": "golden-crown-residence-klcc",
+   "lat": 3.14284,
+   "lng": 101.72051,
+   "metro": "kuala-lumpur",
+   "area": "TRX",
+   "prec": "site",
+   "src": "OSM: Golden Crown Residence at TRX (Notion says Jalan Ampang)"
+  },
+  "196": {
+   "slug": "centrix-the-station-klcc",
+   "lat": 3.15624,
+   "lng": 101.70298,
+   "metro": "kuala-lumpur",
+   "area": "Dang Wangi",
+   "prec": "area",
+   "src": "Dang Wangi, Jalan Ampang"
+  },
+  "197": {
+   "slug": "curvo-residences-setapak",
+   "lat": 3.19174,
+   "lng": 101.71505,
+   "metro": "kuala-lumpur",
+   "area": "Setapak",
+   "prec": "site",
+   "src": "OSM: Curvo Residences"
+  },
+  "198": {
+   "slug": "one-central-saigon",
+   "lat": 10.7696,
+   "lng": 106.6988,
+   "metro": "hcmc",
+   "area": "Bến Thành",
+   "prec": "site",
+   "src": "block opposite Bến Thành Market (Phạm Ngũ Lão · Calmette · Lê Thị Hồng Gấm · Phó Đức Chính)"
+  },
+  "199": {
+   "slug": "sycamore-binh-duong",
+   "lat": 11.056,
+   "lng": 106.672,
+   "metro": "binh-duong",
+   "area": "Bình Dương New City",
+   "prec": "area",
+   "src": "Hùng Vương, Bình Dương New City"
+  },
+  "200": {
+   "slug": "intercontinental-grenada-resort",
+   "lat": 12.02326,
+   "lng": -61.67318,
+   "metro": "grenada",
+   "area": "La Sagesse",
+   "prec": "site",
+   "src": "La Sagesse Bay (IHG)"
+  },
+  "201": {
+   "slug": "maia-ho-tram",
+   "lat": 10.48612,
+   "lng": 107.45502,
+   "metro": "ho-tram",
+   "area": "Hồ Tràm",
+   "prec": "site",
+   "src": "OSM: Maia Ho Tram"
+  },
+  "202": {
+   "slug": "le-meridien-da-nang",
+   "lat": 15.957,
+   "lng": 108.285,
+   "metro": "da-nang",
+   "area": "Điện Ngọc",
+   "prec": "area",
+   "src": "Điện Ngọc coast, Quảng Nam (Notion says Điện Dương)"
+  },
+  "203": {
+   "slug": "portomaso-st-julians",
+   "lat": 35.92069,
+   "lng": 14.49359,
+   "metro": "st-julians",
+   "area": "Portomaso",
+   "prec": "site",
+   "src": "OSM: Portomaso"
+  },
+  "204": {
+   "slug": "sliema-fortress-gardens",
+   "lat": 35.90763,
+   "lng": 14.51062,
+   "metro": "sliema",
+   "area": "Tigné Point",
+   "prec": "area",
+   "src": "Tigné Point"
+  },
+  "205": {
+   "slug": "ibragg-agb-residence",
+   "lat": 35.92176,
+   "lng": 14.47488,
+   "metro": "swieqi",
+   "area": "Ibraġ",
+   "prec": "area",
+   "src": "Ibraġ, Swieqi"
+  }
+ }
+}
