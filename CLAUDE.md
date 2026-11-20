@@ -165,6 +165,7 @@ number}` / `{Hotel/Brand name}` / `{Amenity}` / empty FAQ):
   `scripts/geocode-cache.json` (committed; next run is a pure cache hit, zero
   network). Geocode failure → the `geo` block is **omitted** (absent geo is
   valid; `{lat}` is not).
+- **Verified map points** (2026-11-20): `scripts/geo-overrides.json` holds one hand-checked point per listing (keyed by Property ID, with `prec` = `site` project itself · `area` suburb/district · `city` city only, plus the evidence in `src`). It wins over `resolveGeo()` for the PDP JSON-LD `geo`, because name-first geocoding landed on the wrong building (e.g. "Aura" → Canterbury, "640" → Glen Waverley, "Piraeus" → a Piraeus Bank branch in central Athens). `scripts/listing-geo.mjs` publishes `assets/listing-geo.json` on every sync (Property Hub world map + Leaflet map read it, keyed by feed `id`). A new Live listing with no override is auto-placed district-first and flagged `auto: true`; check it and move it into `geo-overrides.json`. Do NOT key anything by the PDP's `property_id` meta: several pages carry a stale `NAC-4`.
 - **`llms.txt`** (repo root) is regenerated from all Live rows on every sync —
   an [llmstxt.org](https://llmstxt.org) discovery index (one bullet per listing:
   canonical URL + brand/location/price/yield/NAC-score). NOTE: served at GH

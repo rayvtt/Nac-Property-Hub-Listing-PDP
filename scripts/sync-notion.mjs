@@ -12,6 +12,7 @@ import { fileURLToPath } from 'node:url';
 import {
   completeStructuredData, resolveGeo, buildLlmsTxt, loadCache, saveCache,
 } from './seo-geo-llm.mjs';
+import { loadGeoOverrides, overrideGeo, buildListingGeo } from './listing-geo.mjs';
 import { loadRates, toUSD, roundUSD } from './fx.mjs';
 import { buildPdpTitle } from './pdp-title.mjs';
 
@@ -843,6 +844,9 @@ async function main() {
   // the end so the next run is a pure cache hit (no Nominatim calls).
   const geocache = await loadCache(GEOCACHE_FILE);
   const geocacheSizeBefore = Object.keys(geocache).length;
+  // Hand-verified map points (Property ID → lat/lng). Win over the geocoder,
+  // which matches by project name first and can land on the wrong building.
+  const geoOverrides = await loadGeoOverrides(path.join(__dirname, 'geo-overrides.json'));
 
   let changed = 0;
   let failed = 0;
@@ -859,7 +863,7 @@ async function main() {
       // Resolve geo coordinates (cached; geocodes only on first sight). Failure
       // → null, and the completer omits the geo block rather than ship `{lat}`.
       try {
-        prop.geo = await resolveGeo(prop, { cache: geocache });
+        prop.geo = overrideGeo(geoOverrides, prop) || await resolveGeo(prop, { cache: geocache });
       } catch (e) {
         console.warn(`  ⚠ ${prop.slug}: geocode failed (${e.message}) — geo omitted`);
         prop.geo = null;
@@ -880,6 +884,17 @@ async function main() {
       failed++;
     }
   }
+  // Map points for the Property Hub (world map + Leaflet map).
+  try {
+    const geo = JSON.stringify(await buildListingGeo(properties, geoOverrides, { cache: geocache }), null, 1) + '\n';
+    const geoFile = path.join(ROOT, 'assets', 'listing-geo.json');
+    let prevGeo = '';
+    try { prevGeo = await fs.readFile(geoFile, 'utf-8'); } catch {}
+    if (geo !== prevGeo) { await fs.writeFile(geoFile, geo, 'utf-8'); console.log('  ↳ assets/listing-geo.json updated'); }
+  } catch (e) {
+    console.warn(`  ⚠ could not write listing-geo.json: ${e.message}`);
+  }
+
   // Persist the geocode cache if it grew (new coordinates resolved).
   if (Object.keys(geocache).length !== geocacheSizeBefore) {
     try { await saveCache(GEOCACHE_FILE, geocache); console.log('  ↳ geocode cache updated'); }
