@@ -2,6 +2,30 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-11-20 — Execution tick: brochure blog links no longer pass through a 301 (Brochures PR #437)
+
+**De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. Snapshot `2026-11-16.json` was read, not re-measured: 0/47 in top-3, 0 impressions on every tracked keyword. **Nothing to defend.**
+
+**Queue check:** unchanged since 11-19. No task changed status. 3 Approved tasks (#1521, #1516, #1313) wait on Ray; 0 Approved + Auto-Applicable. This run took the item carried over from 11-19: blog article links inside the brochures.
+
+**Method:** fetched all 34 distinct blog URLs in the 21 brochure source files, following redirects. 10 returned 200 directly, 22 returned 200 after one 301, 2 returned 404.
+
+**Shipped (NAC-Program-Brochures PR #437, squash-merged, live):**
+- **22 blog URLs now point at the final address.** Each one used the post slug without its category prefix (e.g. `/hy-lap-vs-tho-nhi-ky-2026-…` → `/so-sanh/hy-lap-vs-tho-nhi-ky-2026-…/`; also `/phan-tich/`, `/goc-nhin-nac/`, `/case-study/`, `/infographic/`). 107 occurrences across 18 brochure pages, the partner gateway and the brochure index.
+- **Brochure index nav:** `/chuong-trinh/` (404, not a blog category) → `/chuong-trinh-overview/` (200).
+- **Notion:** the 7 matching `① article CTA URL` values in the 🔖 Brochures DB (Malta, UAE, Malaysia, Cyprus, Greece, New Zealand, Portugal) were updated to the same URLs. The article hrefs are static in the HTML (no generator rewrites them); the Notion values feed `data/*_payload.json`, so the two now agree. This corrects the 11-19 note that an HTML-only fix would be overwritten.
+- Checks: parity 15/15 on every brochure; no backslashes added. Re-fetch: 33/34 blog URLs in the sources return 200 with no redirect. Live after wp-sync on 17 brochure pages + the index: 0 old URLs.
+- Undo: revert PR #437 (and restore the 7 Notion values from the PR diff of `data/*_payload.json`).
+- Audit row: 🚀 SEO Tasks, Applied, Brochure / Internal Links.
+
+**Not fixed:** Greece's article banner still points at a deleted post (the UHNWI article, 404, #1536). Choosing the replacement article is Ray's.
+
+**Indexation check:** all 27 keyword target URLs fetched live. 26 return 200, indexable, 1 `<h1>`; the Malta CLP still 301s to `/malaysia/` (#1524).
+
+**Still blocked on Ray (unchanged):** #1537, #1538, #1539, #1524, #1535, the last 2 redirects + CPT noindex in #1521, the 5 orphan PDPs, #1540, #1541, #1542, #1544, #1545, #1546 (two UK country pages), #1547, Greece brochure dead link (#1536), cockpit access for blog re-pushes (#1534, #1461, #1527), and the EB-5 `[VERIFY]` items.
+
+**Next:** a brochure link on each CLP; 11-23 snapshot: brochure impressions.
+
 ## 2026-11-19 — Execution tick: brochures link to their country pages again (Brochures PR #434, #435); dead schema URLs fixed; the UK has two live country pages
 
 **De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. Snapshot `2026-11-16.json` was read, not re-measured: 0/47 in top-3, 0 impressions on every tracked keyword. **Nothing to defend.**
