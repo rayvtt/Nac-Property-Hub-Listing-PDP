@@ -32,6 +32,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadRates, toUSD, roundUSD } from './fx.mjs';
+import { applyBrochureLink } from './clp-brochure-link.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -644,6 +645,7 @@ function applyModel(html, model, { globalStats } = {}) {
   setBi($, '.cl-coll-title', body.collectionTitle);
   setBi($, '.cl-coll-lead', body.collectionLead);
   setBi($, '.cl-asp-line', body.aspiration);
+  applyBrochureLink($, country.slug);
 
   // hero chips
   if (body.heroChips && body.heroChips.length) {
