@@ -2,6 +2,27 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-11-21 — Execution tick: country pages link to their brochures (PDP PR #474)
+
+**De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. Snapshot `2026-11-16.json` was read, not re-measured: 0/47 in top-3. **Nothing to defend.**
+
+**Queue check:** no change since 11-20. This run took the item carried over from 11-20: a brochure link on each CLP.
+
+**Method:** none of the 12 `country/*.html` files linked to a `/brochures/` page. Since Brochures PR #434, 9 brochures link to their CLP, so the link only went one way. I fetched the 10 matching brochure URLs from `BROCHURE-URLS.md`: all 10 return 200 with no redirect.
+
+**Shipped (PDP PR #474, squash-merged, live):**
+- **10 CLPs link to their programme brochure:** gr, cy, tr, ae, uk, malta, th, pa, my, au. The link is a text link under "Đặt Lịch Tư Vấn" in the closing section (`.cl-asp`). VI: "Xem brochure chương trình <Nước> →". EN: "Read the <Country> programme brochure →". vn and sg have no brochure, so they get no link.
+- **The link survives Notion syncs.** `scripts/clp-brochure-link.mjs` holds the slug → URL map, and `sync-notion-clp.mjs::applyModel` applies it on every sync. Re-running it gives byte-identical files. When a new country gets both a CLP and a brochure, add one row to the map.
+- Checks: tested at 1440px and 390px in VI and EN. The link is visible and there is no horizontal overflow. No backslashes were added. After the WP sync the link is live on 9 CLPs. Malta's CLP still 301s to `/malaysia/` (#1524), so the link can't show there.
+- Undo: revert PR #474.
+- Audit row: 🚀 SEO Tasks, Applied, Hub / Internal Links.
+
+**Indexation check:** I fetched all 27 keyword target URLs live. 26 return 200, are indexable and have one `<h1>`. The Malta CLP still 301s (#1524).
+
+**Still blocked on Ray (unchanged):** #1537, #1538, #1539, #1524, #1535, the last 2 redirects + CPT noindex in #1521, the 5 orphan PDPs, #1540, #1541, #1542, #1544, #1545, #1546, #1547, #1536, cockpit access for blog re-pushes (#1534, #1461, #1527), and the EB-5 `[VERIFY]` items.
+
+**Next:** read the 11-23 snapshot (brochure + CLP impressions).
+
 ## 2026-11-20 — Execution tick: brochure blog links no longer pass through a 301 (Brochures PR #437)
 
 **De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. Snapshot `2026-11-16.json` was read, not re-measured: 0/47 in top-3, 0 impressions on every tracked keyword. **Nothing to defend.**
