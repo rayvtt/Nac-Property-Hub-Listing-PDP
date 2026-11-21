@@ -352,22 +352,6 @@ function availChip(n) {
   if (n === 1) return { sold: false, vi: 'Căn cuối cùng', en: 'Final residence' };
   return { sold: false, vi: `Chỉ còn ${n} căn`, en: `Final ${n} residences` };
 }
-// Tone is written inline rather than as a stylesheet rule: every one of the
-// already-shipped PDPs carries its own copy of the CSS, so a new class would
-// need a 130-file migration. `.nac-chip` / `.nac-chip-dot` already exist in all
-// of them — this only overrides the colours on top.
-function renderAvailChip(a) {
-  const tone = a.sold
-    ? 'color:rgba(255,255,255,.85);border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.1)'
-    : 'color:#f3e5c3;border-color:rgba(212,175,55,.45);background:rgba(212,175,55,.14)';
-  // Sold out is whispered, not shouted (same call the hub makes): the dot stops
-  // pulsing and goes to ink. Remaining-inventory keeps the gold breathing dot.
-  const dot = a.sold
-    ? '<span style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55);flex:0 0 auto"></span>'
-    : '<span class="nac-chip-dot" style="background:#e3c86e;box-shadow:0 0 0 4px rgba(227,200,110,.18)"></span>';
-  return `<span class="nac-chip nac-chip-avail" data-avail="${a.sold ? 'soldout' : 'final'}" style="display:inline-flex;align-items:center;gap:.4rem;${tone}">${dot}<span data-vi="">${esc(a.vi)}</span><span data-en="">${esc(a.en)}</span></span>`;
-}
-
 function renderDonutRows(scores) {
   return scores.map(s => `
             <div class="nac-donut-row">
@@ -501,35 +485,35 @@ function patchHeadSeo($, prop) {
   });
 }
 
-// ─── Spotlight banners ──────────────────────────────────────────────────────
-// Running (marquee) ribbons — "Dự Án Nổi Bật ✦ Spotlight Listing" — layered over
-// the bottom edge of the hero image AND the bottom edge of the closing (§11)
-// image, only when the Notion `Spotlight?` checkbox is ticked. Translucent navy
-// band + NAC-orange ticker; seamless translateX(-50%) loop; pauses on hover. The
-// spotlight-only CSS lifts the hero scroll cue and the closing CTA above their
-// ribbons via :has(), so nothing is covered. ids: #nacsp-hero / #nacsp-end.
-const SPOTLIGHT_STYLE = `<style id="nac-spotlight-style">
-.nacsp-ov{position:absolute;left:0;right:0;bottom:0;z-index:6;overflow:hidden;padding:.6rem 0;background:linear-gradient(to top,rgba(10,16,30,.95),rgba(10,16,30,.74) 70%,rgba(10,16,30,.35));border-top:1px solid rgba(237,138,82,.5);pointer-events:none}
-.nacsp-ov .nacsp-track{display:flex;align-items:center;width:max-content;animation:nacsp-run 30s linear infinite;will-change:transform}
-.nacsp-ov:hover .nacsp-track{animation-play-state:paused}
-.nacsp-ov .nacsp-seq{display:flex;align-items:center;white-space:nowrap}
-.nacsp-ov .nacsp-word{font-family:var(--ff-mono,'IBM Plex Mono',monospace);font-size:.75rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;background:linear-gradient(90deg,#ed8a52,#f7b489,#d97c44);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 1.5rem}
-.nacsp-ov .nacsp-sep{color:rgba(237,138,82,.6);font-size:.82rem}
-@keyframes nacsp-run{to{transform:translateX(-50%)}}
-#nacsp-hero{top:0;bottom:auto;border-top:none;border-bottom:1px solid rgba(237,138,82,.5);background:linear-gradient(to bottom,rgba(10,16,30,.95),rgba(10,16,30,.74) 70%,rgba(10,16,30,.35))}
-#nac-img-3:has(#nacsp-end) .nac-cine-asp{bottom:2.7rem}
-@media(max-width:680px){.nacsp-ov{padding:.48rem 0}.nacsp-ov .nacsp-word{font-size:.63rem;letter-spacing:.22em;padding:0 1rem}#nac-img-3:has(#nacsp-end) .nac-cine-asp{bottom:2.3rem}}
+// ─── Hero facts line ────────────────────────────────────────────────────────
+// Replaced on 2026-11-21 (outside review: the "⚡ Must Know · 🔥 Hot · ● Live"
+// pill cluster and the "Dự Án Nổi Bật ✦ Spotlight Listing" marquee, repeated
+// over the hero AND the closing image, read as a crypto/SaaS template on a
+// luxury listing). The hero now carries one quiet, factual line built from
+// Notion: [NAC selection] · tenure · programme · [availability]. No emoji, no
+// pulse, no ticker. The style ships as its own idempotent <style> block, since
+// every shipped PDP carries its own copy of the page CSS.
+const HERO_FACTS_STYLE = `<style id="nac-hero-facts-style">
+.nac-hero-chips{gap:.35rem 0;align-items:center;margin-top:1rem}
+.nac-hf{display:inline-flex;align-items:center;font-size:.68rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.82);line-height:1.6}
+.nac-hf+.nac-hf::before{content:'';display:inline-block;width:1px;height:.95em;background:rgba(255,255,255,.35);margin:0 .9rem}
+.nac-hf-gold{color:#e9cf8f}
+.nac-hf-muted{color:rgba(255,255,255,.6)}
+@media(max-width:680px){.nac-hf{font-size:.6rem;letter-spacing:.12em}.nac-hf+.nac-hf::before{margin:0 .6rem}}
 </style>`;
-const SPOTLIGHT_SEQ = Array(8).fill(
-  `<span class="nacsp-word">Dự Án Nổi Bật</span><span class="nacsp-sep">✦</span>` +
-  `<span class="nacsp-word">Spotlight Listing</span><span class="nacsp-sep">✦</span>`
-).join('');
-const spotlightBanner = (id) =>
-  `<aside id="${id}" class="nacsp-ov" role="note" aria-label="Spotlight Listing — Dự Án Nổi Bật">` +
-    `<div class="nacsp-track" aria-hidden="true">` +
-      `<div class="nacsp-seq">${SPOTLIGHT_SEQ}</div><div class="nacsp-seq">${SPOTLIGHT_SEQ}</div>` +
-    `</div>` +
-  `</aside>`;
+const PROGRAMME = {
+  RBI: { vi: 'Kèm quyền cư trú', en: 'Residency by investment' },
+  CBI: { vi: 'Kèm quốc tịch', en: 'Citizenship by investment' },
+};
+function heroFacts(prop) {
+  const f = [];
+  if (prop.spotlight) f.push({ vi: 'Tuyển chọn của NAC', en: 'NAC selection', cls: 'nac-hf-gold' });
+  f.push(prop.freehold ? { vi: 'Sở hữu vĩnh viễn', en: 'Freehold' } : { vi: 'Sở hữu có thời hạn', en: 'Leasehold' });
+  if (PROGRAMME[prop.immigrationType]) f.push(PROGRAMME[prop.immigrationType]);
+  const a = availChip(prop.unitsLeft);
+  if (a) f.push({ vi: a.vi, en: a.en, cls: a.sold ? 'nac-hf-muted' : 'nac-hf-gold', avail: a.sold ? 'soldout' : 'final' });
+  return f.map(x => `<span class="nac-hf${x.cls ? ' ' + x.cls : ''}"${x.avail ? ` data-avail="${x.avail}"` : ''}><span data-vi="">${esc(x.vi)}</span><span data-en="">${esc(x.en)}</span></span>`).join('');
+}
 
 function patch(html, prop) {
   const $ = cheerio.load(html, { decodeEntities: false });
@@ -766,42 +750,17 @@ function patch(html, prop) {
     roi.attr('data-local-cur', prop._srcCur);
   }
 
-  // ─── Hero availability chip ─────────────────────────────────────────────
-  // Idempotent in the same shape as the spotlight banners below: the chip is
-  // stripped and the Live chip restored first, so clearing `⏳ Units Left` in
-  // Notion removes the whole treatment on the next sync.
-  $('.nac-chip-avail').remove();
-  $('.nac-chip-live').removeAttr('style');
-  const avail = availChip(prop.unitsLeft);
-  if (avail) {
-    // Anchor on the Live chip, not on `.nac-hero-chips`: the shipped PDPs have
-    // drifted from the template — two of them (incl. nobu-da-nang) carry the
-    // Live chip inside `.nac-hero-eyebrow` with no chips row at all. The Live
-    // chip itself is the one element present in every file, so the availability
-    // chip lands beside it whichever hero variant this listing uses.
-    const live = $('.nac-chip-live').first();
-    const host = live.length ? null : $('.nac-hero-chips').first().add($('.nac-hero-eyebrow').first()).first();
-    if (live.length) live.after(renderAvailChip(avail));
-    else if (host && host.length) host.append(renderAvailChip(avail));
-    // "Live" beside "Sold out" reads as a contradiction to a buyer — once the
-    // inventory is gone the availability chip speaks for the listing's state.
-    if (avail.sold) $('.nac-chip-live').attr('style', 'display:none');
-  }
-
-  // ─── Spotlight banners ──────────────────────────────────────────────────
-  // Injected only when the Notion `Spotlight?` checkbox is ticked. Idempotent:
-  // stripped first so un-ticking removes them on the next sync (the id list also
-  // clears the retired sticky-icon and midway-banner variants). Placement: a
-  // running ribbon layered over the bottom edge of the hero image and of the
-  // closing (§11) image.
-  $('#nac-spotlight, #nacsp-hero, #nacsp-end, #nac-spotlight-style').remove();
-  if (prop.spotlight) {
-    $('head').append(SPOTLIGHT_STYLE);
-    const hero = $('.nac-hero').first();
-    if (hero.length) hero.append(spotlightBanner('nacsp-hero'));
-    const closing = $('#nac-img-3').first();
-    if (closing.length) closing.append(spotlightBanner('nacsp-end'));
-  }
+  // ─── Hero facts line (replaces the chip cluster + spotlight marquee) ─────
+  // Idempotent: every old variant is stripped first (emoji chips, the Live
+  // chip, wherever a drifted hero put it, the availability chip, both
+  // marquee ribbons and their style), then the facts line is rebuilt.
+  $('.nac-chip-avail, .nac-chip-live').remove();
+  $('.nac-chip').filter((_, el) => /Must Know|Hot/.test($(el).text())).remove();
+  $('#nac-spotlight, #nacsp-hero, #nacsp-end, #nac-spotlight-style, #nac-hero-facts-style').remove();
+  $('head').append(HERO_FACTS_STYLE);
+  const chipsRow = $('.nac-hero-chips').first();
+  if (chipsRow.length) chipsRow.html(heroFacts(prop));
+  else $('.nac-hero-tag').first().after(`<div class="nac-hero-chips nac-anim" style="--d:.6s">${heroFacts(prop)}</div>`);
 
   // ─── SEO / GEO / LLM structured data ────────────────────────────────────
   // Completes the half of the <head> JSON-LD that patchHeadSeo leaves as
