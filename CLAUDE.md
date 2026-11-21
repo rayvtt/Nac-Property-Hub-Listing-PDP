@@ -38,6 +38,10 @@ The mobile breakpoint is `@media(max-width:900px)`. Some component-level rules a
 
 5. **Image breaks** — the old single cinematic gallery (`#nac-gallery`) was replaced with 3 individual full-bleed image sections (`#nac-img-1`, `#nac-img-2`, `#nac-img-3`) distributed at §04, §07, §10 in the spine. `#nac-img-3` has class `nac-cine--aspiration` (gradient overlay + CTA button). These are standard `position:relative` blocks — no sticky scroll.
 
+## Hero facts line (2026-11-21)
+
+The hero no longer carries the "⚡ Must Know · 🔥 Hot · ● Live" pill cluster or the "Dự Án Nổi Bật ✦ Spotlight Listing" marquee (it ran over the hero AND the closing image). An outside review read them as a crypto/SaaS template on a luxury listing. `sync-notion.mjs::heroFacts()` now rebuilds `.nac-hero-chips` on every sync as one quiet text line: [Tuyển chọn của NAC / NAC selection, only when `Spotlight?`] · tenure (Freehold / Leasehold) · programme (RBI / CBI) · [availability from `⏳ Units Left`]. No emoji, no pulse, no ticker. Classes are `nac-hf*`; **`.nac-fact` is already taken** by another PDP component, so never reuse it. Don't reintroduce emoji badges or scrolling tickers on LLPs.
+
 ## Aspiration CTA line (last image section)
 
 Formula: **"Sở hữu [property_type] [Brand name] tại [City]."** / **"Own a [property_type_en] in [City]."**
