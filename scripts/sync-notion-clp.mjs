@@ -34,6 +34,21 @@ import { fileURLToPath } from 'node:url';
 import { loadRates, toUSD, roundUSD } from './fx.mjs';
 import { applyBrochureLink } from './clp-brochure-link.mjs';
 
+
+// Listing URLs on nomadassetcollective.com are served with a trailing slash;
+// the slash-less form 301s. ~50 Notion rows store it without, so every CLP
+// card, hero slide and JSON-LD item linked through a redirect. Normalise here
+// (path only; leave query/fragment URLs and other hosts untouched).
+export function canonListingUrl(u) {
+  if (!u) return u;
+  const host = 'https://nomadassetcollective.com/';
+  if (!u.startsWith(host)) return u;
+  if (u.includes('?') || u.includes('#') || u.endsWith('/')) return u;
+  const last = u.slice(u.lastIndexOf('/') + 1);
+  if (last.includes('.')) return u;
+  return u + '/';
+}
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const COUNTRY_DIR = path.join(ROOT, 'country');
@@ -1096,7 +1111,7 @@ async function fetchCountryListings(notion, countryNameEn) {
       monthlyRent: num(p['Monthly Rental Income']),
       nacScore: num(p['⭐ NAC Score']),
       subScores: json(p['📊 Sub-Scores JSON']),
-      listingUrl: url(p['Listing URL']),
+      listingUrl: canonListingUrl(url(p['Listing URL'])),
       heroImg: url(p['Image URL']),
       regionCity: rt(p['Region/City']),
       district: rt(p['📍 District']),
