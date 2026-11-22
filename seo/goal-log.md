@@ -2,6 +2,29 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-11-22 — Execution tick: country pages link to listings at the final URL (PDP PR #477)
+
+**De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. I read snapshot `2026-11-16.json` and did not re-measure: 0/47 in top-3. **Nothing to defend.**
+
+**Queue check:** unchanged since 11-21. The 3 Approved tasks (#1521, #1516, #1313) wait on Ray, and none is Approved + Auto-Applicable. This run did the audit planned on 11-21: links from country pages to listings.
+
+**Method:** I collected every `property-hub-bat-dong-san/…` link in the 12 `country/*.html` files (136 distinct) and compared them with the canonical URLs of the 129 `properties/*.html` files. Then I fetched each link live without following redirects.
+- **Coverage is complete.** Every Live listing is linked from its own country page. The only 5 PDPs with no link are the 5 orphan PDPs already flagged; they are not Live, so they are not in `llms.txt` or the index. Grenada's one listing has a live WP country page that is not built from this repo.
+- **54 links returned 301.** 53 are listing URLs without the trailing slash, used 270 times on 6 CLPs (ae, gr, my, th, tr, vn) in cards, hero slides and the JSON-LD ItemList. The 54th is the known Malta CLP redirect (#1524).
+
+**Shipped (PDP PR #477, squash-merged, live):**
+- `sync-notion-clp.mjs` copied Notion's `Listing URL` unchanged, and 53 rows store it without the slash. The new `canonListingUrl()` adds the slash at the source for nomadassetcollective.com paths and leaves query/fragment/file URLs and other hosts alone. The 6 country files were patched to match what the next sync writes.
+- Checks: 0 slash-less listing links remain in the repo, all JSON-LD blocks parse, and no backslashes were added. After the WP CLP sync, the 6 live pages have 0 slash-less listing links, and the next Notion→CLP sync kept them.
+- `sync-wp.mjs` normalises URLs before matching, so it is unaffected. The Notion values themselves are unchanged. The Property Hub SPA reads them through the worker, so its cards may still link through the 301; that is a possible next item.
+- Undo: revert PR #477.
+- Audit row: 🚀 SEO Tasks, Applied, Hub / Internal Links.
+
+**Indexation check:** I fetched all 27 keyword target URLs live. 26 return 200, are indexable and have one `<h1>`. The Malta CLP still 301s to `/malaysia/` (#1524).
+
+**Still blocked on Ray (unchanged):** #1537, #1538, #1539, #1524, #1535, the last 2 redirects + CPT noindex in #1521, the 5 orphan PDPs, #1540, #1541, #1542, #1544, #1545, #1546, #1547, #1536, cockpit access for blog re-pushes (#1534, #1461, #1527), and the EB-5 `[VERIFY]` items.
+
+**Next:** read the 11-23 snapshot. Then check whether the Hub SPA listing links have the same slash-less 301.
+
 ## 2026-11-21 — Execution tick: country pages link to their brochures (PDP PR #474)
 
 **De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. Snapshot `2026-11-16.json` was read, not re-measured: 0/47 in top-3. **Nothing to defend.**
