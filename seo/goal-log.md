@@ -2,6 +2,27 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-11-23 — Execution tick: Property Hub listing links skip the 301 (Hub PR #364)
+
+**De-dup first:** today has no SEO commits, goal-log entries or 🚀 SEO Tasks edits before this run. The 11-23 snapshot isn't out yet (`goal-review.yml` runs Mon 09:00 UTC, and it was 06:10 UTC). I read `2026-11-16.json` and did not re-measure: 0/47 in top-3. **Nothing to defend.**
+
+**Queue check:** unchanged since 11-22. No task is Approved + Auto-Applicable. I took the item carried over from 11-22: the Property Hub SPA's links to listings.
+
+**Method:** I fetched the live worker feed (`/properties`, 133 Live rows). 53 `listingUrl` values have no trailing slash. These are the same 53 Notion rows behind PDP PR #477. Each one 301s on WP, and the hub uses this field for card links, the world-map city list, the spotlight CTA and both JSON-LD snapshots (runtime + `bake-listings-jsonld`). I fetched all 53 slash versions live: 53 × 200.
+
+**Shipped (NAC---Property-Hub PR #364, merged, worker auto-deployed):**
+- `nac-property-hub-worker.js` gained `canonListingUrl()`, the same rule as the PDP's. It adds the slash only on nomadassetcollective.com paths and leaves query, fragment and file URLs alone. I fixed this at the feed, not in the SPA, so every consumer of the feed gets the final URL, including the next JSON-LD bake.
+- Checks: `node --check` passed. After the deploy, the live feed had 0 slash-less `listingUrl` values out of 133.
+- Notion values are unchanged. `sync-wp.mjs` normalises URLs before matching.
+- Undo: revert PR #364. The worker redeploys automatically.
+- Audit row: 🚀 SEO Tasks, Applied, Hub / Internal Links.
+
+**Indexation check:** I fetched all 27 keyword target URLs live. 26 return 200, are indexable and have one `<h1>`. The Malta CLP still 301s to `/malaysia/` (#1524).
+
+**Still blocked on Ray (unchanged):** #1537, #1538, #1539, #1524, #1535, the last 2 redirects + CPT noindex in #1521, the 5 orphan PDPs, #1540, #1541, #1542, #1544, #1545, #1546, #1547, #1536, cockpit access for blog re-pushes (#1534, #1461, #1527), and the EB-5 `[VERIFY]` items.
+
+**Next:** read the 11-23 snapshot once it lands. The longer-term fix is to add the slash to the 53 Notion `Listing URL` values themselves, so no future consumer re-inherits the 301.
+
 ## 2026-11-22 — Execution tick: country pages link to listings at the final URL (PDP PR #477)
 
 **De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. I read snapshot `2026-11-16.json` and did not re-measure: 0/47 in top-3. **Nothing to defend.**
