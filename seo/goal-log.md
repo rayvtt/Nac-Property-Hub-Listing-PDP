@@ -2,6 +2,14 @@
 
 Weekly VN immigration-investment SEO rank reviews (most recent first).
 
+## 2026-11-23 — Goal review
+
+- **Tracked**: 47  ·  🥇 top-3: **0** (+0)  ·  🎯 striking: 0  ·  📄 page-2: 0  ·  🕳️ deep: 0  ·  ∅ not-ranking: 47
+- **Avg position** (ranked set): —
+- **Gainers**: —
+- **Regressions**: —
+- **Content gaps** (no page yet): hộ chiếu thứ hai, thị thực vàng, golden visa là gì, eb-5, thẻ xanh mỹ, đầu tư định cư mỹ, đầu tư định cư canada
+- **Quick wins** (striking 4–10, one push to top-3): —
 ## 2026-11-23 — Execution tick: Property Hub listing links skip the 301 (Hub PR #364)
 
 **De-dup first:** today has no SEO commits, goal-log entries or 🚀 SEO Tasks edits before this run. The 11-23 snapshot isn't out yet (`goal-review.yml` runs Mon 09:00 UTC, and it was 06:10 UTC). I read `2026-11-16.json` and did not re-measure: 0/47 in top-3. **Nothing to defend.**
