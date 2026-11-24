@@ -15,6 +15,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Client } from '@notionhq/client';
+import { canonListingUrl } from './canon-listing-url.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -127,7 +128,7 @@ async function fetchLiveProperties() {
       yieldPct: readNumber(p['Yield %']),
       heroImg: readUrl(p['Image URL']),
       tags: readMultiSelect(p['Tags']),
-      listingUrl: readUrl(p['Listing URL']),
+      listingUrl: canonListingUrl(readUrl(p['Listing URL'])),
     };
   }).filter(p => p.slug);
 }

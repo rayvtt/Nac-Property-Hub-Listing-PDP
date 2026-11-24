@@ -10,6 +10,24 @@ Weekly VN immigration-investment SEO rank reviews (most recent first).
 - **Regressions**: —
 - **Content gaps** (no page yet): hộ chiếu thứ hai, thị thực vàng, golden visa là gì, eb-5, thẻ xanh mỹ, đầu tư định cư mỹ, đầu tư định cư canada
 - **Quick wins** (striking 4–10, one push to top-3): —
+## 2026-11-24 — Execution tick: preview index links skip the 301 (shared `canonListingUrl`)
+
+**De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. I read the 11-23 snapshot (`2026-11-23.json`, window 10-26 → 11-22) and did not re-measure: 0/47 in top-3, 0 striking, 47 not ranking. **Nothing to defend.**
+
+**Queue check:** no task changed status since 11-23. 3 Approved tasks (#1521, #1516, #1313) wait on Ray; 0 Approved + Auto-Applicable. I checked the item carried over from 11-23 (fix the 53 Notion `Listing URL` values) and dropped it: all 130 PDP canonicals, og:url and JSON-LD URLs already end in `/`, the CLPs (PR #477) and the hub feed (Hub PR #364) normalise at the point of use, and `llms.txt` has 0 slash-less URLs out of 126. Rewriting 53 production rows would add risk and gain nothing. The one consumer still missing the fix was the GitHub Pages preview `index.html`: 53 "Live ↗" buttons went through the 301.
+
+**Shipped (this PR):**
+- `scripts/canon-listing-url.mjs` is the one copy of the trailing-slash rule. `sync-notion-clp.mjs` imports it and still re-exports it. It could not be imported directly because that script runs on import.
+- `update-index.mjs` applies it to `Listing URL`, so the next sync keeps the slash. `index.html` was patched to match: 53 hrefs, now 0 slash-less listing links.
+- Checks: `node --check` passes on both scripts. The helper was tested on bare, slashed, file, query and other-host URLs. All 53 slash URLs return 200 live.
+- Undo: revert the PR.
+
+**Indexation check:** I fetched all 27 keyword target URLs live. 26 return 200, are indexable and have one `<h1>`. The Malta CLP still 301s to `/malaysia/` (#1524).
+
+**Still blocked on Ray (unchanged):** #1537, #1538, #1539, #1524, #1535, the last 2 redirects + CPT noindex in #1521, the 5 orphan PDPs, #1540, #1541, #1542, #1544, #1545, #1546, #1547, #1536, cockpit access for blog re-pushes (#1534, #1461, #1527), and the EB-5 `[VERIFY]` items.
+
+**Next:** the slash-less 301 is now fixed for every consumer in the repo. Next run: on-page audit of the 5 blog keyword targets (title/H1/meta vs. keyword), since #1544 interlinking is waiting on Ray.
+
 ## 2026-11-23 — Execution tick: Property Hub listing links skip the 301 (Hub PR #364)
 
 **De-dup first:** today has no SEO commits, goal-log entries or 🚀 SEO Tasks edits before this run. The 11-23 snapshot isn't out yet (`goal-review.yml` runs Mon 09:00 UTC, and it was 06:10 UTC). I read `2026-11-16.json` and did not re-measure: 0/47 in top-3. **Nothing to defend.**
