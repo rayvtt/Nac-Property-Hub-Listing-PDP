@@ -10,6 +10,23 @@ Weekly VN immigration-investment SEO rank reviews (most recent first).
 - **Regressions**: —
 - **Content gaps** (no page yet): hộ chiếu thứ hai, thị thực vàng, golden visa là gì, eb-5, thẻ xanh mỹ, đầu tư định cư mỹ, đầu tư định cư canada
 - **Quick wins** (striking 4–10, one push to top-3): —
+## 2026-11-25 — Execution tick: on-page audit of the 5 blog targets; meta-description bug fixed in the publisher
+
+**De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. Rank data is the 11-23 snapshot (0/47 in top-3, 47 not ranking). I did not re-measure. **Nothing to defend.**
+
+**Audit (the item queued on 11-24):** I fetched the 5 blog keyword targets live and checked title, meta description, H1, H2s and keyword use. All 5 return 200, are indexable, have 1 `<h1>` and a self-canonical.
+- Italy (`italy investor visa`), Antigua (`quốc tịch caribbean`), Panama (`friendly nations visa`) and the cost article (`đầu tư định cư cần bao nhiêu tiền`) all carry their keyword in the title and the H1.
+- **Portugal is the gap.** Its title and H1 have no "Golden Visa". `golden visa bồ đào nha` appears 7× in the body but in no heading. `định cư bồ đào nha` appears 0× on the page. The opening H2 repeats the H1. Filed as 🚀 SEO Tasks **New / P1** with a title draft for Ray. The edit goes in Notion, the slug stays, and no redirect is needed.
+- **Systemic: 5/5 meta descriptions start with the opening H2 glued onto the first sentence**, e.g. "…Hàng Đầu Châu Âu Sau nhiều năm…". Cause: `blog-seo.js::pickDescription` split `strip(vi+en)`, which joins blocks with a bare space.
+
+**Shipped (nac-marketing-omnichannel commit `7e3d813`, branch `claude/blissful-noether-re03ie`):** a new `blockText()` marks every block end, and `pickDescription` splits on those marks. Keyword picking is unchanged. I added a test to `scripts/blog-wp-test.mjs`. It passes. The one other failure in that file ("every Notion Type maps to a category") was already failing before this change. Undo: revert the commit. **Needs Ray:** merge it into `claude/nac-marketing-omnichannel-vh7YG` (that merge deploys the Worker), then Re-push the 5 posts so Rank Math gets the new description. 🚀 SEO Tasks row filed as Approved, with the commit linked.
+
+**Indexation check:** I fetched all 27 keyword target URLs live. 26 return 200, are indexable and have one `<h1>`. The Malta CLP still 301s (#1524).
+
+**Still blocked on Ray (unchanged):** #1537, #1538, #1539, #1524, #1535, #1521 (last 2 redirects + CPT noindex), the 5 orphan PDPs, #1540–#1542, #1544–#1547, #1536, cockpit access for blog re-pushes (#1534, #1461, #1527), and the EB-5 `[VERIFY]` items.
+
+**Next:** brief the biggest content gap from the 11-23 review (`thị thực vàng` / `golden visa là gì`, P1 blog, no page yet) into a bilingual Site CMS draft. Check first that no Site CMS draft already covers it.
+
 ## 2026-11-24 — Execution tick: preview index links skip the 301 (shared `canonListingUrl`)
 
 **De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. I read the 11-23 snapshot (`2026-11-23.json`, window 10-26 → 11-22) and did not re-measure: 0/47 in top-3, 0 striking, 47 not ranking. **Nothing to defend.**
