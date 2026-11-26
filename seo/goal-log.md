@@ -10,6 +10,32 @@ Weekly VN immigration-investment SEO rank reviews (most recent first).
 - **Regressions**: —
 - **Content gaps** (no page yet): hộ chiếu thứ hai, thị thực vàng, golden visa là gì, eb-5, thẻ xanh mỹ, đầu tư định cư mỹ, đầu tư định cư canada
 - **Quick wins** (striking 4–10, one push to top-3): —
+## 2026-11-26 — Execution tick: "thị thực vàng / golden visa là gì" explainer drafted into Site CMS
+
+**De-dup first:** there were no SEO commits, goal-log entries or Goal Reviews rows today before this run. Rank data is the 11-23 snapshot: 0/47 in top-3, 47 not ranking. I did not re-measure. **Nothing to defend.**
+
+**Shipped (a draft, not published):** I wrote the content gap queued on 11-25 as a full bilingual article. Before writing I checked the Site CMS: 16 golden-visa rows exist, all country-specific, and none is a "what is it" explainer.
+- **Article:** *Golden Visa Là Gì? Thị Thực Vàng Hoạt Động Thế Nào Năm 2026* / *What Is a Golden Visa? How Residence by Investment Works in 2026*.
+  - Type Chương Trình Overview, VI 1,901 / EN 1,515 words, passes the `file-articles.mjs` dry-run gate.
+  - The H2s are the questions buyers search: what it is vs. CBI, what rights it gives, how much in 2026, how NAC judges the property, who should consider it, plus an FAQ.
+  - It links to the 10-15 threshold infographic and to 2 listing pages (Limassol Blu Marine, Sobha Hartland II). Both clear their programme threshold, and their numbers come from Notion.
+  - Notion: https://app.notion.com/p/42448ec25e8681c6b8bafecc45d89f30 (Idea / Waiting to Review). Campaign record: `nac-marketing-omnichannel/campaigns/2026-11-golden-visa-explainer/` (commit `bd2daa6`).
+- **Facts were checked against primary sources** (hard rule #12): Dubai Land Department, Cyprus MOI CRMD, La Moncloa, Diário da República and AIMA. For Greece I used the IBA summary of Law 5100/2024. The claims scanner flagged 1 absolute ("Mọi chương trình"), which I softened.
+- **Undo:** archive the Notion row.
+
+**Found while anchoring, needs Ray:** 10 Live listings carry "(Golden Visa)" or "RBI" in their name but are priced below their programme's headline threshold:
+- 6 in Athens at €260–315k (Meridia, Izi Lux, Kifisia Suites, The One, Opus, Boulevard), against €800k in Attica. Some may qualify under the €250k conversion/restoration route; that needs checking per project.
+- 3 in Dubai at AED 1.1–1.99m (DAMAC Golf Greens, DAMAC Towers Paramount, DAMAC Safa Gate), against AED 2m.
+- Pearl Park Paphos at €230k, against €300k + VAT.
+
+I did not edit any listing. This is a compliance/trust issue rather than SEO, so it is Ray's call.
+
+**Indexation check:** I fetched all 27 keyword target URLs live. 26 return 200 and are indexable. The Malta CLP still 301s (#1524).
+
+**Still blocked on Ray (unchanged):** #1537, #1538, #1539, #1524, #1535, #1521 (last 2 redirects + CPT noindex), the 5 orphan PDPs, #1540–#1542, #1544–#1547, #1536, cockpit access for blog re-pushes (#1534, #1461, #1527), the EB-5 `[VERIFY]` items, and the 11-25 meta-description fix merge (`7e3d813`) + Portugal title (P1).
+
+**Next:** once the explainer is approved and live, set `target_url` for both keywords. Next content gap: `hộ chiếu thứ hai` (P1, hub surface, no page). Check first whether a Property Hub section, rather than a blog article, is the right canonical.
+
 ## 2026-11-25 — Execution tick: on-page audit of the 5 blog targets; meta-description bug fixed in the publisher
 
 **De-dup first:** no SEO commits, goal-log entries or 🚀 SEO Tasks edits today before this run. Rank data is the 11-23 snapshot (0/47 in top-3, 47 not ranking). I did not re-measure. **Nothing to defend.**
