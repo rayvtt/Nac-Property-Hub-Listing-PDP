@@ -16,7 +16,7 @@ Redirect 301 /residences/hungary-residence/ https://nomadassetcollective.com/pro
 Redirect 301 /residences/574/ https://nomadassetcollective.com/property-hub-bat-dong-san/
 Redirect 301 /citizenships/turkey-citizenship/ https://nomadassetcollective.com/property-hub-bat-dong-san/turkey/
 Redirect 301 /citizenships/st-kitts-and-nevis-citizenship/ https://nomadassetcollective.com/brochures/chuong-trinh-si-kitts-nevis-quoc-tich/
-Redirect 301 /citizenships/antigua-barbuda-citizenship/ https://nomadassetcollective.com/brochures/chuong-trinh-antigua-barbuda-cbi/
+Redirect 301 /citizenships/antigua-barbuda-citizenship/ https://nomadassetcollective.com/brochures/chuong-trinh-antigua-barbuda-cbi-dau-tu-quoc-tich/
 Redirect 301 /citizenships/malta-citizenship/ https://nomadassetcollective.com/brochures/chuong-trinh-malta-thuong-tru-nhan-rbi/
 Redirect 301 /citizenships/malta-citizenship-2/ https://nomadassetcollective.com/brochures/chuong-trinh-malta-thuong-tru-nhan-rbi/
 Redirect 301 /citizenships/saint-lucia-citizenship/ https://nomadassetcollective.com/property-hub-bat-dong-san/

@@ -46,7 +46,7 @@ Rule: country has a CLP → CLP; else has a brochure → brochure; else → the 
 |---|---|---|---|
 | 9 | `/citizenships/turkey-citizenship/` | `/property-hub-bat-dong-san/turkey/` | Turkey CLP |
 | 10 | `/citizenships/st-kitts-and-nevis-citizenship/` | `/brochures/chuong-trinh-si-kitts-nevis-quoc-tich/` | St Kitts brochure |
-| 11 | `/citizenships/antigua-barbuda-citizenship/` | `/brochures/chuong-trinh-antigua-barbuda-cbi/` | Antigua brochure |
+| 11 | `/citizenships/antigua-barbuda-citizenship/` | `/brochures/chuong-trinh-antigua-barbuda-cbi-dau-tu-quoc-tich/` | Antigua brochure (slug renamed; the old `…-cbi/` URL now 301s here, and the live redirect already lands on the new one) |
 | 12 | `/citizenships/malta-citizenship/` | `/brochures/chuong-trinh-malta-thuong-tru-nhan-rbi/` | Malta brochure |
 | 13 | `/citizenships/malta-citizenship-2/` | `/brochures/chuong-trinh-malta-thuong-tru-nhan-rbi/` | duplicate slug |
 | 14 | `/citizenships/saint-lucia-citizenship/` | `/property-hub-bat-dong-san/` | no product (alt: Caribbean CBI blog) |

@@ -10,6 +10,29 @@ Weekly VN immigration-investment SEO rank reviews (most recent first).
 - **Regressions**: —
 - **Content gaps** (no page yet): hộ chiếu thứ hai, thị thực vàng, golden visa là gì, eb-5, thẻ xanh mỹ, đầu tư định cư mỹ, đầu tư định cư canada
 - **Quick wins** (striking 4–10, one push to top-3): —
+## 2026-11-27 — Execution tick: "hộ chiếu thứ hai" explainer drafted into Site CMS
+
+**De-dup first:** there were no SEO commits, goal-log entries or Goal Reviews rows today before this run. Rank data is the 11-23 snapshot: 0/47 in top-3, 47 not ranking. I did not re-measure. **Nothing to defend.**
+
+**Shipped (a draft, not published):** the item queued on 11-26. `hộ chiếu thứ hai` (P1, head) had no page. WP search and the Site CMS have only country-specific CBI pieces (Turkey, Antigua, Grenada, Malta, Vanuatu, Nauru), no "what is a second passport" explainer. The keyword's `surface` is `hub`, but the Property Hub SPA is a listing catalogue with no editorial section, so I wrote it as a blog explainer, the CBI sibling of the 11-26 golden-visa (RBI) piece.
+- **Article:** *Hộ Chiếu Thứ Hai Là Gì? Quốc Tịch Qua Đầu Tư Hoạt Động Thế Nào Năm 2026* / *What Is a Second Passport? How Citizenship by Investment Works in 2026*.
+  - Type Chương Trình Overview, VI 2,334 / EN 1,844 words, passes the `file-articles.mjs` dry-run gate.
+  - H2s follow what buyers search: what it is vs. a golden visa, whether a Vietnamese citizen keeps Vietnamese nationality, cost in 2026, whether a passport can lose value (Vanuatu), how NAC judges the property, who it suits, FAQ.
+  - Anchors 2 Istanbul listings that clear the US$400k threshold: Sefaköy Residence (exactly at it, so the copy flags the valuation-report risk) and W Suite Istanbul. Numbers from the live hub feed. Links to the Turkey CLP, the cost article, the Grenada article and the St Kitts + Antigua brochures.
+  - Notion: https://app.notion.com/p/42548ec25e86812db51dc5013871b887 (Idea / Waiting to Review). Campaign record: `nac-marketing-omnichannel/campaigns/2026-11-second-passport-explainer/` (commit `f1184db`, branch `claude/blissful-noether-df929e`).
+- **Facts were checked against primary sources** (hard rule #12): St Kitts CIU (SISC US$250k), Antigua CIU (NDF US$230k), Invest in Türkiye + Your Key Türkiye (US$400k, 3-year annotation), EUR-Lex C-181/23 (Malta), Council of the EU (Vanuatu), and the Vietnamese Nationality Law 2008 (Art. 4, Art. 26) + Law 79/2025/QH15. I could not reach Grenada's CBI site, so the article quotes no Grenada figure. The claims scanner flagged 3 absolutes: 1 is true, 2 overclaims were softened.
+- **Undo:** archive the Notion row.
+
+**Needs Ray:** confirm the blog explainer, not a hub section, as the one canonical for `hộ chiếu thứ hai`. If yes, I set `target_url` (and `surface: blog`) once it is live.
+
+**Doc fix (this PR):** the Antigua line in `redirects-residences-citizenships.txt` and the consolidation plan pointed at `/brochures/chuong-trinh-antigua-barbuda-cbi/`, which now 301s (slug renamed). The live redirect is already correct (`/citizenships/antigua-barbuda-citizenship/` → `…-cbi-dau-tu-quoc-tich/`, one hop). I updated the doc so nobody re-pastes the old target and creates a chain. Every other destination in both redirect files returns 200.
+
+**Indexation check:** I fetched all 27 keyword target URLs live. 26 return 200, are indexable and have one `<h1>`. The Malta CLP still 301s (#1524).
+
+**Still blocked on Ray (unchanged):** #1537, #1538, #1539, #1524, #1535, #1521 (last 2 redirects + CPT noindex), the 5 orphan PDPs, #1540–#1542, #1544–#1547, #1536, cockpit access for blog re-pushes (#1534, #1461, #1527), the EB-5 `[VERIFY]` items, the 11-25 meta-description fix merge (`7e3d813`) + Portugal title (P1), the 10 under-threshold "(Golden Visa)" listing names (11-26), and review of the 2 explainer drafts (11-26, 11-27).
+
+**Next:** the remaining content gaps are all US/Canada (`eb-5`, `thẻ xanh mỹ`, `đầu tư định cư mỹ`, `đầu tư định cư canada`). The EB-5 work is waiting on its `[VERIFY]` items, so next run: scope `đầu tư định cư canada` (check what exists first) or, if nothing is unblocked, run an on-page audit of the CLP keyword targets.
+
 ## 2026-11-26 — Execution tick: "thị thực vàng / golden visa là gì" explainer drafted into Site CMS
 
 **De-dup first:** there were no SEO commits, goal-log entries or Goal Reviews rows today before this run. Rank data is the 11-23 snapshot: 0/47 in top-3, 47 not ranking. I did not re-measure. **Nothing to defend.**
