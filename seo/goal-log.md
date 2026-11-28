@@ -10,6 +10,30 @@ Weekly VN immigration-investment SEO rank reviews (most recent first).
 - **Regressions**: —
 - **Content gaps** (no page yet): hộ chiếu thứ hai, thị thực vàng, golden visa là gì, eb-5, thẻ xanh mỹ, đầu tư định cư mỹ, đầu tư định cư canada
 - **Quick wins** (striking 4–10, one push to top-3): —
+## 2026-11-28 — Execution tick: on-page audit of the 12 country-page targets; Greece title now carries "golden visa hy lạp"
+
+**De-dup first:** there were no SEO commits, goal-log entries or Goal Reviews rows today before this run. Rank data is the 11-23 snapshot: 0/47 in top-3, 47 not ranking. I did not re-measure. **Nothing to defend.**
+
+**Why this item:** the 11-27 plan was `đầu tư định cư canada` or a CLP on-page audit. NAC has no Canada (or US) programme, brochure or listing to anchor an article to, so I skipped the Canada gap and ran the audit.
+
+**Audit (live fetch of all 12 CLP targets; title, meta, H1, H2, canonical, robots, exact-phrase presence):** 11 return 200, are indexable, self-canonical and have one `<h1>`. The Malta CLP still 301s to Malaysia (#1524). Every tracked keyword is in its page title except two:
+- `golden visa hy lạp` (P1) appeared only in the meta description. It was in no title, H1 or body text.
+- `quốc tịch síp` (P2) is in the title but not in the H1 or meta. See "needs Ray" below.
+
+**Shipped (this PR):** Greece CLP title `Định cư Hy Lạp: Golden Visa & Bất động sản Hy Lạp | NAC` → `Golden Visa Hy Lạp & Định cư Hy Lạp qua Bất động sản | NAC` (57 chars). Both P1 phrases now appear exactly. The change is in `CLP_SEO` in `scripts/sync-notion-clp.mjs`, so the next sync keeps it. I also patched `country/gr.html` (title, og/twitter title, JSON-LD name) so it goes live without waiting for a sync. **Undo:** revert the PR.
+
+**Needs Ray (found in the audit, not changed, because each one is live copy or a keyword call):**
+1. **Cyprus title says "Quốc tịch Síp".** Cyprus closed citizenship by investment in 2020. A title that pairs property with citizenship over-promises (hard rule #12). Options: drop `quốc tịch síp` as a keyword, or retitle with "Thường trú Síp". I lean towards retiring the keyword.
+2. **Singapore H1 + chip:** "hộ chiếu hạng AAA thông qua Global Investor Programme". The GIP grants permanent residence, not a passport, and it is not a property route. The page also shows "Không dự án" (0 live listings), so it is a thin page holding a tracked keyword.
+3. **UK atlas H2, VI, is cut off:** "Bất Động Sản vàng tại" (EN: "One city. Five listings. One complete Zone 1."). This is the Country DB `Atlas Title` field.
+4. **Greece H1:** "định cư EU từ €250K". The headline thresholds are €800k (Attica) and €400k elsewhere; €250k applies only to conversion or restoration projects. This is the same issue as the 11-26 listing-name finding.
+
+**Indexation check:** the Greece CLP is live (200, indexable). The 11-26 and 11-27 explainers are still drafts, so there is nothing new to index-check.
+
+**Still blocked on Ray (unchanged):** #1537, #1538, #1539, #1524, #1535, #1521, the 5 orphan PDPs, #1540–#1542, #1544–#1547, #1536, cockpit access for blog re-pushes (#1534, #1461, #1527), the EB-5 `[VERIFY]` items, the 11-25 meta fix merge + Portugal title, the 10 under-threshold "(Golden Visa)" listing names, and review of the 2 explainer drafts.
+
+**Next:** if Ray agrees, retire `quốc tịch síp` and fix the 3 CLP copy items in the Country DB. Otherwise, run an on-page audit of the 10 brochure targets.
+
 ## 2026-11-27 — Execution tick: "hộ chiếu thứ hai" explainer drafted into Site CMS
 
 **De-dup first:** there were no SEO commits, goal-log entries or Goal Reviews rows today before this run. Rank data is the 11-23 snapshot: 0/47 in top-3, 47 not ranking. I did not re-measure. **Nothing to defend.**
