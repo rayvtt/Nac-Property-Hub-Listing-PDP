@@ -454,7 +454,7 @@ const CLP_SEO = {
         desc: 'Đầu tư định cư Úc qua bất động sản hàng hiệu: {n} dự án chọn lọc tại {cities} — giá, lợi suất, pháp lý và chiến lược đầu tư Úc từ NAC Property Hub.' },
   cy: { title: 'Đầu tư định cư Síp: Bất động sản & Quốc tịch Síp | NAC',
         desc: 'Đầu tư định cư Síp (Cyprus RBI) qua bất động sản: {n} dự án hàng hiệu tại {cities} — giá, lợi suất, pháp lý và lộ trình thường trú EU từ NAC.' },
-  gr: { title: 'Định cư Hy Lạp: Golden Visa & Bất động sản Hy Lạp | NAC',
+  gr: { title: 'Golden Visa Hy Lạp & Định cư Hy Lạp qua Bất động sản | NAC',
         desc: 'Golden Visa Hy Lạp – định cư Hy Lạp qua bất động sản: {n} dự án hàng hiệu tại {cities} — giá, lợi suất, pháp lý và lộ trình thường trú EU từ NAC.' },
   my: { title: 'Đầu tư định cư Malaysia (MM2H): Bất động sản hàng hiệu | NAC',
         desc: 'Đầu tư định cư Malaysia (MM2H) qua bất động sản hàng hiệu: {n} dự án chọn lọc tại {cities} — giá, lợi suất, pháp lý và lộ trình visa từ NAC.' },
